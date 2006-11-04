@@ -100,6 +100,11 @@ GridStatusAuras.defaultDB = {
 function GridStatusAuras:OnInitialize()
 	self.super.OnInitialize(self)
 
+	self:RegisterStatuses()
+end
+
+
+function GridStatusAuras:RegisterStatuses()
 	local status, statusTbl, desc
 
 	for status, statusTbl in pairs(self.db.profile) do
@@ -112,6 +117,17 @@ function GridStatusAuras:OnInitialize()
 end
 
 
+function GridStatusAuras:UnregisterStatuses()
+	local status, moduleName, desc
+	for status, moduleName, desc in self.core:RegisteredStatusIterator() do
+		if moduleName == self.name then
+			self:UnregisterStatus(status)
+			self.options.args[status] = nil
+		end
+	end
+end
+
+
 function GridStatusAuras:OnEnable()
 	self.debugging = self.db.profile.debug
 	self:RegisterEvent("SpecialEvents_UnitDebuffGained")
@@ -119,6 +135,15 @@ function GridStatusAuras:OnEnable()
 	self:RegisterEvent("SpecialEvents_UnitBuffGained")
 	self:RegisterEvent("SpecialEvents_UnitBuffLost")
 	self:RegisterEvent("Grid_UnitDeath")
+	self:CreateAddRemoveOptions()
+end
+
+
+function GridStatusAuras:Reset()
+	self.super.Reset(self)
+
+	self:UnregisterStatuses()
+	self:RegisterStatuses()
 	self:CreateAddRemoveOptions()
 end
 
@@ -190,7 +215,7 @@ end
 
 
 function GridStatusAuras:DeleteAura(status)
-	GridStatus:UnregisterStatus(status, name)
+	self:UnregisterStatus(status)
 	self.options.args[status] = nil
 	self.options.args["delete_debuff"].args[status] = nil
 	self.db.profile[status] = nil
@@ -205,7 +230,8 @@ function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type
 	local settings = self.db.profile[debuffNameStatus] or self.db.profile[debuffTypeStatus]
 	local status   = (self.db.profile[debuffNameStatus] and debuffNameStatus) or debuffTypeStatus
 	if not (settings and settings.enable) then return end
-	GridStatus:SendStatusGained(UnitName(unit),
+
+	self.core:SendStatusGained(UnitName(unit),
 			status,
 			settings.priority,
 			(settings.range and 40),			
@@ -223,12 +249,12 @@ function GridStatusAuras:SpecialEvents_UnitDebuffLost(unit, debuff, apps, type, 
 	if self.db.profile[debuffNameStatus] then
 		if not Aura:UnitHasDebuff(unit, debuff) then
 			self:Debug("lost", debuffNameStatus)
-			GridStatus:SendStatusLost(UnitName(unit), debuffNameStatus)
+			self.core:SendStatusLost(UnitName(unit), debuffNameStatus)
 		end
 	else
 		if not Aura:UnitHasDebuffType(unit, type) then
 			self:Debug("lost", debuffTypeStatus)
-			GridStatus:SendStatusLost(UnitName(unit), debuffTypeStatus)
+			self.core:SendStatusLost(UnitName(unit), debuffTypeStatus)
 		end
 	end
 end
@@ -236,10 +262,15 @@ end
 
 function GridStatusAuras:SpecialEvents_UnitBuffGained(unit, buff, apps, type, tex)
 	local buffNameStatus = statusForSpell(buff, true)
-	self:Debug("gained",buffNameStatus)
 	local settings = self.db.profile[buffNameStatus]
 	if not (settings and settings.enable) then return end
-	GridStatus:SendStatusGained(UnitName(unit),
+
+	-- SE-Aura doesn't give the texture for buffs?
+	if not tex then
+		tex = BS:GetSpellIcon(buff)
+	end
+	self:Debug("gained", buffNameStatus, tex)
+	self.core:SendStatusGained(UnitName(unit),
 			buffNameStatus,
 			settings.priority,
 			(settings.range and 40),			
@@ -255,7 +286,7 @@ function GridStatusAuras:SpecialEvents_UnitBuffLost(unit, buff, apps, type, tex)
 	local buffNameStatus = statusForSpell(buff, true)
 	if self.db.profile[buffNameStatus] then
 		if not Aura:UnitHasBuff(unit, buff) then
-			GridStatus:SendStatusLost(UnitName(unit), buffNameStatus)
+			self.core:SendStatusLost(UnitName(unit), buffNameStatus)
 		end
 	end
 end
@@ -264,9 +295,9 @@ end
 function GridStatusAuras:Grid_UnitDeath(unitname)
 	local status, moduleName, desc
 
-	for status, moduleName, desc in GridStatus:RegisteredStatusIterator() do
+	for status, moduleName, desc in self.core:RegisteredStatusIterator() do
 		if moduleName == self.name then
-			GridStatus:SendStatusLost(unitname, status)
+			self.core:SendStatusLost(unitname, status)
 		end
 	end
 end

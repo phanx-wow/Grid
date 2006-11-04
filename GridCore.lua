@@ -73,6 +73,12 @@ function Grid.modulePrototype:OnDisable()
 	self:DisableModules()
 end
 
+function Grid.modulePrototype:Reset()
+	self.debugging = self.db.profile.debug
+	self:Debug("Reset")
+	self:ResetModules()
+end
+
 function Grid.modulePrototype:RegisterModules()
 	for name,module in self:IterateModules() do
 		self:RegisterModule(name, module)
@@ -126,6 +132,12 @@ function Grid.modulePrototype:DisableModules()
 	end
 end
 
+function Grid.modulePrototype:ResetModules()
+	for name,module in self:IterateModules() do
+		module:Reset()
+	end
+end
+
 --}}}
 
 function Grid:OnInitialize()
@@ -160,6 +172,12 @@ end
 function Grid:OnDisable()
 	self:Debug("OnDisable")
 	self:DisableModules()
+end
+
+function Grid:OnProfileEnable()
+	self.debugging = self.db.profile.debug
+	self:Debug("Loaded profile", "(", self:GetProfile(),")")
+	self:ResetModules()
 end
 
 -- only for WoW 1.x
@@ -223,6 +241,13 @@ end
 function Grid:DisableModules()
 	for name,module in self:IterateModules() do
 		self:ToggleModuleActive(module, false)
+	end
+end
+
+function Grid:ResetModules()
+	for name,module in self:IterateModules() do
+		module.db = self:AcquireDBNamespace(name)
+		module:Reset()
 	end
 end
 

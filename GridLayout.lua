@@ -353,10 +353,22 @@ function GridLayout:OnEnable()
 	self:RegisterEvent("Grid_UnitLeft", "DelayedUpdateSize")
 	self:RegisterEvent("Grid_UnitChanged", "DelayedUpdateSize")
 	self:RegisterEvent("Grid_UpdateSort")
+
+	self.super.OnEnable(self)
 end
 
 function GridLayout:OnDisable()
 	self.frame:Hide()
+	self.super.OnDisable(self)
+end
+
+function GridLayout:Reset()
+	self.super.Reset(self)
+
+	self:LoadLayout(self.db.profile.layout)
+	-- position and scale frame
+	self:RestorePosition()
+	self:Scale()
 end
 
 function GridLayout:StartMoveFrame()

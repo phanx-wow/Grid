@@ -32,7 +32,7 @@ end
 
 function GridStatusAggro:Banzai_UnitGainedAggro(unitid)
 	local settings = self.db.profile.alert_aggro
-	GridStatus:SendStatusGained(UnitName(unitid), "alert_aggro",
+	self.core:SendStatusGained(UnitName(unitid), "alert_aggro",
 				    settings.priority,
 				    (settings.range and 40),
 				    settings.color,
@@ -44,6 +44,5 @@ function GridStatusAggro:Banzai_UnitGainedAggro(unitid)
 end
 
 function GridStatusAggro:Banzai_UnitLostAggro(unitid)
-	GridStatus:SendStatusLost(UnitName(unitid), "alert_aggro")
+	self.core:SendStatusLost(UnitName(unitid), "alert_aggro")
 end	
-

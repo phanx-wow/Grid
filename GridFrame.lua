@@ -479,6 +479,12 @@ function GridFrame:OnDisable()
 	-- should probably disable and hide all of our frames here
 end
 
+function GridFrame:Reset()
+	self.super.Reset(self)
+	self:UpdateOptionsMenu()
+	self:UpdateAllFrames()
+end
+
 function GridFrame:RegisterFrame(frame)
 	self:Debug("RegisterFrame", frame:GetName())
 	
@@ -647,13 +653,13 @@ function GridFrame:UpdateOptionsMenu()
 					type = "toggle",
 					name = descr,
 					desc = "Toggle " .. descr,
-				get = function ()
-					      return GridFrame.db.profile.statusmap[indicatorType][statusKey]
-				      end,
-				set = function (v)
-					      GridFrame.db.profile.statusmap[indicatorType][statusKey] = v
-					      GridFrame:UpdateAllFrames()
-				      end,
+					get = function ()
+						      return GridFrame.db.profile.statusmap[indicatorType][statusKey]
+					      end,
+					set = function (v)
+						      GridFrame.db.profile.statusmap[indicatorType][statusKey] = v
+						      GridFrame:UpdateAllFrames()
+					      end,
 				}
 
 				-- self:Debug("Added", indicator.type, status)

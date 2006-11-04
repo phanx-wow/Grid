@@ -66,6 +66,11 @@ function GridStatusName:OnEnable()
 	self:UpdateAllUnits()
 end
 
+function GridStatusName:Reset()
+	self.super.Reset(self)
+	self:UpdateAllUnits()
+end
+
 function GridStatusName:UpdateUnit(name, unitid)
 	local settings = self.db.profile.unit_name
 	
@@ -83,7 +88,7 @@ function GridStatusName:UpdateUnit(name, unitid)
 		color.a = 1
 	end
 
-	GridStatus:SendStatusGained(name, "unit_name",
+	self.core:SendStatusGained(name, "unit_name",
 				    settings.priority,
 				    nil,
 				    color,
@@ -93,7 +98,7 @@ end
 function GridStatusName:UpdateAllUnits()
 	local name, status, statusTbl
 
-	for name, status, statusTbl in GridStatus:CachedStatusIterator("unit_name") do
+	for name, status, statusTbl in self.core:CachedStatusIterator("unit_name") do
 		self:UpdateUnit(name)
 	end
 end

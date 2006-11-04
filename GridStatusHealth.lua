@@ -72,6 +72,7 @@ local healthOptions = {
 		      end,
 		set = function (v)
 			      GridStatusHealth.db.profile.unit_health.deadAsFullHealth = v
+			      GridStatusHealth:UpdateAllUnits()
 		      end,
 	},
 	["useClassColors"] = {
@@ -83,6 +84,7 @@ local healthOptions = {
 		      end,
 		set = function (v)
 			      GridStatusHealth.db.profile.unit_health.useClassColors = v
+			      GridStatusHealth:UpdateAllUnits()
 		      end,
 	},
 }
@@ -100,6 +102,7 @@ local healthDeficitOptions = {
 		      end,
 		set = function (v)
 			      GridStatusHealth.db.profile.unit_healthDeficit.threshold = v
+			      GridStatusHealth:UpdateAllUnits()
 		      end,
 	},
 	["useClassColors"] = {
@@ -111,6 +114,7 @@ local healthDeficitOptions = {
 		      end,
 		set = function (v)
 			      GridStatusHealth.db.profile.unit_healthDeficit.useClassColors = v
+			      GridStatusHealth:UpdateAllUnits()
 		      end,
 	},
 }
@@ -128,6 +132,7 @@ local low_healthOptions = {
 		      end,
 		set = function (v)
 			      GridStatusHealth.db.profile.alert_lowHealth.threshold = v
+			      GridStatusHealth:UpdateAllUnits()
 		      end,
 	},
 }
@@ -145,6 +150,21 @@ end
 function GridStatusHealth:OnEnable()
 	self:RegisterEvent("Grid_UnitJoined")
 	self:RegisterBucketEvent("UNIT_HEALTH", 0.2)
+end
+
+function GridStatusHealth:Reset()
+	self.super.Reset(self)
+	self:UpdateAllUnits()
+end
+
+function GridStatusHealth:UpdateAllUnits()
+	local name, status, statusTbl
+
+	self.deathCache = Compost:Erase(self.deathCache)
+
+	for name, status, statusTbl in self.core:CachedStatusIterator("unit_health") do
+		self:Grid_UnitJoined(name)
+	end
 end
 
 function GridStatusHealth:UNIT_HEALTH(units)
@@ -204,7 +224,7 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 	end
 
 	if (cur / max * 100) <= deficitSettings.threshold then
-		GridStatus:SendStatusGained(name, "unit_healthDeficit",
+		self.core:SendStatusGained(name, "unit_healthDeficit",
 					    deficitSettings.priority,
 					    (deficitSettings.range and 40),
 					    (deficitSettings.useClassColors and self:UnitClassColor(name) or
@@ -213,10 +233,10 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 					    cur, max,
 					    nil)
 	else
-		GridStatus:SendStatusLost(name, "unit_healthDeficit")
+		self.core:SendStatusLost(name, "unit_healthDeficit")
 	end
 
-	GridStatus:SendStatusGained(name, "unit_health",
+	self.core:SendStatusGained(name, "unit_health",
 				    priority,
 				    (not ignoreRange and settings.range and 40),
 				    (settings.useClassColors and self:UnitClassColor(name) or
@@ -255,7 +275,7 @@ function GridStatusHealth:StatusLowHealth(unitid, gained)
 	if not settings.enable then return end
 
 	if gained then
-		GridStatus:SendStatusGained(name, "alert_lowHealth",
+		self.core:SendStatusGained(name, "alert_lowHealth",
 					    settings.priority,
 					    (settings.range and 40),
 					    settings.color,
@@ -264,7 +284,7 @@ function GridStatusHealth:StatusLowHealth(unitid, gained)
 					    nil,
 					    nil)
 	else
-		GridStatus:SendStatusLost(name, "alert_lowHealth")
+		self.core:SendStatusLost(name, "alert_lowHealth")
 	end
 end
 
@@ -280,7 +300,7 @@ function GridStatusHealth:StatusDeath(unitid, gained)
 	if gained then
 		-- trigger death event for other modules as wow isnt firing a death event
 		self:TriggerEvent("Grid_UnitDeath", name)
-		GridStatus:SendStatusGained(name, "alert_death",
+		self.core:SendStatusGained(name, "alert_death",
 					    settings.priority,
 					    (settings.range and 40),
 					    settings.color,
@@ -289,7 +309,7 @@ function GridStatusHealth:StatusDeath(unitid, gained)
 					    100,
 					    nil)
 	else
-		GridStatus:SendStatusLost(name, "alert_death")
+		self.core:SendStatusLost(name, "alert_death")
 	end
 end
 
@@ -302,7 +322,7 @@ function GridStatusHealth:StatusOffline(unitid, gained)
 	if gained then
 		-- trigger offline event for other modules
 		self:TriggerEvent("Grid_UnitOffline", name)
-		GridStatus:SendStatusGained(name, "alert_offline",
+		self.core:SendStatusGained(name, "alert_offline",
 					    settings.priority,
 					    (settings.range and 40),
 					    settings.color,
@@ -311,6 +331,6 @@ function GridStatusHealth:StatusOffline(unitid, gained)
 					    nil,
 					    nil)
 	else
-		GridStatus:SendStatusLost(name, "alert_offline")
+		self.core:SendStatusLost(name, "alert_offline")
 	end
 end

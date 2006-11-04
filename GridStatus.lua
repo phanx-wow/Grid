@@ -15,11 +15,15 @@ GridStatus:SetModuleMixins("AceDebug-2.0", "AceEvent-2.0")
 --{{{ Module prototype
 
 GridStatus.modulePrototype.core = GridStatus
-GridStatus.modulePrototype.debugFrame = GridStatus.debugFrame
 
 function GridStatus.modulePrototype:OnInitialize()
-	self.debugging = Grid.debugging
-	self.debugFrame = Grid.debugFrame
+	self.debugging = self.db.profile.debug
+	self.debugFrame = GridStatus.debugFrame
+end
+
+function GridStatus.modulePrototype:Reset()
+	self.debugging = self.db.profile.debug
+	self:Debug("Reset")
 end
 
 function GridStatus.modulePrototype:InitializeOptions()
@@ -127,6 +131,10 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 			end
 		end
 	end
+end
+
+function GridStatus.modulePrototype:UnregisterStatus(status)
+	GridStatus:UnregisterStatus(status, (self.name or true))
 end
 
 --}}}

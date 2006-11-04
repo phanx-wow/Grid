@@ -68,6 +68,15 @@ function GridStatusMana:Grid_UnitJoined(name)
 end
 
 
+function GridStatusMana:UpdateAllUnits()
+	local name, status, statusTbl
+
+	for name, status, statusTbl in GridStatus:CachedStatusIterator("alert_lowMana") do
+		self:Grid_UnitJoined(name)
+	end
+end
+
+
 function GridStatusMana:UpdateUnit(unitid)
 	local name = UnitName(unitid)
 	if not name then return end

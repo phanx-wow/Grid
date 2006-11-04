@@ -133,7 +133,7 @@ if not Grid.isTBC then
 
 	function GridStatusHeals:UnitIsHealed(name)
 		local settings = self.db.profile.alert_heals
-		GridStatus:SendStatusGained(name, "alert_heals",
+		self.core:SendStatusGained(name, "alert_heals",
 				  settings.priority,
 				  (settings.range and 40),
 				  settings.color,
@@ -145,7 +145,7 @@ if not Grid.isTBC then
 
 
 	function GridStatusHeals:HealCompleted(name)
-		GridStatus:SendStatusLost(name, "alert_heals")
+		self.core:SendStatusLost(name, "alert_heals")
 	end
 
 
@@ -333,7 +333,7 @@ elseif Grid.isTBC then
 
 	function GridStatusHeals:UnitIsHealed(name)
 		local settings = self.db.profile.alert_heals
-		GridStatus:SendStatusGained(name, "alert_heals",
+		self.core:SendStatusGained(name, "alert_heals",
 				  settings.priority,
 				  (settings.range and 40),
 				  settings.color,
@@ -345,7 +345,7 @@ elseif Grid.isTBC then
 
 
 	function GridStatusHeals:HealCompleted(name)
-		GridStatus:SendStatusLost(name, "alert_heals")
+		self.core:SendStatusLost(name, "alert_heals")
 	end
 
 
