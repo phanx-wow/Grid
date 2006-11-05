@@ -88,13 +88,9 @@ end
 
 function Grid.modulePrototype:RegisterModule(name, module)
 	self:Debug("Registering "..name)
-	if module.db then
-		module:RegisterDefaults("profile", module.defaultDB or {})
-	else
-		self.core:RegisterDefaults(name, "profile", module.defaultDB or {})
-	end
 
 	if not module.db then
+		self.core:RegisterDefaults(name, "profile", module.defaultDB or {})
 		module.db = self.core:AcquireDBNamespace(name)
 	end
 
@@ -211,13 +207,9 @@ end
 
 function Grid:RegisterModule(name, module)
 	self:Debug("Registering "..name)
-	if module.db then
-		module:RegisterDefaults("profile", module.defaultDB or {})
-	else
-		self:RegisterDefaults(name, "profile", module.defaultDB or {})
-	end
 
 	if not module.db then
+		self:RegisterDefaults(name, "profile", module.defaultDB or {})
 		module.db = self:AcquireDBNamespace(name)
 	end
 
