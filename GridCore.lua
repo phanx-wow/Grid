@@ -63,6 +63,7 @@ function Grid.modulePrototype:OnInitialize()
 	self:Debug("OnInitialize")
 	self.core:AddModuleDebugMenu(self)
 	self:RegisterModules()
+	self:RegisterEvent("ADDON_LOADED")
 end
 
 function Grid.modulePrototype:OnEnable()
@@ -138,6 +139,18 @@ function Grid.modulePrototype:ResetModules()
 	end
 end
 
+function Grid.modulePrototype:ADDON_LOADED(addon)
+	local name = GetAddOnMetadata(addon, "X-".. self.name .. "Module")
+	if not name then return end
+
+	local module = getglobal(name)
+	if not module or not module.name then return end
+
+	module.external = true
+
+	self:RegisterModule(module.name, module)
+end
+
 --}}}
 
 function Grid:OnInitialize()
@@ -159,6 +172,7 @@ function Grid:OnInitialize()
 		self.OnMenuRequest.args.hide.desc = "Hide minimap icon"
 	end
 	
+	self:RegisterEvent("ADDON_LOADED")
 end
 
 function Grid:OnEnable()
@@ -299,6 +313,18 @@ function Grid:PLAYER_REGEN_ENABLED()
 		Grid.rosterNeedsUpdate = false
 		self:TriggerEvent("Grid_UpdateSort")
 	end
+end
+
+function Grid:ADDON_LOADED(addon)
+	local name = GetAddOnMetadata(addon, "X-".. self.name .. "Module")
+	if not name then return end
+
+	local module = getglobal(name)
+	if not module or not module.name then return end
+
+	module.external = true
+
+	self:RegisterModule(module.name, module)
 end
 
 --}}}
