@@ -194,7 +194,7 @@ end
 function Grid:EnableClickCasting()
 	if Clique and Clique.OnClick and not GridCustomClick then
 		GridCustomClick = function (button, unit)
-					  Clique:OnClick(button, unit)
+					  return Clique:OnClick(button, unit)
 				  end
 	end
 end
