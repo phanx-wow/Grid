@@ -63,6 +63,7 @@ end
 function GridStatusName:OnEnable()
 	self:RegisterEvent("Grid_UnitChanged", "UpdateUnit")
 	self:RegisterEvent("Grid_UnitJoined", "UpdateUnit")
+	self:RegisterEvent("Grid_UnitLeft", "UpdateUnit")
 	self:UpdateAllUnits()
 end
 
@@ -73,6 +74,12 @@ end
 
 function GridStatusName:UpdateUnit(name, unitid)
 	local settings = self.db.profile.unit_name
+	local u = RL:GetUnitObjectFromName(name)
+
+	if not u then
+		self.core:SendStatusLost(name, "unit_name")
+		return
+	end
 	
 	-- set text
 	local text = ""
@@ -83,7 +90,6 @@ function GridStatusName:UpdateUnit(name, unitid)
 	-- set color
 	local color = settings.color
 	if settings.class then
-		local u = RL:GetUnitObjectFromName(name)
 		color = RAID_CLASS_COLORS[u.class]
 		color.a = 1
 	end
