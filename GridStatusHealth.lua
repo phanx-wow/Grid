@@ -28,7 +28,6 @@ GridStatusHealth.defaultDB = {
 		threshold = 80,
 		range = true,
 		useClassColors = true,
-		threshold = 20,
 	},
 	alert_lowHealth = {
 		text = "Low HP",
