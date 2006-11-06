@@ -292,13 +292,13 @@ GridLayout.options = {
 		["display"] = {
 			type = "text",
 			name = L["Show Frame"],
-			desc = L["Sets when the Grid is visible: Choose 'always' or 'grouped'."],
+			desc = L["Sets when the Grid is visible: Choose 'always', 'grouped', or 'raid'."],
 			get = function() return GridLayout.db.profile.FrameDisplay end,
 			set = function(v)
 				GridLayout.db.profile.FrameDisplay = v
 				GridLayout:CheckVisibility()
 			end,
-			validate = {L["always"], L["grouped"]},
+			validate = {L["always"], L["grouped"], L["raid"]},
 		},
 		["party"] = {
 			type = "toggle",
@@ -571,10 +571,15 @@ function GridLayout:UpdateColor()
 end
 
 function GridLayout:CheckVisibility()
-	if self.db.profile.FrameDisplay == L["always"] or GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0 then
+	local frameDisplay = self.db.profile.FrameDisplay
+
+	if frameDisplay == L["always"] then
+		self.frame:Show()
+	elseif frameDisplay == L["grouped"] and (GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0) then
+		self.frame:Show()
+	elseif frameDisplay == L["raid"] and GetNumRaidMembers() > 0 then
 		self.frame:Show()
 	else
-		-- we should probably shutdown modules here?
 		self.frame:Hide()
 	end
 end
