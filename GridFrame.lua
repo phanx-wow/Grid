@@ -399,6 +399,7 @@ GridFrame.defaultDB = {
 		["border"] = {
 			alert_lowHealth = true,
 			alert_lowMana = true,
+			player_target = true,
 		},
 		["corner1"] = {
 			alert_heals = true,

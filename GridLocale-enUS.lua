@@ -87,6 +87,10 @@ local strings_enUS = {
 	["Buff: "] = true,
 
 	--}}}
+	--{{{ GridStatusTarget
+	["Your Target"] = true,
+
+	--}}}
 	
 	--{{{ GridLayout
 	["Layout"] = true,

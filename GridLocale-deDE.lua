@@ -87,6 +87,10 @@ local strings_deDE = {
 	["Buff: "]                        = "St\195\164rkungszauber: ",
 
 	--}}}
+	--{{{ GridStatusTarget
+	["Your Target"] = true,
+
+	--}}}
 	
 	--{{{ GridLayout
 	["Layout"] 						  = "Anordnung",
