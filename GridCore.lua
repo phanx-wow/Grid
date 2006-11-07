@@ -276,6 +276,7 @@ function Grid:RosterLib_RosterChanged(tbl)
 				self:Debug("UnitJoined "..(u.name))
 				self:TriggerEvent("Grid_UnitJoined", u.name, u.unitid)
 			else
+				self:Debug("UnitChanged "..(u.name))
 				self:TriggerEvent("Grid_UnitChanged", u.name, u.unitid)
 			end
 		end

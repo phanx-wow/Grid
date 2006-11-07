@@ -370,6 +370,7 @@ function GridFrameClass.prototype:ClearIndicator(indicator)
 		self.frame:SetAlpha(1)
 	elseif indicator == "bar" then
 		self:SetBar(100)
+		self:SetBarColor(0, 0, 0, 1)
 	elseif indicator == "icon" then
 		self.frame.Icon:SetTexture(1,1,1,0)
 	end
@@ -391,6 +392,7 @@ GridFrame.defaultDB = {
 	statusmap = {
 		["text"] = {
 			alert_death = true,
+			alert_offline = true,
 			unit_name = true,
 			unit_healthDeficit = true,
 		},

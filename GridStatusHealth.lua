@@ -47,8 +47,8 @@ GridStatusHealth.defaultDB = {
 	alert_offline = {
 		text = "Offline",
 		enable = true,
-		color = { r = 0.5, g = 0.5, g = 0.5, a = 0.6 },
-		priority = 0,
+		color = { r = 1, g = 1, g = 1, a = 0.6 },
+		priority = 60,
 		range = false,
 	},
 }
@@ -148,6 +148,7 @@ end
 
 function GridStatusHealth:OnEnable()
 	self:RegisterEvent("Grid_UnitJoined")
+	self:RegisterEvent("Grid_UnitChanged")
 	self:RegisterBucketEvent("UNIT_HEALTH", 0.2)
 end
 
@@ -175,13 +176,16 @@ function GridStatusHealth:UNIT_HEALTH(units)
 	end
 end
 
-function GridStatusHealth:Grid_UnitJoined(name)
-	local unitid = RL:GetUnitIDFromName(name)
+function GridStatusHealth:Grid_UnitJoined(name, unitid)
 	if unitid then
 		self:UpdateUnit(unitid, true)
 		self:UpdateUnit(unitid)
 	end
 
+end
+
+function GridStatusHealth:Grid_UnitChanged(name, unitid)
+	self:UpdateUnit(unitid)
 end
 
 function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
@@ -193,7 +197,7 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 	local priority = settings.priority
 	
 	if not name then return end
-	
+
 	if UnitIsDeadOrGhost(unitid) and not self.deathCache[unitid] and not Aura:UnitHasBuff(unitid, "Feign Death") then
 		self:StatusDeath(unitid, true)
 		self.deathCache[unitid] = true
@@ -237,7 +241,7 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 
 	self.core:SendStatusGained(name, "unit_health",
 				    priority,
-				    (not ignoreRange and settings.range and 40),
+				    (ignoreRange ~= true and settings.range and 40),
 				    (settings.useClassColors and self:UnitClassColor(name) or
 				     settings.color),
 					nil,
