@@ -58,6 +58,10 @@ Grid.OnMenuRequest          = Grid.options
 Grid.modulePrototype.core = Grid
 
 function Grid.modulePrototype:OnInitialize()
+	if not self.db then
+		self.core:RegisterDefaults(self.name, "profile", self.defaultDB or {})
+		self.db = self.core:AcquireDBNamespace(self.name)
+	end
 	self.debugFrame = Grid.debugFrame
 	self.debugging = self.db.profile.debug
 	self:Debug("OnInitialize")

@@ -17,6 +17,10 @@ GridStatus:SetModuleMixins("AceDebug-2.0", "AceEvent-2.0")
 GridStatus.modulePrototype.core = GridStatus
 
 function GridStatus.modulePrototype:OnInitialize()
+	if not self.db then
+		self.core.core:RegisterDefaults(self.name, "profile", self.defaultDB or {})
+		self.db = self.core.core:AcquireDBNamespace(self.name)
+	end
 	self.debugging = self.db.profile.debug
 	self.debugFrame = GridStatus.debugFrame
 end
