@@ -632,13 +632,17 @@ function InsecureRaidGroupHeader_Update(self)
 		local strictFiltering = self:GetAttribute("strictFiltering"); -- non-strict by default
 		for i = 1, GetNumRaidMembers(), 1 do
 			local name, _, subgroup, _, _, className = GetRaidRosterInfo(i);
-			if ( ((not strictFiltering) and 
-			      (tokenTable[subgroup] or tokenTable[className]) -- non-strict filtering
-			     ) or 
-			      (tokenTable[subgroup] and tokenTable[className]) -- strict filtering
-			) then
-				tinsert(sortingTable, name);
-				sortingTable[name] = "raid"..i;
+
+			-- apparently GetRaidRosterInfo sometimes returns nil for name
+			if name and subgroup and className then
+				if ( ((not strictFiltering) and 
+				      (tokenTable[subgroup] or tokenTable[className]) -- non-strict filtering
+			      ) or 
+				    (tokenTable[subgroup] and tokenTable[className]) -- strict filtering
+			    ) then
+					tinsert(sortingTable, name);
+					sortingTable[name] = "raid"..i;
+				end
 			end
 		end
 	
