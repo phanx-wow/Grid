@@ -88,9 +88,17 @@ local strings_deDE = {
 
 	--}}}
 	--{{{ GridStatusTarget
-	--["Your Target"] = true,
+	["Your Target"] = "Dein Ziel",
 
 	--}}}
+	
+	--{{{ GridStatusRange
+		["Range check frequency"] = "H\195\164ufigkeit der Reichweitensmessung",
+		["Seconds between range checks"] = "Sekunden zwischen der Reichweitensmessung",
+		["Out of Range"] = "Au\195\159er Reichweite",
+
+	--}}}
+
 	
 	--{{{ GridLayout
 	["Layout"] 						  = "Anordnung",
@@ -118,8 +126,15 @@ local strings_deDE = {
 	["Show party/self as an extra group."] = "Zeigen Gruppe/sich selbst als extra Gruppe an.",
 	["Raid Layout"] 			= "Schlachtzug-Anordnung",
 	["Select which raid layout to use."] = "W\195\164hle welche Schlachtzug-Anordnung benutzt wird",
+	["Frame Alpha"] = "Alphawert des Rahmens",
+	["Show Tooltip"] = "Zeige Tooltip",
+	["Show unit tooltip on enter? Choose 'always', 'never', or 'ooc'."] = "Soll der Tooltip zu der Einheit gezeigt werden? W\195\164hle 'immer', 'niemals' oder 'au\195\159erhalb des Kampfes'.",
+	["always"] = "immer",
+	["never"] = "niemals",
+	["ooc"] = "au\195\159erhalb des Kampfes",
 	--}}}
 	
+
 	--{{{ GridLayoutLayouts
 	["None"] = "Keine",
 	["By Group 40"] 			= "40er Gruppe",
