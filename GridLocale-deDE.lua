@@ -88,7 +88,7 @@ local strings_deDE = {
 
 	--}}}
 	--{{{ GridStatusTarget
-	["Your Target"] = true,
+	--["Your Target"] = true,
 
 	--}}}
 	
