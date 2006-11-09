@@ -113,7 +113,10 @@ function GridStatusMana:StatusLowMana(unitid, gained)
 				  settings.priority,
 				  (settings.range and 40),
 				  settings.color,
-				  settings.text)
+				  settings.text,
+				  nil,
+				  nil,
+				  settings.icon)
 
 	else
 		GridStatus:SendStatusLost(name, "alert_lowMana")

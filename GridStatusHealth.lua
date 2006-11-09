@@ -41,6 +41,7 @@ GridStatusHealth.defaultDB = {
 		text = "DEAD",
 		enable = true,
 		color = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
+		icon = "Interface\\TargetingFrame\\UI-TargetingFrame-Skull",
 		priority = 50,
 		range = false,
 	},
@@ -234,7 +235,7 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 					     deficitSettings.color),
 					    healthText,
 					    cur, max,
-					    nil)
+					    deficitSettings.icon)
 	else
 		self.core:SendStatusLost(name, "unit_healthDeficit")
 	end
@@ -246,7 +247,7 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 				     settings.color),
 					nil,
 					cur, max,
-					nil)
+					settings.icon)
 end
 
 function GridStatusHealth:FormatHealthText(cur, max)
@@ -285,7 +286,7 @@ function GridStatusHealth:StatusLowHealth(unitid, gained)
 					    settings.text,
 					    nil,
 					    nil,
-					    nil)
+					    settings.icon)
 	else
 		self.core:SendStatusLost(name, "alert_lowHealth")
 	end
@@ -310,7 +311,7 @@ function GridStatusHealth:StatusDeath(unitid, gained)
 					    settings.text,
 					    (self.db.profile.unit_health.deadAsFullHealth and 100 or 0),
 					    100,
-					    nil)
+					    settings.icon)
 	else
 		self.core:SendStatusLost(name, "alert_death")
 	end
@@ -332,7 +333,7 @@ function GridStatusHealth:StatusOffline(unitid, gained)
 					    settings.text,
 					    nil,
 					    nil,
-					    nil)
+					    settings.icon)
 	else
 		self.core:SendStatusLost(name, "alert_offline")
 	end

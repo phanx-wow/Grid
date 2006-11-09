@@ -204,7 +204,8 @@ end
 function GridFrameClass.prototype:OnEnter()
 	if GridFrame.db.profile.showTooltip == L["always"] or
 		(GridFrame.db.profile.showTooltip == L["ooc"] and
-			(not Grid.inCombat or UnitIsDeadOrGhost(self.frame.unit))) then
+			(not Grid.inCombat or
+				(self.unit and UnitIsDeadOrGhost(self.unit)))) then
 
 		self.frame.unit = self.unit
 		UnitFrame_OnEnter()
@@ -366,6 +367,9 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 		if texture then
 			self.frame.Icon:SetTexture(texture)
 		end
+		if type(color) == "table" then
+			self.frame.Icon:SetAlpha(color.a)
+		end
 	end
 end
 
@@ -396,6 +400,7 @@ function GridFrameClass.prototype:ClearIndicator(indicator)
 		self:SetBarColor(0, 0, 0, 1)
 	elseif indicator == "icon" then
 		self.frame.Icon:SetTexture(1,1,1,0)
+		self.frame.Icon:SetAlpha(1)
 	end
 end
 

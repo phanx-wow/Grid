@@ -58,6 +58,6 @@ function GridStatusTarget:PLAYER_TARGET_CHANGED()
 				    settings.text,
 				    nil,
 				    nil,
-				    nil)
+				    settings.icon)
 	end
 end

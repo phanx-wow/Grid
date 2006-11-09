@@ -39,7 +39,7 @@ function GridStatusAggro:Banzai_UnitGainedAggro(unitid)
 				    settings.text,
 				    nil,
 				    nil,
-				    nil)
+				    settings.icon)
 
 end
 

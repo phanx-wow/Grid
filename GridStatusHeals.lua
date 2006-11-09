@@ -137,7 +137,10 @@ if not Grid.isTBC then
 				  settings.priority,
 				  (settings.range and 40),
 				  settings.color,
-				  settings.text)
+				  settings.text,
+				  nil,
+				  nil,
+				  settings.icon)
 
 		-- this will overwrite any previously scheduled event for the same name
 		self:ScheduleEvent("HealCompleted_"..name, self.HealCompleted, 2, self, name)
@@ -337,7 +340,10 @@ elseif Grid.isTBC then
 				  settings.priority,
 				  (settings.range and 40),
 				  settings.color,
-				  settings.text)
+				  settings.text,
+				  nil,
+				  nil,
+				  settings.icon)
 
 		-- this will overwrite any previously scheduled event for the same name
 		self:ScheduleEvent("HealCompleted_"..name, self.HealCompleted, 2, self, name)

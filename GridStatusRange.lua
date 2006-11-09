@@ -87,7 +87,7 @@ function GridStatusRange:RangeCheck()
                     settings.text,
                     nil,
                     nil,
-                    nil)
+                    settings.icon)
         end
     end
 end
