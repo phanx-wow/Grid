@@ -67,3 +67,4 @@ GridStatusMana.lua
 GridStatusHeals.lua
 GridStatusAuras.lua
 GridStatusTarget.lua
+GridStatusRange.lua

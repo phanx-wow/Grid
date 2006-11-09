@@ -19,6 +19,7 @@ local indicators = {
 	[6] = { type = "corner3", name = L["Top Right Corner"] },
 	[7] = { type = "corner4", name = L["Top Left Corner"] },
 	[8] = { type = "icon", name = L["Center Icon"] },
+	[9] = { type = "frameAlpha", name = L["Frame Alpha"] },
 }
 
 --}}}
@@ -202,7 +203,8 @@ end
 
 function GridFrameClass.prototype:OnEnter()
 	if GridFrame.db.profile.showTooltip == L["always"] or
-		(GridFrame.db.profile.showTooltip == L["ooc"] and not Grid.inCombat) then
+		(GridFrame.db.profile.showTooltip == L["ooc"] and
+			(not Grid.inCombat or UnitIsDeadOrGhost(self.frame.unit))) then
 
 		self.frame.unit = self.unit
 		UnitFrame_OnEnter()
@@ -440,6 +442,7 @@ GridFrame.defaultDB = {
 		["frameAlpha"] = {
 			alert_death = true,
 			alert_offline = true,
+			alert_range_oor = true,
 		},
 		["bar"] = {
 			alert_death = true,

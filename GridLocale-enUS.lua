@@ -91,6 +91,12 @@ local strings_enUS = {
 	["Your Target"] = true,
 
 	--}}}
+	--{{{ GridStatusRange
+	["Range check frequency"] = true,
+	["Seconds between range checks"] = true,
+	["Out of Range"] = true,
+
+	--}}}
 	
 	--{{{ GridLayout
 	["Layout"] = true,
@@ -141,6 +147,7 @@ local strings_enUS = {
 	["Top Right Corner"] = true,
 	["Top Left Corner"] = true,
 	["Center Icon"] = true,
+	["Frame Alpha"] = true,
 	["Frame"] = true,
 	["Options for GridFrame."] = true,
 	["Invert Bar Color"] = true,
