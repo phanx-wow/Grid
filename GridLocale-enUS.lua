@@ -145,6 +145,11 @@ local strings_enUS = {
 	["Options for GridFrame."] = true,
 	["Invert Bar Color"] = true,
 	["Swap foreground/background colors on bars."] = true,
+	["Show Tooltip"] = true,
+	["Show unit tooltip on enter? Choose 'always', 'never', or 'ooc'."] = true,
+	["always"] = true,
+	["never"] = true,
+	["ooc"] = true,
 	--}}}
 	
 }

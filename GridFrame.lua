@@ -139,6 +139,10 @@ function GridFrameClass.prototype:CreateFrames()
 		f:SetScript("OnClick", function () GridFrame_OnClick(f, arg1) end)
 		f:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
 	end
+
+	-- tooltip support
+	f:SetScript("OnEnter", function() self:OnEnter() end)
+	f:SetScript("OnLeave", function() self:OnLeave() end)
 	
 	-- create border
 	f:SetBackdrop({
@@ -194,6 +198,23 @@ function GridFrameClass.prototype:CreateFrames()
 	-- set up click casting
 	ClickCastFrames = ClickCastFrames or {}
 	ClickCastFrames[self.frame] = true
+end
+
+function GridFrameClass.prototype:OnEnter()
+	if GridFrame.db.profile.showTooltip == L["always"] or
+		(GridFrame.db.profile.showTooltip == L["ooc"] and not Grid.inCombat) then
+
+		self.frame.unit = self.unit
+		UnitFrame_OnEnter()
+	end
+end
+
+function GridFrameClass.prototype:OnLeave()
+	if GridFrame.db.profile.showTooltip == L["always"] or
+		(GridFrame.db.profile.showTooltip == L["ooc"] and not Grid.inCombat) then
+
+		UnitFrame_OnLeave()
+	end
 end
 
 function GridFrameClass.prototype:GetFrameName()
@@ -389,6 +410,7 @@ GridFrame.defaultDB = {
 	FrameSize = 26,
 	debug = false,
 	invertBarColor = false,
+	showTooltip = L["ooc"],
 	statusmap = {
 		["text"] = {
 			alert_death = true,
@@ -453,6 +475,18 @@ GridFrame.options = {
 				GridFrame.db.profile.invertBarColor = v
 				GridFrame:InvertBarColor()
 			end,
+		},
+		["tooltip"] = {
+			type = "text",
+			name = L["Show Tooltip"],
+			desc = L["Show unit tooltip on enter? Choose 'always', 'never', or 'ooc'."],
+			get = function ()
+				return GridFrame.db.profile.showTooltip
+			end,
+			set = function (v)
+				GridFrame.db.profile.showTooltip = v
+			end,
+			validate = { L["always"], L["never"], L["ooc"] }
 		},
 	},
 }
