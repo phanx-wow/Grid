@@ -367,6 +367,7 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 	elseif indicator == "icon" then
 		if texture then
 			self.frame.Icon:SetTexture(texture)
+			self.frame.Icon:Show()
 		end
 		if type(color) == "table" then
 			self.frame.Icon:SetAlpha(color.a)
@@ -402,6 +403,7 @@ function GridFrameClass.prototype:ClearIndicator(indicator)
 	elseif indicator == "icon" then
 		self.frame.Icon:SetTexture(1,1,1,0)
 		self.frame.Icon:SetAlpha(1)
+		self.frame.Icon:Hide()
 	end
 end
 

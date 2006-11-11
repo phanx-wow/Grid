@@ -226,10 +226,19 @@ function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type
 	-- check if this is a specific debuff or a debuff type
 	local debuffNameStatus = statusForSpell(debuff, false)
 	local debuffTypeStatus = "debuff_" .. strlower(type)
-	self:Debug("gained",debuffNameStatus)
-	local settings = self.db.profile[debuffNameStatus] or self.db.profile[debuffTypeStatus]
-	local status   = (self.db.profile[debuffNameStatus] and debuffNameStatus) or debuffTypeStatus
+	local settings, status
+
+	if self.db.profile[debuffNameStatus] then
+		settings = self.db.profile[debuffNameStatus]
+		status = debuffNameStatus
+	else
+		settings = self.db.profile[debuffTypeStatus]
+		status = debuffTypeStatus
+	end
+
 	if not (settings and settings.enable) then return end
+
+	self:Debug(unit, "gained", status, debuffNameStatus)
 
 	self.core:SendStatusGained(UnitName(unit),
 			status,
@@ -246,16 +255,17 @@ end
 function GridStatusAuras:SpecialEvents_UnitDebuffLost(unit, debuff, apps, type, tex)
 	local debuffNameStatus = statusForSpell(debuff, false)
 	local debuffTypeStatus = "debuff_" .. strlower(type)
+
 	if self.db.profile[debuffNameStatus] then
 		if not Aura:UnitHasDebuff(unit, debuff) then
-			self:Debug("lost", debuffNameStatus)
+			self:Debug(unit, "lost", debuffNameStatus)
 			self.core:SendStatusLost(UnitName(unit), debuffNameStatus)
 		end
-	else
-		if not Aura:UnitHasDebuffType(unit, type) then
-			self:Debug("lost", debuffTypeStatus)
-			self.core:SendStatusLost(UnitName(unit), debuffTypeStatus)
-		end
+	end
+
+	if not Aura:UnitHasDebuffType(unit, type) then
+		self:Debug(unit, "lost", debuffTypeStatus, debuffNameStatus)
+		self.core:SendStatusLost(UnitName(unit), debuffTypeStatus)
 	end
 end
 
