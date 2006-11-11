@@ -7,6 +7,7 @@
 local prox
 local roster = AceLibrary("RosterLib-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local GridRange = GridRange
 --}}}
 
 GridStatusRange = GridStatus:NewModule("GridStatusRange", "AceEvent-2.0")
@@ -75,9 +76,9 @@ function GridStatusRange:RangeCheck()
     local now = GetTime()
 
     for unit in roster:IterateRoster(false) do
-        local _,time = prox:GetUnitRange(unit.unitid)
+	local range = GridRange:GetUnitRange(unit.unitid)
 
-        if time and (now - time) < 6 then
+        if range and range <= 40 then
             self.core:SendStatusLost(UnitName(unit.unitid), "alert_range_oor")
         else
             self.core:SendStatusGained(UnitName(unit.unitid), "alert_range_oor",

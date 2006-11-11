@@ -55,6 +55,7 @@ TBC\InsecureTemplates.xml
 
 # Grid
 GridCore.lua
+GridRange.lua
 GridLayout.lua
 GridLayoutLayouts.lua
 GridFrame.xml

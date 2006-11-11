@@ -6,6 +6,7 @@ local Compost = AceLibrary("Compost-2.0")
 local AceOO = AceLibrary("AceOO-2.0")
 local RL = AceLibrary("RosterLib-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local GridRange = GridRange
 
 --}}}
 
@@ -504,7 +505,6 @@ GridFrame.options = {
 function GridFrame:OnInitialize()
 	self.super.OnInitialize(self)
 	self.debugging = self.db.profile.debug
-	self.proximity = ProximityLib:GetInstance("1")
 
 	self.frames = Compost:Acquire()
 	self.registeredFrames = Compost:Acquire()
@@ -614,20 +614,9 @@ end
 
 function GridFrame:UnitInRange(id, yrds)
 	if not id or not UnitExists(id) then return false end
-	if yrds > 40 then 
-		return UnitIsVisible(id)  -- about 100yrds, depending on graphic settings
-	elseif yrds > 30 then
-		local _,time = self.proximity:GetUnitRange(id)  -- combat log range
-		if time and GetTime() - time < 6 then 
-			return true 
-		else 
-			return false
-		end
-	elseif yrds > 10 then
-		return CheckInteractDistance(id, 4)  -- about 28yrds
-	else
-		return CheckInteractDistance(id, 3) -- about 10yrds
-	end
+
+	local range = GridRange:GetUnitRange(id)
+	return range and yrds >= range
 end
 
 --{{{ Event handlers
