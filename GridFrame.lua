@@ -174,7 +174,7 @@ function GridFrameClass.prototype:CreateFrames()
 	f.Bar:SetFrameLevel(4)
 	f.Bar:SetWidth(GridFrame:GetFrameSize()-4)
 	f.Bar:SetHeight(GridFrame:GetFrameSize()-4)
-	
+
 	-- create center text
 	f.Text = f.Bar:CreateFontString(nil, "ARTWORK")
 	f.Text:SetFontObject(GameFontHighlightSmall)
@@ -367,10 +367,14 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 	elseif indicator == "icon" then
 		if texture then
 			self.frame.Icon:SetTexture(texture)
+			self.frame.Icon:SetAlpha(1)
 			self.frame.Icon:Show()
-		end
-		if type(color) == "table" then
-			self.frame.Icon:SetAlpha(color.a)
+
+			if type(color) == "table" then
+				self.frame.Icon:SetAlpha(color.a)
+			end
+		else
+			self.frame.Icon:Hide()
 		end
 	end
 end
@@ -402,7 +406,6 @@ function GridFrameClass.prototype:ClearIndicator(indicator)
 		self:SetBarColor(0, 0, 0, 1)
 	elseif indicator == "icon" then
 		self.frame.Icon:SetTexture(1,1,1,0)
-		self.frame.Icon:SetAlpha(1)
 		self.frame.Icon:Hide()
 	end
 end
