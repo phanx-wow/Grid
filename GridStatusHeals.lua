@@ -7,7 +7,11 @@ local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 --}}}
 
-GridStatusHeals = GridStatus:NewModule("GridStatusHeals", "AceComm-2.0", "AceHook-2.1")
+if not Grid.isTBC then
+	GridStatusHeals = GridStatus:NewModule("GridStatusHeals", "AceComm-2.0", "AceHook-2.1")
+else
+	GridStatusHeals = GridStatus:NewModule("GridStatusHeals")
+end
 GridStatusHeals.menuName = L["Heals"]
 
 --{{{ AceDB defaults
@@ -272,7 +276,6 @@ elseif Grid.isTBC then
 	function GridStatusHeals:OnInitialize()
 		self.super.OnInitialize(self)
 		self:RegisterStatus("alert_heals", L["Incoming heals"])
-		self:SetCommPrefix("Grid")
 	end
 
 
@@ -280,8 +283,7 @@ elseif Grid.isTBC then
 		-- register events
 		self:RegisterEvent("UNIT_SPELLCAST_START")
 		self:RegisterEvent("UNIT_SPELLCAST_SENT")
-		-- AceComm
-		self:RegisterComm(self.commPrefix, "GROUP", "OnCommReceive")
+		self:RegisterEvent("CHAT_MSG_ADDON")
 	end
 
 	function GridStatusHeals:UNIT_SPELLCAST_START(unit)
@@ -309,11 +311,18 @@ elseif Grid.isTBC then
 	end
 
 
-	function GridStatusHeals:OnCommReceive(prefix, sender, distribution, what, who)
+	function GridStatusHeals:CHAT_MSG_ADDON(prefix, message, distribution, sender)
+		if prefix ~= self.name then return end
+
 		self:Debug("OnCommReceive", prefix, sender, distribution)
-	    if sender == UnitName("player") then return end
+
+		if sender == UnitName("player") then return end
 		if not RL:GetUnitIDFromName(sender) then return end
+
 		gridusers[sender] = true
+
+		local _, _, what, who = string.find("^([^ ]+) ?(.*)$", message)
+
 		if what == "HN" then
 			self:UnitIsHealed(who)
 		elseif what == "HG" then
@@ -365,10 +374,11 @@ elseif Grid.isTBC then
 				if spell == BS["Prayer of Healing"] then
 					self:GroupHeal(playerName)
 	--				self:Debug("sending group heal")
-					self:SendCommMessage("GROUP", "HG")
+					SendAddonMessage(self.name, "HG", "RAID")
+					
 				else
 	--				self:Debug("sending heal on", target)
-					self:SendCommMessage("GROUP", "HN", target )
+					SendAddonMessage(self.name, "HN "..target, "RAID")
 				end
 			end
 		end
