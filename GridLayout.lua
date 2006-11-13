@@ -265,7 +265,7 @@ GridLayout.defaultDB = {
 	horizonal = false,
 	fromTop = true,
 	fromLeft = true,
-	point = "CENTER",
+	anchor = "TOPLEFT",
 	showParty = true,
 	debug = false,
 }
