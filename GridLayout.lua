@@ -723,7 +723,7 @@ end
 function GridLayout:SavePosition()
 	local f = self.frame
 	local s = f:GetEffectiveScale()
-	local uiScale = UIParent:GetEffectiveScale()
+	local uiScale = Grid.isTBC and UIParent:GetEffectiveScale() or 1
 	local anchor = self.db.profile.anchor
 
 	local x, y, relativePoint
