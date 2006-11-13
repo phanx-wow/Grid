@@ -723,6 +723,7 @@ end
 function GridLayout:SavePosition()
 	local f = self.frame
 	local s = f:GetEffectiveScale()
+	local uiScale = UIParent:GetEffectiveScale()
 	local anchor = self.db.profile.anchor
 
 	local x, y, relativePoint
@@ -730,36 +731,35 @@ function GridLayout:SavePosition()
 	relativePoint = anchor
 
 	if anchor == "CENTER" then
-		x = f:GetLeft() + f:GetWidth() / 2 - UIParent:GetWidth() / 2
-		y = f:GetTop() - f:GetHeight() / 2 - UIParent:GetHeight() / 2
+		x = (f:GetLeft() + f:GetWidth() / 2) * s - UIParent:GetWidth() / 2 * uiScale
+		y = (f:GetTop() - f:GetHeight() / 2) * s - UIParent:GetHeight() / 2 * uiScale
 	elseif anchor == "TOP" then
-		x = f:GetLeft() + f:GetWidth() / 2 - UIParent:GetWidth() / 2
-		y = f:GetTop() - UIParent:GetHeight()
+		x = (f:GetLeft() + f:GetWidth() / 2) * s - UIParent:GetWidth() / 2 * uiScale
+		y = f:GetTop() * s - UIParent:GetHeight() * uiScale
 	elseif anchor == "LEFT" then
-		x = f:GetLeft()
-		y = f:GetTop() - f:GetHeight() / 2 - UIParent:GetHeight() / 2
+		x = f:GetLeft() * s
+		y = (f:GetTop() - f:GetHeight() / 2) * s - UIParent:GetHeight() / 2 * uiScale
 	elseif anchor == "RIGHT" then
-		x = f:GetRight() - UIParent:GetWidth()
-		y = f:GetTop() - f:GetHeight() / 2 - UIParent:GetHeight() / 2
+		x = f:GetRight() * s - UIParent:GetWidth() * uiScale
+		y = (f:GetTop() - f:GetHeight() / 2) * s - UIParent:GetHeight() / 2 * uiScale
 	elseif anchor == "BOTTOM" then
-		x = f:GetLeft() + f:GetWidth() / 2 - UIParent:GetWidth() / 2
-		y = f:GetBottom()
+		x = (f:GetLeft() + f:GetWidth() / 2) * s - UIParent:GetWidth() / 2 * uiScale
+		y = f:GetBottom() * s
 	elseif anchor == "TOPLEFT" then
-		x = f:GetLeft()
-		y = f:GetTop() - UIParent:GetHeight()
+		x = f:GetLeft() * s
+		y = f:GetTop() * s - UIParent:GetHeight() * uiScale
 	elseif anchor == "TOPRIGHT" then
-		x = f:GetRight() - UIParent:GetWidth()
-		y = f:GetTop() - UIParent:GetHeight()
+		x = f:GetRight() * s - UIParent:GetWidth() * uiScale
+		y = f:GetTop() * s - UIParent:GetHeight() * uiScale
 	elseif anchor == "BOTTOMLEFT" then
-		x = f:GetLeft()
-		y = f:GetBottom()
+		x = f:GetLeft() * s
+		y = f:GetBottom() * s
 	elseif anchor == "BOTTOMRIGHT" then
-		x = f:GetRight() - UIParent:GetWidth()
-		y = f:GetBottom()
+		x = f:GetRight() * s - UIParent:GetWidth() * uiScale
+		y = f:GetBottom() * s
 	end
 
 	if x and y and s then
-		x, y = x*s, y*s
 		self.db.profile.PosX = x
 		self.db.profile.PosY = y
 		--self.db.profile.anchor = point
