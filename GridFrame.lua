@@ -214,11 +214,8 @@ function GridFrameClass.prototype:OnEnter()
 end
 
 function GridFrameClass.prototype:OnLeave()
-	if GridFrame.db.profile.showTooltip == L["always"] or
-		(GridFrame.db.profile.showTooltip == L["ooc"] and not Grid.inCombat) then
-
-		UnitFrame_OnLeave()
-	end
+	-- self.frame.unit = self.unit
+	UnitFrame_OnLeave()
 end
 
 function GridFrameClass.prototype:GetFrameName()

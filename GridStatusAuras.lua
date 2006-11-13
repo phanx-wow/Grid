@@ -243,7 +243,7 @@ function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type
 	self.core:SendStatusGained(UnitName(unit),
 			status,
 			settings.priority,
-			(settings.range and 40),			
+			(settings.range and 28),			
 			settings.color,
 			settings.text,
 			nil,

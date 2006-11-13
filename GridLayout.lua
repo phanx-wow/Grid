@@ -47,29 +47,85 @@ function GridLayoutPartyClass.prototype:Reset()
 end
 
 function GridLayoutPartyClass.prototype:SetOrientation(horizontal)
-	if horizontal then
-		self.partyFrame:ClearAllPoints()
-		self.partyFrame:SetPoint("TOPLEFT", self.playerFrame, "TOPRIGHT", GridLayout.db.profile.Padding, 0)
-		self.partyFrame:SetAttribute("xOffset", GridLayout.db.profile.Padding)
-		self.partyFrame:SetAttribute("yOffset", 0)
-		self.partyFrame:SetAttribute("point", "LEFT")
+	local layoutSettings = GridLayout.db.profile
+	local fromLeft = layoutSettings.fromLeft
+	local fromTop = layoutSettings.fromTop
+	local padding = layoutSettings.Padding
+
+	local anchor, anchorf1, anchorf2, point, xOffset, yOffset
+
+	if fromTop then
+		anchor = "TOP"
 	else
-		self.partyFrame:ClearAllPoints()
-		self.partyFrame:SetPoint("TOPLEFT", self.playerFrame, "BOTTOMLEFT", 0, 0-GridLayout.db.profile.Padding)
-		self.partyFrame:SetAttribute("xOffset", 0)
-		self.partyFrame:SetAttribute("yOffset", 0-GridLayout.db.profile.Padding)
-		self.partyFrame:SetAttribute("point", "TOP")
+		anchor = "BOTTOM"
 	end
+	if fromLeft then
+		anchor = anchor .. "LEFT"
+	else
+		anchor = anchor .. "RIGHT"
+	end
+
+	if horizontal then
+		if fromLeft then
+			-- place group members horizontal and growing right
+			anchorf1 = "TOPLEFT"
+			anchorf2 = "TOPRIGHT"
+			point = "LEFT"
+			xOffset = padding
+			yOffset = 0
+		else
+			-- place group members horizontal and growing left
+			anchorf1 = "TOPRIGHT"
+			anchorf2 = "TOPLEFT"
+			point = "RIGHT"
+			xOffset = 0-padding
+			yOffset = 0
+		end
+	else
+		if fromTop then
+			-- place group members vertical and growing down
+			anchorf1 = "TOPLEFT"
+			anchorf2 = "BOTTOMLEFT"
+			point = "TOP"
+			xOffset = 0
+			yOffset = 0-padding
+		else
+			-- place groups vertical and growing up
+			anchorf1 = "BOTTOMLEFT"
+			anchorf2 = "TOPLEFT"
+			point = "BOTTOM"
+			xOffset = 0
+			yOffset = padding
+		end
+	end
+	
+	self.playerFrame:ClearAllPoints()
+	self.playerFrame:SetPoint(anchor, self.frame, anchor, 0, 0)
+
+	self.partyFrame:ClearAllPoints()
+	self.partyFrame:SetPoint(anchorf1, self.playerFrame, anchorf2, xOffset, yOffset)
+	self.partyFrame:SetAttribute("xOffset", xOffset)
+	self.partyFrame:SetAttribute("yOffset", yOffset)
+	self.partyFrame:SetAttribute("point", point)
 	-- self:UpdateSize() -- not needed because GridLayout:UpdateSize() will call it
 end
 
 function GridLayoutPartyClass.prototype:UpdateSize()
-	self.frame:SetWidth(self.playerFrame:GetWidth() +
-		(self.partyFrame:GetWidth() + GridLayout.db.profile.Padding) *
-		( (GridLayout.db.profile.horizontal and GetNumPartyMembers() > 0) and 1 or 0))
-	self.frame:SetHeight(self.playerFrame:GetHeight() +
-		(self.partyFrame:GetHeight() + GridLayout.db.profile.Padding) *
-		( (GridLayout.db.profile.horizontal or GetNumPartyMembers() <= 0) and 0 or 1))
+	local layoutSettings = GridLayout.db.profile
+
+	local width  = self.playerFrame:GetWidth()
+	local height = self.playerFrame:GetHeight()
+
+	if GetNumPartyMembers() > 0 then
+		if layoutSettings.horizontal then
+			width = width + layoutSettings.Padding + self.partyFrame:GetWidth()
+		else
+			height = height + layoutSettings.Padding + self.partyFrame:GetHeight()
+		end
+	end
+	
+	self.frame:SetWidth(width)
+	self.frame:SetHeight(height)
 end
 
 function GridLayoutPartyClass.prototype:GetFrameWidth()
@@ -139,15 +195,38 @@ end
 
 -- nil or false for vertical
 function GridLayoutHeaderClass.prototype:SetOrientation(horizontal)
+	local layoutSettings = GridLayout.db.profile
+	local fromTop = layoutSettings.fromTop
+	local fromLeft = layoutSettings.fromLeft
+	local padding = layoutSettings.Padding
+
+	local xOffset, yOffset, point
+
 	if horizontal then
-		self.frame:SetAttribute("xOffset", GridLayout.db.profile.Padding)
-		self.frame:SetAttribute("yOffset", 0)
-		self.frame:SetAttribute("point", "LEFT")
+		if fromLeft then
+			xOffset = padding
+			yOffset = 0
+			point = "LEFT"
+		else
+			xOffset = 0-padding
+			yOffset = 0
+			point = "RIGHT"
+		end
 	else
-		self.frame:SetAttribute("xOffset", 0)
-		self.frame:SetAttribute("yOffset", 0-GridLayout.db.profile.Padding)
-		self.frame:SetAttribute("point", "TOP")
+		if fromTop then
+			xOffset = 0
+			yOffset = 0-padding
+			point = "TOP"
+		else
+			xOffset = 0
+			yOffset = padding
+			point = "BOTTOM"
+		end
 	end
+
+	self.frame:SetAttribute("xOffset", xOffset)
+	self.frame:SetAttribute("yOffset", yOffset)
+	self.frame:SetAttribute("point", point)
 end
 
 -- return the number of visible units belonging to the GroupHeader
@@ -184,6 +263,9 @@ GridLayout.defaultDB = {
 	FrameDisplay = "always",
 	layout = "By Group 40",
 	horizonal = false,
+	fromTop = true,
+	fromLeft = true,
+	point = "CENTER",
 	showParty = true,
 	debug = false,
 }
@@ -208,7 +290,7 @@ GridLayout.options = {
 			      end,
 			set = function (v)
 				      GridLayout.db.profile.Padding = v
-				      GridLayout:LoadLayout(GridLayout.db.profile.layout)
+				      GridLayout:ReloadLayout()
 			      end,
 		},
 		["spacing"] = {
@@ -223,7 +305,7 @@ GridLayout.options = {
 			      end,
 			set = function (v)
 				      GridLayout.db.profile.Spacing = v
-				      GridLayout:LoadLayout(GridLayout.db.profile.layout)
+				      GridLayout:ReloadLayout()
 			      end,
 		},
 		["scale"] = {
@@ -247,10 +329,12 @@ GridLayout.options = {
 			name = L["Border"],
 			desc = L["Adjust border color and alpha."],
 			get = function ()
-				      return GridLayout.db.profile.BorderR, GridLayout.db.profile.BorderG, GridLayout.db.profile.BorderB, GridLayout.db.profile.BorderA
+				      local settings = GridLayout.db.profile
+				      return settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA
 			      end,
 			set = function (r, g, b, a)
-				      GridLayout.db.profile.BorderR, GridLayout.db.profile.BorderG, GridLayout.db.profile.BorderB, GridLayout.db.profile.BorderA = r, g, b, a
+				      local settings = GridLayout.db.profile
+				      settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA = r, g, b, a
 				      GridLayout:UpdateColor()
 			      end,
 			hasAlpha = true
@@ -260,10 +344,12 @@ GridLayout.options = {
 			name = L["Background"],
 			desc = L["Adjust background color and alpha."],
 			get = function ()
-				      return GridLayout.db.profile.BackgroundR, GridLayout.db.profile.BackgroundG, GridLayout.db.profile.BackgroundB, GridLayout.db.profile.BackgroundA
+				      local settings = GridLayout.db.profile
+				      return settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA
 			      end,
 			set = function (r, g, b, a)
-				      GridLayout.db.profile.BackgroundR, GridLayout.db.profile.BackgroundG, GridLayout.db.profile.BackgroundB, GridLayout.db.profile.BackgroundA = r, g, b, a
+				      local settings = GridLayout.db.profile
+				      settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA = r, g, b, a
 				      GridLayout:UpdateColor()
 			      end,
 			hasAlpha = true
@@ -288,6 +374,30 @@ GridLayout.options = {
 				      GridLayout.db.profile.horizontal = v
 				      GridLayout:LoadLayout(GridLayout.db.profile.layout)
 			      end,
+		},
+		["corner"] = {
+	                type = "text",
+                        name = L["Grow from"],
+                        desc = L["Sets from which corner the Grid grows"],
+	                get = function () return GridLayout:GetCorner() end,
+	                set = function(v)
+				       GridLayout.db.profile.fromTop, GridLayout.db.profile.fromLeft = GridLayout:SetGrowDirections(v)
+				       GridLayout:Scale()
+				       GridLayout:LoadLayout(GridLayout.db.profile.layout)
+			      end,
+	                validate = {L["Top left corner"], L["Top right corner"], L["Bottom left corner"], L["Bottom right corner"],},
+		},
+		["anchor"] = {
+			type = "text",
+			name = "Anchor Point",
+			desc = "Sets where Grid is anchored relative to the screen.",
+			get = function () return GridLayout.db.profile.anchor end,
+			set = function (v)
+				      GridLayout.db.profile.anchor = v
+				      GridLayout:SavePosition()
+				      GridLayout:RestorePosition()
+			      end,
+			validate = { "CENTER", "TOP", "BOTTOM", "LEFT", "RIGHT", "TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT" },
 		},
 		["display"] = {
 			type = "text",
@@ -383,6 +493,7 @@ function GridLayout:StopMoveFrame()
 		self.frame:StopMovingOrSizing()
 		self:SavePosition()
 		self.frame.isMoving = false
+		self:RestorePosition()
 	end
 end
 
@@ -422,17 +533,32 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 	local x, y
 
 	if self.db.profile.horizontal then
-		y = (frame:GetHeight() + self.db.profile.Padding) * (groupNumber - 1) + self.db.profile.Spacing
+		y = (frame:GetHeight() + self.db.profile.Padding) * (groupNumber - 1) +
+			self.db.profile.Spacing
 		x = self.db.profile.Spacing
 	else
 		-- vertical
-		x = (frame:GetWidth() + self.db.profile.Padding) * (groupNumber - 1) + self.db.profile.Spacing
+		x = (frame:GetWidth() + self.db.profile.Padding) * (groupNumber - 1) +
+			self.db.profile.Spacing
 		y = self.db.profile.Spacing
 	end
 
 	frame:ClearAllPoints()
 	frame:SetParent(self.frame)
-	frame:SetPoint("TOPLEFT", self.frame, "TOPLEFT", x, -y)
+
+	if fromtop then
+		if fromleft then
+			frame:SetPoint("TOPLEFT", self.frame, "TOPLEFT", x, -y)
+		else
+			frame:SetPoint("TOPRIGHT", self.frame, "TOPRIGHT", -x, -y)
+		end
+	else
+		if fromleft then
+			frame:SetPoint("BOTTOMLEFT", self.frame, "BOTTOMLEFT", x, y)
+		else
+			frame:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -x, y)
+		end
+	end
 
 	self:Debug("Placing group", groupNumber, x, -y)
 end
@@ -440,6 +566,10 @@ end
 function GridLayout:AddLayout(layoutName, layout)
 	self.layoutSettings[layoutName] = layout
 	table.insert(self.options.args.layout.validate, layoutName)
+end
+
+function GridLayout:ReloadLayout()
+	self:LoadLayout(self.db.profile.layout)
 end
 
 function GridLayout:LoadLayout(layoutName)
@@ -554,9 +684,11 @@ function GridLayout:UpdateSize()
 
 	if self.db.profile.horizontal then
 		x = maxWidth + self.db.profile.Spacing * 2
-		y = groupCount * (maxHeight + self.db.profile.Padding) - self.db.profile.Padding + self.db.profile.Spacing * 2
+		y = groupCount * (maxHeight + self.db.profile.Padding) -
+			self.db.profile.Padding + self.db.profile.Spacing * 2
 	else
-		x = groupCount * (maxWidth + self.db.profile.Padding) - self.db.profile.Padding + self.db.profile.Spacing * 2
+		x = groupCount * (maxWidth + self.db.profile.Padding) -
+			self.db.profile.Padding + self.db.profile.Spacing * 2
 		y = maxHeight + self.db.profile.Spacing * 2
 	end
 
@@ -565,9 +697,12 @@ function GridLayout:UpdateSize()
 end
 
 function GridLayout:UpdateColor()
-	self.frame:SetBackdropBorderColor(GridLayout.db.profile.BorderR, GridLayout.db.profile.BorderG, GridLayout.db.profile.BorderB, GridLayout.db.profile.BorderA)
-	self.frame:SetBackdropColor(GridLayout.db.profile.BackgroundR, GridLayout.db.profile.BackgroundG, GridLayout.db.profile.BackgroundB, GridLayout.db.profile.BackgroundA)
-	self.frame.texture:SetGradientAlpha("VERTICAL", .1, .1, .1, 0, .2, .2, .2, GridLayout.db.profile.BackgroundA/2 )
+	local settings = self.db.profile
+
+	self.frame:SetBackdropBorderColor(settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA)
+	self.frame:SetBackdropColor(settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA)
+	self.frame.texture:SetGradientAlpha("VERTICAL", .1, .1, .1, 0,
+					    .2, .2, .2, settings.BackgroundA/2 )
 end
 
 function GridLayout:CheckVisibility()
@@ -575,7 +710,8 @@ function GridLayout:CheckVisibility()
 
 	if frameDisplay == L["always"] then
 		self.frame:Show()
-	elseif frameDisplay == L["grouped"] and (GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0) then
+	elseif frameDisplay == L["grouped"] and
+		(GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0) then
 		self.frame:Show()
 	elseif frameDisplay == L["raid"] and GetNumRaidMembers() > 0 then
 		self.frame:Show()
@@ -586,14 +722,57 @@ end
 
 function GridLayout:SavePosition()
 	local f = self.frame
-	local x, y = f:GetLeft(), f:GetTop()
 	local s = f:GetEffectiveScale()
+	local anchor = self.db.profile.anchor
+
+	local x, y, relativePoint
+
+	relativePoint = anchor
+
+	if anchor == "CENTER" then
+		x = f:GetLeft() + f:GetWidth() / 2 - UIParent:GetWidth() / 2
+		y = f:GetTop() - f:GetHeight() / 2 - UIParent:GetHeight() / 2
+	elseif anchor == "TOP" then
+		x = f:GetLeft() + f:GetWidth() / 2 - UIParent:GetWidth() / 2
+		y = f:GetTop() - UIParent:GetHeight()
+	elseif anchor == "LEFT" then
+		x = f:GetLeft()
+		y = f:GetTop() - f:GetHeight() / 2 - UIParent:GetHeight() / 2
+	elseif anchor == "RIGHT" then
+		x = f:GetRight() - UIParent:GetWidth()
+		y = f:GetTop() - f:GetHeight() / 2 - UIParent:GetHeight() / 2
+	elseif anchor == "BOTTOM" then
+		x = f:GetLeft() + f:GetWidth() / 2 - UIParent:GetWidth() / 2
+		y = f:GetBottom()
+	elseif anchor == "TOPLEFT" then
+		x = f:GetLeft()
+		y = f:GetTop() - UIParent:GetHeight()
+	elseif anchor == "TOPRIGHT" then
+		x = f:GetRight() - UIParent:GetWidth()
+		y = f:GetTop() - UIParent:GetHeight()
+	elseif anchor == "BOTTOMLEFT" then
+		x = f:GetLeft()
+		y = f:GetBottom()
+	elseif anchor == "BOTTOMRIGHT" then
+		x = f:GetRight() - UIParent:GetWidth()
+		y = f:GetBottom()
+	end
 
 	if x and y and s then
 		x, y = x*s, y*s
 		self.db.profile.PosX = x
 		self.db.profile.PosY = y
+		--self.db.profile.anchor = point
+		self.db.profile.anchorRel = relativePoint
+		self:Debug("Saved Position", anchor, x, y)
 	end
+end
+
+function GridLayout:ResetPosition()
+	local settings = self.db.profile
+	settings.PosX = 500
+	settings.PosY = 400
+	settings.anchor = "TOPLEFT"
 end
 
 function GridLayout:RestorePosition()
@@ -601,14 +780,58 @@ function GridLayout:RestorePosition()
 	local x = self.db.profile.PosX or 500
 	local y = self.db.profile.PosY or 400
 	local s = f:GetEffectiveScale()
+	local point = self.db.profile.anchor or "TOPLEFT"
+
 	x, y = x/s, y/s
 	f:ClearAllPoints()
-	f:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x, y)
+	f:SetPoint(point, UIParent, point, x, y)
+
+	self:Debug("Restored Position", point, x, y)
 end
 
 function GridLayout:Scale()
 	self:SavePosition()
 	self.frame:SetScale(self.db.profile.ScaleSize)
 	self:RestorePosition()
+end
+
+function GridLayout:GetCorner()
+        local fromtop = GridLayout.db.profile.fromTop
+        local fromleft = GridLayout.db.profile.fromLeft
+
+        if fromtop and fromleft then
+	        return "Top left corner"
+	elseif fromtop and not fromleft then
+	        return "Top right corner"
+	elseif not fromtop and fromleft then
+	        return "Bottom left corner"
+	elseif not fromtop and not fromleft then
+	        return "Bottom right corner"
+	else
+	        return "Top left corner"
+	end
+end
+
+function GridLayout:SetGrowDirections(corner)
+        local fromtop, fromleft
+
+        if corner == "Top left corner" then
+	        fromtop = true
+	        fromleft = true
+        elseif corner == "Top right corner" then
+	        fromtop = true
+	        fromleft = false
+        elseif corner == "Bottom left corner" then
+	        fromtop = false
+	        fromleft = true
+        elseif corner == "Bottom right corner" then
+	        fromtop = false
+	        fromleft = false
+	else
+	        fromtop = true
+	        fromleft = true
+	end
+
+	return fromtop, fromleft
 end
 --}}}

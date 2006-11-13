@@ -124,6 +124,12 @@ local strings_enUS = {
 	["Show party/self as an extra group."] = true,
 	["Raid Layout"] = true,
 	["Select which raid layout to use."] = true,
+	["Grow from"] = true,
+	["Sets from which corner the Grid grows"] = true,
+	["Top left corner"] = true,
+	["Top right corner"] = true,
+	["Bottom left corner"] = true,
+	["Bottom right corner"] = true,
 	--}}}
 	
 	--{{{ GridLayoutLayouts
