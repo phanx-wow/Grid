@@ -530,30 +530,36 @@ end
 
 function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 	local frame = layoutGroup.frame
+
+	local settings = self.db.profile
+	local horizontal = settings.horizontal
+	local padding = settings.Padding
+	local spacing = settings.spacing
+	local fromTop = settings.fromTop
+	local fromLeft = settings.fromLeft
+
 	local x, y
 
-	if self.db.profile.horizontal then
-		y = (frame:GetHeight() + self.db.profile.Padding) * (groupNumber - 1) +
-			self.db.profile.Spacing
-		x = self.db.profile.Spacing
+	if horizontal then
+		y = (frame:GetHeight() + padding) * (groupNumber - 1) + spacing
+		x = spacing
 	else
 		-- vertical
-		x = (frame:GetWidth() + self.db.profile.Padding) * (groupNumber - 1) +
-			self.db.profile.Spacing
-		y = self.db.profile.Spacing
+		x = (frame:GetWidth() + padding) * (groupNumber - 1) + spacing
+		y = spacing
 	end
 
 	frame:ClearAllPoints()
 	frame:SetParent(self.frame)
 
-	if fromtop then
-		if fromleft then
+	if fromTop then
+		if fromLeft then
 			frame:SetPoint("TOPLEFT", self.frame, "TOPLEFT", x, -y)
 		else
 			frame:SetPoint("TOPRIGHT", self.frame, "TOPRIGHT", -x, -y)
 		end
 	else
-		if fromleft then
+		if fromLeft then
 			frame:SetPoint("BOTTOMLEFT", self.frame, "BOTTOMLEFT", x, y)
 		else
 			frame:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -x, y)
