@@ -18,7 +18,7 @@ GridStatusRange.options = false
 
 -- sets the default options for the entire module.
 GridStatusRange.defaultDB = {
-    debug = true,
+    debug = false,
 
     alert_range_oor = {
         text = "OOR",
