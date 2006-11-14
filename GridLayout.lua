@@ -48,25 +48,15 @@ end
 
 function GridLayoutPartyClass.prototype:SetOrientation(horizontal)
 	local layoutSettings = GridLayout.db.profile
-	local fromLeft = layoutSettings.fromLeft
-	local fromTop = layoutSettings.fromTop
+	local groupAnchor = layoutSettings.groupAnchor
 	local padding = layoutSettings.Padding
 
 	local anchor, anchorf1, anchorf2, point, xOffset, yOffset
 
-	if fromTop then
-		anchor = "TOP"
-	else
-		anchor = "BOTTOM"
-	end
-	if fromLeft then
-		anchor = anchor .. "LEFT"
-	else
-		anchor = anchor .. "RIGHT"
-	end
+	anchor = groupAnchor
 
 	if horizontal then
-		if fromLeft then
+		if groupAnchor == "TOPLEFT" or groupAnchor == "BOTTOMLEFT" then
 			-- place group members horizontal and growing right
 			anchorf1 = "TOPLEFT"
 			anchorf2 = "TOPRIGHT"
@@ -82,7 +72,7 @@ function GridLayoutPartyClass.prototype:SetOrientation(horizontal)
 			yOffset = 0
 		end
 	else
-		if fromTop then
+		if groupAnchor == "TOPLEFT" or groupAnchor == "TOPRIGHT" then
 			-- place group members vertical and growing down
 			anchorf1 = "TOPLEFT"
 			anchorf2 = "BOTTOMLEFT"
@@ -196,14 +186,13 @@ end
 -- nil or false for vertical
 function GridLayoutHeaderClass.prototype:SetOrientation(horizontal)
 	local layoutSettings = GridLayout.db.profile
-	local fromTop = layoutSettings.fromTop
-	local fromLeft = layoutSettings.fromLeft
+	local groupAnchor = layoutSettings.groupAnchor
 	local padding = layoutSettings.Padding
 
 	local xOffset, yOffset, point
 
 	if horizontal then
-		if fromLeft then
+		if groupAnchor == "TOPLEFT" or groupAnchor == "BOTTOMLEFT" then
 			xOffset = padding
 			yOffset = 0
 			point = "LEFT"
@@ -213,7 +202,7 @@ function GridLayoutHeaderClass.prototype:SetOrientation(horizontal)
 			point = "RIGHT"
 		end
 	else
-		if fromTop then
+		if groupAnchor == "TOPLEFT" or groupAnchor == "TOPRIGHT" then
 			xOffset = 0
 			yOffset = 0-padding
 			point = "TOP"
@@ -248,6 +237,14 @@ GridLayout = Grid:NewModule("GridLayout")
 --{{{  AceDB defaults
 
 GridLayout.defaultDB = {
+	debug = false,
+
+	FrameDisplay = "Always",
+	layout = "By Group 40",
+	showParty = true,
+	horizonal = false,
+	FrameLock = false,
+
 	Padding = 1,
 	Spacing = 10,
 	ScaleSize = 1.0,
@@ -259,29 +256,98 @@ GridLayout.defaultDB = {
 	BackgroundG = .1,
 	BackgroundB = .1,
 	BackgroundA = .65,
-	FrameLock = false,
-	FrameDisplay = "always",
-	layout = "By Group 40",
-	horizonal = false,
-	fromTop = true,
-	fromLeft = true,
+
 	anchor = "TOPLEFT",
-	showParty = true,
-	debug = false,
+	groupAnchor = "TOPLEFT",
+
+	PosX = 500,
+	PosY = -400,
 }
 
 --}}}
 --{{{  AceOptions table
 
+local ORDER_LAYOUT = 20
+local ORDER_DISPLAY = 30
+
 GridLayout.options = {
 	type = "group",
 	name = L["Layout"],
 	desc = L["Options for GridLayout."],
+	disabled = function () return Grid.inCombat end,
 	args = {
+		["display"] = {
+			type = "text",
+			name = L["Show Frame"],
+			desc = L["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."],
+			order = ORDER_LAYOUT + 1,
+			get = function() return GridLayout.db.profile.FrameDisplay end,
+			set = function(v)
+				GridLayout.db.profile.FrameDisplay = v
+				GridLayout:CheckVisibility()
+			end,
+			validate = {L["Always"], L["Grouped"], L["Raid"]},
+		},
+		["layout"] = {
+			type = "text",
+			name = L["Raid Layout"],
+			desc = L["Select which raid layout to use."],
+			order = ORDER_LAYOUT + 2,
+			get = function ()
+				      return GridLayout.db.profile.layout
+			      end,
+			set = function (v)
+				      GridLayout.db.profile.layout = v
+				      GridLayout:LoadLayout(v)
+			      end,
+			validate = {},
+		},
+		["party"] = {
+			type = "toggle",
+			name = L["Show Party in Raid"],
+			desc = L["Show party/self as an extra group."],
+			order = ORDER_LAYOUT + 3,
+			get = function ()
+				return GridLayout.db.profile.showParty
+			end,
+			set = function (v)
+				GridLayout.db.profile.showParty = v
+				GridLayout:ReloadLayout()
+			end,
+		},
+		["horizontal"] = {
+			type = "toggle",
+			name = L["Horizontal groups"],
+			desc = L["Switch between horzontal/vertical groups."],
+			order = ORDER_LAYOUT + 4,
+			get = function ()
+				      return GridLayout.db.profile.horizontal
+			      end,
+			set = function (v)
+				      GridLayout.db.profile.horizontal = v
+				      GridLayout:ReloadLayout()
+			      end,
+		},
+		["lock"] = {
+			type = "toggle",
+			name = L["Frame lock"],
+			desc = L["Locks/unlocks the grid for movement."],
+			order = ORDER_LAYOUT + 5,
+			get = function() return GridLayout.db.profile.FrameLock end,
+			set = function()
+				GridLayout.db.profile.FrameLock = not GridLayout.db.profile.FrameLock
+			end,
+		},
+
+		["DisplayHeader"] = {
+			type = "header",
+			order = ORDER_DISPLAY,
+		},
 		["padding"] = {
 			type = "range",
 			name = L["Padding"],
 			desc = L["Adjust frame padding."],
+			order = ORDER_DISPLAY + 1,
 			max = 20,
 			min = 0,
 			step = 1,
@@ -297,6 +363,7 @@ GridLayout.options = {
 			type = "range",
 			name = L["Spacing"],
 			desc = L["Adjust frame spacing."],
+			order = ORDER_DISPLAY + 2,
 			max = 25,
 			min = 0,
 			step = 1,
@@ -312,6 +379,7 @@ GridLayout.options = {
 			type = "range",
 			name = L["Scale"],
 			desc = L["Adjust Grid scale."],
+			order = ORDER_DISPLAY + 3,
 			min = 0.5,
 			max = 2.0,
 			step = 0.05,
@@ -328,6 +396,7 @@ GridLayout.options = {
 			type = "color",
 			name = L["Border"],
 			desc = L["Adjust border color and alpha."],
+			order = ORDER_DISPLAY + 4,
 			get = function ()
 				      local settings = GridLayout.db.profile
 				      return settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA
@@ -343,6 +412,7 @@ GridLayout.options = {
 			type = "color",
 			name = L["Background"],
 			desc = L["Adjust background color and alpha."],
+			order = ORDER_DISPLAY + 5,
 			get = function ()
 				      local settings = GridLayout.db.profile
 				      return settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA
@@ -354,86 +424,46 @@ GridLayout.options = {
 			      end,
 			hasAlpha = true
 		},
-		["lock"] = {
-			type = "toggle",
-			name = L["Frame lock"],
-			desc = L["Locks/unlocks the grid for movement."],
-			get = function() return GridLayout.db.profile.FrameLock end,
-			set = function()
-				GridLayout.db.profile.FrameLock = not GridLayout.db.profile.FrameLock
-			end,
-		},
-		["horizontal"] = {
-			type = "toggle",
-			name = L["Horizontal groups"],
-			desc = L["Switch between horzontal/vertical groups."],
-			get = function ()
-				      return GridLayout.db.profile.horizontal
-			      end,
-			set = function (v)
-				      GridLayout.db.profile.horizontal = v
-				      GridLayout:LoadLayout(GridLayout.db.profile.layout)
-			      end,
-		},
-		["corner"] = {
-	                type = "text",
-                        name = L["Grow from"],
-                        desc = L["Sets from which corner the Grid grows"],
-	                get = function () return GridLayout:GetCorner() end,
-	                set = function(v)
-				       GridLayout.db.profile.fromTop, GridLayout.db.profile.fromLeft = GridLayout:SetGrowDirections(v)
-				       GridLayout:Scale()
-				       GridLayout:LoadLayout(GridLayout.db.profile.layout)
-			      end,
-	                validate = {L["Top left corner"], L["Top right corner"], L["Bottom left corner"], L["Bottom right corner"],},
-		},
-		["anchor"] = {
-			type = "text",
-			name = "Anchor Point",
-			desc = "Sets where Grid is anchored relative to the screen.",
-			get = function () return GridLayout.db.profile.anchor end,
-			set = function (v)
-				      GridLayout.db.profile.anchor = v
-				      GridLayout:SavePosition()
-				      GridLayout:RestorePosition()
-			      end,
-			validate = { "CENTER", "TOP", "BOTTOM", "LEFT", "RIGHT", "TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT" },
-		},
-		["display"] = {
-			type = "text",
-			name = L["Show Frame"],
-			desc = L["Sets when the Grid is visible: Choose 'always', 'grouped', or 'raid'."],
-			get = function() return GridLayout.db.profile.FrameDisplay end,
-			set = function(v)
-				GridLayout.db.profile.FrameDisplay = v
-				GridLayout:CheckVisibility()
-			end,
-			validate = {L["always"], L["grouped"], L["raid"]},
-		},
-		["party"] = {
-			type = "toggle",
-			name = L["Show Party in Raid"],
-			desc = L["Show party/self as an extra group."],
-			get = function ()
-				return GridLayout.db.profile.showParty
-			end,
-			set = function (v)
-				GridLayout.db.profile.showParty = v
-				GridLayout:LoadLayout(GridLayout.db.profile.layout)
-			end,
-		},
-		["layout"] = {
-			type = "text",
-			name = L["Raid Layout"],
-			desc = L["Select which raid layout to use."],
-			get = function ()
-				      return GridLayout.db.profile.layout
-			      end,
-			set = function (v)
-				      GridLayout.db.profile.layout = v
-				      GridLayout:LoadLayout(v)
-			      end,
-			validate = {},
+
+		["advanced"] = {
+			type = "group",
+			name = "Advanced",
+			desc = "Advanced options.",
+			order = -1,
+			args = {
+				["layoutanchor"] = {
+					type = "text",
+					name = L["Layout Anchor"],
+					desc = L["Sets where Grid is anchored relative to the screen."],
+					order = 1,
+					get = function () return GridLayout.db.profile.anchor end,
+					set = function (v)
+						      GridLayout.db.profile.anchor = v
+						      GridLayout:SavePosition()
+						      GridLayout:RestorePosition()
+					      end,
+					validate = { "CENTER", "TOP", "BOTTOM", "LEFT", "RIGHT", "TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT" },
+				},
+				["groupanchor"] = {
+					type = "text",
+					name = L["Group Anchor"],
+					desc = L["Sets where groups are anchored relative to the layout frame."],
+					order = 2,
+					get = function () return GridLayout.db.profile.groupAnchor end,
+					set = function (v)
+						      GridLayout.db.profile.groupAnchor = v
+						      GridLayout:ReloadLayout()
+					      end,
+					validate = { "TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT" },
+				},
+				["reset"] = {
+					type = "execute",
+					name = L["Reset Position"],
+					desc = L["Resets the layout frame's position and anchor."],
+					order = -1,
+					func = function () GridLayout:ResetPosition() end,
+				},
+			},
 		},
 	},
 }
@@ -475,7 +505,7 @@ end
 function GridLayout:Reset()
 	self.super.Reset(self)
 
-	self:LoadLayout(self.db.profile.layout)
+	self:ReloadLayout()
 	-- position and scale frame
 	self:RestorePosition()
 	self:Scale()
@@ -535,8 +565,7 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 	local horizontal = settings.horizontal
 	local padding = settings.Padding
 	local spacing = settings.Spacing
-	local fromTop = settings.fromTop
-	local fromLeft = settings.fromLeft
+	local groupAnchor = settings.groupAnchor
 
 	local x, y
 
@@ -549,22 +578,16 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 		y = spacing
 	end
 
+	if groupAnchor == "TOPLEFT" or groupAnchor == "TOPRIGHT" then
+		y = -y
+	end
+	if groupAnchor == "TOPRIGHT" or groupAnchor == "BOTTOMRIGHT" then
+		x = -x
+	end
+
 	frame:ClearAllPoints()
 	frame:SetParent(self.frame)
-
-	if fromTop then
-		if fromLeft then
-			frame:SetPoint("TOPLEFT", self.frame, "TOPLEFT", x, -y)
-		else
-			frame:SetPoint("TOPRIGHT", self.frame, "TOPRIGHT", -x, -y)
-		end
-	else
-		if fromLeft then
-			frame:SetPoint("BOTTOMLEFT", self.frame, "BOTTOMLEFT", x, y)
-		else
-			frame:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -x, y)
-		end
-	end
+	frame:SetPoint(groupAnchor, self.frame, groupAnchor, x, y)
 
 	self:Debug("Placing group", groupNumber, x, -y)
 end
@@ -656,7 +679,7 @@ end
 function GridLayout:Grid_UpdateSort()
 	self:ScheduleEvent("GridLayoutUpdateSize", function ()
 			GridLayout:Debug("Grid_UpdateSort")
-			GridLayout:LoadLayout(self.db.profile.layout)
+			GridLayout:ReloadLayout()
 		end, 0.1)
 end
 
@@ -714,12 +737,12 @@ end
 function GridLayout:CheckVisibility()
 	local frameDisplay = self.db.profile.FrameDisplay
 
-	if frameDisplay == L["always"] then
+	if frameDisplay == L["Always"] then
 		self.frame:Show()
-	elseif frameDisplay == L["grouped"] and
+	elseif frameDisplay == L["Grouped"] and
 		(GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0) then
 		self.frame:Show()
-	elseif frameDisplay == L["raid"] and GetNumRaidMembers() > 0 then
+	elseif frameDisplay == L["Raid"] and GetNumRaidMembers() > 0 then
 		self.frame:Show()
 	else
 		self.frame:Hide()
@@ -775,18 +798,22 @@ function GridLayout:SavePosition()
 end
 
 function GridLayout:ResetPosition()
-	local settings = self.db.profile
-	settings.PosX = 500
-	settings.PosY = 400
-	settings.anchor = "TOPLEFT"
+	local uiScale = Grid.isTBC and UIParent:GetEffectiveScale() or 1
+
+	self.db.profile.PosX = UIParent:GetWidth() / 2 * uiScale
+	self.db.profile.PosY = - UIParent:GetHeight() / 2 * uiScale
+	self.db.profile.anchor = "TOPLEFT"
+
+	self:RestorePosition()
+	self:SavePosition()
 end
 
 function GridLayout:RestorePosition()
 	local f = self.frame
-	local x = self.db.profile.PosX or 500
-	local y = self.db.profile.PosY or 400
 	local s = f:GetEffectiveScale()
-	local point = self.db.profile.anchor or "TOPLEFT"
+	local x = self.db.profile.PosX
+	local y = self.db.profile.PosY
+	local point = self.db.profile.anchor
 
 	x, y = x/s, y/s
 	f:ClearAllPoints()
@@ -799,45 +826,5 @@ function GridLayout:Scale()
 	self:SavePosition()
 	self.frame:SetScale(self.db.profile.ScaleSize)
 	self:RestorePosition()
-end
-
-function GridLayout:GetCorner()
-        local fromtop = GridLayout.db.profile.fromTop
-        local fromleft = GridLayout.db.profile.fromLeft
-
-        if fromtop and fromleft then
-	        return "Top left corner"
-	elseif fromtop and not fromleft then
-	        return "Top right corner"
-	elseif not fromtop and fromleft then
-	        return "Bottom left corner"
-	elseif not fromtop and not fromleft then
-	        return "Bottom right corner"
-	else
-	        return "Top left corner"
-	end
-end
-
-function GridLayout:SetGrowDirections(corner)
-        local fromtop, fromleft
-
-        if corner == "Top left corner" then
-	        fromtop = true
-	        fromleft = true
-        elseif corner == "Top right corner" then
-	        fromtop = true
-	        fromleft = false
-        elseif corner == "Bottom left corner" then
-	        fromtop = false
-	        fromleft = true
-        elseif corner == "Bottom right corner" then
-	        fromtop = false
-	        fromleft = false
-	else
-	        fromtop = true
-	        fromleft = true
-	end
-
-	return fromtop, fromleft
 end
 --}}}

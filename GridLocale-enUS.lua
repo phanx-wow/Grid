@@ -101,6 +101,23 @@ local strings_enUS = {
 	--{{{ GridLayout
 	["Layout"] = true,
 	["Options for GridLayout."] = true,
+
+	-- Layout options
+	["Show Frame"] = true,
+	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = true,
+	["Always"] = true,
+	["Grouped"] = true,
+	["Raid"] = true,
+	["Raid Layout"] = true,
+	["Select which raid layout to use."] = true,
+	["Show Party in Raid"] = true,
+	["Show party/self as an extra group."] = true,
+	["Horizontal groups"] = true,
+	["Switch between horzontal/vertical groups."] = true,
+	["Frame lock"] = true,
+	["Locks/unlocks the grid for movement."] = true,
+
+	-- Display options
 	["Padding"] = true,
 	["Adjust frame padding."] = true,
 	["Spacing"] = true,
@@ -111,25 +128,17 @@ local strings_enUS = {
 	["Adjust border color and alpha."] = true,
 	["Background"] = true,
 	["Adjust background color and alpha."] = true,
-	["Frame lock"] = true,
-	["Locks/unlocks the grid for movement."] = true,
-	["Horizontal groups"] = true,
-	["Switch between horzontal/vertical groups."] = true,
-	["Show Frame"] = true,
-	["Sets when the Grid is visible: Choose 'always', 'grouped', or 'raid'."] = true,
-	["always"] = true,
-	["grouped"] = true,
-	["raid"] = true,
-	["Show Party in Raid"] = true,
-	["Show party/self as an extra group."] = true,
-	["Raid Layout"] = true,
-	["Select which raid layout to use."] = true,
-	["Grow from"] = true,
-	["Sets from which corner the Grid grows"] = true,
-	["Top left corner"] = true,
-	["Top right corner"] = true,
-	["Bottom left corner"] = true,
-	["Bottom right corner"] = true,
+
+	-- Advanced options
+	["Advanced"] = true,
+	["Advanced options."] = true,
+	["Layout Anchor"] = true,
+	["Sets where Grid is anchored relative to the screen."] = true,
+	["Group Anchor"] = true,
+	["Sets where groups are anchored relative to the layout frame."] = true,
+	["Reset Position"] = true,
+	["Resets the layout frame's position and anchor."] = true,
+
 	--}}}
 	
 	--{{{ GridLayoutLayouts
