@@ -534,7 +534,7 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 	local settings = self.db.profile
 	local horizontal = settings.horizontal
 	local padding = settings.Padding
-	local spacing = settings.spacing
+	local spacing = settings.Spacing
 	local fromTop = settings.fromTop
 	local fromLeft = settings.fromLeft
 
