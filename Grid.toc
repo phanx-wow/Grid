@@ -1,6 +1,7 @@
 ## Interface: 20000
 ## Title: Grid |cff7fff7f -Ace2-|r
 ## Notes: A modular, lightweight and screen-estate saving grid of party/raid unit frames
+## Notes-zhCN: 一个模块式，低占用，节省荧幕空间的“格子”，用来显示团队/队伍的状态
 ## Author: Pastamancer & Maia
 ## Version: 0.1
 ## X-ReleaseDate: "$Date: 2006-08-22 22:25:02 +0200 (Tue, 22 Aug 2006) $"
@@ -46,6 +47,7 @@ libs\Babble-Spell-2.2\Babble-Spell-2.2.lua
 #Locales
 GridLocale-enUS.lua
 GridLocale-deDE.lua
+GridLocale-zhCN.lua
 
 ## Backported code from TBC
 TBC\Compat.lua
