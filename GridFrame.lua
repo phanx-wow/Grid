@@ -12,15 +12,15 @@ local GridRange = GridRange
 
 --{{{  locals
 local indicators = {
-	[1] = { type = "text", name = L["Center Text"] },
-	[2] = { type = "border", name = L["Border"] },
-	[3] = { type = "bar", name = L["Health Bar"] },
-	[4] = { type = "corner1", name = L["Bottom Left Corner"] },
-	[5] = { type = "corner2", name = L["Bottom Right Corner"] },
-	[6] = { type = "corner3", name = L["Top Right Corner"] },
-	[7] = { type = "corner4", name = L["Top Left Corner"] },
-	[8] = { type = "icon", name = L["Center Icon"] },
-	[9] = { type = "frameAlpha", name = L["Frame Alpha"] },
+	{ type = "border",     name = L["Border"] },
+	{ type = "bar",        name = L["Health Bar"] },
+	{ type = "text",       name = L["Center Text"] },
+	{ type = "icon",       name = L["Center Icon"] },
+	{ type = "corner4",    name = L["Top Left Corner"] },
+	{ type = "corner3",    name = L["Top Right Corner"] },
+	{ type = "corner1",    name = L["Bottom Left Corner"] },
+	{ type = "corner2",    name = L["Bottom Right Corner"] },
+	{ type = "frameAlpha", name = L["Frame Alpha"] },
 }
 
 --}}}
@@ -49,7 +49,6 @@ function GridFrame_OnAttributeChanged(self, name, value)
 			frame.unitName = nil
 			frame.unit = value
 		end
-		--GridFrame:Grid_UpdateSort()
 	end
 end
 
@@ -101,8 +100,10 @@ end
 --}}}
 --{{{ GridFrameClass
 
-local GridFrameClass = AceOO.Class("AceEvent-2.0")
+local GridFrameClass = AceOO.Class("AceEvent-2.0", "AceDebug-2.0")
 
+-- frame is passed from GridFrame_OnLoad()
+-- the GridFrameClass constructor takes over the frame that was created by CreateFrame()
 function GridFrameClass.prototype:init(frame)
 	GridFrameClass.super.prototype.init(self)
 	self.frame = frame
@@ -111,13 +112,6 @@ function GridFrameClass.prototype:init(frame)
 end
 
 function GridFrameClass.prototype:Reset()
-	-- UnregisterUnitWatch(self.frame)
-	-- this isn't really needed
-	-- self.frame:SetAttribute("unit", nil)
-	
-	-- hide should be handled by UnitWatch
-	-- self.frame:Hide()
-
 	for _,indicator in ipairs(indicators) do
 		self:ClearIndicator(indicator.type)
 	end
@@ -125,7 +119,7 @@ end
 
 function GridFrameClass.prototype:CreateFrames()
 	-- create frame
-	--self.frame = CreateFrame("Button", nil, UIParent)
+	-- self.frame is created by using the xml template and is passed via the object's constructor
 	local f = self.frame
 
 	-- f:Hide()
@@ -136,6 +130,7 @@ function GridFrameClass.prototype:CreateFrames()
 	
 	-- only use SetScript pre-TBC
 	if Grid.isTBC then
+		-- set our left-click action
 		f:SetAttribute("type1", "target")
 	else
 		f:SetScript("OnClick", function () GridFrame_OnClick(f, arg1) end)
@@ -189,7 +184,7 @@ function GridFrameClass.prototype:CreateFrames()
 	f.Icon:SetHeight(16)
 	f.Icon:SetPoint("CENTER", f, "CENTER")
 	f.Icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
-	f.Icon:SetTexture(1,1,1,0) --"Interface\\Icons\\INV_Misc_Orb_02"
+	f.Icon:SetTexture(1,1,1,0)
 	
 	-- set texture
 	f:SetNormalTexture(1,1,1,0)
@@ -202,9 +197,10 @@ function GridFrameClass.prototype:CreateFrames()
 	ClickCastFrames[self.frame] = true
 end
 
+-- shows the default unit tooltip
 function GridFrameClass.prototype:OnEnter()
-	if GridFrame.db.profile.showTooltip == L["always"] or
-		(GridFrame.db.profile.showTooltip == L["ooc"] and
+	if GridFrame.db.profile.showTooltip == L["Always"] or
+		(GridFrame.db.profile.showTooltip == L["OOC"] and
 			(not Grid.inCombat or
 				(self.unit and UnitIsDeadOrGhost(self.unit)))) then
 
@@ -214,10 +210,10 @@ function GridFrameClass.prototype:OnEnter()
 end
 
 function GridFrameClass.prototype:OnLeave()
-	-- self.frame.unit = self.unit
 	UnitFrame_OnLeave()
 end
 
+-- pass through functions to our main frame
 function GridFrameClass.prototype:GetFrameName()
 	return self.frame:GetName()
 end
@@ -242,24 +238,10 @@ function GridFrameClass.prototype:SetFrameParent(parentFrame)
 	return self.frame:SetParent(parentFrame)
 end
 
+-- SetPoint for lazy people
 function GridFrameClass.prototype:SetPosition(parentFrame, x, y)
 	self.frame:ClearAllPoints()
 	self.frame:SetPoint("TOPLEFT", parentFrame, "TOPLEFT", x, y)
-end
-
-function GridFrameClass.prototype:SetUnit(name)
-	local unit = RL:GetUnitIDFromName(name)
-	if unit ~= self.unit then
-		-- self:Reset()
-		self.unit = unit
-
-		GridFrame:Debug("Set unit for", self.frame:GetName(), "to", unit, name)
-
-		self.frame:SetAttribute("unit", unit)
-		-- RegisterUnitWatch(self.frame, true)
-
-		self:UpdateUnit()
-	end
 end
 
 function GridFrameClass.prototype:SetBar(value, max)
@@ -290,7 +272,7 @@ function GridFrameClass.prototype:InvertBarColor()
 end
 
 function GridFrameClass.prototype:SetText(text, color)
-	text = string.sub(text, 1, 8)
+	text = string.sub(text, 1, GridFrame.db.profile.textlength)
 	self.frame.Text:SetText(text)
 	if text ~= "" then
 		self.frame.Text:Show()
@@ -420,7 +402,8 @@ GridFrame.defaultDB = {
 	FrameSize = 26,
 	debug = false,
 	invertBarColor = false,
-	showTooltip = L["ooc"],
+	showTooltip = L["OOC"],
+	textlength = 4,
 	statusmap = {
 		["text"] = {
 			alert_death = true,
@@ -475,10 +458,38 @@ GridFrame.options = {
 	name = L["Frame"],
 	desc = L["Options for GridFrame."],
 	args = {
+		["tooltip"] = {
+			type = "text",
+			name = L["Show Tooltip"],
+			desc = L["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."],
+			order = 10,
+			get = function ()
+				return GridFrame.db.profile.showTooltip
+			end,
+			set = function (v)
+				GridFrame.db.profile.showTooltip = v
+			end,
+			validate = { L["Always"], L["Never"], L["OOC"] }
+		},
+		["textlength"] = {
+			type = "range",
+			name = L["Center Text Length"],
+			desc = L["Number of characters to show on Center Text indicator."],
+			order = 11,
+			min = 0,
+			max = 8,
+			step = 1,
+			get = function () return GridFrame.db.profile.textlength end,
+			set = function (v)
+				GridFrame.db.profile.textlength = v
+				GridFrame:UpdateAllFrames()
+			end,
+		},
 		["invert"] = {
 			type = "toggle",
 			name = L["Invert Bar Color"],
 			desc = L["Swap foreground/background colors on bars."],
+			order = 12,
 			get = function ()
 				return GridFrame.db.profile.invertBarColor
 			end,
@@ -487,17 +498,14 @@ GridFrame.options = {
 				GridFrame:InvertBarColor()
 			end,
 		},
-		["tooltip"] = {
-			type = "text",
-			name = L["Show Tooltip"],
-			desc = L["Show unit tooltip on enter? Choose 'always', 'never', or 'ooc'."],
-			get = function ()
-				return GridFrame.db.profile.showTooltip
-			end,
-			set = function (v)
-				GridFrame.db.profile.showTooltip = v
-			end,
-			validate = { L["always"], L["never"], L["ooc"] }
+		["IndicatorsHeaderGap"] = {
+			type = "header",
+			order = 49,
+		},
+		["IndicatorsHeader"] = {
+			type = "header",
+			name = L["Indicators"],
+			order = 50,
 		},
 	},
 }
@@ -660,9 +668,15 @@ function GridFrame:UpdateOptionsMenu()
 			menu[indicator.type] = {
 				type = "group",
 				name = indicator.name,
-				desc = "Options for " .. indicator.name,
-				order = 100 + k,
-				args = {}
+				desc = string.format(L["Options for %s indicator."], indicator.name),
+				order = 50 + k,
+				args = {
+					["StatusesHeader"] = {
+						type = "header",
+						name = L["Statuses"],
+						order = 1,
+					},
+				},
 			}
 		end
 
@@ -670,7 +684,7 @@ function GridFrame:UpdateOptionsMenu()
 
 		-- remove statuses that are not registered
 		for status,_ in pairs(indicatorMenu) do
-			if not GridStatus:IsStatusRegistered(status) then
+			if status ~= "StatusesHeader" and not GridStatus:IsStatusRegistered(status) then
 				indicatorMenu[status] = nil
 				self:Debug("Removed", indicator.type, status)
 			end
@@ -688,7 +702,7 @@ function GridFrame:UpdateOptionsMenu()
 				indicatorMenu[status] = {
 					type = "toggle",
 					name = descr,
-					desc = "Toggle " .. descr,
+					desc = L["Toggle status display."],
 					get = function ()
 						      return GridFrame.db.profile.statusmap[indicatorType][statusKey]
 					      end,

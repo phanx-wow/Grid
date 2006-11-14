@@ -1,8 +1,10 @@
 --{{{ Libraries
+
 local Aura = AceLibrary("SpecialEvents-Aura-2.0")
 local Dewdrop = AceLibrary("Dewdrop-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local BS = AceLibrary("Babble-Spell-2.2")
+
 --}}}
 
 GridStatusAuras = GridStatus:NewModule("GridStatusAuras")
@@ -95,7 +97,8 @@ GridStatusAuras.defaultDB = {
 		["range"] = true,
 		["color"] = { r = .8, g = .8, b =  0, a = 1 },
 	},
- }
+}
+
 
 function GridStatusAuras:OnInitialize()
 	self.super.OnInitialize(self)
@@ -149,6 +152,10 @@ end
 
 
 function GridStatusAuras:CreateAddRemoveOptions()
+	self.options.args["AddRemoveHeader"] = {
+		type = "header",
+		order = 200,
+	}
 	self.options.args["add_buff"] = {
 		type = "text",
 		name = L["Add new Buff"],

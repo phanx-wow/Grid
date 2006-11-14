@@ -58,15 +58,12 @@ GridStatusHealth.defaultDB = {
 
 --{{{ AceOptions table
 
---GridStatusHealth.extraOptions = {}
-
---}}}
-
-local healthOptions = {
+GridStatusHealth.extraOptions = {
 	["deadAsFullHealth"] = {
 		type = "toggle",
 		name = L["Show dead as full health"],
 		desc = L["Treat dead units as being full health."],
+		order = 101,
 		get = function ()
 			      return GridStatusHealth.db.profile.unit_health.deadAsFullHealth
 		      end,
@@ -75,6 +72,11 @@ local healthOptions = {
 			      GridStatusHealth:UpdateAllUnits()
 		      end,
 	},
+}
+
+--}}}
+
+local healthOptions = {
 	["useClassColors"] = {
 		type = "toggle",
 		name = L["Use class color"],

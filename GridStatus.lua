@@ -37,7 +37,7 @@ function GridStatus.modulePrototype:InitializeOptions()
 		self.options = {
 			type = "group",
 			name = (self.menuName or self.name),
-			desc = L["Options for "].. self.name,
+			desc = string.format(L["Options for %s."], self.name),
 			args = {},
 		}
 
@@ -62,6 +62,7 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 		if not self.options then
 			self:InitializeOptions()
 		end
+
 		optionMenu = self.options.args
 	end
 
@@ -69,23 +70,14 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 		optionMenu[status] = {
 			type = "group",
 			name = desc,
-			desc = L["Send"].. desc,
+			desc = string.format(L["Status: %s"], desc),
+			order = inMainMenu and 111 or nil,
 			args = {
-				["enable"] = {
-					type = "toggle",
-					name = L["Enable"],
-					desc = L["Enable"].. desc,
-					get = function ()
-						      return module.db.profile[status].enable
-					      end,
-					set = function (v)
-						      module.db.profile[status].enable = v
-					      end,
-				},
 				["color"] = {
 					type = "color",
 					name = L["Color"],
-					desc = L["Color for "].. desc,
+					desc = string.format(L["Color for %s"], desc),
+					order = 90,
 					hasAlpha = true,
 					get = function ()
 						      local color = module.db.profile[status].color
@@ -102,7 +94,8 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 				["priority"] = {
 					type = "range",
 					name = L["Priority"],
-					desc = L["Priority for "].. desc,
+					desc = string.format(L["Priority for %s"], desc),
+					order = 91,
 					max = 99,
 					min = 0,
 					step = 1,
@@ -113,15 +106,32 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 						      module.db.profile[status].priority = v
 					      end,
 				},
+				["Header"] = {
+					type = "header",
+					order = 110,
+				},
 				["range"] = {
-					type = 'toggle',
+					type = "toggle",
 					name = L["Range filter"],
-					desc = L["Range filter for "].. desc,
+					desc = string.format(L["Range filter for %s"], desc),
+					order = 111,
 					get = function() return module.db.profile[status].range end,
 					set = function()
 						module.db.profile[status].range = not module.db.profile[status].range
 					end,
-				}
+				},
+				["enable"] = {
+					type = "toggle",
+					name = L["Enable"],
+					desc = string.format(L["Enable %s"], desc),
+					order = 112,
+					get = function ()
+						      return module.db.profile[status].enable
+					      end,
+					set = function (v)
+						      module.db.profile[status].enable = v
+					      end,
+				},
 			},
 		}
 
@@ -156,8 +166,12 @@ GridStatus.defaultDB = {
 GridStatus.options = {
 	type = "group",
 	name = L["Status"],
-	desc = L["Options for "] .."GridStatus.",
+	desc = string.format(L["Options for %s."], GridStatus.name),
 	args = {
+		["Header"] = {
+			type = "header",
+			order = 110,
+		},
 	},
 }
 

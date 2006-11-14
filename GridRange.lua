@@ -2,6 +2,13 @@
 --
 -- A 1.12/TBC range library
 
+--{{{ Libraries
+
+-- 1.12 uses ProximityLib
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
+
+--}}}
+
 GridRange = Grid:NewModule("GridRange")
 
 local ranges = {}
@@ -39,7 +46,7 @@ if Grid.isTBC then
 			-- beneficial spell with a range
 			if sName and IsSpellInRange(i, "spell", "player") ~= nil then
 				gratuity:SetSpell(i, BOOKTYPE_SPELL)
-				_, _, sRange = gratuity:Find("(%d+) yd range", 2, 2)
+				_, _, sRange = gratuity:Find(L["(%d+) yd range"], 2, 2)
 				addRange(tonumber(sRange), function (unit) return IsSpellInRange(sIndex, "spell", unit) == 1 end)
 				self:Debug(string.format("%d %s (%s) has range %s", sIndex, sName, sRank, sRange))
 			end

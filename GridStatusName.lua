@@ -14,8 +14,8 @@ GridStatusName.defaultDB = {
 		enable = true,
 		color = { r = 1, g = 1, b = 1, a = 1 },
 		priority = 1,
-		letters = 3,
 		class = true,
+		range = false,
 	},
 }
 --}}}	
@@ -24,21 +24,6 @@ GridStatusName.options = false
 
 --{{{ additional options
 local nameOptions = {
-	["letters"] = {
-		type = 'range',
-		name = L["Letters"],
-		desc = L["Number of unit name letters."],
-		get = function() return GridStatusName.db.profile.unit_name.letters end,
-		set = function(v) 
-			GridStatusName.db.profile.unit_name.letters = v
-			GridStatusName:UpdateAllUnits()
-		end,
-		min = 0,
-		max = 4,
-		step = 1,
-		isPercent = false,
-		order = 120,
-	},
 	["class"] = {
 		type = 'toggle',
 		name = L["Color by class"],
@@ -50,8 +35,6 @@ local nameOptions = {
 		end,
 		order = 150,
 	},
-	["range"] = false,    -- this module doesnt need a range filter, so lets remove the option
-	                    -- unfortunately it doesnt work anyway. sigh.
 }
 --}}}
 
@@ -82,10 +65,7 @@ function GridStatusName:UpdateUnit(name, unitid)
 	end
 	
 	-- set text
-	local text = ""
-	if settings.letters >= 1 then
-		text = string.sub(name, 1, settings.letters)
-	end
+	local text = name
 	
 	-- set color
 	local color = settings.color

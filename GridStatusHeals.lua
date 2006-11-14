@@ -28,7 +28,11 @@ GridStatusHeals.defaultDB = {
 }
 
 --}}}
+--{{{ Options
 
+GridStatusHeals.options = false
+
+--}}}
 --{{{ locals
 
 -- whenever this module recieves an AceComm event, combat log scan from sender 
@@ -59,7 +63,7 @@ if not Grid.isTBC then
 
 	function GridStatusHeals:OnInitialize()
 		self.super.OnInitialize(self)
-		self:RegisterStatus("alert_heals", L["Incoming heals"])
+		self:RegisterStatus("alert_heals", L["Incoming heals"], nil, true)
 		self:SetCommPrefix("Grid")
 	end
 
@@ -275,7 +279,7 @@ elseif Grid.isTBC then
 
 	function GridStatusHeals:OnInitialize()
 		self.super.OnInitialize(self)
-		self:RegisterStatus("alert_heals", L["Incoming heals"])
+		self:RegisterStatus("alert_heals", L["Incoming heals"], nil, true)
 	end
 
 

@@ -97,6 +97,7 @@ function GridLayoutPartyClass.prototype:SetOrientation(horizontal)
 	self.partyFrame:SetAttribute("xOffset", xOffset)
 	self.partyFrame:SetAttribute("yOffset", yOffset)
 	self.partyFrame:SetAttribute("point", point)
+
 	-- self:UpdateSize() -- not needed because GridLayout:UpdateSize() will call it
 end
 

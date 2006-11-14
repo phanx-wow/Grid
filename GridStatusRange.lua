@@ -44,7 +44,6 @@ local rangeOptions = {
 		max = 5,
 		step = 0.5,
 		isPercent = false,
-		order = 120,
 	},
 	["range"] = false,    -- this module doesnt need a range filter, becuase, well... guess why
 }

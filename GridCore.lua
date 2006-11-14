@@ -23,10 +23,15 @@ Grid.options = {
 	type = "group",
 	handler = Grid,
 	args = {
-		[L["debug"]] = {
+		["DebugHeader"] = {
+			type = "header",
+			order = 104,
+		},
+		["debug"] = {
 			type = "group",
 			name = L["Debugging"],
 			desc = L["Module debugging menu."],
+			order = 105,
 			args = {},
 		},
 	},
@@ -230,7 +235,7 @@ function Grid:AddModuleDebugMenu(module)
 	debugMenu.args[module.name] = {
 		type = "toggle",
 		name = module.name,
-		desc = L["Toggle debugging for "].. module.name ..".",
+		desc = string.format(L["Toggle debugging for %s."], module.name),
 		get = function ()
 			      return module.db.profile.debug
 		      end,
