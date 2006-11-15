@@ -10,7 +10,7 @@ local strings_deDE = {
 	--}}}
 	--{{{ GridFrame
 	["Frame"] = "Rahmen",
-	["Options for GridFrame."] = "Einstellungen die Grid-Rahmen",
+	["Options for GridFrame."] = "Einstellungen f\195\188r den Grid Rahmen",
 
 	["Show Tooltip"] = "Zeige Tooltip",
 	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "Anzeige des Tooltips. W\195\164hle 'Immer', 'Nie', oder 'außerhalb des Kampfes'.",
@@ -40,7 +40,7 @@ local strings_deDE = {
 	--}}}
 	--{{{ GridLayout
 	["Layout"] = "Anordnung",
-	["Options for GridLayout."] = "Optionen für die GridAnordnung.",
+	["Options for GridLayout."] = "Optionen f\195\188r die Anordnung von Grid.",
 
 	-- Layout options
 	["Show Frame"] = "Zeige den Rahmen",
@@ -109,7 +109,7 @@ local strings_deDE = {
 	["Range filter"] = "Entfernungsfilter",
 	["Range filter for %s"] = "Entfernungsfilter f\195\188r %s",
 	["Enable"] = "Aktivieren",
-	["Enable %s"] = "Aktivieren %s",
+	["Enable %s"] = "Aktiviere %s",
 	
 	--}}}
 	--{{{ GridStatusAggro
@@ -118,7 +118,7 @@ local strings_deDE = {
 	
 	--}}}
 	--{{{ GridStatusAuras
-	["Debuff type: "] = "Schw\195\164chungszauber: ",
+	["Debuff type: "] = "Schw\195\164chungszaubertyp: ",
 	["Poison"] = "Gift",
 	["Disease"] = "Krankheit",
 	["Magic"] = "Magie",
@@ -126,9 +126,9 @@ local strings_deDE = {
 	["Add new Buff"] = "Neuen St\195\164rkungszauber hinzuf\195\188gen",
 	["Adds a new buff to the status module"] = "F\195\188gt einen neuen St\195\164rkungszauber zum Status Modul hinzu",
 	["Add new Debuff"] = "Neuen Schw\195\164chungszauber hinzuf\195\188gen",
-	["Adds a new debuff to the status module"] = true,
-	["Delete (De)buff"] = true,
-	["Deletes an existing debuff from the status module"] = "F\195\188gt einen neuen Schw\195\164chungszauber zum Status Modul hinzu",
+	["Adds a new debuff to the status module"] = "F\195\188gt einen neuen Schw\195\164chungszauber zum Status Modul hinzu",
+	["Delete (De)buff"] = "L\195\182sche Schw\195\164chungs-/St\195\164rkungszauber",
+	["Deletes an existing debuff from the status module"] = "L\195\182scht einen Schw\195\164chungszauber vom Status Modul",
 	["Remove %s from the menu"] = "Entfernt %s vom Men\195\188",
 	["Debuff: "] = "Schw\195\164chungszauber: ",
 	["Buff: "] = "St\195\164rkungszauber: ",
