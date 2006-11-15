@@ -12,17 +12,17 @@ local strings_deDE = {
 	["Frame"] = "Rahmen",
 	["Options for GridFrame."] = "Einstellungen die Grid-Rahmen",
 
-	-- ["Show Tooltip"] = true,
-	-- ["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = true,
-	-- ["Always"] = true,
-	-- ["Never"] = true,
-	-- ["OOC"] = true,
-	-- ["Center Text Length"] = true,
-	-- ["Number of characters to show on Center Text indicator."] = true,
+	["Show Tooltip"] = "Zeige Tooltip",
+	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "Anzeige des Tooltips. W\195\164hle 'Immer', 'Nie', oder 'auﬂerhalb des Kampfes'.",
+	["Always"] = "Immer",
+	["Never"] = "Nie",
+	["OOC"] = "au\195\159erhalb des Kampfes",
+	["Center Text Length"] = "L\195\164nge des mittleren Textes",
+	["Number of characters to show on Center Text indicator."] = "Anzahl des Buchstaben die im mittleren Text angezeigt werden",
 	["Invert Bar Color"] = "Invetiere die Leistenfarbe",
 	["Swap foreground/background colors on bars."] = "Tausche die Vordergrund-/Hintergrundfarbe der Leisten",
 
-	-- ["Indicators"] = true,
+	["Indicators"] = "Indikatoren",
 	["Border"] = "Rand",
 	["Health Bar"] = "Gesundheitsleiste",
 	["Center Text"] = "Text im Zentrum",
@@ -31,11 +31,11 @@ local strings_deDE = {
 	["Top Right Corner"] = "Obere rechte Ecke",
 	["Bottom Left Corner"] = "Untere linke Ecke",
 	["Bottom Right Corner"] = "Untere rechte Ecke",
-	-- ["Frame Alpha"] = true,
+	["Frame Alpha"] = "Rahmentransparenz",
 
-	-- ["Options for %s indicator."] = true,
-	-- ["Statuses"] = true,
-	-- ["Toggle status display."] = true,
+	["Options for %s indicator."] = "Optionen f\195\188r den %s Indikator",
+	["Statuses"] = "Zust\195\164nde",
+	["Toggle status display."] = "Aktiviere die Anzeige des Zustands",
 
 	--}}}
 	--{{{ GridLayout
@@ -58,8 +58,8 @@ local strings_deDE = {
 	["Locks/unlocks the grid for movement."] = "Sperrt/entsperrt den Rahmen zum Bewegen",
 
 	-- Display options
-	-- ["Padding"] = true,
-	-- ["Adjust frame padding."] = true,
+	["Padding"] = "Zwischenabstand",
+	["Adjust frame padding."] = "Den Zwischenabstand anpassen",
 	["Spacing"] = "Abstand",
 	["Adjust frame spacing."] = "Den Abstand anpassen.",
 	["Scale"] = "Skalierung",
@@ -70,14 +70,14 @@ local strings_deDE = {
 	["Adjust background color and alpha."] = "Anpassen der Hintergrundfarbe und Transparenz.",
 
 	-- Advanced options
-	-- ["Advanced"] = true,
-	-- ["Advanced options."] = true,
-	-- ["Layout Anchor"] = true,
-	-- ["Sets where Grid is anchored relative to the screen."] = true,
-	-- ["Group Anchor"] = true,
-	-- ["Sets where groups are anchored relative to the layout frame."] = true,
-	-- ["Reset Position"] = true,
-	-- ["Resets the layout frame's position and anchor."] = true,
+	["Advanced"] = "Erweitert",
+	["Advanced options."] = "Erweiterte Einstellungen",
+	["Layout Anchor"] = "Ankerpunkt des Layouts",
+	["Sets where Grid is anchored relative to the screen."] = "Setzt den Ankerpunkt von Grid, realtive zum Bildschirm",
+	["Group Anchor"] = "Ankerpunkt der Gruppe",
+	["Sets where groups are anchored relative to the layout frame."] = "Setzt den Ankerpunkt der Gruppe, realtive zum Layoutrahmen",
+	["Reset Position"] = "Position zur\195\188cksetzen",
+	["Resets the layout frame's position and anchor."] = "Setzt den Ankerpunkt und die Position des Layoutrahmens zur\195\188ck",
 
 	--}}}
 	--{{{ GridLayoutLayouts
@@ -93,7 +93,7 @@ local strings_deDE = {
 	--}}}
 	--{{{ GridRange
 	-- used for getting spell range from tooltip
-	-- ["(%d+) yd range"] = true,
+	["(%d+) yd range"] = "(%d+) m entfernt",
 
 	--}}}
 	--{{{ GridStatus
