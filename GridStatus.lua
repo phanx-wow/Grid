@@ -157,7 +157,7 @@ end
 
 GridStatus.defaultDB = {
 	debug = false,
-	range = true,
+	range = false,
 }
 
 --}}}

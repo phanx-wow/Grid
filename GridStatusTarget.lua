@@ -19,7 +19,7 @@ GridStatusTarget.defaultDB = {
     player_target = {
         text = "Target",
         enable = true,
-        color = { r = 0.75, g = 0.1, b = 0.1, a = 1 },
+        color = { r = 0.8, g = 0.8, b = 0.8, a = 0.8 },
         priority = 99,
         range = false,
     },

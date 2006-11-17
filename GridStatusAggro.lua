@@ -12,7 +12,7 @@ GridStatusAggro.defaultDB = {
 		enable = true,
 		color = { r = 1, g = 0, b = 0, a = 1 },
 		priority = 99,
-		range = true,
+		range = false,
 	},
 }
 

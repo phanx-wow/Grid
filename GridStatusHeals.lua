@@ -23,7 +23,7 @@ GridStatusHeals.defaultDB = {
 		enable = true,
 		color = { r = 0, g = 1, b = 0, a = 1 },
 		priority = 50,
-		range = true,
+		range = false,
 	},
 }
 

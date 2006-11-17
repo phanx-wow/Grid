@@ -29,7 +29,7 @@ GridStatusAuras.defaultDB = {
 		["text"] = L["Poison"],
 		["enable"] = true,
 		["priority"] = 90,
-		["range"] = true,
+		["range"] = false,
 		["color"] = { r =  0, g = .6, b =  0, a = 1 },
 	},
 	["debuff_disease"] = {
@@ -37,7 +37,7 @@ GridStatusAuras.defaultDB = {
 		["text"] = L["Disease"],
 		["enable"] = true,
 		["priority"] = 90,
-		["range"] = true,
+		["range"] = false true,
 		["color"] = { r = .6, g = .4, b =  0, a = 1 },
 	},
 	["debuff_magic"] = {
@@ -45,7 +45,7 @@ GridStatusAuras.defaultDB = {
 		["text"] = L["Magic"],
 		["enable"] = true,
 		["priority"] = 90,
-		["range"] = true,
+		["range"] = false true,
 		["color"] = { r = .2, g = .6, b =  1, a = 1 },
 	},
 	["debuff_curse"] = {
@@ -53,7 +53,7 @@ GridStatusAuras.defaultDB = {
 		["text"] = L["Curse"],
 		["enable"] = true,
 		["priority"] = 90,
-		["range"] = true,
+		["range"] = false true,
 		["color"] = { r = .6, g =  0, b =  1, a = 1 },
 	},
 	[statusForSpell(BS["Weakened Soul"])] = {
@@ -61,7 +61,7 @@ GridStatusAuras.defaultDB = {
 		["text"] = BS["Weakened Soul"],
 		["enable"] = true,
 		["priority"] = 90,
-		["range"] = true,
+		["range"] = false true,
 		["color"] = { r = .5, g = .5, b = .5, a = 1 },
 
 	},
@@ -70,7 +70,7 @@ GridStatusAuras.defaultDB = {
 		["text"] = BS["Mortal Strike"],
 		["enable"] = true,
 		["priority"] = 90,
-		["range"] = true,
+		["range"] = false true,
 		["color"] = { r = .8, g = .2, b = .2, a = 1 },
 	},
 	[statusForSpell(BS["Renew"], true)] = {
@@ -78,7 +78,7 @@ GridStatusAuras.defaultDB = {
 		["text"] = BS["Renew"],
 		["enable"] = true,
 		["priority"] = 90,
-		["range"] = true,
+		["range"] = false true,
 		["color"] = { r =  0, g = .7, b = .3, a = 1 },
 	},
 	[statusForSpell(BS["Rejuvenation"], true)] = {
@@ -86,7 +86,7 @@ GridStatusAuras.defaultDB = {
 		["text"] = BS["Rejuvenation"],
 		["enable"] = true,
 		["priority"] = 90,
-		["range"] = true,
+		["range"] = false true,
 		["color"] = { r =  0, g = .3, b = .7, a = 1 },
 	},
 	[statusForSpell(BS["Power Word: Shield"], true)] = {
@@ -94,7 +94,7 @@ GridStatusAuras.defaultDB = {
 		["text"] = BS["Power Word: Shield"],
 		["enable"] = true,
 		["priority"] = 91,
-		["range"] = true,
+		["range"] = false true,
 		["color"] = { r = .8, g = .8, b =  0, a = 1 },
 	},
 }
@@ -212,7 +212,7 @@ function GridStatusAuras:AddAura(name, isBuff)
 		["desc"] = desc,
 		["enable"] = true,
 		["priority"] = 90,
-		["range"] = true,
+		["range"] = false true,
 		["color"] = { r = .5, g = .5, b = .5, a = 1 },
 	}
 

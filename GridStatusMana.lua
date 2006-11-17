@@ -15,7 +15,7 @@ GridStatusMana.defaultDB = {
 		color = { r = .5, g = .5, b = 1, a = 1 },
 		priority = 40,
 		threshold = 10,
-		range = true,
+		range = false,
 	},
 }
 --}}}

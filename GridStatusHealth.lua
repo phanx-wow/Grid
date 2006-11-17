@@ -17,7 +17,7 @@ GridStatusHealth.defaultDB = {
 		enable = true,
 		color = { r = 1, g = 1, b = 1, a = 1 },
 		priority = 30,
-		range = true,
+		range = false,
 		deadAsFullHealth = true,
 		useClassColors = true,
 	},
@@ -26,7 +26,7 @@ GridStatusHealth.defaultDB = {
 		color = { r = 1, g = 1, b = 1, a = 1 },
 		priority = 30,
 		threshold = 80,
-		range = true,
+		range = false,
 		useClassColors = true,
 	},
 	alert_lowHealth = {
@@ -35,7 +35,7 @@ GridStatusHealth.defaultDB = {
 		color = { r = 1, g = 1, b = 1, a = 1 },
 		priority = 30,
 		threshold = 80,
-		range = true,
+		range = false,
 	},
 	alert_death = {
 		text = "DEAD",
