@@ -15,7 +15,7 @@ Grid = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceDebug-2.0
 Grid:SetModuleMixins("AceDebug-2.0", "AceEvent-2.0", "AceModuleCore-2.0")
 Grid:RegisterDB("GridDB")
 Grid.debugFrame = ChatFrame2
-Grid.isTBC = string.find(GetBuildInfo(), "^2%.")
+Grid.isTBC = loadstring("return function(...) return ... end") and true or false
 
 --{{{ AceOptions table
 
