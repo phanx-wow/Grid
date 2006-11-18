@@ -3,7 +3,6 @@
 
 --{{{ Libraries
 
-local Compost = AceLibrary("Compost-2.0")
 local RL = AceLibrary("RosterLib-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 

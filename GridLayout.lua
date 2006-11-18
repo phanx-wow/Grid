@@ -3,7 +3,11 @@
 
 --{{{ Libraries
 
-local Compost = AceLibrary("Compost-2.0")
+local Compost
+if not Grid.isTBC then
+	Compost = AceLibrary("Compost-2.0")
+end
+
 local AceOO = AceLibrary("AceOO-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
@@ -478,7 +482,7 @@ GridLayout.layoutHeaderClass = GridLayoutHeaderClass
 
 function GridLayout:OnInitialize()
 	self.super.OnInitialize(self)
-	self.layoutGroups = Compost:Acquire()
+	self.layoutGroups = Compost and Compost:Acquire() or {}
 end
 
 function GridLayout:OnEnable()

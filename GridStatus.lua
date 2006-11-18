@@ -2,7 +2,11 @@
 
 --{{{ Libraries
 
-local Compost = AceLibrary("Compost-2.0")
+local Compost
+if not Grid.isTBC then
+	Compost = AceLibrary("Compost-2.0")
+end
+
 local RL = AceLibrary("RosterLib-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
@@ -179,9 +183,9 @@ GridStatus.options = {
 
 function GridStatus:OnInitialize()
 	self.super.OnInitialize(self)
-	self.registry = Compost:Acquire()
-	self.registryDescriptions = Compost:Acquire()
-	self.cache = Compost:Acquire()
+	self.registry = Compost and Compost:Acquire() or {}
+	self.registryDescriptions = Compost and Compost:Acquire() or {}
+	self.cache = Compost and Compost:Acquire() or {}
 end
 
 --{{{ Status registry
@@ -253,11 +257,11 @@ function GridStatus:SendStatusGained(name, status, priority, range, color, text,
 
 	-- create cache for unit if needed
 	if not self.cache[name] then
-		self.cache[name] = Compost:Acquire()
+		self.cache[name] = Compost and Compost:Acquire() or {}
 	end
 
 	if not self.cache[name][status] then
-		self.cache[name][status] = Compost:Acquire()
+		self.cache[name][status] = Compost and Compost:Acquire() or {}
 	end
 
 	cached = self.cache[name][status]
@@ -297,7 +301,7 @@ function GridStatus:SendStatusLost(name, status)
 		return
 	end
 
-	Compost:Reclaim(self.cache[name][status])
+	if Compost then Compost:Reclaim(self.cache[name][status]) end
 	self.cache[name][status] = nil
 
 	self:TriggerEvent("Grid_StatusLost", name, status)

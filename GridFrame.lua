@@ -2,7 +2,11 @@
 
 --{{{ Libraries
 
-local Compost = AceLibrary("Compost-2.0")
+local Compost
+if not Grid.isTBC then
+	Compost =  AceLibrary("Compost-2.0")
+end
+
 local AceOO = AceLibrary("AceOO-2.0")
 local RL = AceLibrary("RosterLib-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
@@ -516,8 +520,8 @@ function GridFrame:OnInitialize()
 	self.super.OnInitialize(self)
 	self.debugging = self.db.profile.debug
 
-	self.frames = Compost:Acquire()
-	self.registeredFrames = Compost:Acquire()
+	self.frames = Compost and Compost:Acquire() or {}
+	self.registeredFrames = Compost and Compost:Acquire() or {}
 end
 
 function GridFrame:OnEnable()
