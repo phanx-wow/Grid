@@ -177,6 +177,7 @@ function GridStatusAuras:OptionsForStatus(status)
 	}
 
 	for class,name in pairs(classes) do
+		local class,name = class,name
 		auraOptions.class.args[class] = {
 			type = "toggle",
 			name = name,
