@@ -43,6 +43,7 @@ libs\Gratuity-2.0\Gratuity-2.0.lua
 libs\SpecialEvents-Aura-2.0\SpecialEvents-Aura-2.0.lua
 libs\Banzai-1.0\Banzai-1.0.lua
 libs\Babble-Spell-2.2\Babble-Spell-2.2.lua
+libs\Babble-Class-2.2\Babble-Class-2.2.lua
 
 #Locales
 GridLocale-enUS.lua

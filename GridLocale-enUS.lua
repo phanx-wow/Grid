@@ -132,6 +132,9 @@ local strings_enUS = {
 	["Remove %s from the menu"] = true,
 	["Debuff: "] = true,
 	["Buff: "] = true,
+	["Class Filter"] = true,
+	["Show status for the selected classes."] = true,
+	["Show on %s."] = true,
 
 	--}}}
 	--{{{ GridStatusName

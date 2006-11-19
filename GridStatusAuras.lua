@@ -4,6 +4,7 @@ local Aura = AceLibrary("SpecialEvents-Aura-2.0")
 local Dewdrop = AceLibrary("Dewdrop-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local BS = AceLibrary("Babble-Spell-2.2")
+local BC = AceLibrary("Babble-Class-2.2")
 
 --}}}
 
@@ -156,31 +157,30 @@ function GridStatusAuras:OptionsForStatus(status)
 	local auraOptions = {
 		["class"] = {
 			type = "group",
-			name = "Class Filter",
-			desc = "Show status for the selected classes.",
+			name = L["Class Filter"],
+			desc = L["Show status for the selected classes."],
 			order = 111,
 			args = {},
 		}
 	}
 
 	local classes = {
-		warrior = "Warrior",
-		priest = "Priest",
-		druid = "Druid",
-		paladin = "Paladin",
-		shaman = "Shaman",
-		mage = "Mage",
-		warlock = "Warlock",
-		hunter = "Hunter",
-		rogue = "Rogue",
+		warrior = BC["Warrior"],
+		priest = BC["Priest"],
+		druid = BC["Druid"],
+		paladin = BC["Paladin"],
+		shaman = BC["Shaman"],
+		mage = BC["Mage"],
+		warlock = BC["Warlock"],
+		hunter = BC["Hunter"],
+		rogue = BC["Rogue"],
 	}
-		
 
 	for class,name in pairs(classes) do
 		auraOptions.class.args[class] = {
 			type = "toggle",
 			name = name,
-			desc = string.format("Show on %s.", name),
+			desc = string.format(L["Show on %s."], name),
 			get = function ()
 				      return GridStatusAuras.db.profile[status][class] ~= false
 			      end,
