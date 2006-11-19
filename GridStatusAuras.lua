@@ -114,7 +114,7 @@ function GridStatusAuras:RegisterStatuses()
 		if type(statusTbl) == "table" and statusTbl.text then
 			desc = statusTbl.desc or statusTbl.text
 			self:Debug("registering", status, desc)
-			self:RegisterStatus(status, desc)
+			self:RegisterStatus(status, desc, self:OptionsForStatus(status))
 		end
 	end
 end
@@ -148,6 +148,49 @@ function GridStatusAuras:Reset()
 	self:UnregisterStatuses()
 	self:RegisterStatuses()
 	self:CreateAddRemoveOptions()
+end
+
+
+function GridStatusAuras:OptionsForStatus(status)
+
+	local auraOptions = {
+		["class"] = {
+			type = "group",
+			name = "Class Filter",
+			desc = "Show status for the selected classes.",
+			order = 111,
+			args = {},
+		}
+	}
+
+	local classes = {
+		warrior = "Warrior",
+		priest = "Priest",
+		druid = "Druid",
+		paladin = "Paladin",
+		shaman = "Shaman",
+		mage = "Mage",
+		warlock = "Warlock",
+		hunter = "Hunter",
+		rogue = "Rogue",
+	}
+		
+
+	for class,name in pairs(classes) do
+		auraOptions.class.args[class] = {
+			type = "toggle",
+			name = name,
+			desc = string.format("Show on %s.", name),
+			get = function ()
+				      return GridStatusAuras.db.profile[status][class] ~= false
+			      end,
+			set = function (v)
+				      GridStatusAuras.db.profile[status][class] = v
+			      end,
+		}
+	end
+
+	return auraOptions
 end
 
 
@@ -216,7 +259,7 @@ function GridStatusAuras:AddAura(name, isBuff)
 		["color"] = { r = .5, g = .5, b = .5, a = 1 },
 	}
 
-	self:RegisterStatus(status, desc)
+	self:RegisterStatus(status, desc, self:OptionsForStatus(status))
 	self:CreateAddRemoveOptions()
 end
 
@@ -244,6 +287,10 @@ function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type
 	end
 
 	if not (settings and settings.enable) then return end
+
+	local _, class = UnitClass(unit)
+
+	if settings[strlower(class)] == false then return end
 
 	self:Debug(unit, "gained", status, debuffNameStatus)
 
@@ -281,6 +328,10 @@ function GridStatusAuras:SpecialEvents_UnitBuffGained(unit, buff, apps, type, te
 	local buffNameStatus = statusForSpell(buff, true)
 	local settings = self.db.profile[buffNameStatus]
 	if not (settings and settings.enable) then return end
+
+	local _, class = UnitClass(unit)
+
+	if settings[strlower(class)] == false then return end
 
 	-- SE-Aura doesn't give the texture for buffs?
 	if not tex then
