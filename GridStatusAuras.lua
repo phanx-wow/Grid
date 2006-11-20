@@ -245,6 +245,12 @@ function GridStatusAuras:AddAura(name, isBuff)
 	local status = statusForSpell(name, isBuff)
 	local desc
 
+	-- status already exists
+	if self.db.profile[status] then
+		self:Debug("AddAura failed, status exists!", name, status)
+		return
+	end
+
 	if isBuff then
 		desc = L["Buff: "]..name
 	else

@@ -13,6 +13,15 @@ local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 --}}}
 
+--{{{ Frame config function for secure headers
+
+function GridLayout_InitialConfigFunction(frame)
+	frame:SetAttribute("initial-width", GridFrame:GetFrameSize())
+	frame:SetAttribute("initial-height", GridFrame:GetFrameSize())
+end
+
+--}}}
+
 --{{{ Class for party header
 
 local GridLayoutPartyClass = AceOO.Class()
@@ -30,6 +39,7 @@ function GridLayoutPartyClass.prototype:CreateFrames()
 		self.playerFrame = CreateFrame("Button", "GridLayoutPartyPlayer", GridLayoutParty, "GridFrameTemplateSecure")
 		self.partyFrame = CreateFrame("Frame", "GridLayoutPartyHeader", GridLayoutParty, "SecurePartyHeaderTemplate")
 		self.partyFrame:SetAttribute("template", "GridFrameTemplateSecure")
+		self.partyFrame.initialConfigFunction = GridLayout_InitialConfigFunction
 	else
 		self.playerFrame = CreateFrame("Button", "GridLayoutPartyPlayer", GridLayoutParty, "GridFrameTemplate")
 		self.partyFrame = CreateFrame("Frame", "GridLayoutPartyHeader", GridLayoutParty, "InsecurePartyHeaderTemplate")
@@ -161,6 +171,7 @@ function GridLayoutHeaderClass.prototype:CreateFrames()
 	if Grid.isTBC then
 		self.frame = CreateFrame("Frame", "GridLayoutHeader"..NUM_HEADERS, GridLayoutFrame, "SecureRaidGroupHeaderTemplate")
 		self.frame:SetAttribute("template", "GridFrameTemplateSecure")
+		self.partyFrame.initialConfigFunction = GridLayout_InitialConfigFunction
 	else
 		self.frame = CreateFrame("Frame", "GridLayoutHeader"..NUM_HEADERS, GridLayoutFrame, "InsecureRaidGroupHeaderTemplate")
 		self.frame:SetScript("OnAttributeChanged", InsecureRaidGroupHeader_OnAttributeChanged)
@@ -678,7 +689,7 @@ function GridLayout:DelayedUpdateSize()
 	self:ScheduleEvent("GridLayoutUpdateSize", function ()
 			GridLayout:Debug("Grid_UpdateSize")
 			GridLayout:UpdateSize()
-		end, 0.1)
+		end, 0.2)
 end
 
 function GridLayout:Grid_UpdateSort()
@@ -690,6 +701,9 @@ end
 
 -- since we may want to resize the grid while in combat, this function doesn't
 -- move/hide/show any of the layout groups
+--
+-- I don't think this works in combat since the secure headers are parented to
+-- the layout frame
 function GridLayout:UpdateSize()
 	local layoutGroup
 	local groupCount = 0
