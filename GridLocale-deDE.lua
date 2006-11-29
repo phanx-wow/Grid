@@ -132,6 +132,9 @@ local strings_deDE = {
 	["Remove %s from the menu"] = "Entfernt %s vom Men\195\188",
 	["Debuff: "] = "Schw\195\164chungszauber: ",
 	["Buff: "] = "St\195\164rkungszauber: ",
+	["Class Filter"] = "Klassenfilter",
+	["Show status for the selected classes."] = "Zeige den Status f\195\188r die ausgw\195\164hlte Klasse",
+	["Show on %s."] = "Zeige %s.",
 
 	--}}}
 	--{{{ GridStatusName
