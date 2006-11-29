@@ -47,7 +47,10 @@ if Grid.isTBC then
 			if sName and IsSpellInRange(i, "spell", "player") ~= nil then
 				gratuity:SetSpell(i, BOOKTYPE_SPELL)
 				_, _, sRange = gratuity:Find(L["(%d+) yd range"], 2, 2)
-				addRange(tonumber(sRange), function (unit) return IsSpellInRange(sIndex, "spell", unit) == 1 end)
+				if sRange then
+					addRange(tonumber(sRange),
+						 function (unit) return IsSpellInRange(sIndex, "spell", unit) == 1 end)
+				end
 				self:Debug(string.format("%d %s (%s) has range %s", sIndex, sName, sRank, sRange))
 			end
 			i = i + 1
@@ -88,4 +91,3 @@ function GridRange:GetUnitRange(unit)
 	-- no check succeeded
 	return nil
 end
-
