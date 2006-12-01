@@ -15,17 +15,6 @@ local GridRange = GridRange
 --}}}
 
 --{{{  locals
-local indicators = {
-	{ type = "border",     name = L["Border"] },
-	{ type = "bar",        name = L["Health Bar"] },
-	{ type = "text",       name = L["Center Text"] },
-	{ type = "icon",       name = L["Center Icon"] },
-	{ type = "corner4",    name = L["Top Left Corner"] },
-	{ type = "corner3",    name = L["Top Right Corner"] },
-	{ type = "corner1",    name = L["Bottom Left Corner"] },
-	{ type = "corner2",    name = L["Bottom Right Corner"] },
-	{ type = "frameAlpha", name = L["Frame Alpha"] },
-}
 
 --}}}
 --{{{ FrameXML functions
@@ -106,6 +95,19 @@ end
 
 local GridFrameClass = AceOO.Class("AceEvent-2.0", "AceDebug-2.0")
 
+-- used by GridFrame:UpdateOptionsMenu()
+GridFrameClass.prototype.indicators = {
+	{ type = "border",     name = L["Border"] },
+	{ type = "bar",        name = L["Health Bar"] },
+	{ type = "text",       name = L["Center Text"] },
+	{ type = "icon",       name = L["Center Icon"] },
+	{ type = "corner4",    name = L["Top Left Corner"] },
+	{ type = "corner3",    name = L["Top Right Corner"] },
+	{ type = "corner1",    name = L["Bottom Left Corner"] },
+	{ type = "corner2",    name = L["Bottom Right Corner"] },
+	{ type = "frameAlpha", name = L["Frame Alpha"] },
+}
+
 -- frame is passed from GridFrame_OnLoad()
 -- the GridFrameClass constructor takes over the frame that was created by CreateFrame()
 function GridFrameClass.prototype:init(frame)
@@ -116,7 +118,7 @@ function GridFrameClass.prototype:init(frame)
 end
 
 function GridFrameClass.prototype:Reset()
-	for _,indicator in ipairs(indicators) do
+	for _,indicator in ipairs(self.indicators) do
 		self:ClearIndicator(indicator.type)
 	end
 end
@@ -661,63 +663,67 @@ end
 --}}}
 
 function GridFrame:UpdateOptionsMenu()
-	local menu = self.options.args
-	local k, indicator, status, descr, indicatorMenu
-
 	self:Debug("UpdateOptionsMenu()")
 
-	for k,indicator in ipairs(indicators) do
-		-- create menu for indicator
-		if not menu[indicator.type] then
-			menu[indicator.type] = {
-				type = "group",
-				name = indicator.name,
-				desc = string.format(L["Options for %s indicator."], indicator.name),
-				order = 50 + k,
-				args = {
-					["StatusesHeader"] = {
-						type = "header",
-						name = L["Statuses"],
-						order = 1,
-					},
+	for k,indicator in ipairs(self.frameClass.prototype.indicators) do
+		self:UpdateOptionsForIndicator(indicator.type, indicator.name)
+	end
+end
+
+function GridFrame:UpdateOptionsForIndicator(indicator, name)
+	local menu = self.options.args
+	local status, descr, indicatorMenu
+
+	-- create menu for indicator
+	if not menu[indicator] then
+		menu[indicator] = {
+			type = "group",
+			name = name,
+			desc = string.format(L["Options for %s indicator."], name),
+			order = 50 + k,
+			args = {
+				["StatusesHeader"] = {
+					type = "header",
+					name = L["Statuses"],
+					order = 1,
 				},
+			},
+		}
+	end
+
+	indicatorMenu = menu[indicator].args
+
+	-- remove statuses that are not registered
+	for status,_ in pairs(indicatorMenu) do
+		if status ~= "StatusesHeader" and not GridStatus:IsStatusRegistered(status) then
+			indicatorMenu[status] = nil
+			self:Debug("Removed", indicator, status)
+		end
+	end
+
+	-- create entry for each registered status
+	for status, _, descr in GridStatus:RegisteredStatusIterator() do
+		-- needs to be local for the get/set closures
+		local indicatorType = indicator
+		local statusKey = status
+		
+		-- self:Debug(indicator.type, status)
+		
+		if not indicatorMenu[status] then
+			indicatorMenu[status] = {
+				type = "toggle",
+				name = descr,
+				desc = L["Toggle status display."],
+				get = function ()
+					      return GridFrame.db.profile.statusmap[indicatorType][statusKey]
+				      end,
+				set = function (v)
+					      GridFrame.db.profile.statusmap[indicatorType][statusKey] = v
+					      GridFrame:UpdateAllFrames()
+				      end,
 			}
-		end
-
-		indicatorMenu = menu[indicator.type].args
-
-		-- remove statuses that are not registered
-		for status,_ in pairs(indicatorMenu) do
-			if status ~= "StatusesHeader" and not GridStatus:IsStatusRegistered(status) then
-				indicatorMenu[status] = nil
-				self:Debug("Removed", indicator.type, status)
-			end
-		end
-
-		-- create entry for each registered status
-		for status, _, descr in GridStatus:RegisteredStatusIterator() do
-			-- needs to be local for the get/set closures
-			local indicatorType = indicator.type
-			local statusKey = status
 			
-			-- self:Debug(indicator.type, status)
-
-			if not indicatorMenu[status] then
-				indicatorMenu[status] = {
-					type = "toggle",
-					name = descr,
-					desc = L["Toggle status display."],
-					get = function ()
-						      return GridFrame.db.profile.statusmap[indicatorType][statusKey]
-					      end,
-					set = function (v)
-						      GridFrame.db.profile.statusmap[indicatorType][statusKey] = v
-						      GridFrame:UpdateAllFrames()
-					      end,
-				}
-
-				-- self:Debug("Added", indicator.type, status)
-			end
+			-- self:Debug("Added", indicator.type, status)
 		end
 	end
 end

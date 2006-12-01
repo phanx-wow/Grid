@@ -50,8 +50,8 @@ if Grid.isTBC then
 				if sRange then
 					addRange(tonumber(sRange),
 						 function (unit) return IsSpellInRange(sIndex, "spell", unit) == 1 end)
+					self:Debug(string.format("%d %s (%s) has range %s", sIndex, sName, sRank, sRange))
 				end
-				self:Debug(string.format("%d %s (%s) has range %s", sIndex, sName, sRank, sRange))
 			end
 			i = i + 1
 		until not sName
