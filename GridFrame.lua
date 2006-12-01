@@ -97,15 +97,15 @@ local GridFrameClass = AceOO.Class("AceEvent-2.0", "AceDebug-2.0")
 
 -- used by GridFrame:UpdateOptionsMenu()
 GridFrameClass.prototype.indicators = {
-	{ type = "border",     name = L["Border"] },
-	{ type = "bar",        name = L["Health Bar"] },
-	{ type = "text",       name = L["Center Text"] },
-	{ type = "icon",       name = L["Center Icon"] },
-	{ type = "corner4",    name = L["Top Left Corner"] },
-	{ type = "corner3",    name = L["Top Right Corner"] },
-	{ type = "corner1",    name = L["Bottom Left Corner"] },
-	{ type = "corner2",    name = L["Bottom Right Corner"] },
-	{ type = "frameAlpha", name = L["Frame Alpha"] },
+	{ type = "border",     order = 1,  name = L["Border"] },
+	{ type = "bar",        order = 2,  name = L["Health Bar"] },
+	{ type = "text",       order = 3,  name = L["Center Text"] },
+	{ type = "icon",       order = 4,  name = L["Center Icon"] },
+	{ type = "corner4",    order = 5,  name = L["Top Left Corner"] },
+	{ type = "corner3",    order = 6,  name = L["Top Right Corner"] },
+	{ type = "corner1",    order = 7,  name = L["Bottom Left Corner"] },
+	{ type = "corner2",    order = 8,  name = L["Bottom Right Corner"] },
+	{ type = "frameAlpha", order = 9,  name = L["Frame Alpha"] },
 }
 
 -- frame is passed from GridFrame_OnLoad()
@@ -665,12 +665,12 @@ end
 function GridFrame:UpdateOptionsMenu()
 	self:Debug("UpdateOptionsMenu()")
 
-	for k,indicator in ipairs(self.frameClass.prototype.indicators) do
-		self:UpdateOptionsForIndicator(indicator.type, indicator.name)
+	for _,indicator in ipairs(self.frameClass.prototype.indicators) do
+		self:UpdateOptionsForIndicator(indicator.type, indicator.name, indicator.order)
 	end
 end
 
-function GridFrame:UpdateOptionsForIndicator(indicator, name)
+function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
 	local menu = self.options.args
 	local status, descr, indicatorMenu
 
@@ -680,7 +680,7 @@ function GridFrame:UpdateOptionsForIndicator(indicator, name)
 			type = "group",
 			name = name,
 			desc = string.format(L["Options for %s indicator."], name),
-			order = 50,
+			order = 50 + (order or 0),
 			args = {
 				["StatusesHeader"] = {
 					type = "header",
