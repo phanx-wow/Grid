@@ -680,7 +680,7 @@ function GridFrame:UpdateOptionsForIndicator(indicator, name)
 			type = "group",
 			name = name,
 			desc = string.format(L["Options for %s indicator."], name),
-			order = 50 + k,
+			order = 50,
 			args = {
 				["StatusesHeader"] = {
 					type = "header",
