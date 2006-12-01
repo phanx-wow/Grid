@@ -132,6 +132,9 @@ local strings_zhCN = {
 	["Remove %s from the menu"] = "从列表中移除%s",
 	["Debuff: "] = "Debuff：",
 	["Buff: "] = "Buff：",
+	["Class Filter"] = "职业过滤",
+	["Show status for the selected classes."] = "显示选定职业的状态",
+	["Show on %s."] = "在%s上显示",
 
 	--}}}
 	--{{{ GridStatusName
@@ -149,9 +152,9 @@ local strings_zhCN = {
 	--{{{ GridStatusHeals
 	["Heals"] = "治疗",
 	["Incoming heals"] = "正被治疗",
-	["(.+) begins to cast (.+)."] = "(.+)开始施放(.+)",
-	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = "(.+)从(.+)的生命分流获得了(.+)点法力值",
-	["^Corpse of (.+)$"] = "^(.+)的尸体$",
+	["(.+) begins to cast (.+)."] = "(.+)开始施放(.+)。",
+	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = "(.+)从(.+)的生命分流获得了(.+)点法力值。",
+	["^Corpse of (.+)$"] = "^(.+)的尸体。$",
 	
 	--}}}
 	--{{{ GridStatusHealth
