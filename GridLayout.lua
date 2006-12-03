@@ -171,7 +171,7 @@ function GridLayoutHeaderClass.prototype:CreateFrames()
 	if Grid.isTBC then
 		self.frame = CreateFrame("Frame", "GridLayoutHeader"..NUM_HEADERS, GridLayoutFrame, "SecureRaidGroupHeaderTemplate")
 		self.frame:SetAttribute("template", "GridFrameTemplateSecure")
-		self.partyFrame.initialConfigFunction = GridLayout_InitialConfigFunction
+		self.frame.initialConfigFunction = GridLayout_InitialConfigFunction
 	else
 		self.frame = CreateFrame("Frame", "GridLayoutHeader"..NUM_HEADERS, GridLayoutFrame, "InsecureRaidGroupHeaderTemplate")
 		self.frame:SetScript("OnAttributeChanged", InsecureRaidGroupHeader_OnAttributeChanged)
