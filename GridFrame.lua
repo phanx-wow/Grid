@@ -118,7 +118,7 @@ function GridFrameClass.prototype:CreateFrames()
 	-- create center text
 	f.Text = f.Bar:CreateFontString(nil, "ARTWORK")
 	f.Text:SetFontObject(GameFontHighlightSmall)
-	f.Text:SetFont(STANDARD_TEXT_FONT,8)
+	f.Text:SetFont(STANDARD_TEXT_FONT,GridFrame.db.profile.fontSize)
 	f.Text:SetJustifyH("CENTER")
 	f.Text:SetJustifyV("CENTER")
 	f.Text:SetPoint("BOTTOM", f, "CENTER")
@@ -126,7 +126,7 @@ function GridFrameClass.prototype:CreateFrames()
 	-- create center text2
 	f.Text2 = f.Bar:CreateFontString(nil, "ARTWORK")
 	f.Text2:SetFontObject(GameFontHighlightSmall)
-	f.Text2:SetFont(STANDARD_TEXT_FONT,8)
+	f.Text2:SetFont(STANDARD_TEXT_FONT,GridFrame.db.profile.fontSize)
 	f.Text2:SetJustifyH("CENTER")
 	f.Text2:SetJustifyV("CENTER")
 	f.Text2:SetPoint("TOP", f, "CENTER")
@@ -134,8 +134,8 @@ function GridFrameClass.prototype:CreateFrames()
 	
 	-- create icon
 	f.Icon = f.Bar:CreateTexture("Icon", "OVERLAY")
-	f.Icon:SetWidth(16)
-	f.Icon:SetHeight(16)
+	f.Icon:SetWidth(GridFrame.db.profile.iconSize)
+	f.Icon:SetHeight(GridFrame.db.profile.iconSize)
 	f.Icon:SetPoint("CENTER", f, "CENTER")
 	f.Icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
 	f.Icon:SetTexture(1,1,1,0)
@@ -148,6 +148,7 @@ function GridFrameClass.prototype:CreateFrames()
 
 	self:SetWidth(GridFrame:GetFrameWidth())
 	self:SetHeight(GridFrame:GetFrameHeight())
+	self:SetOrientation(GridFrame.db.profile.orientation)
 	
 	-- set up click casting
 	ClickCastFrames = ClickCastFrames or {}
@@ -171,10 +172,10 @@ function GridFrameClass.prototype:SetWidth(width)
 	f:SetWidth(width)
 	f.Bar:SetWidth(width-4)
 	f.BarBG:SetWidth(width-4)
-	f.Icon:SetWidth(16)
 
-	f.Text:SetWidth(width)
-	f.Text2:SetWidth(width)
+	self:SetOrientation(f.Bar:GetOrientation())
+	--f.Text:SetWidth(width)
+	--f.Text2:SetWidth(width)
 end
 
 function GridFrameClass.prototype:SetHeight(height)
@@ -184,9 +185,12 @@ function GridFrameClass.prototype:SetHeight(height)
 	f.BarBG:SetHeight(height-4)
 	--f.Text:SetHeight(height-4)
 	--f.Text2:SetHeight(height-4)
-	f.Icon:SetHeight(16)
+end
 
-	if height < 20 then
+function GridFrameClass.prototype:SetOrientation(orientation)
+	local f = self.frame
+
+	if orientation == "HORIZONTAL" then
 		f.Bar:SetOrientation("HORIZONTAL")
 
 		f.Text:SetWidth(f.Bar:GetWidth()/2)
@@ -215,6 +219,27 @@ function GridFrameClass.prototype:SetHeight(height)
 		f.Text2:ClearAllPoints()
 		f.Text2:SetPoint("TOP", f, "CENTER")
 	end
+end
+
+function GridFrameClass.prototype:SetCornerSize(size)
+	for x = 1, 4 do
+		local corner = "corner"..x;
+		if self.frame[corner] then
+			self.frame[corner]:SetHeight(size)
+			self.frame[corner]:SetWidth(size)
+		end
+	end
+end
+
+function GridFrameClass.prototype:SetIconSize(size)
+	local f = self.frame
+	f.Icon:SetWidth(size)
+	f.Icon:SetHeight(size)
+end
+
+function GridFrameClass.prototype:SetFontSize(size)
+	self.frame.Text:SetFont(STANDARD_TEXT_FONT,size)
+	self.frame.Text2:SetFont(STANDARD_TEXT_FONT,size)
 end
 
 function GridFrameClass.prototype:OnLeave()
@@ -308,8 +333,8 @@ end
 function GridFrameClass.prototype:CreateIndicator(indicator)
 
 	self.frame[indicator] = CreateFrame("Frame", nil, self.frame)
-	self.frame[indicator]:SetWidth(5)
-	self.frame[indicator]:SetHeight(5)
+	self.frame[indicator]:SetWidth(GridFrame:GetCornerSize())
+	self.frame[indicator]:SetHeight(GridFrame:GetCornerSize())
 	self.frame[indicator]:SetBackdrop( {
 				      bgFile = "Interface\\Addons\\Grid\\white16x16", tile = true, tileSize = 16,
 				      edgeFile = "Interface\\Addons\\Grid\\white16x16", edgeSize = 1,
@@ -426,6 +451,10 @@ GridFrame.frameClass = GridFrameClass
 GridFrame.defaultDB = {
 	frameHeight = 26,
 	frameWidth = 26,
+	cornerSize = 5,
+	orientation = "VERTICAL",
+	fontSize = 8,
+	iconSize = 16,
 	debug = false,
 	invertBarColor = false,
 	showTooltip = L["OOC"],
@@ -575,6 +604,64 @@ GridFrame.options = {
 						      GridFrame:ResizeAllFrames()
 					      end,
 				},
+				["cornersize"] = {
+					type = "range",
+					name = L["Corner Size"],
+					desc = L["Adjust the size of the corner indicators."],
+					min = 1,
+					max = 20,
+					step = 1,
+					get = function ()
+						      return GridFrame.db.profile.cornerSize
+					      end,
+					set = function (v)
+						      GridFrame.db.profile.cornerSize = v
+						      GridFrame:WithAllFrames(function (f) f:SetCornerSize(v) end)
+					      end,
+				},
+				["iconsize"] = {
+					type = "range",
+					name = L["Icon Size"],
+					desc = L["Adjust the size of the center icon."],
+					min = 5,
+					max = 50,
+					step = 1,
+					get = function ()
+						      return GridFrame.db.profile.iconSize
+					      end,
+					set = function (v)
+						      GridFrame.db.profile.iconSize = v
+						      GridFrame:WithAllFrames(function (f) f:SetIconSize(v) end)
+					      end,
+				},
+				["fontsize"] = {
+					type = "range",
+					name = L["Font Size"],
+					desc = L["Adjust the font size."],
+					min = 6,
+					max = 24,
+					step = 1,
+					get = function ()
+						      return GridFrame.db.profile.fontSize
+					      end,
+					set = function (v)
+						      GridFrame.db.profile.fontSize = v
+						      GridFrame:WithAllFrames(function (f) f:SetFontSize(v) end)
+					      end,
+				},
+				["orientation"] = {
+					type = "text",
+					name = L["Orientation"],
+					desc = L["Set frame orientation."],
+					get = function ()
+						      return GridFrame.db.profile.orientation
+						end,
+					set = function (v)
+						      GridFrame.db.profile.orientation = v
+						      GridFrame:WithAllFrames(function (f) f:SetOrientation(v) end)
+						end,
+					validate = { "VERTICAL", "HORIZONTAL" }
+				},
 			},
 		},
 	},
@@ -617,30 +704,37 @@ function GridFrame:RegisterFrame(frame)
 	self.registeredFrames[frame:GetName()] = self.frameClass:new(frame)
 end
 
-function GridFrame:ResizeAllFrames()
+function GridFrame:WithAllFrames(func)
 	local frameName, frame
 	for frameName,frame in pairs(self.registeredFrames) do
-		frame:SetWidth(self:GetFrameWidth())
-		frame:SetHeight(self:GetFrameHeight())
+		func(frame)
 	end
+end
+
+function GridFrame:ResizeAllFrames()
+	self:WithAllFrames(
+		function (f)
+			f:SetWidth(self:GetFrameWidth())
+			f:SetHeight(self:GetFrameHeight())
+		end)
 
 	self:TriggerEvent("Grid_UpdateSort")
 end
 
 function GridFrame:UpdateAllFrames()
-	local frameName, frame
-	for frameName,frame in pairs(self.registeredFrames) do
-		if frame.unit then
-			GridFrame:UpdateIndicators(frame)
-		end
-	end
+	self:WithAllFrames(
+		function (f)
+			if f.unit then
+				GridFrame:UpdateIndicators(f)
+			end
+		end)
 end
 
 function GridFrame:InvertBarColor()
-	local frame
-	for _, frame in pairs(self.registeredFrames) do
-		frame:InvertBarColor()
-	end
+	self:WithAllFrames(
+		function (f)
+			frame:InvertBarColor()
+		end)
 end
 
 function GridFrame:GetFrameWidth()
@@ -649,6 +743,10 @@ end
 
 function GridFrame:GetFrameHeight()
 	return self.db.profile.frameHeight
+end
+
+function GridFrame:GetCornerSize()
+	return self.db.profile.cornerSize
 end
 
 function GridFrame:UpdateIndicators(frame)

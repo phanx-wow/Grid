@@ -45,6 +45,14 @@ local strings_enUS = {
 	["Adjust the width of each unit's frame."] = true,
 	["Frame Height"] = true,
 	["Adjust the height of each unit's frame."] = true,
+	["Corner Size"] = true,
+	["Adjust the size of the corner indicators."] = true,
+	["Font Size"] = true,
+	["Adjust the font size."] = true,
+	["Orientation"] = true,
+	["Set frame orientation."] = true,
+	["Icon Size"] = true,
+	["Adjust the size of the center icon."] = true,
 
 	--}}}
 	--{{{ GridLayout
