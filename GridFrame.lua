@@ -784,19 +784,36 @@ function GridFrame:StatusForIndicator(unitid, indicator)
 	for statusName,enabled in pairs(statusmap) do
 		status = (enabled and GridStatus:GetCachedStatus(name, statusName))
 		if status then
+			local valid = true
+
+			-- make sure the status can be displayed
+			if (indicator == "text" or indicator == "text2") and not status.text then
+				self:Debug("unable to display", statusName, "on", indicator, ": no text")
+				valid = false
+			end
+			if indicator == "icon" and not status.icon then
+				self:Debug("unable to display", statusName, "on", indicator, ": no icon")
+				valid = false
+			end
+
 			if status.range and type(status.range) ~= "number" then
 				self:Debug("range not number for", statusName)
+				valid = false
 			end
-			inRange = not status.range or self:UnitInRange(unitid, status.range)
+
 			if status.priority and type(status.priority) ~= "number" then
 				self:Debug("priority not number for", statusName)
+				valid = false
 			end
-			if type(topPriority) ~= "number" then
-				self:Debug("topPriority not number for", statusName)
-			end
-			if ((status.priority or 99) > topPriority) and inRange then
-				topStatus = status
-				topPriority = topStatus.priority
+
+			-- only check range for valid statuses
+			if valid then
+				inRange = not status.range or self:UnitInRange(unitid, status.range)
+
+				if ((status.priority or 99) > topPriority) and inRange then
+					topStatus = status
+					topPriority = topStatus.priority
+				end
 			end
 		end
 	end
