@@ -198,8 +198,9 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 	local deficitSettings = self.db.profile.unit_healthDeficit
 	local healthText
 	local priority = settings.priority
-	
+
 	if not name then return end
+	if string.find(unitid,"pet") then return end
 
 	if UnitIsDeadOrGhost(unitid) and not self.deathCache[unitid] and not Aura:UnitHasBuff(unitid, "Feign Death") then
 		self:StatusDeath(unitid, true)
