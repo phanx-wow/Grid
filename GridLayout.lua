@@ -334,8 +334,9 @@ GridLayout.options = {
 			desc = L["Locks/unlocks the grid for movement."],
 			order = ORDER_LAYOUT + 5,
 			get = function() return GridLayout.db.profile.FrameLock end,
-			set = function()
-				GridLayout.db.profile.FrameLock = not GridLayout.db.profile.FrameLock
+			set = function(v)
+				GridLayout.db.profile.FrameLock = v
+				GridLayout.frame:EnableMouse(not v)
 			end,
 		},
 
@@ -512,7 +513,7 @@ function GridLayout:Reset()
 end
 
 function GridLayout:StartMoveFrame()
-	if not GridLayout.db.profile.FrameLock and arg1 == "LeftButton" then
+	if not self.db.profile.FrameLock and arg1 == "LeftButton" then
 		self.frame:StartMoving()
 		self.frame.isMoving = true
 	end
@@ -530,7 +531,7 @@ end
 function GridLayout:CreateFrames()
 	-- create main frame to hold all our gui elements
 	local f = CreateFrame("Frame", "GridLayoutFrame", UIParent)
-	f:EnableMouse(true)
+	f:EnableMouse(not self.db.profile.FrameLock)
 	f:SetMovable(true)
 	f:SetClampedToScreen(true)
 	f:SetPoint("CENTER", UIParent, "CENTER")
