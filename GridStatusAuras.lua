@@ -302,7 +302,12 @@ function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type
 	-- unit object
 	if not u or settings[strlower(u.class)] == false then return end
 
-	self:Debug(unit, "gained", status, debuffNameStatus)
+	if not tex then
+		local i, _ = Aura:UnitHasDebuff(unit, debuff)
+		tex = select(3, UnitDebuff(unit, i))
+	end
+
+	self:Debug(unit, "gained", status, debuffNameStatus, tex)
 
 	self.core:SendStatusGained(u.name,
 			status,
@@ -334,7 +339,7 @@ function GridStatusAuras:SpecialEvents_UnitDebuffLost(unit, debuff, apps, type, 
 end
 
 
-function GridStatusAuras:SpecialEvents_UnitBuffGained(unit, buff, apps, type, tex)
+function GridStatusAuras:SpecialEvents_UnitBuffGained(unit, buff)
 	local buffNameStatus = statusForSpell(buff, true)
 	local settings = self.db.profile[buffNameStatus]
 	if not (settings and settings.enable) then return end
@@ -345,10 +350,8 @@ function GridStatusAuras:SpecialEvents_UnitBuffGained(unit, buff, apps, type, te
 	-- unit object
 	if not u or settings[strlower(u.class)] == false then return end
 
-	-- SE-Aura doesn't give the texture for buffs?
-	if not tex then
-		tex = BS:GetSpellIcon(buff)
-	end
+	local tex = select(3, UnitBuff(unit, Aura:UnitHasBuff(unit, buff)))
+
 	self:Debug("gained", buffNameStatus, tex)
 	self.core:SendStatusGained(u.name,
 			buffNameStatus,

@@ -791,8 +791,8 @@ function GridFrame:StatusForIndicator(unitid, indicator)
 				self:Debug("unable to display", statusName, "on", indicator, ": no text")
 				valid = false
 			end
-			if indicator == "icon" and not status.icon then
-				self:Debug("unable to display", statusName, "on", indicator, ": no icon")
+			if indicator == "icon" and not status.texture then
+				self:Debug("unable to display", statusName, "on", indicator, ": no texture")
 				valid = false
 			end
 
