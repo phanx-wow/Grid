@@ -40,51 +40,6 @@ function GridFrame_OnAttributeChanged(self, name, value)
 	end
 end
 
--- 1.12 only
-function GridFrame_OnClick(self, button)
-	local unit
-
-	if self.GetAttribute then
-		unit = self:GetAttribute("unit")
-	else
-		unit = self.a_unit
-	end
-
-	GridFrame:Debug("GridFrame_OnClick", self:GetName(), button, unit, UnitName(unit))
-
-	if unit and not UnitExists(unit) then
-		return
-	end
-
-	if GridCustomClick and GridCustomClick(arg1, unit) then 
-		return
-	elseif button == "LeftButton" then
-		if not UnitExists(unit) then
-			return
-		elseif SpellIsTargeting() then
-			if button == "LeftButton" then
-				SpellTargetUnit(unit)
-			elseif button == "RightButton" then
-				SpellStopTargeting()
-			end
-			return
-		elseif CursorHasItem() then
-			if button == "LeftButton" then
- 				if unit == "player" then
-					AutoEquipCursorItem()
-				else
-					DropItemOnUnit(unit)
-				end
-			else
-				PutItemInBackpack()
-			end
-			return
-		else
-			TargetUnit(unit)
-		end
-	end
-end
-
 --}}}
 --{{{ GridFrameClass
 
@@ -95,12 +50,13 @@ GridFrameClass.prototype.indicators = {
 	{ type = "border",     order = 1,  name = L["Border"] },
 	{ type = "bar",        order = 2,  name = L["Health Bar"] },
 	{ type = "text",       order = 3,  name = L["Center Text"] },
-	{ type = "icon",       order = 4,  name = L["Center Icon"] },
-	{ type = "corner4",    order = 5,  name = L["Top Left Corner"] },
-	{ type = "corner3",    order = 6,  name = L["Top Right Corner"] },
-	{ type = "corner1",    order = 7,  name = L["Bottom Left Corner"] },
-	{ type = "corner2",    order = 8,  name = L["Bottom Right Corner"] },
-	{ type = "frameAlpha", order = 9,  name = L["Frame Alpha"] },
+	{ type = "text2",      order = 4,  name = L["Center Text 2"] },
+	{ type = "icon",       order = 5,  name = L["Center Icon"] },
+	{ type = "corner4",    order = 6,  name = L["Top Left Corner"] },
+	{ type = "corner3",    order = 7,  name = L["Top Right Corner"] },
+	{ type = "corner1",    order = 8,  name = L["Bottom Left Corner"] },
+	{ type = "corner2",    order = 9,  name = L["Bottom Right Corner"] },
+	{ type = "frameAlpha", order = 10, name = L["Frame Alpha"] },
 }
 
 -- frame is passed from GridFrame_OnLoad()
@@ -126,8 +82,6 @@ function GridFrameClass.prototype:CreateFrames()
 	-- f:Hide()
 	f:EnableMouse(true)			
 	f:RegisterForClicks("LeftButtonUp", "RightButtonUp", "MiddleButtonUp", "Button4Up", "Button5Up")
-	f:SetWidth(GridFrame:GetFrameSize())
-	f:SetHeight(GridFrame:GetFrameSize())
 	
 	-- set our left-click action
 	f:SetAttribute("type1", "target")
@@ -150,8 +104,6 @@ function GridFrameClass.prototype:CreateFrames()
 	f.BarBG = f:CreateTexture()
 	f.BarBG:SetTexture("Interface\\Addons\\Grid\\gradient32x32")
 	f.BarBG:SetPoint("CENTER", f, "CENTER")
-	f.BarBG:SetWidth(GridFrame:GetFrameSize()-4)
-	f.BarBG:SetHeight(GridFrame:GetFrameSize()-4)
 
 	-- create bar
 	f.Bar = CreateFrame("StatusBar", nil, f)
@@ -162,8 +114,6 @@ function GridFrameClass.prototype:CreateFrames()
 	f.Bar:SetStatusBarColor(0,0,0,0.8)
 	f.Bar:SetPoint("CENTER", f, "CENTER")
 	f.Bar:SetFrameLevel(4)
-	f.Bar:SetWidth(GridFrame:GetFrameSize()-4)
-	f.Bar:SetHeight(GridFrame:GetFrameSize()-4)
 
 	-- create center text
 	f.Text = f.Bar:CreateFontString(nil, "ARTWORK")
@@ -171,7 +121,16 @@ function GridFrameClass.prototype:CreateFrames()
 	f.Text:SetFont(STANDARD_TEXT_FONT,8)
 	f.Text:SetJustifyH("CENTER")
 	f.Text:SetJustifyV("CENTER")
-	f.Text:SetPoint("CENTER", f, "CENTER")
+	f.Text:SetPoint("BOTTOM", f, "CENTER")
+
+	-- create center text2
+	f.Text2 = f.Bar:CreateFontString(nil, "ARTWORK")
+	f.Text2:SetFontObject(GameFontHighlightSmall)
+	f.Text2:SetFont(STANDARD_TEXT_FONT,8)
+	f.Text2:SetJustifyH("CENTER")
+	f.Text2:SetJustifyV("CENTER")
+	f.Text2:SetPoint("TOP", f, "CENTER")
+	f.Text2:Hide()
 	
 	-- create icon
 	f.Icon = f.Bar:CreateTexture("Icon", "OVERLAY")
@@ -186,6 +145,9 @@ function GridFrameClass.prototype:CreateFrames()
 	f:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
 	
 	self.frame = f
+
+	self:SetWidth(GridFrame:GetFrameWidth())
+	self:SetHeight(GridFrame:GetFrameHeight())
 	
 	-- set up click casting
 	ClickCastFrames = ClickCastFrames or {}
@@ -201,6 +163,57 @@ function GridFrameClass.prototype:OnEnter()
 
 		self.frame.unit = self.unit
 		UnitFrame_OnEnter()
+	end
+end
+
+function GridFrameClass.prototype:SetWidth(width)
+	local f = self.frame
+	f:SetWidth(width)
+	f.Bar:SetWidth(width-4)
+	f.BarBG:SetWidth(width-4)
+	f.Icon:SetWidth(16)
+
+	f.Text:SetWidth(width)
+	f.Text2:SetWidth(width)
+end
+
+function GridFrameClass.prototype:SetHeight(height)
+	local f = self.frame
+	f:SetHeight(height)
+	f.Bar:SetHeight(height-4)
+	f.BarBG:SetHeight(height-4)
+	--f.Text:SetHeight(height-4)
+	--f.Text2:SetHeight(height-4)
+	f.Icon:SetHeight(16)
+
+	if height < 20 then
+		f.Bar:SetOrientation("HORIZONTAL")
+
+		f.Text:SetWidth(f.Bar:GetWidth()/2)
+		f.Text:SetJustifyH("LEFT")
+		f.Text:SetJustifyV("CENTER")
+		f.Text:ClearAllPoints()
+		f.Text:SetPoint("LEFT", f, "LEFT", 2, 0)
+
+		f.Text2:SetWidth(f.Bar:GetWidth()/2)
+		f.Text2:SetJustifyH("RIGHT")
+		f.Text2:SetJustifyV("CENTER")
+		f.Text2:ClearAllPoints()
+		f.Text2:SetPoint("RIGHT", f, "RIGHT", -2, 0)
+	else
+		f.Bar:SetOrientation("VERTICAL")
+
+		f.Text2:SetWidth(f:GetWidth())
+		f.Text:SetJustifyH("CENTER")
+		f.Text:SetJustifyV("CENTER")
+		f.Text:ClearAllPoints()
+		f.Text:SetPoint("BOTTOM", f, "CENTER")
+
+		f.Text2:SetWidth(f:GetWidth())
+		f.Text2:SetJustifyH("CENTER")
+		f.Text2:SetJustifyV("CENTER")
+		f.Text2:ClearAllPoints()
+		f.Text2:SetPoint("TOP", f, "CENTER")
 	end
 end
 
@@ -279,6 +292,19 @@ function GridFrameClass.prototype:SetText(text, color)
 	end
 end
 
+function GridFrameClass.prototype:SetText2(text, color)
+	text = string.sub(text, 1, GridFrame.db.profile.textlength)
+	self.frame.Text2:SetText(text)
+	if text ~= "" then
+		self.frame.Text2:Show()
+	else
+		self.frame.Text2:Hide()
+	end
+	if color then
+		self.frame.Text2:SetTextColor(color.r, color.g, color.b, color.a)
+	end
+end
+
 function GridFrameClass.prototype:CreateIndicator(indicator)
 
 	self.frame[indicator] = CreateFrame("Frame", nil, self.frame)
@@ -323,6 +349,8 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 		self.frame[indicator]:Show()
 	elseif indicator == "text" then
 		self:SetText(text, color)
+	elseif indicator == "text2" then
+		self:SetText2(text, color)
 	elseif indicator == "frameAlpha" then
 		for x = 1, 4 do
 			local corner = "corner"..x;
@@ -366,7 +394,9 @@ function GridFrameClass.prototype:ClearIndicator(indicator)
 			self.frame[indicator]:Hide()
 		end
 	elseif indicator == "text" then
-		self.frame:SetText("")
+		self:SetText("")
+	elseif indicator == "text2" then
+		self:SetText2("")
 	elseif indicator == "frameAlpha" then
 		for x = 1, 4 do
 			local corner = "corner"..x;
@@ -394,7 +424,8 @@ GridFrame.frameClass = GridFrameClass
 --{{{  AceDB defaults
 
 GridFrame.defaultDB = {
-	FrameSize = 26,
+	frameHeight = 26,
+	frameWidth = 26,
 	debug = false,
 	invertBarColor = false,
 	showTooltip = L["OOC"],
@@ -405,6 +436,10 @@ GridFrame.defaultDB = {
 			alert_offline = true,
 			unit_name = true,
 			unit_healthDeficit = true,
+		},
+		["text2"] = {
+			alert_death = true,
+			alert_offline = true,
 		},
 		["border"] = {
 			alert_lowHealth = true,
@@ -502,6 +537,46 @@ GridFrame.options = {
 			name = L["Indicators"],
 			order = 50,
 		},
+
+		["advanced"] = {
+			type = "group",
+			name = "Advanced",
+			desc = "Advanced options.",
+			order = -1,
+			disabled = function () return Grid.inCombat end,
+			args = {
+				["framewidth"] = {
+					type = "range",
+					name = L["Frame Width"],
+					desc = L["Adjust the width of each unit's frame."],
+					min = 10,
+					max = 100,
+					step = 1,
+					get = function ()
+						      return GridFrame.db.profile.frameWidth
+					      end,
+					set = function (v)
+						      GridFrame.db.profile.frameWidth = v
+						      GridFrame:ResizeAllFrames()
+					      end,
+				},
+				["frameheight"] = {
+					type = "range",
+					name = L["Frame Height"],
+					desc = L["Adjust the height of each unit's frame."],
+					min = 10,
+					max = 100,
+					step = 1,
+					get = function ()
+						      return GridFrame.db.profile.frameHeight
+					      end,
+					set = function (v)
+						      GridFrame.db.profile.frameHeight = v
+						      GridFrame:ResizeAllFrames()
+					      end,
+				},
+			},
+		},
 	},
 }
 
@@ -542,6 +617,16 @@ function GridFrame:RegisterFrame(frame)
 	self.registeredFrames[frame:GetName()] = self.frameClass:new(frame)
 end
 
+function GridFrame:ResizeAllFrames()
+	local frameName, frame
+	for frameName,frame in pairs(self.registeredFrames) do
+		frame:SetWidth(self:GetFrameWidth())
+		frame:SetHeight(self:GetFrameHeight())
+	end
+
+	self:TriggerEvent("Grid_UpdateSort")
+end
+
 function GridFrame:UpdateAllFrames()
 	local frameName, frame
 	for frameName,frame in pairs(self.registeredFrames) do
@@ -558,8 +643,12 @@ function GridFrame:InvertBarColor()
 	end
 end
 
-function GridFrame:GetFrameSize()
-	return self.db.profile.FrameSize
+function GridFrame:GetFrameWidth()
+	return self.db.profile.frameWidth
+end
+
+function GridFrame:GetFrameHeight()
+	return self.db.profile.frameHeight
 end
 
 function GridFrame:UpdateIndicators(frame)

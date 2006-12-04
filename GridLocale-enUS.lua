@@ -26,6 +26,7 @@ local strings_enUS = {
 	["Border"] = true,
 	["Health Bar"] = true,
 	["Center Text"] = true,
+	["Center Text 2"] = true,
 	["Center Icon"] = true,
 	["Top Left Corner"] = true,
 	["Top Right Corner"] = true,
@@ -36,6 +37,14 @@ local strings_enUS = {
 	["Options for %s indicator."] = true,
 	["Statuses"] = true,
 	["Toggle status display."] = true,
+
+	-- Advanced options
+	["Advanced"] = true,
+	["Advanced options."] = true,
+	["Frame Width"] = true,
+	["Adjust the width of each unit's frame."] = true,
+	["Frame Height"] = true,
+	["Adjust the height of each unit's frame."] = true,
 
 	--}}}
 	--{{{ GridLayout

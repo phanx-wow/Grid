@@ -11,8 +11,8 @@ local L = AceLibrary("AceLocale-2.2"):new("Grid")
 --{{{ Frame config function for secure headers
 
 function GridLayout_InitialConfigFunction(frame)
-	frame:SetAttribute("initial-width", GridFrame:GetFrameSize())
-	frame:SetAttribute("initial-height", GridFrame:GetFrameSize())
+	frame:SetAttribute("initial-width", GridFrame:GetFrameWidth())
+	frame:SetAttribute("initial-height", GridFrame:GetFrameHeight())
 end
 
 --}}}
