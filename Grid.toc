@@ -14,8 +14,8 @@
 ## DefaultState: enabled
 ## LoadOnDemand: 0
 
-## OptionalDeps: Ace2, Babble-2.2, Clique, CompostLib, CT_RaidAssist, DewdropLib, FuBar, FuBarPlugin-2.0, GratuityLib, JustClick, oRA2, ProximityLib, RosterLib, TabletLib, BanzaiLib, SpecialEventsEmbed
-## X-Embeds: Ace2, Babble-2.2, CompostLib, DewdropLib, FuBarPlugin-2.0, GratuityLib, ProximityLib, RosterLib, TabletLib, BanzaiLib, SpecialEventsEmbed
+## OptionalDeps: Ace2, Babble-2.2, Clique, CT_RaidAssist, DewdropLib, FuBar, FuBarPlugin-2.0, GratuityLib, JustClick, oRA2, ProximityLib, RosterLib, TabletLib, BanzaiLib, SpecialEventsEmbed
+## X-Embeds: Ace2, Babble-2.2, DewdropLib, FuBarPlugin-2.0, GratuityLib, ProximityLib, RosterLib, TabletLib, BanzaiLib, SpecialEventsEmbed
 
 ## SavedVariables: GridDB
 
@@ -27,15 +27,12 @@ libs\AceEvent-2.0\AceEvent-2.0.lua
 libs\AceAddon-2.0\AceAddon-2.0.lua
 libs\AceDB-2.0\AceDB-2.0.lua
 libs\AceHook-2.1\AceHook-2.1.lua
-##libs\AceTab-2.0\AceTab-2.0.lua
+libs\AceTab-2.0\AceTab-2.0.lua
 libs\AceDebug-2.0\AceDebug-2.0.lua
 libs\AceLocale-2.2\AceLocale-2.2.lua
 libs\AceModuleCore-2.0\AceModuleCore-2.0.lua
-libs\AceComm-2.0\AceComm-2.0.lua
 
-libs\Compost-2.0\Compost-2.0.lua
 libs\Dewdrop-2.0\Dewdrop-2.0.lua
-libs\ProximityLib\ProximityLib.lua
 libs\RosterLib-2.0\RosterLib-2.0.lua
 libs\Tablet-2.0\Tablet-2.0.lua
 libs\FuBarPlugin-2.0\FuBarPlugin-2.0.lua
@@ -50,12 +47,6 @@ GridLocale-enUS.lua
 GridLocale-deDE.lua
 GridLocale-frFR.lua
 GridLocale-zhCN.lua
-
-## Backported code from TBC
-TBC\Compat.lua
-TBC\UnitWatch.lua
-TBC\InsecureTemplates.lua
-TBC\InsecureTemplates.xml
 
 # Grid
 GridCore.lua

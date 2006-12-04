@@ -3,11 +3,6 @@
 
 --{{{ Libraries
 
-local Compost
-if not Grid.isTBC then
-	Compost = AceLibrary("Compost-2.0")
-end
-
 local AceOO = AceLibrary("AceOO-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
@@ -35,17 +30,11 @@ end
 function GridLayoutPartyClass.prototype:CreateFrames()
 	self.frame = CreateFrame("Frame", "GridLayoutParty", GridLayoutFrame, nil)
 
-	if Grid.isTBC then
-		self.playerFrame = CreateFrame("Button", "GridLayoutPartyPlayer", GridLayoutParty, "GridFrameTemplateSecure")
-		self.partyFrame = CreateFrame("Frame", "GridLayoutPartyHeader", GridLayoutParty, "SecurePartyHeaderTemplate")
-		self.partyFrame:SetAttribute("template", "GridFrameTemplateSecure")
-		self.partyFrame.initialConfigFunction = GridLayout_InitialConfigFunction
-	else
-		self.playerFrame = CreateFrame("Button", "GridLayoutPartyPlayer", GridLayoutParty, "GridFrameTemplate")
-		self.partyFrame = CreateFrame("Frame", "GridLayoutPartyHeader", GridLayoutParty, "InsecurePartyHeaderTemplate")
-		self.partyFrame:SetScript("OnAttributeChanged", InsecurePartyHeader_OnAttributeChanged)
-		self.partyFrame:SetAttribute("template", "GridFrameTemplate")
-	end
+	self.playerFrame = CreateFrame("Button", "GridLayoutPartyPlayer", GridLayoutParty, "GridFrameTemplateSecure")
+	self.partyFrame = CreateFrame("Frame", "GridLayoutPartyHeader", GridLayoutParty, "SecurePartyHeaderTemplate")
+	self.partyFrame:SetAttribute("template", "GridFrameTemplateSecure")
+	self.partyFrame.initialConfigFunction = GridLayout_InitialConfigFunction
+
 	self.playerFrame:SetAttribute("unit", "player")
 
 	self.playerFrame:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 0, 0)
@@ -168,15 +157,10 @@ end
 
 function GridLayoutHeaderClass.prototype:CreateFrames()
 	NUM_HEADERS = NUM_HEADERS + 1
-	if Grid.isTBC then
-		self.frame = CreateFrame("Frame", "GridLayoutHeader"..NUM_HEADERS, GridLayoutFrame, "SecureRaidGroupHeaderTemplate")
-		self.frame:SetAttribute("template", "GridFrameTemplateSecure")
-		self.frame.initialConfigFunction = GridLayout_InitialConfigFunction
-	else
-		self.frame = CreateFrame("Frame", "GridLayoutHeader"..NUM_HEADERS, GridLayoutFrame, "InsecureRaidGroupHeaderTemplate")
-		self.frame:SetScript("OnAttributeChanged", InsecureRaidGroupHeader_OnAttributeChanged)
-		self.frame:SetAttribute("template", "GridFrameTemplate")
-	end
+
+	self.frame = CreateFrame("Frame", "GridLayoutHeader"..NUM_HEADERS, GridLayoutFrame, "SecureRaidGroupHeaderTemplate")
+	self.frame:SetAttribute("template", "GridFrameTemplateSecure")
+	self.frame.initialConfigFunction = GridLayout_InitialConfigFunction
 end
 
 function GridLayoutHeaderClass.prototype:GetFrameAttribute(name)
@@ -493,7 +477,7 @@ GridLayout.layoutHeaderClass = GridLayoutHeaderClass
 
 function GridLayout:OnInitialize()
 	self.super.OnInitialize(self)
-	self.layoutGroups = Compost and Compost:Acquire() or {}
+	self.layoutGroups = {}
 end
 
 function GridLayout:OnEnable()
@@ -771,7 +755,7 @@ end
 function GridLayout:SavePosition()
 	local f = self.frame
 	local s = f:GetEffectiveScale()
-	local uiScale = Grid.isTBC and UIParent:GetEffectiveScale() or 1
+	local uiScale = UIParent:GetEffectiveScale()
 	local anchor = self.db.profile.anchor
 
 	local x, y, relativePoint
@@ -817,7 +801,7 @@ function GridLayout:SavePosition()
 end
 
 function GridLayout:ResetPosition()
-	local uiScale = Grid.isTBC and UIParent:GetEffectiveScale() or 1
+	local uiScale = UIParent:GetEffectiveScale()
 
 	self.db.profile.PosX = UIParent:GetWidth() / 2 * uiScale
 	self.db.profile.PosY = - UIParent:GetHeight() / 2 * uiScale

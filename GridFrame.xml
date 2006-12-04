@@ -10,12 +10,4 @@
 			</OnAttributeChanged>
 		</Scripts>
 	</Button>
-
-	<Button name="GridFrameTemplate" movable="true" hidden="true" virtual="true">
-		<Scripts>
-			<OnLoad>
-				GridFrame_OnLoad(this)
-			</OnLoad>
-		</Scripts>
-	</Button>
 </Ui>

@@ -29,55 +29,43 @@ local function addRange(range, check)
 	table.sort(ranges, function (a, b) return a.range < b.range end)
 end
 
-addRange(10, function (unit) return CheckInteractDistance(unit, 3) == 1 end)
-addRange(28, function (unit) return CheckInteractDistance(unit, 4) == 1 end)
-addRange(100, function (unit) return UnitIsVisible(unit) == 1 end)
+local function initRanges()
+	ranges = {}
+	addRange(10, function (unit) return CheckInteractDistance(unit, 3) == 1 end)
+	addRange(28, function (unit) return CheckInteractDistance(unit, 4) == 1 end)
+	addRange(100, function (unit) return UnitIsVisible(unit) == 1 end)
+end
 
-if Grid.isTBC then
-	-- yay TBC, we can use IsSpellInRange
+-- yay TBC, we can use IsSpellInRange
+function GridRange:ScanSpellbook()
+	local i = 1
+	local gratuity = AceLibrary("Gratuity-2.0")
+	local sName, sRank, sRange
 
-	function GridRange:ScanSpellbook()
-		local i = 1
-		local gratuity = AceLibrary("Gratuity-2.0")
-		local sName, sRank, sRange
-		repeat
-			local sIndex = i
-			sName, sRank = GetSpellName(i, BOOKTYPE_SPELL)
-			-- beneficial spell with a range
-			if sName and IsSpellInRange(i, "spell", "player") ~= nil then
-				gratuity:SetSpell(i, BOOKTYPE_SPELL)
-				_, _, sRange = gratuity:Find(L["(%d+) yd range"], 2, 2)
-				if sRange then
-					addRange(tonumber(sRange),
-						 function (unit) return IsSpellInRange(sIndex, "spell", unit) == 1 end)
-					self:Debug(string.format("%d %s (%s) has range %s", sIndex, sName, sRank, sRange))
-				end
+	initRanges()
+
+	repeat
+		local sIndex = i
+		sName, sRank = GetSpellName(i, BOOKTYPE_SPELL)
+		-- beneficial spell with a range
+		if sName and IsSpellInRange(i, "spell", "player") ~= nil then
+			gratuity:SetSpell(i, BOOKTYPE_SPELL)
+			_, _, sRange = gratuity:Find(L["(%d+) yd range"], 2, 2)
+			if sRange then
+				addRange(tonumber(sRange),
+					 function (unit) return IsSpellInRange(sIndex, "spell", unit) == 1 end)
+				self:Debug(string.format("%d %s (%s) has range %s", sIndex, sName, sRank, sRange))
 			end
-			i = i + 1
-		until not sName
-	end
-
-else
-	-- 1.12
-	local proximity = ProximityLib:GetInstance("1")
-
-	addRange(40, function (unit)
-		local _,time = proximity:GetUnitRange(unit)  -- combat log range
-		if time and GetTime() - time < 6 then 
-			return true 
-		else 
-			return false
 		end
-	end)
-
+		i = i + 1
+	until not sName
 end
 
 function GridRange:OnEnable()
 	self.super.OnEnable(self)
-	if Grid.isTBC then
-		self:ScanSpellbook()
-		self:RegisterEvent("LEARNED_SPELL_IN_TAB", "ScanSpellbook")
-	end
+
+	self:ScanSpellbook()
+	self:RegisterEvent("LEARNED_SPELL_IN_TAB", "ScanSpellbook")
 end
 
 function GridRange:GetUnitRange(unit)

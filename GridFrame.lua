@@ -2,11 +2,6 @@
 
 --{{{ Libraries
 
-local Compost
-if not Grid.isTBC then
-	Compost =  AceLibrary("Compost-2.0")
-end
-
 local AceOO = AceLibrary("AceOO-2.0")
 local RL = AceLibrary("RosterLib-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
@@ -134,14 +129,8 @@ function GridFrameClass.prototype:CreateFrames()
 	f:SetWidth(GridFrame:GetFrameSize())
 	f:SetHeight(GridFrame:GetFrameSize())
 	
-	-- only use SetScript pre-TBC
-	if Grid.isTBC then
-		-- set our left-click action
-		f:SetAttribute("type1", "target")
-	else
-		f:SetScript("OnClick", function () GridFrame_OnClick(f, arg1) end)
-		f:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
-	end
+	-- set our left-click action
+	f:SetAttribute("type1", "target")
 
 	-- tooltip support
 	f:SetScript("OnEnter", function() self:OnEnter() end)
@@ -522,8 +511,8 @@ function GridFrame:OnInitialize()
 	self.super.OnInitialize(self)
 	self.debugging = self.db.profile.debug
 
-	self.frames = Compost and Compost:Acquire() or {}
-	self.registeredFrames = Compost and Compost:Acquire() or {}
+	self.frames = {}
+	self.registeredFrames = {}
 end
 
 function GridFrame:OnEnable()

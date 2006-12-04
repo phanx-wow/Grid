@@ -14,7 +14,6 @@ Grid = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceDebug-2.0
 Grid:SetModuleMixins("AceDebug-2.0", "AceEvent-2.0", "AceModuleCore-2.0")
 Grid:RegisterDB("GridDB")
 Grid.debugFrame = ChatFrame2
-Grid.isTBC = loadstring("return function(...) return ... end") and true or false
 
 --{{{ AceOptions table
 
@@ -292,7 +291,7 @@ function Grid:RosterLib_RosterChanged(tbl)
 	if needsUpdate then
 		-- queue update for after leaving combat
 		-- not that anything is actually registered for Grid_UpdateSort anymore
-		if Grid.inCombat and Grid.isTBC then
+		if Grid.inCombat then
 			Grid.rosterNeedsUpdate = true
 		else
 			self:TriggerEvent("Grid_UpdateSort")

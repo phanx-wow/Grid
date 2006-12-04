@@ -1,10 +1,5 @@
 --{{{ Libraries
 
-local Compost
-if not Grid.isTBC then
-	Compost = AceLibrary("Compost-2.0")
-end
-
 local RL = AceLibrary("RosterLib-2.0")
 local Aura = AceLibrary("SpecialEvents-Aura-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
@@ -146,7 +141,7 @@ local low_healthOptions = {
 
 function GridStatusHealth:OnInitialize()
 	self.super.OnInitialize(self)
-	self.deathCache = Compost and Compost:Acquire() or {}
+	self.deathCache = {}
 	self:RegisterStatus("unit_health", L["Unit health"], healthOptions)
 	self:RegisterStatus("unit_healthDeficit", L["Health deficit"], healthDeficitOptions)
 	self:RegisterStatus("alert_lowHealth", L["Low HP warning"], low_healthOptions)
@@ -168,7 +163,7 @@ end
 function GridStatusHealth:UpdateAllUnits()
 	local name, status, statusTbl
 
-	self.deathCache = Compost and Compost:Erase(self.deathCache) or {}
+	self.deathCache = {}
 
 	for name, status, statusTbl in self.core:CachedStatusIterator("unit_health") do
 		self:Grid_UnitJoined(name)

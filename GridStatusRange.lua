@@ -4,7 +4,6 @@
 -- Modified By: Pastamancer
 
 --{{{ Libraries
-local prox
 local roster = AceLibrary("RosterLib-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local GridRange = GridRange
@@ -51,7 +50,6 @@ local rangeOptions = {
 function GridStatusRange:OnInitialize()
     self.super.OnInitialize(self)
 
-    prox = ProximityLib:GetInstance("1")
     self:RegisterStatus('alert_range_oor', L["Out of Range"], rangeOptions, true)
 end
 
