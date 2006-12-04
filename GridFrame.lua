@@ -307,7 +307,7 @@ end
 function GridFrameClass.prototype:SetText(text, color)
 	text = string.sub(text, 1, GridFrame.db.profile.textlength)
 	self.frame.Text:SetText(text)
-	if text ~= "" then
+	if text and text ~= "" then
 		self.frame.Text:Show()
 	else
 		self.frame.Text:Hide()
@@ -320,7 +320,7 @@ end
 function GridFrameClass.prototype:SetText2(text, color)
 	text = string.sub(text, 1, GridFrame.db.profile.textlength)
 	self.frame.Text2:SetText(text)
-	if text ~= "" then
+	if text and text ~= "" then
 		self.frame.Text2:Show()
 	else
 		self.frame.Text2:Hide()
