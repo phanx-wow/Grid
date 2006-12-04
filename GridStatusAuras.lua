@@ -2,6 +2,7 @@
 
 local Aura = AceLibrary("SpecialEvents-Aura-2.0")
 local Dewdrop = AceLibrary("Dewdrop-2.0")
+local RL = AceLibrary("RosterLib-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local BS = AceLibrary("Babble-Spell-2.2")
 local BC = AceLibrary("Babble-Class-2.2")
@@ -295,13 +296,15 @@ function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type
 
 	if not (settings and settings.enable) then return end
 
-	local _, class = UnitClass(unit)
+	local u = RL:GetUnitObjectFromUnit(unit)
 
-	if settings[strlower(class)] == false then return end
+	-- ignore the event if we're skipping this class or if we don't have a valid
+	-- unit object
+	if not u or settings[strlower(u.class)] == false then return end
 
 	self:Debug(unit, "gained", status, debuffNameStatus)
 
-	self.core:SendStatusGained(UnitName(unit),
+	self.core:SendStatusGained(u.name,
 			status,
 			settings.priority,
 			(settings.range and 28),			
@@ -336,16 +339,18 @@ function GridStatusAuras:SpecialEvents_UnitBuffGained(unit, buff, apps, type, te
 	local settings = self.db.profile[buffNameStatus]
 	if not (settings and settings.enable) then return end
 
-	local _, class = UnitClass(unit)
+	local u = RL:GetUnitObjectFromUnit(unit)
 
-	if settings[strlower(class)] == false then return end
+	-- ignore the event if we're skipping this class or if we don't have a valid
+	-- unit object
+	if not u or settings[strlower(u.class)] == false then return end
 
 	-- SE-Aura doesn't give the texture for buffs?
 	if not tex then
 		tex = BS:GetSpellIcon(buff)
 	end
 	self:Debug("gained", buffNameStatus, tex)
-	self.core:SendStatusGained(UnitName(unit),
+	self.core:SendStatusGained(u.name,
 			buffNameStatus,
 			settings.priority,
 			(settings.range and 40),			
