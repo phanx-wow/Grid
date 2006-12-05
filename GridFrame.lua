@@ -15,7 +15,7 @@ local GridRange = GridRange
 --{{{ FrameXML functions
 
 function GridFrame_OnLoad(self)
-	GridFrame:RegisterFrame(this)
+	GridFrame:RegisterFrame(self)
 end
 
 function GridFrame_OnAttributeChanged(self, name, value)
