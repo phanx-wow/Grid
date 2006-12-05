@@ -173,9 +173,13 @@ function GridFrameClass.prototype:SetWidth(width)
 	f.Bar:SetWidth(width-4)
 	f.BarBG:SetWidth(width-4)
 
-	self:SetOrientation(f.Bar:GetOrientation())
-	--f.Text:SetWidth(width)
-	--f.Text2:SetWidth(width)
+	if f.Bar:GetOrientation() == "HORIZONTAL" then
+		f.Text:SetWidth(f.Bar:GetWidth()/2)
+		f.Text2:SetWidth(f.Bar:GetWidth()/2)
+	else
+		f.Text:SetWidth(f:GetWidth())
+		f.Text2:SetWidth(f:GetWidth())
+	end
 end
 
 function GridFrameClass.prototype:SetHeight(height)
@@ -183,8 +187,14 @@ function GridFrameClass.prototype:SetHeight(height)
 	f:SetHeight(height)
 	f.Bar:SetHeight(height-4)
 	f.BarBG:SetHeight(height-4)
-	--f.Text:SetHeight(height-4)
-	--f.Text2:SetHeight(height-4)
+
+	if f.Bar:GetOrientation() == "VERTICAL" then
+		f.Text:SetHeight(f.Bar:GetHeight()/2)
+		f.Text2:SetHeight(f.Bar:GetHeight()/2)
+	else
+		f.Text:SetHeight(f:GetHeight())
+		f.Text2:SetHeight(f:GetHeight())
+	end
 end
 
 function GridFrameClass.prototype:SetOrientation(orientation)
@@ -193,12 +203,14 @@ function GridFrameClass.prototype:SetOrientation(orientation)
 	if orientation == "HORIZONTAL" then
 		f.Bar:SetOrientation("HORIZONTAL")
 
+		f.Text:SetHeight(f:GetHeight())
 		f.Text:SetWidth(f.Bar:GetWidth()/2)
 		f.Text:SetJustifyH("LEFT")
 		f.Text:SetJustifyV("CENTER")
 		f.Text:ClearAllPoints()
 		f.Text:SetPoint("LEFT", f, "LEFT", 2, 0)
 
+		f.Text2:SetHeight(f:GetHeight())
 		f.Text2:SetWidth(f.Bar:GetWidth()/2)
 		f.Text2:SetJustifyH("RIGHT")
 		f.Text2:SetJustifyV("CENTER")
@@ -207,12 +219,14 @@ function GridFrameClass.prototype:SetOrientation(orientation)
 	else
 		f.Bar:SetOrientation("VERTICAL")
 
-		f.Text2:SetWidth(f:GetWidth())
+		f.Text:SetHeight(f.Bar:GetHeight()/2)
+		f.Text:SetWidth(f:GetWidth())
 		f.Text:SetJustifyH("CENTER")
 		f.Text:SetJustifyV("CENTER")
 		f.Text:ClearAllPoints()
 		f.Text:SetPoint("BOTTOM", f, "CENTER")
 
+		f.Text2:SetHeight(f.Bar:GetHeight()/2)
 		f.Text2:SetWidth(f:GetWidth())
 		f.Text2:SetJustifyH("CENTER")
 		f.Text2:SetJustifyV("CENTER")
