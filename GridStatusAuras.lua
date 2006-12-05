@@ -280,11 +280,13 @@ function GridStatusAuras:DeleteAura(status)
 end
 
 
-function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type, tex)
+function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type, tex, rank, index)
 	-- check if this is a specific debuff or a debuff type
 	local debuffNameStatus = statusForSpell(debuff, false)
 	local debuffTypeStatus = "debuff_" .. strlower(type)
 	local settings, status
+
+	if string.find(unit, "pet") then return end
 
 	if self.db.profile[debuffNameStatus] then
 		settings = self.db.profile[debuffNameStatus]
@@ -302,17 +304,12 @@ function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type
 	-- unit object
 	if not u or settings[strlower(u.class)] == false then return end
 
-	if not tex then
-		local i, _ = Aura:UnitHasDebuff(unit, debuff)
-		tex = select(3, UnitDebuff(unit, i))
-	end
-
 	self:Debug(unit, "gained", status, debuffNameStatus, tex)
 
 	self.core:SendStatusGained(u.name,
 			status,
 			settings.priority,
-			(settings.range and 28),			
+			(settings.range and 30),
 			settings.color,
 			settings.text,
 			nil,
@@ -321,36 +318,40 @@ function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type
 end
 
 
-function GridStatusAuras:SpecialEvents_UnitDebuffLost(unit, debuff, apps, type, tex)
+function GridStatusAuras:SpecialEvents_UnitDebuffLost(unit, debuff, apps, type, tex, rank)
 	local debuffNameStatus = statusForSpell(debuff, false)
 	local debuffTypeStatus = "debuff_" .. strlower(type)
+
+	if string.find(unit, "pet") then return end
+
+	local name = UnitName(unit)
 
 	if self.db.profile[debuffNameStatus] then
 		if not Aura:UnitHasDebuff(unit, debuff) then
 			self:Debug(unit, "lost", debuffNameStatus)
-			self.core:SendStatusLost(UnitName(unit), debuffNameStatus)
+			self.core:SendStatusLost(name, debuffNameStatus)
 		end
 	end
 
 	if not Aura:UnitHasDebuffType(unit, type) then
 		self:Debug(unit, "lost", debuffTypeStatus, debuffNameStatus)
-		self.core:SendStatusLost(UnitName(unit), debuffTypeStatus)
+		self.core:SendStatusLost(name, debuffTypeStatus)
 	end
 end
 
 
-function GridStatusAuras:SpecialEvents_UnitBuffGained(unit, buff)
+function GridStatusAuras:SpecialEvents_UnitBuffGained(unit, buff, index, apps, tex, rank)
 	local buffNameStatus = statusForSpell(buff, true)
 	local settings = self.db.profile[buffNameStatus]
 	if not (settings and settings.enable) then return end
+
+	if string.find(unit, "pet") then return end
 
 	local u = RL:GetUnitObjectFromUnit(unit)
 
 	-- ignore the event if we're skipping this class or if we don't have a valid
 	-- unit object
 	if not u or settings[strlower(u.class)] == false then return end
-
-	local tex = select(3, UnitBuff(unit, Aura:UnitHasBuff(unit, buff)))
 
 	self:Debug("gained", buffNameStatus, tex)
 	self.core:SendStatusGained(u.name,
@@ -365,8 +366,11 @@ function GridStatusAuras:SpecialEvents_UnitBuffGained(unit, buff)
 end
 
 
-function GridStatusAuras:SpecialEvents_UnitBuffLost(unit, buff, apps, type, tex)
+function GridStatusAuras:SpecialEvents_UnitBuffLost(unit, buff, apps, type, tex, rank)
 	local buffNameStatus = statusForSpell(buff, true)
+
+	if string.find(unit, "pet") then return end
+
 	if self.db.profile[buffNameStatus] then
 		if not Aura:UnitHasBuff(unit, buff) then
 			self.core:SendStatusLost(UnitName(unit), buffNameStatus)
@@ -377,6 +381,8 @@ end
 
 function GridStatusAuras:Grid_UnitDeath(unitname)
 	local status, moduleName, desc
+
+	if string.find(unit, "pet") then return end
 
 	for status, moduleName, desc in self.core:RegisteredStatusIterator() do
 		if moduleName == self.name then

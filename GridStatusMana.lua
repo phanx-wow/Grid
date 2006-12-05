@@ -80,6 +80,7 @@ end
 function GridStatusMana:UpdateUnit(unitid)
 	local name = UnitName(unitid)
 	if not name then return end
+	if string.find(unitid, "pet") then return end
 	
 	local cur, max = UnitMana(unitid), UnitManaMax(unitid)
 	if self:IsLowMana(unitid, cur, max) and
