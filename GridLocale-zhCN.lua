@@ -1,3 +1,4 @@
+﻿
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local strings_zhCN = {
@@ -152,9 +153,9 @@ local strings_zhCN = {
 	--{{{ GridStatusHeals
 	["Heals"] = "治疗",
 	["Incoming heals"] = "正被治疗",
-	["(.+) begins to cast (.+)."] = "(.+)开始施放(.+)。",
-	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = "(.+)从(.+)的生命分流获得了(.+)点法力值。",
-	["^Corpse of (.+)$"] = "^(.+)的尸体。$",
+	["(.+) begins to cast (.+)."] = "(.+)开始施放(.+)",
+	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = "(.+)从(.+)的生命分流获得了(.+)点法力值",
+	["^Corpse of (.+)$"] = "^(.+)的尸体$",
 	
 	--}}}
 	--{{{ GridStatusHealth
