@@ -165,7 +165,6 @@ function Grid:OnInitialize()
 
 	self:AddModuleDebugMenu(self)
 
-	self:EnableClickCasting()
 	self:RegisterModules()
 	
 	-- rename FuBar menu to avoid confusion
@@ -195,15 +194,6 @@ function Grid:OnProfileEnable()
 	self.debugging = self.db.profile.debug
 	self:Debug("Loaded profile", "(", self:GetProfile(),")")
 	self:ResetModules()
-end
-
--- only for WoW 1.x
-function Grid:EnableClickCasting()
-	if Clique and Clique.OnClick and not GridCustomClick then
-		GridCustomClick = function (button, unit)
-					  return Clique:OnClick(button, unit)
-				  end
-	end
 end
 
 function Grid:RegisterModules()
