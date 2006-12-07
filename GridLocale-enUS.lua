@@ -41,6 +41,8 @@ local strings_enUS = {
 	-- Advanced options
 	["Advanced"] = true,
 	["Advanced options."] = true,
+	["Enable %s indicator"] = true,
+	["Toggle the %s indicator."] = true,
 	["Frame Width"] = true,
 	["Adjust the width of each unit's frame."] = true,
 	["Frame Height"] = true,

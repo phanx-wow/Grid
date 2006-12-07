@@ -149,6 +149,7 @@ function GridFrameClass.prototype:CreateFrames()
 	self:SetWidth(GridFrame:GetFrameWidth())
 	self:SetHeight(GridFrame:GetFrameHeight())
 	self:SetOrientation(GridFrame.db.profile.orientation)
+	self:EnableText2(GridFrame.db.profile.enableText2)
 	
 	-- set up click casting
 	ClickCastFrames = ClickCastFrames or {}
@@ -173,13 +174,7 @@ function GridFrameClass.prototype:SetWidth(width)
 	f.Bar:SetWidth(width-4)
 	f.BarBG:SetWidth(width-4)
 
-	if f.Bar:GetOrientation() == "HORIZONTAL" then
-		f.Text:SetWidth(f.Bar:GetWidth()/2)
-		f.Text2:SetWidth(f.Bar:GetWidth()/2)
-	else
-		f.Text:SetWidth(f:GetWidth())
-		f.Text2:SetWidth(f:GetWidth())
-	end
+	self:PlaceIndicators()
 end
 
 function GridFrameClass.prototype:SetHeight(height)
@@ -188,50 +183,67 @@ function GridFrameClass.prototype:SetHeight(height)
 	f.Bar:SetHeight(height-4)
 	f.BarBG:SetHeight(height-4)
 
-	if f.Bar:GetOrientation() == "VERTICAL" then
-		f.Text:SetHeight(f.Bar:GetHeight()/2)
-		f.Text2:SetHeight(f.Bar:GetHeight()/2)
-	else
-		f.Text:SetHeight(f:GetHeight())
-		f.Text2:SetHeight(f:GetHeight())
-	end
+	self:PlaceIndicators()
 end
 
 function GridFrameClass.prototype:SetOrientation(orientation)
+	self.orientation = orientation
+	self:PlaceIndicators()
+end
+
+function GridFrameClass.prototype:EnableText2(enabled)
+	self.enableText2 = enabled
+	self:PlaceIndicators()
+end
+
+function GridFrameClass.prototype:PlaceIndicators()
 	local f = self.frame
 
-	if orientation == "HORIZONTAL" then
+	if self.orientation == "HORIZONTAL" then
 		f.Bar:SetOrientation("HORIZONTAL")
 
-		f.Text:SetHeight(f:GetHeight())
-		f.Text:SetWidth(f.Bar:GetWidth()/2)
 		f.Text:SetJustifyH("LEFT")
 		f.Text:SetJustifyV("CENTER")
+		f.Text:SetHeight(f:GetHeight())
 		f.Text:ClearAllPoints()
 		f.Text:SetPoint("LEFT", f, "LEFT", 2, 0)
+		if self.enableText2 then
+			f.Text:SetWidth(f.Bar:GetWidth()/2)
+		else
+			f.Text:SetWidth(f.Bar:GetWidth())
+		end
 
 		f.Text2:SetHeight(f:GetHeight())
 		f.Text2:SetWidth(f.Bar:GetWidth()/2)
 		f.Text2:SetJustifyH("RIGHT")
 		f.Text2:SetJustifyV("CENTER")
 		f.Text2:ClearAllPoints()
-		f.Text2:SetPoint("RIGHT", f, "RIGHT", -2, 0)
+		if self.enableText2 then
+			f.Text2:SetPoint("RIGHT", f, "RIGHT", -2, 0)
+		end
 	else
 		f.Bar:SetOrientation("VERTICAL")
 
-		f.Text:SetHeight(f.Bar:GetHeight()/2)
-		f.Text:SetWidth(f:GetWidth())
 		f.Text:SetJustifyH("CENTER")
 		f.Text:SetJustifyV("CENTER")
+		f.Text:SetWidth(f:GetWidth())
 		f.Text:ClearAllPoints()
-		f.Text:SetPoint("BOTTOM", f, "CENTER")
+		if self.enableText2 then
+			f.Text:SetHeight(f.Bar:GetHeight()/2)
+			f.Text:SetPoint("BOTTOM", f, "CENTER")
+		else
+			f.Text:SetHeight(f.Bar:GetHeight())
+			f.Text:SetPoint("CENTER", f, "CENTER")
+		end
 
 		f.Text2:SetHeight(f.Bar:GetHeight()/2)
 		f.Text2:SetWidth(f:GetWidth())
 		f.Text2:SetJustifyH("CENTER")
 		f.Text2:SetJustifyV("CENTER")
 		f.Text2:ClearAllPoints()
-		f.Text2:SetPoint("TOP", f, "CENTER")
+		if self.enableText2 then
+			f.Text2:SetPoint("TOP", f, "CENTER")
+		end
 	end
 end
 
@@ -467,6 +479,7 @@ GridFrame.defaultDB = {
 	frameWidth = 26,
 	cornerSize = 5,
 	orientation = "VERTICAL",
+	enableText2 = false,
 	fontSize = 8,
 	iconSize = 16,
 	debug = false,
@@ -588,6 +601,19 @@ GridFrame.options = {
 			order = -1,
 			disabled = function () return Grid.inCombat end,
 			args = {
+				["text2"] = {
+					type = "toggle",
+					name = string.format(L["Enable %s indicator"], L["Center Text 2"]),
+					desc = string.format(L["Toggle the %s indicator."], L["Center Text 2"]),
+					order = 5,
+					get = function ()
+						      return GridFrame.db.profile.enableText2
+					      end,
+					set = function (v)
+							GridFrame.db.profile.enableText2 = v
+							GridFrame:WithAllFrames(function (f) f:EnableText2(v) end)
+						end,
+				},
 				["framewidth"] = {
 					type = "range",
 					name = L["Frame Width"],
@@ -896,6 +922,9 @@ function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
 				},
 			},
 		}
+		if indicator == "text2" then
+			menu[indicator].disabled = function () return not GridFrame.db.profile.enableText2 end
+		end
 	end
 
 	indicatorMenu = menu[indicator].args
