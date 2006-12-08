@@ -382,8 +382,6 @@ end
 function GridStatusAuras:Grid_UnitDeath(unitname)
 	local status, moduleName, desc
 
-	if string.find(unit, "pet") then return end
-
 	for status, moduleName, desc in self.core:RegisteredStatusIterator() do
 		if moduleName == self.name then
 			self.core:SendStatusLost(unitname, status)
