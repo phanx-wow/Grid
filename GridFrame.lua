@@ -773,7 +773,7 @@ end
 function GridFrame:InvertBarColor()
 	self:WithAllFrames(
 		function (f)
-			frame:InvertBarColor()
+			f:InvertBarColor()
 		end)
 end
 
