@@ -72,6 +72,10 @@ function GridFrameClass.prototype:Reset()
 	for _,indicator in ipairs(self.indicators) do
 		self:ClearIndicator(indicator.type)
 	end
+	self:SetWidth(GridFrame:GetFrameWidth())
+	self:SetHeight(GridFrame:GetFrameHeight())
+	self:SetOrientation(GridFrame.db.profile.orientation)
+	self:EnableText2(GridFrame.db.profile.enableText2)
 end
 
 function GridFrameClass.prototype:CreateFrames()
@@ -723,6 +727,7 @@ function GridFrame:OnEnable()
 	self:UpdateOptionsMenu()
 	self:RegisterEvent("Grid_StatusRegistered", "UpdateOptionsMenu")
 	self:RegisterEvent("Grid_StatusUnregistered", "UpdateOptionsMenu")
+	self:ResetAllFrames()
 	self:UpdateAllFrames()
 end
 
@@ -734,6 +739,7 @@ end
 function GridFrame:Reset()
 	self.super.Reset(self)
 	self:UpdateOptionsMenu()
+	self:ResetAllFrames()
 	self:UpdateAllFrames()
 end
 
@@ -749,6 +755,14 @@ function GridFrame:WithAllFrames(func)
 	for frameName,frame in pairs(self.registeredFrames) do
 		func(frame)
 	end
+end
+
+function GridFrame:ResetAllFrames()
+	self:WithAllFrames(
+		function (f)
+			f:Reset()
+		end)
+	self:TriggerEvent("Grid_UpdateSort")
 end
 
 function GridFrame:ResizeAllFrames()

@@ -296,7 +296,7 @@ function Grid:PLAYER_REGEN_DISABLED()
 end
 
 function Grid:PLAYER_REGEN_ENABLED()
-	Grid.inCombat = InCombatLockdown() ~= 1
+	Grid.inCombat = InCombatLockdown() == 1
 	self:Debug("Leaving combat")
 
 	if not Grid.inCombat and Grid.rosterNeedsUpdate then
