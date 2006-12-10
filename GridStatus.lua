@@ -183,6 +183,11 @@ function GridStatus:OnInitialize()
 	self.cache = {}
 end
 
+function GridStatus:OnEnable()
+	self.super.OnEnable(self)
+	self:RegisterEvent("Grid_UnitLeft", "RemoveFromCache")
+end
+
 --{{{ Status registry
 
 function GridStatus:RegisterStatus(status, description, moduleName)
@@ -299,6 +304,10 @@ function GridStatus:SendStatusLost(name, status)
 	self.cache[name][status] = nil
 
 	self:TriggerEvent("Grid_StatusLost", name, status)
+end
+
+function GridStatus:RemoveFromCache(name)
+	self.cache[name] = nil
 end
 
 function GridStatus:GetCachedStatus(name, status)

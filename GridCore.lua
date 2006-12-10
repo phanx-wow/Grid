@@ -182,6 +182,7 @@ function Grid:OnEnable()
 	self:EnableModules()
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD", "PLAYER_REGEN_ENABLED")
 	self:TriggerEvent("Grid_UpdateSort")
 end
 
@@ -295,10 +296,10 @@ function Grid:PLAYER_REGEN_DISABLED()
 end
 
 function Grid:PLAYER_REGEN_ENABLED()
-	Grid.inCombat = false
+	Grid.inCombat = InCombatLockdown() ~= 1
 	self:Debug("Leaving combat")
 
-	if Grid.rosterNeedsUpdate then
+	if not Grid.inCombat and Grid.rosterNeedsUpdate then
 		self:Debug("Left combat, updating roster")
 		Grid.rosterNeedsUpdate = false
 		self:TriggerEvent("Grid_UpdateSort")
