@@ -490,9 +490,9 @@ function GridLayout:OnEnable()
 	self:RestorePosition()
 	self:Scale()
 
-	self:RegisterEvent("Grid_UnitJoined", "DelayedUpdateSize")
-	self:RegisterEvent("Grid_UnitLeft", "DelayedUpdateSize")
-	self:RegisterEvent("Grid_UnitChanged", "DelayedUpdateSize")
+	-- self:RegisterEvent("Grid_UnitJoined", "DelayedUpdateSize")
+	-- self:RegisterEvent("Grid_UnitLeft", "DelayedUpdateSize")
+	-- self:RegisterEvent("Grid_UnitChanged", "DelayedUpdateSize")
 	self:RegisterEvent("Grid_UpdateSort")
 
 	self.super.OnEnable(self)
