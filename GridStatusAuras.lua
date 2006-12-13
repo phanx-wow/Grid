@@ -27,7 +27,7 @@ end
 GridStatusAuras.defaultDB = {
 	debug = false,
 	["debuff_poison"] = {
-		["desc"] = L["Debuff type: "]..L["Poison"],
+		["desc"] = string.format(L["Debuff type: %s", .L["Poison"]),
 		["text"] = L["Poison"],
 		["enable"] = true,
 		["priority"] = 90,
@@ -35,7 +35,7 @@ GridStatusAuras.defaultDB = {
 		["color"] = { r =  0, g = .6, b =  0, a = 1 },
 	},
 	["debuff_disease"] = {
-		["desc"] = L["Debuff type: "]..L["Disease"],
+		["desc"] = string.format(L["Debuff type: %s"], L["Disease"]),
 		["text"] = L["Disease"],
 		["enable"] = true,
 		["priority"] = 90,
@@ -43,7 +43,7 @@ GridStatusAuras.defaultDB = {
 		["color"] = { r = .6, g = .4, b =  0, a = 1 },
 	},
 	["debuff_magic"] = {
-		["desc"] = L["Debuff type: "]..L["Magic"],
+		["desc"] = string.format(L["Debuff type: %s"], L["Magic"]),
 		["text"] = L["Magic"],
 		["enable"] = true,
 		["priority"] = 90,
@@ -51,7 +51,7 @@ GridStatusAuras.defaultDB = {
 		["color"] = { r = .2, g = .6, b =  1, a = 1 },
 	},
 	["debuff_curse"] = {
-		["desc"] = L["Debuff type: "]..L["Curse"],
+		["desc"] = string.format(L["Debuff type: %s"], L["Curse"]),
 		["text"] = L["Curse"],
 		["enable"] = true,
 		["priority"] = 90,
@@ -59,7 +59,7 @@ GridStatusAuras.defaultDB = {
 		["color"] = { r = .6, g =  0, b =  1, a = 1 },
 	},
 	[statusForSpell(BS["Weakened Soul"])] = {
-		["desc"] = L["Debuff: "]..BS["Weakened Soul"],
+		["desc"] = string.format(L["Debuff: %s"], BS["Weakened Soul"]),
 		["text"] = BS["Weakened Soul"],
 		["enable"] = true,
 		["priority"] = 90,
@@ -68,7 +68,7 @@ GridStatusAuras.defaultDB = {
 
 	},
 	[statusForSpell(BS["Mortal Strike"])] = {
-		["desc"] = L["Debuff: "]..BS["Mortal Strike"],
+		["desc"] = string.format(L["Debuff: %s"], BS["Mortal Strike"]),
 		["text"] = BS["Mortal Strike"],
 		["enable"] = true,
 		["priority"] = 90,
@@ -76,7 +76,7 @@ GridStatusAuras.defaultDB = {
 		["color"] = { r = .8, g = .2, b = .2, a = 1 },
 	},
 	[statusForSpell(BS["Renew"], true)] = {
-		["desc"] = L["Buff: "]..BS["Renew"],
+		["desc"] = string.format(L["Buff: %s"], BS["Renew"]),
 		["text"] = BS["Renew"],
 		["enable"] = true,
 		["priority"] = 90,
@@ -84,7 +84,7 @@ GridStatusAuras.defaultDB = {
 		["color"] = { r =  0, g = .7, b = .3, a = 1 },
 	},
 	[statusForSpell(BS["Rejuvenation"], true)] = {
-		["desc"] = L["Buff: "]..BS["Rejuvenation"],
+		["desc"] = string.format(L["Buff: %s"], BS["Rejuvenation"]),
 		["text"] = BS["Rejuvenation"],
 		["enable"] = true,
 		["priority"] = 90,
@@ -92,7 +92,7 @@ GridStatusAuras.defaultDB = {
 		["color"] = { r =  0, g = .3, b = .7, a = 1 },
 	},
 	[statusForSpell(BS["Power Word: Shield"], true)] = {
-		["desc"] = L["Buff: "]..BS["Power Word: Shield"],
+		["desc"] = string.format(L["Buff: %s"], BS["Power Word: Shield"]),
 		["text"] = BS["Power Word: Shield"],
 		["enable"] = true,
 		["priority"] = 91,
@@ -110,11 +110,9 @@ end
 
 
 function GridStatusAuras:RegisterStatuses()
-	local status, statusTbl, desc
-
 	for status, statusTbl in pairs(self.db.profile) do
 		if type(statusTbl) == "table" and statusTbl.text then
-			desc = statusTbl.desc or statusTbl.text
+			local desc = statusTbl.desc or statusTbl.text
 			self:Debug("registering", status, desc)
 			self:RegisterStatus(status, desc, self:OptionsForStatus(status))
 		end
@@ -123,7 +121,6 @@ end
 
 
 function GridStatusAuras:UnregisterStatuses()
-	local status, moduleName, desc
 	for status, moduleName, desc in self.core:RegisteredStatusIterator() do
 		if moduleName == self.name then
 			self:UnregisterStatus(status)
@@ -139,6 +136,7 @@ function GridStatusAuras:OnEnable()
 	self:RegisterEvent("SpecialEvents_UnitDebuffLost")
 	self:RegisterEvent("SpecialEvents_UnitBuffGained")
 	self:RegisterEvent("SpecialEvents_UnitBuffLost")
+	self:RegisterEvent("Grid_UnitJoined", "ScanUnitAuras")
 	self:RegisterEvent("Grid_UnitDeath")
 	self:CreateAddRemoveOptions()
 end
@@ -154,7 +152,6 @@ end
 
 
 function GridStatusAuras:OptionsForStatus(status)
-
 	local auraOptions = {
 		["class"] = {
 			type = "group",
@@ -253,9 +250,9 @@ function GridStatusAuras:AddAura(name, isBuff)
 	end
 
 	if isBuff then
-		desc = L["Buff: "]..name
+		desc = string.format(L["Buff: %s"], name)
 	else
-		desc = L["Debuff: "]..name
+		desc = string.format(L["Debuff: %s"], name)
 	end
 
 	self.db.profile[status] = {
@@ -277,6 +274,19 @@ function GridStatusAuras:DeleteAura(status)
 	self.options.args[status] = nil
 	self.options.args["delete_debuff"].args[status] = nil
 	self.db.profile[status] = nil
+end
+
+
+function GridStatusAuras:ScanUnitAuras(unit)
+	if string.find(unit, "pet") then return end
+
+	for buff, index, apps, tex, rank in Aura:BuffIter(unit) do
+		self:SpecialEvents_UnitBuffGained(unit, buff, index, apps, tex, rank)
+	end
+
+	for debuff, apps, type, tex, rank, index in Aura:DebuffIter(unit) do
+		self:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type, ex, rank, index)
+	end
 end
 
 
@@ -380,8 +390,6 @@ end
 
 
 function GridStatusAuras:Grid_UnitDeath(unitname)
-	local status, moduleName, desc
-
 	for status, moduleName, desc in self.core:RegisteredStatusIterator() do
 		if moduleName == self.name then
 			self.core:SendStatusLost(unitname, status)

@@ -137,7 +137,7 @@ local strings_enUS = {
 	
 	--}}}
 	--{{{ GridStatusAuras
-	["Debuff type: "] = true,
+	["Debuff type: %s"] = true,
 	["Poison"] = true,
 	["Disease"] = true,
 	["Magic"] = true,
@@ -149,8 +149,8 @@ local strings_enUS = {
 	["Delete (De)buff"] = true,
 	["Deletes an existing debuff from the status module"] = true,
 	["Remove %s from the menu"] = true,
-	["Debuff: "] = true,
-	["Buff: "] = true,
+	["Debuff: %s"] = true,
+	["Buff: %s"] = true,
 	["Class Filter"] = true,
 	["Show status for the selected classes."] = true,
 	["Show on %s."] = true,
