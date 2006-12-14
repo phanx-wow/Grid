@@ -27,7 +27,7 @@ end
 GridStatusAuras.defaultDB = {
 	debug = false,
 	["debuff_poison"] = {
-		["desc"] = string.format(L["Debuff type: %s", .L["Poison"]),
+		["desc"] = string.format(L["Debuff type: %s"], L["Poison"]),
 		["text"] = L["Poison"],
 		["enable"] = true,
 		["priority"] = 90,
