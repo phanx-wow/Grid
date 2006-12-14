@@ -173,7 +173,7 @@ local strings_koKR = {
 	["Incoming heals"] = "들어오는 치유",
 	["(.+) begins to cast (.+)."] = "(.+)|1이;가; (.+)|1을;를; 시전합니다.",
 	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = "(.+)|1이;가; 생명력 전환|1으로;로; (.+)의 (.+)|1을;를; 얻었습니다.",
-	["^Corpse of (.+)$"] = "(.+)|1이;가; 죽었습니다.",
+	["^Corpse of (.+)$"] = "(.+)의 시체",
 	
 	--}}}
 	--{{{ GridStatusHealth
