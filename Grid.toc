@@ -48,6 +48,7 @@ GridLocale-enUS.lua
 GridLocale-deDE.lua
 GridLocale-frFR.lua
 GridLocale-zhCN.lua
+GridLocale-koKR.lua
 
 # Grid
 GridCore.lua
