@@ -118,7 +118,7 @@ local strings_frFR = {
 
 	--}}}
 	--{{{ GridStatusAuras
-	["Debuff type: "] = "Type de d\195\169buff: ",
+	["Debuff type: %s"] = "Type de d\195\169buff: %s",
 	["Poison"] = "Poison",
 	["Disease"] = "Maladie",
 	["Magic"] = "Magique",
@@ -130,8 +130,8 @@ local strings_frFR = {
 	["Delete (De)buff"] = "Effacer buff/d\195\169buff",
 	["Deletes an existing debuff from the status module"] = "Supprimer un buff ou d\195\169buff existant",
 	["Remove %s from the menu"] = "Enlever %s du menu",
-	["Debuff: "] = "Debuff: ",
-	["Buff: "] = "Buff: ",
+	["Debuff: %s"] = "Debuff: %s",
+	["Buff: %s"] = "Buff: %s",
 	["Class Filter"] = "Filtre de classe",
 	["Show status for the selected classes."] = "Voir les statuts pour la classe selectionn\195\169e",
 	["Show on %s."] = "Voir pour %s",

@@ -118,7 +118,7 @@ local strings_deDE = {
 	
 	--}}}
 	--{{{ GridStatusAuras
-	["Debuff type: "] = "Schw\195\164chungszaubertyp: ",
+	["Debuff type: %s"] = "Schw\195\164chungszaubertyp: %s",
 	["Poison"] = "Gift",
 	["Disease"] = "Krankheit",
 	["Magic"] = "Magie",
@@ -130,8 +130,8 @@ local strings_deDE = {
 	["Delete (De)buff"] = "L\195\182sche Schw\195\164chungs-/St\195\164rkungszauber",
 	["Deletes an existing debuff from the status module"] = "L\195\182scht einen Schw\195\164chungszauber vom Status Modul",
 	["Remove %s from the menu"] = "Entfernt %s vom Men\195\188",
-	["Debuff: "] = "Schw\195\164chungszauber: ",
-	["Buff: "] = "St\195\164rkungszauber: ",
+	["Debuff: %s"] = "Schw\195\164chungszauber: %s",
+	["Buff: %s"] = "St\195\164rkungszauber: %s",
 	["Class Filter"] = "Klassenfilter",
 	["Show status for the selected classes."] = "Zeige den Status f\195\188r die ausgw\195\164hlte Klasse",
 	["Show on %s."] = "Zeige %s.",

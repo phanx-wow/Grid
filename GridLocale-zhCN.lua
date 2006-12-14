@@ -119,7 +119,7 @@ local strings_zhCN = {
 	
 	--}}}
 	--{{{ GridStatusAuras
-	["Debuff type: "] = "Debuff类型：",
+	["Debuff type: %s"] = "Debuff类型： %s",
 	["Poison"] = "毒药",
 	["Disease"] = "疾病",
 	["Magic"] = "魔法",
@@ -131,8 +131,8 @@ local strings_zhCN = {
 	["Delete (De)buff"] = "删除(De)buff",
 	["Deletes an existing debuff from the status module"] = "删除状态模组内已有的一个debuff",
 	["Remove %s from the menu"] = "从列表中移除%s",
-	["Debuff: "] = "Debuff：",
-	["Buff: "] = "Buff：",
+	["Debuff: %s"] = "Debuff： %s",
+	["Buff: %s"] = "Buff： %s",
 	["Class Filter"] = "职业过滤",
 	["Show status for the selected classes."] = "显示选定职业的状态",
 	["Show on %s."] = "在%s上显示",
