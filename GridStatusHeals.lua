@@ -1,7 +1,7 @@
 --{{{ Libraries
 
-local RL = AceLibrary("RosterLib-2.0")
-local Banzai = AceLibrary("Banzai-1.0")
+local RL = AceLibrary("Roster-2.1")
+local Banzai = AceLibrary("Banzai-1.1")
 local BS = AceLibrary("Babble-Spell-2.2")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 

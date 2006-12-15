@@ -1,6 +1,6 @@
 --{{{ Libraries
 
-local RL = AceLibrary("RosterLib-2.0")
+local RL = AceLibrary("Roster-2.1")
 local Aura = AceLibrary("SpecialEvents-Aura-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
@@ -152,7 +152,8 @@ end
 function GridStatusHealth:OnEnable()
 	self:RegisterEvent("Grid_UnitJoined")
 	self:RegisterEvent("Grid_UnitChanged")
-	self:RegisterBucketEvent("UNIT_HEALTH", 0.2)
+--	self:RegisterBucketEvent("UNIT_HEALTH", 0.2)
+	self:RegisterEvent("UNIT_HEALTH", "UpdateUnit")
 end
 
 function GridStatusHealth:Reset()

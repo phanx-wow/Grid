@@ -2,7 +2,7 @@
 
 --{{{ Libraries
 
-local RL = AceLibrary("RosterLib-2.0")
+local RL = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 --}}}

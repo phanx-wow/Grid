@@ -2,7 +2,7 @@
 
 local Aura = AceLibrary("SpecialEvents-Aura-2.0")
 local Dewdrop = AceLibrary("Dewdrop-2.0")
-local RL = AceLibrary("RosterLib-2.0")
+local RL = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local BS = AceLibrary("Babble-Spell-2.2")
 local BC = AceLibrary("Babble-Class-2.2")

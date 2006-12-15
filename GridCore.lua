@@ -3,7 +3,7 @@
 
 --{{{ Libraries
 
-local RL = AceLibrary("RosterLib-2.0")
+local RL = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 --}}}
@@ -178,7 +178,7 @@ function Grid:OnInitialize()
 end
 
 function Grid:OnEnable()
-	self:RegisterEvent("RosterLib_RosterChanged")
+	self:RegisterEvent("RosterLib_UnitChanged")
 	self:EnableModules()
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
@@ -257,28 +257,26 @@ end
 
 --{{{ Event handlers
 
-function Grid:RosterLib_RosterChanged(tbl)
+function Grid:RosterLib_UnitChanged(unitid, name, class, subgroup, rank, oldname, oldunitid, oldclass, oldsubgroup, oldrank)
 	local needsUpdate = false
-	local name, u
-	-- as this event is also triggered on pet events, we need to skip these first
-	for name,u in pairs(tbl) do
-		-- don't attempt to update frames if it's only a pet that died
-		if u.class ~= "PET" and u.oldclass ~= "PET" then
-			-- we need to update the frames
-			needsUpdate = true
 
-			if not u.name then
-				self:Debug("UnitLeft "..(u.oldname))
-				self:TriggerEvent("Grid_UnitLeft", u.oldname)
-			elseif not u.oldname then
-				self:Debug("UnitJoined "..(u.name))
-				self:TriggerEvent("Grid_UnitJoined", u.name, u.unitid)
-			else
-				self:Debug("UnitChanged "..(u.name))
-				self:TriggerEvent("Grid_UnitChanged", u.name, u.unitid)
-			end
+	-- don't attempt to update frames if it's only a pet that died
+	if class ~= "PET" and oldclass ~= "PET" then
+		-- we need to update the frames
+		needsUpdate = true
+
+		if not name then
+			self:Debug("UnitLeft "..(oldname))
+			self:TriggerEvent("Grid_UnitLeft", oldname)
+		elseif not oldname then
+			self:Debug("UnitJoined "..(name))
+			self:TriggerEvent("Grid_UnitJoined", name, unitid)
+		else
+			self:Debug("UnitChanged "..(name))
+			self:TriggerEvent("Grid_UnitChanged", name, unitid)
 		end
 	end
+
 	if needsUpdate then
 		-- queue update for after leaving combat
 		-- not that anything is actually registered for Grid_UpdateSort anymore

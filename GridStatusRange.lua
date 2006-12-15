@@ -4,7 +4,7 @@
 -- Modified By: Pastamancer
 
 --{{{ Libraries
-local roster = AceLibrary("RosterLib-2.0")
+local roster = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local GridRange = GridRange
 --}}}
