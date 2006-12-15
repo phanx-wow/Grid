@@ -10,16 +10,16 @@ local strings_koKR = {
 	--}}}
 	--{{{ GridFrame
 	["Frame"] = "프레임",
-	["Options for GridFrame."] = "GridFrame을 위한 옵션",
+	["Options for GridFrame."] = "Grid 프레임을 위한 옵션",
 
 	["Show Tooltip"] = "툴팁 표시",
-	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "유닛 툴팁을 표시합니다. '항상', '안함' 또는 'OCC'를 선택합니다",
+	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "유닛 툴팁을 표시합니다. '항상', '안함' 또는 '전투'을 선택합니다.",
 	["Always"] = "항상",
 	["Never"] = "안함",
-	["OOC"] = "OOC",
-	["Center Text Length"] = "중앙 글꼴 길이",
-	["Number of characters to show on Center Text indicator."] = "중앙 글꼴 표준을 표시를 위한 캐릭터의 숫자를 표시합니다.",
-	["Invert Bar Color"] = "거꾸로 바 색상",
+	["OOC"] = "전투",
+	["Center Text Length"] = "중앙 텍스트 길이",
+	["Number of characters to show on Center Text indicator."] = "중앙에 표시할 캐릭터의 이름 길이를 표시합니다.",
+	["Invert Bar Color"] = "바 색상 반대로",
 	["Swap foreground/background colors on bars."] = "전경/배경 바의 색상을 전환합니다.",
 
 	["Indicators"] = "표준",
