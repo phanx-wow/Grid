@@ -83,6 +83,14 @@ GridStatusAuras.defaultDB = {
 		["range"] = false,
 		["color"] = { r =  0, g = .7, b = .3, a = 1 },
 	},
+	[statusForSpell(BS["Regrowth"], true)] = {
+		["desc"] = string.format(L["Buff: %s"], BS["Regrowth"]),
+		["text"] = BS["Regrowth"],
+		["enable"] = true,
+		["priority"] = 90,
+		["range"] = false,
+		["color"] = { r =  1, g = .7, b = .1, a = 1 },
+	},
 	[statusForSpell(BS["Rejuvenation"], true)] = {
 		["desc"] = string.format(L["Buff: %s"], BS["Rejuvenation"]),
 		["text"] = BS["Rejuvenation"],
@@ -367,7 +375,7 @@ function GridStatusAuras:SpecialEvents_UnitBuffGained(unit, buff, index, apps, t
 	self.core:SendStatusGained(u.name,
 			buffNameStatus,
 			settings.priority,
-			(settings.range and 40),			
+			(settings.range and 40),
 			settings.color,
 			settings.text,
 			nil,
