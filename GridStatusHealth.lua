@@ -152,8 +152,8 @@ end
 function GridStatusHealth:OnEnable()
 	self:RegisterEvent("Grid_UnitJoined")
 	self:RegisterEvent("Grid_UnitChanged")
---	self:RegisterBucketEvent("UNIT_HEALTH", 0.2)
-	self:RegisterEvent("UNIT_HEALTH", "UpdateUnit")
+	self:RegisterBucketEvent("UNIT_HEALTH", 0.2)
+--	self:RegisterEvent("UNIT_HEALTH", "UpdateUnit")
 end
 
 function GridStatusHealth:Reset()
@@ -173,7 +173,6 @@ end
 
 function GridStatusHealth:UNIT_HEALTH(units)
 	local unitid
-	local settings = self.db.profile.unit_health
 
 	for unitid in pairs(units) do
 		self:UpdateUnit(unitid)
