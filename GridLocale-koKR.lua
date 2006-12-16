@@ -20,7 +20,7 @@ local strings_koKR = {
 	["Center Text Length"] = "중앙 텍스트 길이",
 	["Number of characters to show on Center Text indicator."] = "중앙에 표시할 캐릭터의 이름 길이를 표시합니다.",
 	["Invert Bar Color"] = "바 색상 반대로",
-	["Swap foreground/background colors on bars."] = "전경/배경 바의 색상을 전환합니다.",
+	["Swap foreground/background colors on bars."] = "전경 및 배경 바들의 색상을 전환합니다.",
 
 	["Indicators"] = "표준",
 	["Border"] = "테두리",
@@ -28,10 +28,10 @@ local strings_koKR = {
 	["Center Text"] = "중앙 글꼴",
 	["Center Text 2"] = "중앙 글꼴 2",
 	["Center Icon"] = "중앙 아이콘",
-	["Top Left Corner"] = "왼쪽 상단 모서리",
-	["Top Right Corner"] = "오른쪽 상단 모서리",
-	["Bottom Left Corner"] = "왼쪽 하단 모서리",
-	["Bottom Right Corner"] = "오른쪽 하단 모서리",
+	["Top Left Corner"] = "좌측 상단 모서리",
+	["Top Right Corner"] = "우측 상단 모서리",
+	["Bottom Left Corner"] = "좌측 하단 모서리",
+	["Bottom Right Corner"] = "우측 하단 모서리",
 	["Frame Alpha"] = "프레임 투명도",
 
 	["Options for %s indicator."] = "%s 표준 옵션",
@@ -47,8 +47,8 @@ local strings_koKR = {
 	["Adjust the width of each unit's frame."] = "각 유닛 프레임의 넓이를 조정합니다.",
 	["Frame Height"] = "프레임 높이",
 	["Adjust the height of each unit's frame."] = "각 유닛 프레임의 높이를 조정합니다.",
-	["Corner Size"] = "모퉁이 크기",
-	["Adjust the size of the corner indicators."] = "모퉁이 표준 크기를 조정합니다.",
+	["Corner Size"] = "모서리 크기",
+	["Adjust the size of the corner indicators."] = "모서리의 표준 크기를 조정합니다.",
 	["Font Size"] = "글꼴 크기",
 	["Adjust the font size."] = "글꼴 크기를 조정합니다.",
 	["Orientation"] = "오리엔테이션",
@@ -59,7 +59,7 @@ local strings_koKR = {
 	--}}}
 	--{{{ GridLayout
 	["Layout"] = "배치",
-	["Options for GridLayout."] = "GridLayout 옵션",
+	["Options for GridLayout."] = "Grid 배치 옵션",
 
 	-- Layout options
 	["Show Frame"] = "프레임 표시",
@@ -69,10 +69,10 @@ local strings_koKR = {
 	["Raid"] = "공격대",
 	["Raid Layout"] = "공격대 배치",
 	["Select which raid layout to use."] = "사용할 공격대 배치를 선택합니다.",
-	["Show Party in Raid"] = "공격대의 파티를 표시합니다.",
-	["Show party/self as an extra group."] = "그룹에서 파티/자기를 표시합니다.",
+	["Show Party in Raid"] = "공격대시 파티 표시",
+	["Show party/self as an extra group."] = "공격대시 자신의 그룹을 표시합니다.",
 	["Horizontal groups"] = "수평 그룹",
-	["Switch between horzontal/vertical groups."] = "그룹을 수평/수직으로 전환합니다.",
+	["Switch between horzontal/vertical groups."] = "그룹을 수평 및 수직으로 전환합니다.",
 	["Frame lock"] = "프레임 고정",
 	["Locks/unlocks the grid for movement."] = "Grid 프레임의 위치를 고정시키거나 이동시킵니다.",
 
@@ -91,12 +91,12 @@ local strings_koKR = {
 	-- Advanced options
 	["Advanced"] = "고급",
 	["Advanced options."] = "고급 옵션",
-	["Layout Anchor"] = "레이아웃 앵커",
+	["Layout Anchor"] = "배치 앵커",
 	["Sets where Grid is anchored relative to the screen."] = "Grid 스크린 앵커를 설정합니다.",
 	["Group Anchor"] = "그룹 앵커",
-	["Sets where groups are anchored relative to the layout frame."] = "그룹의 레이아웃 프레임의 앵커를 설정합니다.",
+	["Sets where groups are anchored relative to the layout frame."] = "그룹 배치 프레임의 앵커를 설정합니다.",
 	["Reset Position"] = "위치 초기화",
-	["Resets the layout frame's position and anchor."] = "레이아웃 프레임의 위치와 앵커를 초기화 합니다.",
+	["Resets the layout frame's position and anchor."] = "배치 프레임의 위치와 앵커를 초기화 합니다.",
 
 	--}}}
 	--{{{ GridLayoutLayouts
@@ -154,6 +154,7 @@ local strings_koKR = {
 	["Class Filter"] = "직업 필터",
 	["Show status for the selected classes."] = "선택된 직업의 상태를 표시합니다.",
 	["Show on %s."] = "%s 표시",
+	["[^%a]"] = "[^%S]",
 
 	--}}}
 	--{{{ GridStatusName
@@ -197,7 +198,7 @@ local strings_koKR = {
 	--{{{ GridStatusRange
 	["Range check frequency"] = "범위 체크 빈도",
 	["Seconds between range checks"] = "범위 체크 초 설정",
-	["Out of Range"] = "목표가 사정 거리를 벗어났습니다.",
+	["Out of Range"] = "거리 벗어남",
 
 	--}}}
 	--{{{ GridStatusTarget

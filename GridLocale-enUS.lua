@@ -1,4 +1,4 @@
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local strings_enUS = {
 	--{{{ GridCore
@@ -154,6 +154,7 @@ local strings_enUS = {
 	["Class Filter"] = true,
 	["Show status for the selected classes."] = true,
 	["Show on %s."] = true,
+	["[^%a]"] = true,
 
 	--}}}
 	--{{{ GridStatusName

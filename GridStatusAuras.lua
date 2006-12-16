@@ -1,4 +1,4 @@
---{{{ Libraries
+﻿--{{{ Libraries
 
 local Aura = AceLibrary("SpecialEvents-Aura-2.0")
 local Dewdrop = AceLibrary("Dewdrop-2.0")
@@ -20,7 +20,7 @@ local function statusForSpell(spell, isBuff)
 		prefix = "buff_"
 	end
 
-	return prefix .. string.gsub(spell, "[^%a]", "")
+	return prefix .. string.gsub(spell, L["[^%a]"], "")
 end
 
 
