@@ -490,10 +490,11 @@ function GridLayout:OnEnable()
 	self:RestorePosition()
 	self:Scale()
 
-	-- self:RegisterEvent("Grid_UnitJoined", "DelayedUpdateSize")
-	-- self:RegisterEvent("Grid_UnitLeft", "DelayedUpdateSize")
-	-- self:RegisterEvent("Grid_UnitChanged", "DelayedUpdateSize")
-	self:RegisterEvent("Grid_UpdateSort")
+	self:RegisterEvent("Grid_ReloadLayout")
+	self:RegisterEvent("Grid_UpdateLayoutSize")
+	self:RegisterEvent("Grid_UnitJoined", "Grid_UpdateLayoutSize")
+	self:RegisterEvent("Grid_UnitLeft", "Grid_UpdateLayoutSize")
+	self:RegisterEvent("Grid_UnitChanged", "Grid_UpdateLayoutSize")
 
 	self.super.OnEnable(self)
 end
@@ -714,33 +715,25 @@ function GridLayout:LoadLayout(layoutName)
 end
 
 function GridLayout:UpdateDisplay()
-	-- there should be some logic in here to detect if we're in a party or
-	-- raid when the SecurePartyHeader is added
-
 	self:UpdateColor()
 	self:CheckVisibility()
 	self:UpdateSize()
 end
 
-function GridLayout:DelayedUpdateSize()
-	self:ScheduleEvent("GridLayoutUpdateSize", function ()
-			GridLayout:Debug("Grid_UpdateSize")
+function GridLayout:Grid_UpdateLayoutSize()
+	self:ScheduleEvent("GridLayoutUpdate", function ()
+			GridLayout:Debug("Grid_UpdateLayoutSize")
 			GridLayout:UpdateSize()
-		end, 0.2)
+		end, 0.1)
 end
 
-function GridLayout:Grid_UpdateSort()
-	self:ScheduleEvent("GridLayoutUpdateSize", function ()
-			GridLayout:Debug("Grid_UpdateSort")
+function GridLayout:Grid_ReloadLayout()
+	self:ScheduleEvent("GridLayoutUpdate", function ()
+			GridLayout:Debug("Grid_ReloadLayout")
 			GridLayout:ReloadLayout()
 		end, 0.1)
 end
 
--- since we may want to resize the grid while in combat, this function doesn't
--- move/hide/show any of the layout groups
---
--- I don't think this works in combat since the secure headers are parented to
--- the layout frame
 function GridLayout:UpdateSize()
 	local layoutGroup
 	local groupCount = 0

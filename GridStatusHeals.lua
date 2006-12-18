@@ -92,7 +92,7 @@ end
 function GridStatusHeals:CHAT_MSG_ADDON(prefix, message, distribution, sender)
 	if prefix ~= self.name then return end
 
-	self:Debug("OnCommReceive", prefix, sender, distribution)
+	self:Debug("OnCommReceive", prefix, message, sender, distribution)
 
 	if sender == UnitName("player") then return end
 	if not RL:GetUnitIDFromName(sender) then return end
@@ -147,16 +147,18 @@ function GridStatusHeals:UNIT_SPELLCAST_SENT(unit, spell, rank, target)
 	if not unit == "player" then
 		self:Debug("UNIT_SPELLCAST_SENT for unit:", unit)
 	else
---		self:Debug("UNIT_SPELLCAST_SENT", unit, spell, rank, target)
+		self:Debug("UNIT_SPELLCAST_SENT", unit, spell, rank, target)
 		if watchSpells[spell] then
 			if spell == BS["Prayer of Healing"] then
 				self:GroupHeal(playerName)
---				self:Debug("sending group heal")
+				self:Debug("sending group heal")
 				SendAddonMessage(self.name, "HG", "RAID")
+				SendAddonMessage(self.name, "HG", "BATTLEGROUND")
 				
 			else
---				self:Debug("sending heal on", target)
+				self:Debug("sending heal on", target)
 				SendAddonMessage(self.name, "HN "..target, "RAID")
+				SendAddonMessage(self.name, "HN "..target, "BATTLEGROUND")
 			end
 		end
 	end

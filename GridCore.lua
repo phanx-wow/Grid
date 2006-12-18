@@ -179,6 +179,7 @@ end
 
 function Grid:OnEnable()
 	self:RegisterEvent("RosterLib_UnitChanged")
+	self:RegisterEvent("RosterLib_RosterUpdated")
 	self:EnableModules()
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
@@ -262,9 +263,6 @@ function Grid:RosterLib_UnitChanged(unitid, name, class, subgroup, rank, oldname
 
 	-- don't attempt to update frames if it's only a pet that died
 	if class ~= "PET" and oldclass ~= "PET" then
-		-- we need to update the frames
-		needsUpdate = true
-
 		if not name then
 			self:Debug("UnitLeft "..(oldname))
 			self:TriggerEvent("Grid_UnitLeft", oldname)
@@ -276,14 +274,21 @@ function Grid:RosterLib_UnitChanged(unitid, name, class, subgroup, rank, oldname
 			self:TriggerEvent("Grid_UnitChanged", name, unitid)
 		end
 	end
+end
 
-	if needsUpdate then
+local prevInRaid = false
+function Grid:RosterLib_RosterUpdated()
+	local inRaid = UnitInRaid("player")
+
+	if inRaid ~= prevInRaid then
 		-- queue update for after leaving combat
 		if Grid.inCombat then
 			Grid.rosterNeedsUpdate = true
 		else
-			self:TriggerEvent("Grid_UpdateSort")
+			self:TriggerEvent("Grid_ReloadLayout")
 		end
+
+		prevInRaid = inRaid
 	end
 end
 
@@ -299,7 +304,7 @@ function Grid:PLAYER_REGEN_ENABLED()
 	if not Grid.inCombat and Grid.rosterNeedsUpdate then
 		self:Debug("Left combat, updating roster")
 		Grid.rosterNeedsUpdate = false
-		self:TriggerEvent("Grid_UpdateSort")
+		self:TriggerEvent("Grid_ReloadLayout")
 	end
 end
 

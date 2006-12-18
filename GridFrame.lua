@@ -762,7 +762,7 @@ function GridFrame:ResetAllFrames()
 		function (f)
 			f:Reset()
 		end)
-	self:TriggerEvent("Grid_UpdateSort")
+	self:TriggerEvent("Grid_UpdateLayoutSize")
 end
 
 function GridFrame:ResizeAllFrames()
@@ -771,8 +771,7 @@ function GridFrame:ResizeAllFrames()
 			f:SetWidth(self:GetFrameWidth())
 			f:SetHeight(self:GetFrameHeight())
 		end)
-
-	self:TriggerEvent("Grid_UpdateSort")
+	self:TriggerEvent("Grid_UpdateLayoutSize")
 end
 
 function GridFrame:UpdateAllFrames()

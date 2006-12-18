@@ -1,10 +1,9 @@
 -- GridRange.lua
 --
--- A 1.12/TBC range library
+-- A TBC range library
 
 --{{{ Libraries
 
--- 1.12 uses ProximityLib
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 --}}}
