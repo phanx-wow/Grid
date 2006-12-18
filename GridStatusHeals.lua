@@ -99,7 +99,7 @@ function GridStatusHeals:CHAT_MSG_ADDON(prefix, message, distribution, sender)
 
 	gridusers[sender] = true
 
-	local _, _, what, who = string.find("^([^ ]+) ?(.*)$", message)
+	local what, who = string.match("^([^ ]+) ?(.*)$", message)
 
 	if what == "HN" then
 		self:UnitIsHealed(who)
