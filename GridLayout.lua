@@ -602,27 +602,27 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 
 	if groupAnchor == "TOPLEFT" then
 		if horizontal then
-			relpoint, xMult, yMult = "BOTTOMLEFT", 1, -1
+			relPoint, xMult, yMult = "BOTTOMLEFT", 1, -1
 		else
-			relpoint, xMult, yMult = "TOPRIGHT", 1, -1
+			relPoint, xMult, yMult = "TOPRIGHT", 1, -1
 		end
 	elseif groupAnchor == "TOPRIGHT" then
 		if horizontal then
-			relpoint, xMult, yMult = "BOTTOMRIGHT", -1, -1
+			relPoint, xMult, yMult = "BOTTOMRIGHT", -1, -1
 		else
-			relpoint, xMult, yMult = "TOPLEFT", -1, -1
+			relPoint, xMult, yMult = "TOPLEFT", -1, -1
 		end
 	elseif groupAnchor == "BOTTOMLEFT" then
 		if horizontal then
-			relpoint, xMult, yMult =  "TOPLEFT", 1, 1
+			relPoint, xMult, yMult =  "TOPLEFT", 1, 1
 		else
-			relpoint, xMult, yMult = "BOTTOMRIGHT", 1, 1
+			relPoint, xMult, yMult = "BOTTOMRIGHT", 1, 1
 		end
 	elseif groupAnchor == "BOTTOMRIGHT" then
 		if horizontal then
-			relpoint, xMult, yMult = "TOPRIGHT", -1, 1
+			relPoint, xMult, yMult = "TOPRIGHT", -1, 1
 		else
-			relpoint, xMult, yMult = "BOTTOMLEFT", -1, 1
+			relPoint, xMult, yMult = "BOTTOMLEFT", -1, 1
 		end
 	end
 	
@@ -640,9 +640,10 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 		frame:ClearAllPoints()
 		frame:SetPoint(groupAnchor, previousGroup.frame, relPoint, padding * xMult, padding * yMult)
 	end
-	previousGroup = layoutGroup
 
-	self:Debug("Placing group", groupNumber, layoutGroup.frame:GetName(), xMult, yMult)
+	self:Debug("Placing group", groupNumber, layoutGroup.frame:GetName(), groupAnchor, previousGroup and previousGroup.frame:GetName(), relPoint)
+
+	previousGroup = layoutGroup
 end
 
 function GridLayout:AddLayout(layoutName, layout)
