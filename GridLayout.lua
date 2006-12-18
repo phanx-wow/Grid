@@ -493,7 +493,8 @@ function GridLayout:OnEnable()
 	-- self:RegisterEvent("Grid_UnitJoined", "DelayedUpdateSize")
 	-- self:RegisterEvent("Grid_UnitLeft", "DelayedUpdateSize")
 	-- self:RegisterEvent("Grid_UnitChanged", "DelayedUpdateSize")
-	self:RegisterEvent("Grid_UpdateSort")
+	-- self:RegisterEvent("Grid_UpdateSort")
+	self:RegisterEvent("Grid_UpdateSort", "DelayedUpdateSize")
 
 	self.super.OnEnable(self)
 end
@@ -559,6 +560,35 @@ function GridLayout:CreateFrames()
 	self.partyGroup = self.layoutPartyClass:new()
 end
 
+local function getRelativePoint(point, horizontal)
+	if point == "TOPLEFT" then
+		if horizontal then
+			return "BOTTOMLEFT", 1, -1
+		else
+			return "TOPRIGHT", 1, -1
+		end
+	elseif point == "TOPRIGHT" then
+		if horizontal then
+			return "BOTTOMRIGHT", -1, -1
+		else
+			return "TOPLEFT", -1, -1
+		end
+	elseif point == "BOTTOMLEFT" then
+		if horizontal then
+			return  "TOPLEFT", 1, 1
+		else
+			return "BOTTOMRIGHT", 1, 1
+		end
+	elseif point == "BOTTOMRIGHT" then
+		if horizontal then
+			return "TOPRIGHT", -1, 1
+		else
+			return "BOTTOMLEFT", -1, 1
+		end
+	end
+end
+
+local previousGroup
 function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 	local frame = layoutGroup.frame
 
@@ -568,29 +598,51 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 	local spacing = settings.Spacing
 	local groupAnchor = settings.groupAnchor
 
-	local x, y
+	local relPoint, xMult, yMult
 
-	if horizontal then
-		y = (frame:GetHeight() + padding) * (groupNumber - 1) + spacing
-		x = spacing
+	if groupAnchor == "TOPLEFT" then
+		if horizontal then
+			relpoint, xMult, yMult = "BOTTOMLEFT", 1, -1
+		else
+			relpoint, xMult, yMult = "TOPRIGHT", 1, -1
+		end
+	elseif groupAnchor == "TOPRIGHT" then
+		if horizontal then
+			relpoint, xMult, yMult = "BOTTOMRIGHT", -1, -1
+		else
+			relpoint, xMult, yMult = "TOPLEFT", -1, -1
+		end
+	elseif groupAnchor == "BOTTOMLEFT" then
+		if horizontal then
+			relpoint, xMult, yMult =  "TOPLEFT", 1, 1
+		else
+			relpoint, xMult, yMult = "BOTTOMRIGHT", 1, 1
+		end
+	elseif groupAnchor == "BOTTOMRIGHT" then
+		if horizontal then
+			relpoint, xMult, yMult = "TOPRIGHT", -1, 1
+		else
+			relpoint, xMult, yMult = "BOTTOMLEFT", -1, 1
+		end
+	end
+	
+	if groupNumber == 1 then
+		frame:ClearAllPoints()
+		frame:SetParent(self.frame)
+		frame:SetPoint(groupAnchor, self.frame, groupAnchor, spacing * xMult, spacing * yMult)
 	else
-		-- vertical
-		x = (frame:GetWidth() + padding) * (groupNumber - 1) + spacing
-		y = spacing
-	end
+		if horizontal then
+			xMult = 0
+		else
+			yMult = 0
+		end
 
-	if groupAnchor == "TOPLEFT" or groupAnchor == "TOPRIGHT" then
-		y = -y
+		frame:ClearAllPoints()
+		frame:SetPoint(groupAnchor, previousGroup.frame, relPoint, padding * xMult, padding * yMult)
 	end
-	if groupAnchor == "TOPRIGHT" or groupAnchor == "BOTTOMRIGHT" then
-		x = -x
-	end
+	previousGroup = layoutGroup
 
-	frame:ClearAllPoints()
-	frame:SetParent(self.frame)
-	frame:SetPoint(groupAnchor, self.frame, groupAnchor, x, y)
-
-	self:Debug("Placing group", groupNumber, x, -y)
+	self:Debug("Placing group", groupNumber, layoutGroup.frame:GetName(), xMult, yMult)
 end
 
 function GridLayout:AddLayout(layoutName, layout)

@@ -279,7 +279,6 @@ function Grid:RosterLib_UnitChanged(unitid, name, class, subgroup, rank, oldname
 
 	if needsUpdate then
 		-- queue update for after leaving combat
-		-- not that anything is actually registered for Grid_UpdateSort anymore
 		if Grid.inCombat then
 			Grid.rosterNeedsUpdate = true
 		else
