@@ -1,4 +1,4 @@
---{{{ Libraries
+﻿--{{{ Libraries
 
 local RL = AceLibrary("Roster-2.1")
 local Banzai = AceLibrary("Banzai-1.1")
@@ -15,7 +15,7 @@ GridStatusHeals.menuName = L["Heals"]
 GridStatusHeals.defaultDB = {
 	debug = false,
 	alert_heals = {
-		text = "incoming heals",
+		text = L["Incoming heals"],
 		enable = true,
 		color = { r = 0, g = 1, b = 0, a = 1 },
 		priority = 50,

@@ -1,4 +1,4 @@
--- GridStatusRange.lua
+﻿-- GridStatusRange.lua
 --
 -- Created By : neXter
 -- Modified By: Pastamancer
@@ -11,7 +11,7 @@ local GridRange = GridRange
 
 GridStatusRange = GridStatus:NewModule("GridStatusRange", "AceEvent-2.0")
 
-GridStatusRange.menuName = "Range"
+GridStatusRange.menuName = L["Range"]
 
 GridStatusRange.options = false
 

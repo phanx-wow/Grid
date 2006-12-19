@@ -1,14 +1,14 @@
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 GridStatusAggro = GridStatus:NewModule("GridStatusAggro")
-GridStatusAggro.menuName = "Aggro"
+GridStatusAggro.menuName = L["Aggro"]
 
 --{{{ AceDB defaults
 
 GridStatusAggro.defaultDB = {
 	debug = false,
 	alert_aggro = {
-		text = "Aggro",
+		text =  L["Aggro"],
 		enable = true,
 		color = { r = 1, g = 0, b = 0, a = 1 },
 		priority = 99,

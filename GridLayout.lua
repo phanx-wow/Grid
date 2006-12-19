@@ -1,4 +1,4 @@
--- GridLayout.lua
+﻿-- GridLayout.lua
 -- insert boilerplate
 
 --{{{ Libraries
@@ -428,8 +428,8 @@ GridLayout.options = {
 
 		["advanced"] = {
 			type = "group",
-			name = "Advanced",
-			desc = "Advanced options.",
+			name = L["Advanced"],
+			desc = L["Advanced options."],
 			order = -1,
 			args = {
 				["layoutanchor"] = {

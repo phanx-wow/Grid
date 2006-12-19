@@ -1,4 +1,4 @@
--- GridFrame.lua
+﻿-- GridFrame.lua
 
 --{{{ Libraries
 
@@ -567,7 +567,7 @@ GridFrame.options = {
 			desc = L["Number of characters to show on Center Text indicator."],
 			order = 11,
 			min = 0,
-			max = 8,
+			max = 32,
 			step = 1,
 			get = function () return GridFrame.db.profile.textlength end,
 			set = function (v)
@@ -600,8 +600,8 @@ GridFrame.options = {
 
 		["advanced"] = {
 			type = "group",
-			name = "Advanced",
-			desc = "Advanced options.",
+			name = L["Advanced"],
+			desc = L["Advanced options."],
 			order = -1,
 			disabled = function () return Grid.inCombat end,
 			args = {

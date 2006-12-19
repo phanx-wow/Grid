@@ -10,7 +10,7 @@ local BC = AceLibrary("Babble-Class-2.2")
 --}}}
 
 GridStatusAuras = GridStatus:NewModule("GridStatusAuras")
-GridStatusAuras.menuName = "Auras"
+GridStatusAuras.menuName = L["Auras"]
 
 
 local function statusForSpell(spell, isBuff)

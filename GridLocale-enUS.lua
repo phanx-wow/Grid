@@ -137,6 +137,7 @@ local strings_enUS = {
 	
 	--}}}
 	--{{{ GridStatusAuras
+	["Auras"] = true,
 	["Debuff type: %s"] = true,
 	["Poison"] = true,
 	["Disease"] = true,
@@ -163,6 +164,8 @@ local strings_enUS = {
 	
 	--}}}
 	--{{{ GridStatusMana
+	["Mana"] = true,
+	["Low Mana"] = true,
 	["Mana threshold"] = true,
 	["Set the percentage for the low mana warning."] = true,
 	["Low Mana warning"] = true,
@@ -178,6 +181,9 @@ local strings_enUS = {
 	
 	--}}}
 	--{{{ GridStatusHealth
+	["Low HP"] = true,
+	["DEAD"] = true,
+	["Offline"] = true,
 	["Unit health"] = true,
 	["Health deficit"] = true,
 	["Low HP warning"] = true,
@@ -196,12 +202,14 @@ local strings_enUS = {
 
 	--}}}
 	--{{{ GridStatusRange
+	["Range"] = true,
 	["Range check frequency"] = true,
 	["Seconds between range checks"] = true,
 	["Out of Range"] = true,
 
 	--}}}
 	--{{{ GridStatusTarget
+	["Target"] = true,
 	["Your Target"] = true,
 
 	--}}}

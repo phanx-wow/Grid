@@ -1,16 +1,16 @@
---{{{ Libraries
+﻿--{{{ Libraries
 local RL = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 --}}}
 
 GridStatusMana = GridStatus:NewModule("GridStatusMana")
-GridStatusMana.menuName = "Mana"
+GridStatusMana.menuName = L["Mana"]
 
 --{{{ AceDB defaults
 GridStatusMana.defaultDB = {
 	debug = false,
 	alert_lowMana = {
-		text = "Low Mana",
+		text = L["Low Mana"],
 		enable = true,
 		color = { r = .5, g = .5, b = 1, a = 1 },
 		priority = 40,

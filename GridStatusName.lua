@@ -1,16 +1,16 @@
---{{{ Libraries
+﻿--{{{ Libraries
 local RL = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 --}}}
 
 GridStatusName = GridStatus:NewModule("GridStatusName")
-GridStatusName.menuName = "Unit Name"
+GridStatusName.menuName = L["Unit Name"]
 
 --{{{ AceDB defaults
 GridStatusName.defaultDB = {
 	debug = false,
 	unit_name = {
-		text = "Unit Name",
+		text = L["Unit Name"],
 		enable = true,
 		color = { r = 1, g = 1, b = 1, a = 1 },
 		priority = 1,

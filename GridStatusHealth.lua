@@ -1,4 +1,4 @@
---{{{ Libraries
+﻿--{{{ Libraries
 
 local RL = AceLibrary("Roster-2.1")
 local Aura = AceLibrary("SpecialEvents-Aura-2.0")
@@ -30,7 +30,7 @@ GridStatusHealth.defaultDB = {
 		useClassColors = true,
 	},
 	alert_lowHealth = {
-		text = "Low HP",
+		text = L["Low HP"],
 		enable = true,
 		color = { r = 1, g = 1, b = 1, a = 1 },
 		priority = 30,
@@ -38,7 +38,7 @@ GridStatusHealth.defaultDB = {
 		range = false,
 	},
 	alert_death = {
-		text = "DEAD",
+		text = L["DEAD"],
 		enable = true,
 		color = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
 		icon = "Interface\\TargetingFrame\\UI-TargetingFrame-Skull",
@@ -46,7 +46,7 @@ GridStatusHealth.defaultDB = {
 		range = false,
 	},
 	alert_offline = {
-		text = "Offline",
+		text = L["Offline"],
 		enable = true,
 		color = { r = 1, g = 1, g = 1, a = 0.6 },
 		priority = 60,

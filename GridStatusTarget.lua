@@ -1,4 +1,4 @@
--- GridStatusTarget.lua
+﻿-- GridStatusTarget.lua
 --
 -- Created By : noha
 -- Modified By: Pastamancer
@@ -8,7 +8,7 @@ local L = AceLibrary("AceLocale-2.2"):new("Grid")
 --}}}
 
 GridStatusTarget = GridStatus:NewModule("GridStatusTarget")
-GridStatusTarget.menuName = "Target"
+GridStatusTarget.menuName = L["Target"]
 
 -- save the name of our target here so we can send a StatusLost
 local cur_target
@@ -17,7 +17,7 @@ local cur_target
 GridStatusTarget.defaultDB = {
     debug = false, 
     player_target = {
-        text = "Target",
+        text = L["Target"],
         enable = true,
         color = { r = 0.8, g = 0.8, b = 0.8, a = 0.8 },
         priority = 99,

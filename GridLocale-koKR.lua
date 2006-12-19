@@ -137,6 +137,7 @@ local strings_koKR = {
 	
 	--}}}
 	--{{{ GridStatusAuras
+	["Auras"] = "효과",
 	["Debuff type: %s"] = "디버프 형식: %s",
 	["Poison"] = "독",
 	["Disease"] = "질병",
@@ -163,6 +164,8 @@ local strings_koKR = {
 	
 	--}}}
 	--{{{ GridStatusMana
+	["Mana"] = "마나",
+	["Low Mana"] = "마나 낮음",
 	["Mana threshold"] = "마나 값",
 	["Set the percentage for the low mana warning."] = "낮은 마나 경고를 위한 백분율을 설정합니다.",
 	["Low Mana warning"] = "마나 낮음 경고",
@@ -178,6 +181,9 @@ local strings_koKR = {
 	
 	--}}}
 	--{{{ GridStatusHealth
+	["Low HP"] = "체력 낮음",
+	["DEAD"] = "죽음",
+	["Offline"] = "오프",
 	["Unit health"] = "유닛 체력",
 	["Health deficit"] = "결손 체력",
 	["Low HP warning"] = "체력 낮음 경고",
@@ -196,13 +202,15 @@ local strings_koKR = {
 
 	--}}}
 	--{{{ GridStatusRange
+	["Range"] = "범위",
 	["Range check frequency"] = "범위 체크 빈도",
 	["Seconds between range checks"] = "범위 체크 초 설정",
 	["Out of Range"] = "거리 벗어남",
 
 	--}}}
 	--{{{ GridStatusTarget
-	["Your Target"] = "당신의 타겟",
+	["Target"] = "대상",
+	["Your Target"] = "당신의 대상",
 
 	--}}}
 }
