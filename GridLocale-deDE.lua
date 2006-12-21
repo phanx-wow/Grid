@@ -19,13 +19,14 @@ local strings_deDE = {
 	["OOC"] = "au\195\159erhalb des Kampfes",
 	["Center Text Length"] = "L\195\164nge des mittleren Textes",
 	["Number of characters to show on Center Text indicator."] = "Anzahl des Buchstaben die im mittleren Text angezeigt werden",
-	["Invert Bar Color"] = "Invetiere die Leistenfarbe",
+	["Invert Bar Color"] = "Invertiere die Leistenfarbe",
 	["Swap foreground/background colors on bars."] = "Tausche die Vordergrund-/Hintergrundfarbe der Leisten",
 
 	["Indicators"] = "Indikatoren",
 	["Border"] = "Rand",
 	["Health Bar"] = "Gesundheitsleiste",
-	["Center Text"] = "Text im Zentrum",
+	["Center Text"] = "Text im der Mitte",
+	["Center Text 2"] = "2. Text in der Mitte",
 	["Center Icon"] = "Icon im Zentrum",
 	["Top Left Corner"] = "Obere linke Ecke",
 	["Top Right Corner"] = "Obere rechte Ecke",
@@ -36,7 +37,25 @@ local strings_deDE = {
 	["Options for %s indicator."] = "Optionen f\195\188r den %s Indikator",
 	["Statuses"] = "Zust\195\164nde",
 	["Toggle status display."] = "Aktiviere die Anzeige des Zustands",
-
+	
+	-- Advanced options
+	["Advanced"] = "Erweitert",
+	["Advanced options."] = "Erweiterte Einstellungen",
+	["Enable %s indicator"] = "Indikator f\195\188r %s ",
+	["Toggle the %s indicator."] = "Aktiviere den %s Indikator",
+	["Frame Width"] = "Rahmenbreite",
+	["Adjust the width of each unit's frame."] = "Die Weite von jedem Einheitenfenster anpassen",
+	["Frame Height"] = "Rahmenh\195\182he",
+	["Adjust the height of each unit's frame."] = "Die H\195\182he von jedem Einheitenfenster anpassen",
+	["Corner Size"] = "Eckengr\195\182\195\159e",
+	["Adjust the size of the corner indicators."] = "Die Gr\195\182\195\159e der Eckenindikatoren anpassen",
+	["Font Size"] = "Schriftgr\195\182\195\159e",
+	["Adjust the font size."] = "Die Schriftg\195\182\195\159e anpassen",
+	["Orientation"] = "Ausrichtung",
+	["Set frame orientation."] = "Rahmenausrichtung festlegen",
+	["Icon Size"] = "Icongr\195\182\195\159e",
+	["Adjust the size of the center icon."] = "Die Gr\195\182\195\159e des Icons im Zentrum anpassen",
+		
 	--}}}
 	--{{{ GridLayout
 	["Layout"] = "Anordnung",
@@ -118,6 +137,7 @@ local strings_deDE = {
 	
 	--}}}
 	--{{{ GridStatusAuras
+	["Auras"] = "Auren",
 	["Debuff type: %s"] = "Schw\195\164chungszaubertyp: %s",
 	["Poison"] = "Gift",
 	["Disease"] = "Krankheit",
@@ -135,7 +155,8 @@ local strings_deDE = {
 	["Class Filter"] = "Klassenfilter",
 	["Show status for the selected classes."] = "Zeige den Status f\195\188r die ausgw\195\164hlte Klasse",
 	["Show on %s."] = "Zeige %s.",
-
+	["[^%a]"] = "[^%a]",
+	
 	--}}}
 	--{{{ GridStatusName
 	["Unit Name"] = "Namen",
@@ -143,6 +164,8 @@ local strings_deDE = {
 	
 	--}}}
 	--{{{ GridStatusMana
+	["Mana"] = "Mana",
+	
 	["Mana threshold"] = "Mana Grenzwert",
 	["Set the percentage for the low mana warning."] = "Setzt den % Grenzwert f\195\188r die Wenig-Mana Warnung",
 	["Low Mana warning"] = "Wenig-Mana Warnung",
@@ -158,6 +181,9 @@ local strings_deDE = {
 	
 	--}}}
 	--{{{ GridStatusHealth
+	["Low HP"] = "Wenig HP",
+	["DEAD"] = "TOT",
+	["Offline"] = "Offline",
 	["Unit health"] = "Gesundheit",
 	["Health deficit"] = "Gesundheitsdefizit",
 	["Low HP warning"] = "Wenig-HP Warnung",
@@ -176,15 +202,19 @@ local strings_deDE = {
 
 	--}}}
 	--{{{ GridStatusRange
+	["Range"] = "Entfernung",
 	["Range check frequency"] = "H\195\164ufigkeit der Reichweitensmessung",
 	["Seconds between range checks"] = "Sekunden zwischen der Reichweitensmessung",
 	["Out of Range"] = "Au\195\159er Reichweite",
 
 	--}}}
 	--{{{ GridStatusTarget
+	["Target"] = "Ziel",
 	["Your Target"] = "Dein Ziel",
 
 	--}}}
+	
+	
 }
 
 L:RegisterTranslations("deDE", function() return strings_deDE end)
