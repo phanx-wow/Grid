@@ -334,8 +334,24 @@ function GridFrameClass.prototype:InvertBarColor()
 	self:SetBarColor(r, g, b, a)
 end
 
+function utfsub(text, max)
+	local uchar
+	local str = ""
+	local len = -1
+	for uchar in string.gmatch(text, ".") do
+		str = str..uchar
+		if string.find(uchar, "([%z\1-\127\194-\244][\128-\191]*)") then
+			len = len + 1
+		end
+		if len >= max then
+			return str
+		end
+	end
+	return str
+end
+
 function GridFrameClass.prototype:SetText(text, color)
-	text = string.sub(text, 1, GridFrame.db.profile.textlength)
+	text = utfsub(text, GridFrame.db.profile.textlength)
 	self.frame.Text:SetText(text)
 	if text and text ~= "" then
 		self.frame.Text:Show()
@@ -348,7 +364,7 @@ function GridFrameClass.prototype:SetText(text, color)
 end
 
 function GridFrameClass.prototype:SetText2(text, color)
-	text = string.sub(text, 1, GridFrame.db.profile.textlength)
+	text = utfsub(text, GridFrame.db.profile.textlength)
 	self.frame.Text2:SetText(text)
 	if text and text ~= "" then
 		self.frame.Text2:Show()
@@ -567,7 +583,7 @@ GridFrame.options = {
 			desc = L["Number of characters to show on Center Text indicator."],
 			order = 11,
 			min = 0,
-			max = 32,
+			max = 8,
 			step = 1,
 			get = function () return GridFrame.db.profile.textlength end,
 			set = function (v)
