@@ -3,6 +3,7 @@
 local RL = AceLibrary("Roster-2.1")
 local Aura = AceLibrary("SpecialEvents-Aura-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local BS = AceLibrary("Babble-Spell-2.2")
 
 --}}}
 
@@ -202,7 +203,7 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 	if not name then return end
 	if string.find(unitid, "pet") then return end
 
-	if UnitIsDeadOrGhost(unitid) and not self.deathCache[unitid] and not Aura:UnitHasBuff(unitid, "Feign Death") then
+	if UnitIsDeadOrGhost(unitid) and not self.deathCache[unitid] and not Aura:UnitHasBuff(unitid, BS["Feign Death"]) then
 		self:StatusDeath(unitid, true)
 		self.deathCache[unitid] = true
 	elseif not UnitIsDeadOrGhost(unitid) and self.deathCache[unitid] then
