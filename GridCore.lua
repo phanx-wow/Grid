@@ -277,10 +277,12 @@ function Grid:RosterLib_UnitChanged(unitid, name, class, subgroup, rank, oldname
 end
 
 local prevInRaid = false
+local prevInParty = false
 function Grid:RosterLib_RosterUpdated()
-	local inRaid = UnitInRaid("player")
+	local inParty = (GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0)
+	local inRaid = GetNumRaidMembers() > 0
 
-	if inRaid ~= prevInRaid then
+	if inParty ~= prevInParty or inRaid ~= prevInRaid then
 		-- queue update for after leaving combat
 		if Grid.inCombat then
 			Grid.rosterNeedsUpdate = true
@@ -288,6 +290,7 @@ function Grid:RosterLib_RosterUpdated()
 			self:TriggerEvent("Grid_ReloadLayout")
 		end
 
+		prevInParty = inParty
 		prevInRaid = inRaid
 	end
 end
