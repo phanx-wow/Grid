@@ -1,4 +1,4 @@
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local strings_koKR = {
 	--{{{ GridCore
