@@ -20,6 +20,9 @@
 
 ## SavedVariables: GridDB
 
+## Non-Ace Libraries
+utf8.lua
+
 ## Ace Libraries
 libs\AceLibrary\AceLibrary.lua
 libs\AceOO-2.0\AceOO-2.0.lua
