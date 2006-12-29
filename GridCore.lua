@@ -284,7 +284,7 @@ function Grid:RosterLib_RosterUpdated()
 
 	if inParty ~= prevInParty or inRaid ~= prevInRaid then
 		-- queue update for after leaving combat
-		if Grid.inCombat then
+		if InCombatLockdown() then
 			Grid.rosterNeedsUpdate = true
 		else
 			self:TriggerEvent("Grid_ReloadLayout")

@@ -121,7 +121,7 @@ local function utf8len (s)
 	local bytes = s:len()
 	local len = 0
 
-	while pos < bytes and len ~= chars do
+	while pos <= bytes and len ~= chars do
 		local c = s:byte(pos)
 		len = len + 1
 
@@ -175,7 +175,7 @@ local function utf8sub (s, i, j)
 	-- byte offsets to pass to string.sub
 	local startByte, endByte = 1, bytes
 
-	while pos < bytes do
+	while pos <= bytes do
 		len = len + 1
 
 		if len == startChar then
@@ -198,3 +198,87 @@ if not string.utf8sub then
 	string.utf8sub = utf8sub
 end
 
+
+-- replace UTF-8 characters based on a mapping table
+local function utf8replace (s, mapping)
+	-- argument checking
+	if type(s) ~= "string" then
+		error("bad argument #1 to 'utf8replace' (string expected, got ".. type(s).. ")")
+	end
+	if type(mapping) ~= "table" then
+		error("bad argument #2 to 'utf8replace' (table expected, got ".. type(mapping).. ")")
+	end
+
+	local pos = 1
+	local bytes = s:len()
+	local charbytes
+	local newstr = ""
+
+	while pos <= bytes do
+		charbytes = utf8charbytes(s, pos)
+		local c = s:sub(pos, pos + charbytes - 1)
+
+		newstr = newstr .. (mapping[c] or c)
+
+		pos = pos + charbytes
+	end
+
+	return newstr
+end
+
+
+-- identical to string.upper except it knows about unicode simple case conversions
+local function utf8upper (s)
+	return utf8replace(s, utf8_lc_uc)
+end
+
+-- install in the string library
+if not string.utf8upper and utf8_lc_uc then
+	string.utf8upper = utf8upper
+end
+
+
+-- identical to string.lower except it knows about unicode simple case conversions
+local function utf8lower (s)
+	return utf8replace(s, utf8_uc_lc)
+end
+
+-- install in the string library
+if not string.utf8lower and utf8_uc_lc then
+	string.utf8lower = utf8lower
+end
+
+
+-- identical to string.reverse except that it supports UTF-8
+local function utf8reverse (s)
+	-- argument checking
+	if type(s) ~= "string" then
+		error("bad argument #1 to 'utf8reverse' (string expected, got ".. type(s).. ")")
+	end
+
+	local bytes = s:len()
+	local pos = bytes
+	local charbytes
+	local newstr = ""
+
+	while pos > 0 do
+		c = s:byte(pos)
+		while c >= 128 and c <= 191 do
+			pos = pos - 1
+			c = s:byte(pos)
+		end
+
+		charbytes = utf8charbytes(s, pos)
+
+		newstr = newstr .. s:sub(pos, pos + charbytes - 1)
+
+		pos = pos - 1
+	end
+
+	return newstr
+end
+
+-- install in the string library
+if not string.utf8reverse then
+	string.utf8reverse = utf8reverse
+end

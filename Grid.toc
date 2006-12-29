@@ -21,6 +21,7 @@
 ## SavedVariables: GridDB
 
 ## Non-Ace Libraries
+#utf8data.lua
 utf8.lua
 
 ## Ace Libraries
