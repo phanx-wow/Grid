@@ -1,4 +1,4 @@
-﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local strings_koKR = {
 	--{{{ GridCore
@@ -13,10 +13,10 @@ local strings_koKR = {
 	["Options for GridFrame."] = "그리드 프레임을 위한 옵션을 설정합니다.",
 
 	["Show Tooltip"] = "툴팁 표시",
-	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "유닛 툴팁을 표시합니다. '항상', '안함' 또는 '거리 벗어남'을 선택합니다.",
+	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "유닛 툴팁을 표시합니다. '항상', '안함' 또는 '비전투 상태'을 선택합니다.",
 	["Always"] = "항상",
 	["Never"] = "안함",
-	["OOC"] = "거리 벗어남",
+	["OOC"] = "비전투 상태",
 	["Center Text Length"] = "중앙 글꼴 길이",
 	["Number of characters to show on Center Text indicator."] = "중앙에 표시되는 캐릭명의 길이를 설정합니다.",
 	["Invert Bar Color"] = "바 색상 반전",
