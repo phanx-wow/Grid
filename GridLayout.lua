@@ -1,10 +1,11 @@
-﻿-- GridLayout.lua
+-- GridLayout.lua
 -- insert boilerplate
 
 --{{{ Libraries
 
 local AceOO = AceLibrary("AceOO-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local RL = AceLibrary("Roster-2.1")
 
 --}}}
 
@@ -490,11 +491,19 @@ function GridLayout:OnEnable()
 	self:RestorePosition()
 	self:Scale()
 
-	self:RegisterEvent("Grid_ReloadLayout")
-	self:RegisterEvent("Grid_UpdateLayoutSize")
-	self:RegisterEvent("Grid_UnitJoined", "Grid_UpdateLayoutSize")
-	self:RegisterEvent("Grid_UnitLeft", "Grid_UpdateLayoutSize")
-	self:RegisterEvent("Grid_UnitChanged", "Grid_UpdateLayoutSize")
+	self:RegisterEvent("Grid_ReloadLayout", "PartyTypeChanged")
+	self:RegisterEvent("Grid_JoinedRaid", "PartyTypeChanged")
+	self:RegisterEvent("Grid_JoinedParty", "PartyTypeChanged")
+	self:RegisterEvent("Grid_LeftParty", "PartyTypeChanged")
+
+	self:RegisterEvent("Grid_UpdateLayoutSize", "PartyMembersChanged")
+	--self:RegisterEvent("Grid_UnitJoined", "PartyMembersChanged")
+	--self:RegisterEvent("Grid_UnitLeft", "PartyMembersChanged")
+	--self:RegisterEvent("Grid_UnitChanged", "PartyMembersChanged")
+	self:RegisterEvent("RosterLib_RosterUpdated", "PartyMembersChanged")
+
+	self:RegisterEvent("Grid_EnteringCombat", "EnteringOrLeavingCombat")
+	self:RegisterEvent("Grid_LeavingCombat", "EnteringOrLeavingCombat")
 
 	self.super.OnEnable(self)
 end
@@ -512,6 +521,39 @@ function GridLayout:Reset()
 	self:RestorePosition()
 	self:Scale()
 end
+
+--{{{ Event handlers
+
+local reloadLayoutQueued
+local updateSizeQueued
+function GridLayout:EnteringOrLeavingCombat()
+	if reloadLayoutQueued then return self:PartyTypeChanged() end
+	if updateSizeQueued then return self:PartyMembersChanged() end
+end
+
+function GridLayout:PartyMembersChanged()
+	GridLayout:Debug("PartyMembersChanged")
+	if InCombatLockdown() then
+		updateSizeQueued = true
+	else
+		self:UpdateSize()
+		updateSizeQueued = false
+	end
+end
+
+function GridLayout:PartyTypeChanged()
+	GridLayout:Debug("PartyTypeChanged")
+
+	if InCombatLockdown() then
+		reloadLayoutQueued = true
+	else
+		self:ReloadLayout()
+		reloadLayoutQueued = false
+		updateSizeQueued = false
+	end
+end
+
+--}}}
 
 function GridLayout:StartMoveFrame()
 	if not self.db.profile.FrameLock and arg1 == "LeftButton" then
@@ -720,20 +762,6 @@ function GridLayout:UpdateDisplay()
 	self:UpdateSize()
 end
 
-function GridLayout:Grid_UpdateLayoutSize()
-	self:ScheduleEvent("GridLayoutUpdate", function ()
-			GridLayout:Debug("Grid_UpdateLayoutSize")
-			GridLayout:UpdateSize()
-		end, 0.1)
-end
-
-function GridLayout:Grid_ReloadLayout()
-	self:ScheduleEvent("GridLayoutUpdate", function ()
-			GridLayout:Debug("Grid_ReloadLayout")
-			GridLayout:ReloadLayout()
-		end, 0.1)
-end
-
 function GridLayout:UpdateSize()
 	local layoutGroup
 	local groupCount = 0
@@ -876,4 +904,5 @@ function GridLayout:Scale()
 	self.frame:SetScale(self.db.profile.ScaleSize)
 	self:RestorePosition()
 end
+
 --}}}

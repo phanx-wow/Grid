@@ -74,6 +74,7 @@ function Grid.modulePrototype:OnInitialize()
 end
 
 function Grid.modulePrototype:OnEnable()
+	self:RegisterEvent("ADDON_LOADED")
 	self:EnableModules()
 end
 
@@ -178,17 +179,20 @@ function Grid:OnInitialize()
 end
 
 function Grid:OnEnable()
+	self:RegisterEvent("ADDON_LOADED")
 	self:RegisterEvent("RosterLib_UnitChanged")
 	self:RegisterEvent("RosterLib_RosterUpdated")
 	self:EnableModules()
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
+	self:RegisterEvent("PLAYER_LEAVING_WORLD", "PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "PLAYER_REGEN_ENABLED")
-	self:TriggerEvent("Grid_UpdateSort")
+	self:TriggerEvent("Grid_Enabled")
 end
 
 function Grid:OnDisable()
 	self:Debug("OnDisable")
+	self:TriggerEvent("Grid_Disabled")
 	self:DisableModules()
 end
 
@@ -282,32 +286,38 @@ function Grid:RosterLib_RosterUpdated()
 	local inParty = (GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0)
 	local inRaid = GetNumRaidMembers() > 0
 
-	if inParty ~= prevInParty or inRaid ~= prevInRaid then
-		-- queue update for after leaving combat
-		if InCombatLockdown() then
-			Grid.rosterNeedsUpdate = true
-		else
-			self:TriggerEvent("Grid_ReloadLayout")
-		end
+	self:Debug("RosterUpdated")
 
-		prevInParty = inParty
-		prevInRaid = inRaid
+	-- in raid -> (in party | left party)
+	-- in party -> (in raid | left party)
+
+	if inRaid then
+		if not prevInRaid then
+			self:TriggerEvent("Grid_JoinedRaid")
+		end
+	elseif inParty then
+		if not prevInParty or prevInRaid then
+			self:TriggerEvent("Grid_JoinedParty")
+		end
+	elseif prevInParty or prevInRaid then
+		self:TriggerEvent("Grid_LeftParty")
 	end
+
+	prevInRaid = inRaid
+	prevInParty = inParty
 end
 
 function Grid:PLAYER_REGEN_DISABLED()
-	Grid.inCombat = true
 	self:Debug("Entering combat")
+	self:TriggerEvent("Grid_EnteringCombat")
+	Grid.inCombat = true
 end
 
 function Grid:PLAYER_REGEN_ENABLED()
 	Grid.inCombat = InCombatLockdown() == 1
-	self:Debug("Leaving combat")
-
-	if not Grid.inCombat and Grid.rosterNeedsUpdate then
-		self:Debug("Left combat, updating roster")
-		Grid.rosterNeedsUpdate = false
-		self:TriggerEvent("Grid_ReloadLayout")
+	if not Grid.inCombat then
+		self:Debug("Leaving combat")
+		self:TriggerEvent("Grid_LeavingCombat")
 	end
 end
 
