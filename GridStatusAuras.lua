@@ -202,10 +202,10 @@ end
 
 
 function GridStatusAuras:CreateAddRemoveOptions()
-	self.options.args["AddRemoveHeader"] = {
-		type = "header",
-		order = 200,
-	}
+	--self.options.args["AddRemoveHeader"] = {
+	--	type = "header",
+	--	order = 199,
+	--}
 	self.options.args["add_buff"] = {
 		type = "text",
 		name = L["Add new Buff"],
@@ -213,7 +213,7 @@ function GridStatusAuras:CreateAddRemoveOptions()
 		get = false,
 		usage = "<buff name>",
 		set = function(v) self:AddAura(v, true) end,
-		order = 201
+		order = -3
 	}
 	self.options.args["add_debuff"] = {
 		type = "text",
@@ -222,14 +222,14 @@ function GridStatusAuras:CreateAddRemoveOptions()
 		get = false,
 		usage = "<debuff name>",
 		set = function(v) self:AddAura(v, false) end,
-		order = 202
+		order = -2
 	}
 	self.options.args["delete_debuff"] = {
 		type = "group",
 		name = L["Delete (De)buff"],
 		desc = L["Deletes an existing debuff from the status module"],
 		args = {},
-		order = 203
+		order = -1
 	}
 
 	for status, statusTbl in pairs(self.db.profile) do
