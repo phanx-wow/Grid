@@ -616,6 +616,7 @@ GridFrame.options = {
 					set = function (v)
 							GridFrame.db.profile.enableText2 = v
 							GridFrame:WithAllFrames(function (f) f:EnableText2(v) end)
+							GridFrame:UpdateOptionsMenu()
 						end,
 				},
 				["framewidth"] = {
@@ -919,6 +920,12 @@ end
 function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
 	local menu = self.options.args
 	local status, descr, indicatorMenu
+
+	if indicator == "text2" and not self.db.profile.enableText2 then
+		self:Debug("indicator text2 is disabled")
+		menu[indicator] = nil
+		return
+	end
 
 	-- create menu for indicator
 	if not menu[indicator] then
