@@ -58,6 +58,8 @@ function GridRange:ScanSpellbook()
 		end
 		i = i + 1
 	until not sName
+
+	self:TriggerEvent("Grid_RangesUpdated")
 end
 
 function GridRange:OnEnable()
@@ -77,4 +79,18 @@ function GridRange:GetUnitRange(unit)
 
 	-- no check succeeded
 	return nil
+end
+
+function GridRange:AvailableRangeIterator()
+	local k = 0
+
+	return function ()
+		k = k + 1
+
+		if ranges[k] then
+			return ranges[k].range
+		else
+			return nil
+		end
+	end
 end
