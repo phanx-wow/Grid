@@ -89,6 +89,7 @@ function GridFrameClass.prototype:CreateFrames()
 	
 	-- set our left-click action
 	f:SetAttribute("type1", "target")
+	f:SetAttribute("*type1", "target")
 
 	-- tooltip support
 	f:SetScript("OnEnter", function() self:OnEnter() end)
@@ -1014,6 +1015,7 @@ function GridFrame:ListRegisteredFrames()
 			frame.unit and frame.unitName == UnitName(frame.unit) and
 				"|cff00ff00"..(frame.unitName or "nil").."|r" or
 				"|cffff0000"..(frame.unitName or "nil").."|r",
+			frame.frame:GetAttribute("type1"),
 			frameStatus)
 	end
 	GridFrame:Debug("--[ END Registered Frame List ]--")

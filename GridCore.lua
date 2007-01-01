@@ -282,29 +282,37 @@ end
 
 local prevInRaid = false
 local prevInParty = false
+local prevInBG = false
 function Grid:RosterLib_RosterUpdated()
 	local inParty = (GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0)
 	local inRaid = GetNumRaidMembers() > 0
+	local inBG = select(2, IsInInstance()) == "pvp"
 
 	self:Debug("RosterUpdated")
 
-	-- in raid -> (in party | left party)
-	-- in party -> (in raid | left party)
+	-- in bg -> (in raid | in party | left party)
+	-- in raid -> (in bg | in party | left party)
+	-- in party -> (in bg | in raid | left party)
 
-	if inRaid then
-		if not prevInRaid then
+	if inBG then
+		if not prevInBG then
+			self:TriggerEvent("Grid_JoinedBattleground")
+		end
+	elseif inRaid then
+		if not prevInRaid or prevInBG then
 			self:TriggerEvent("Grid_JoinedRaid")
 		end
 	elseif inParty then
-		if not prevInParty or prevInRaid then
+		if not prevInParty or prevInRaid or prevInBG then
 			self:TriggerEvent("Grid_JoinedParty")
 		end
-	elseif prevInParty or prevInRaid then
+	elseif prevInParty or prevInRaid or prevInBG then
 		self:TriggerEvent("Grid_LeftParty")
 	end
 
 	prevInRaid = inRaid
 	prevInParty = inParty
+	prevInBG = inBG
 end
 
 function Grid:PLAYER_REGEN_DISABLED()

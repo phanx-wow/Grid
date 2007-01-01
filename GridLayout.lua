@@ -492,6 +492,7 @@ function GridLayout:OnEnable()
 	self:Scale()
 
 	self:RegisterEvent("Grid_ReloadLayout", "PartyTypeChanged")
+	self:RegisterEvent("Grid_JoinedBattleground", "PartyTypeChanged")
 	self:RegisterEvent("Grid_JoinedRaid", "PartyTypeChanged")
 	self:RegisterEvent("Grid_JoinedParty", "PartyTypeChanged")
 	self:RegisterEvent("Grid_LeftParty", "PartyTypeChanged")
