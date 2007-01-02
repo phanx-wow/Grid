@@ -186,7 +186,7 @@ function Grid:OnEnable()
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_LEAVING_WORLD", "PLAYER_REGEN_ENABLED")
-	self:RegisterEvent("PLAYER_ENTERING_WORLD", "PLAYER_REGEN_ENABLED")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:TriggerEvent("Grid_Enabled")
 end
 
@@ -283,6 +283,12 @@ end
 local prevInRaid = false
 local prevInParty = false
 local prevInBG = false
+function Grid:PLAYER_ENTERING_WORLD()
+	-- this is needed to trigger an update when switching from one BG directly to another
+	prevInBG = false
+	return self:RosterLib_RosterUpdated()
+end
+
 function Grid:RosterLib_RosterUpdated()
 	local inParty = (GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0)
 	local inRaid = GetNumRaidMembers() > 0
@@ -290,7 +296,7 @@ function Grid:RosterLib_RosterUpdated()
 
 	self:Debug("RosterUpdated")
 
-	-- in bg -> (in raid | in party | left party)
+	-- in bg -> (in bg | in raid | in party | left party)
 	-- in raid -> (in bg | in party | left party)
 	-- in party -> (in bg | in raid | left party)
 
