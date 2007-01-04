@@ -35,6 +35,8 @@ GridStatusHeals.options = false
 -- whenever this module recieves an AceComm event, combat log scan from sender 
 -- will be skipped and AceComm will be used instead
 local gridusers = {} 
+local healcommusers = {}
+local targetCache = {}
 
 -- spells we want to watch. need to add localizations via BabbleSpell later
 local watchSpells = {
@@ -60,11 +62,17 @@ end
 
 function GridStatusHeals:OnEnable()
 	-- register events
+	self:RegisterEvent("Grid_UnitLeft")
+
 	self:RegisterEvent("UNIT_SPELLCAST_START")
-	--self:RegisterEvent("UNIT_SPELLCAST_SENT")
 	self:RegisterEvent("CHAT_MSG_ADDON")
-	
 	Healcomm:RegisterCallback(self, "HealcommCallback")
+end
+
+function GridStatusHeals:Grid_UnitLeft(name)
+	targetCache[name] = nil
+	healcommusers[name] = nil
+	gridusers[name] = nil
 end
 
 function GridStatusHeals:UNIT_SPELLCAST_START(unit)
@@ -76,6 +84,7 @@ function GridStatusHeals:UNIT_SPELLCAST_START(unit)
 	local unitid = RL:GetUnitIDFromName(helper)
 
 	if not helper or not spell or not unitid then return end
+	if healcommusers[helper] then return end
 	if gridusers[helper] then return end
 
 	if spell == BS["Prayer of Healing"] then
@@ -102,6 +111,8 @@ function GridStatusHeals:CHAT_MSG_ADDON(prefix, message, distribution, sender)
 
 	gridusers[sender] = true
 
+	if healcommusers[sender] then return end
+
 	local what, who = string.match("^([^ ]+) ?(.*)$", message)
 
 	if what == "HN" then
@@ -110,7 +121,6 @@ function GridStatusHeals:CHAT_MSG_ADDON(prefix, message, distribution, sender)
 		self:GroupHeal(sender)
 	end
 end
-
 
 function GridStatusHeals:GroupHeal(healer)
 	local u1 = RL:GetUnitObjectFromName(healer)
@@ -145,31 +155,20 @@ function GridStatusHeals:HealCompleted(name)
 end
 
 
-function GridStatusHeals:UNIT_SPELLCAST_SENT(unit, spell, rank, target)
-	if not unit == "player" then
-		self:Debug("UNIT_SPELLCAST_SENT for unit:", unit)
-	else
-		self:Debug("UNIT_SPELLCAST_SENT", unit, spell, rank, target)
-		if watchSpells[spell] then
-			if spell == BS["Prayer of Healing"] then
-				self:GroupHeal(playerName)
-				self:Debug("sending group heal")
-				SendAddonMessage(self.name, "HG", "RAID")
-				SendAddonMessage(self.name, "HG", "BATTLEGROUND")
-				
-			else
-				self:Debug("sending heal on", target)
-				SendAddonMessage(self.name, "HN "..target, "RAID")
-				SendAddonMessage(self.name, "HN "..target, "BATTLEGROUND")
-			end
-		end
-	end
-end
-
 function GridStatusHeals:HealcommCallback(sender, action, spell, rank, target)
-	if spell == BS["Prayer of Healing"] then
-		self:GroupHeal(sender)
-	elseif watchSpells[spell] then
-		self:UnitIsHealed(target)
+	healcommusers[sender] = true
+
+	if action == "CAST" then
+		if spell == BS["Prayer of Healing"] then
+			self:GroupHeal(sender)
+		elseif watchSpells[spell] then
+			targetCache[sender] = target
+			self:UnitIsHealed(target)
+		end
+	elseif action == "INTERRUPTED" or action == "FAILED" then
+		self:Debug("Failed heal", sender, "->", targetCache[sender])
+		self:CancelScheduledEvent("HealCompleted_".. targetCache[sender])
+		self:HealCompleted(targetCache[sender])
+		targetCache[sender] = nil
 	end
 end

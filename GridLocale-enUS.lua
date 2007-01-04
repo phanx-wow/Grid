@@ -183,10 +183,12 @@ local strings_enUS = {
 	--{{{ GridStatusHealth
 	["Low HP"] = true,
 	["DEAD"] = true,
+	["FD"] = true,
 	["Offline"] = true,
 	["Unit health"] = true,
 	["Health deficit"] = true,
 	["Low HP warning"] = true,
+	["Feign Death warning"] = true,
 	["Death warning"] = true,
 	["Offline warning"] = true,
 	["Health"] = true,

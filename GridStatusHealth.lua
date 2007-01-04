@@ -46,6 +46,14 @@ GridStatusHealth.defaultDB = {
 		priority = 50,
 		range = false,
 	},
+	alert_feignDeath = {
+		text = L["FD"],
+		enable = true,
+		color = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
+		icon = "Interface\\Icons\\Ability_Rogue_FeignDeath",
+		priority = 55,
+		range = false,
+	},
 	alert_offline = {
 		text = L["Offline"],
 		enable = true,
@@ -147,6 +155,7 @@ function GridStatusHealth:OnInitialize()
 	self:RegisterStatus("unit_healthDeficit", L["Health deficit"], healthDeficitOptions)
 	self:RegisterStatus("alert_lowHealth", L["Low HP warning"], low_healthOptions)
 	self:RegisterStatus("alert_death", L["Death warning"], nil, true)
+	self:RegisterStatus("alert_feignDeath", L["Feign Death warning"], nil, true)
 	self:RegisterStatus("alert_offline", L["Offline warning"], nil, true)
 end
 
@@ -203,15 +212,22 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 	if not name then return end
 	if string.find(unitid, "pet") then return end
 
-	if UnitIsDeadOrGhost(unitid) and not self.deathCache[unitid] and not Aura:UnitHasBuff(unitid, BS["Feign Death"]) then
-		self:StatusDeath(unitid, true)
-		self.deathCache[unitid] = true
+	if UnitIsDeadOrGhost(unitid) and not self.deathCache[unitid] then
+		if not Aura:UnitHasBuff(unitid, BS["Feign Death"]) then
+			self:Debug("Death")
+			self:StatusDeath(unitid, true)
+			self.deathCache[unitid] = true
+		else
+			self:Debug("Feign Death")
+			self:StatusFeignDeath(unitid, true)
+			self.deathCache[unitid] = true
+		end
 	elseif not UnitIsDeadOrGhost(unitid) and self.deathCache[unitid] then
-		self:StatusDeath(unitid, true)
+		self:StatusFeignDeath(unitid, false)
+		self:StatusDeath(unitid, false)
 		self.deathCache[unitid] = nil
 	end
 
-	self:StatusDeath(unitid, UnitIsDeadOrGhost(unitid))
 	self:StatusOffline(unitid, not UnitIsConnected(unitid))
 
 	if settings.deadAsFullHealth and UnitIsDeadOrGhost(unitid) then
@@ -318,6 +334,29 @@ function GridStatusHealth:StatusDeath(unitid, gained)
 					    settings.icon)
 	else
 		self.core:SendStatusLost(name, "alert_death")
+	end
+end
+
+function GridStatusHealth:StatusFeignDeath(unitid, gained)
+	local name = UnitName(unitid)
+	local settings = self.db.profile.alert_feignDeath
+	
+	if not name then return end
+
+	-- return if this option isnt enabled
+	if not settings.enable then return end
+
+	if gained then
+		self.core:SendStatusGained(name, "alert_feignDeath",
+					    settings.priority,
+					    (settings.range and 40),
+					    settings.color,
+					    settings.text,
+					    (self.db.profile.unit_health.deadAsFullHealth and 100 or 0),
+					    100,
+					    settings.icon)
+	else
+		self.core:SendStatusLost(name, "alert_feignDeath")
 	end
 end
 
