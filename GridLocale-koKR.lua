@@ -183,10 +183,12 @@ local strings_koKR = {
 	--{{{ GridStatusHealth
 	["Low HP"] = "체력 낮음",
 	["DEAD"] = "죽음",
+	["FD"] = "죽척",
 	["Offline"] = "오프",
 	["Unit health"] = "유닛 체력",
 	["Health deficit"] = "결손 체력",
 	["Low HP warning"] = "체력 낮음 경고",
+	["Feign Death warning"] = "죽은척하기 경고",
 	["Death warning"] = "죽음 경고",
 	["Offline warning"] = "오프라인 경고",
 	["Health"] = "체력",
