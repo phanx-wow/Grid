@@ -4,6 +4,7 @@ local RL = AceLibrary("Roster-2.1")
 local Banzai = AceLibrary("Banzai-1.1")
 local BS = AceLibrary("Babble-Spell-2.2")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local Healcomm = Healcomm
 
 --}}}
 
@@ -60,8 +61,10 @@ end
 function GridStatusHeals:OnEnable()
 	-- register events
 	self:RegisterEvent("UNIT_SPELLCAST_START")
-	self:RegisterEvent("UNIT_SPELLCAST_SENT")
+	--self:RegisterEvent("UNIT_SPELLCAST_SENT")
 	self:RegisterEvent("CHAT_MSG_ADDON")
+	
+	Healcomm:RegisterCallback(self, "HealcommCallback")
 end
 
 function GridStatusHeals:UNIT_SPELLCAST_START(unit)
@@ -142,7 +145,6 @@ function GridStatusHeals:HealCompleted(name)
 end
 
 
-
 function GridStatusHeals:UNIT_SPELLCAST_SENT(unit, spell, rank, target)
 	if not unit == "player" then
 		self:Debug("UNIT_SPELLCAST_SENT for unit:", unit)
@@ -161,5 +163,13 @@ function GridStatusHeals:UNIT_SPELLCAST_SENT(unit, spell, rank, target)
 				SendAddonMessage(self.name, "HN "..target, "BATTLEGROUND")
 			end
 		end
+	end
+end
+
+function GridStatusHeals:HealcommCallback(sender, action, spell, rank, target)
+	if spell == BS["Prayer of Healing"] then
+		self:GroupHeal(sender)
+	elseif watchSpells[spell] then
+		self:UnitIsHealed(target)
 	end
 end
