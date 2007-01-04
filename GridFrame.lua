@@ -494,12 +494,14 @@ GridFrame.defaultDB = {
 	statusmap = {
 		["text"] = {
 			alert_death = true,
+			alert_feignDeath = true,
 			alert_offline = true,
 			unit_name = true,
 			unit_healthDeficit = true,
 		},
 		["text2"] = {
 			alert_death = true,
+			alert_feignDeath = true,
 			alert_offline = true,
 		},
 		["border"] = {
