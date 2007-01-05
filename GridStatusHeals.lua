@@ -167,7 +167,7 @@ function GridStatusHeals:CastCommCallback(sender, senderUnit, action, target, ch
 			self:Debug("Failed heal", sender, "->", target)
 			self:CancelScheduledEvent("HealCompleted_".. target)
 			self:HealCompleted(target)
-			targetCache[sender] = nil
+			--targetCache[sender] = nil
 		end
 	end
 end
