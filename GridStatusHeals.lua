@@ -4,7 +4,7 @@ local RL = AceLibrary("Roster-2.1")
 local Banzai = AceLibrary("Banzai-1.1")
 local BS = AceLibrary("Babble-Spell-2.2")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
-local Healcomm = Healcomm
+local CastCommLib = CastCommLib
 
 --}}}
 
@@ -36,7 +36,6 @@ GridStatusHeals.options = false
 -- will be skipped and AceComm will be used instead
 local gridusers = {} 
 local healcommusers = {}
-local targetCache = {}
 
 -- spells we want to watch. need to add localizations via BabbleSpell later
 local watchSpells = {
@@ -66,11 +65,10 @@ function GridStatusHeals:OnEnable()
 
 	self:RegisterEvent("UNIT_SPELLCAST_START")
 	self:RegisterEvent("CHAT_MSG_ADDON")
-	Healcomm:RegisterCallback(self, "HealcommCallback")
+	CastCommLib:RegisterCallback(self, "CastCommCallback")
 end
 
 function GridStatusHeals:Grid_UnitLeft(name)
-	targetCache[name] = nil
 	healcommusers[name] = nil
 	gridusers[name] = nil
 end
@@ -155,20 +153,21 @@ function GridStatusHeals:HealCompleted(name)
 end
 
 
-function GridStatusHeals:HealcommCallback(sender, action, spell, rank, target)
+function GridStatusHeals:CastCommCallback(sender, senderUnit, action, target, channel, spell, rank, displayName, icon, startTime, endTime, isTradeSkill)
 	healcommusers[sender] = true
 
-	if action == "CAST" then
+	if action == "START" then
 		if spell == BS["Prayer of Healing"] then
 			self:GroupHeal(sender)
 		elseif watchSpells[spell] then
-			targetCache[sender] = target
 			self:UnitIsHealed(target)
 		end
 	elseif action == "INTERRUPTED" or action == "FAILED" then
-		self:Debug("Failed heal", sender, "->", targetCache[sender])
-		self:CancelScheduledEvent("HealCompleted_".. targetCache[sender])
-		self:HealCompleted(targetCache[sender])
-		targetCache[sender] = nil
+		if watchSpells[spell] and target then
+			self:Debug("Failed heal", sender, "->", target)
+			self:CancelScheduledEvent("HealCompleted_".. target)
+			self:HealCompleted(target)
+			targetCache[sender] = nil
+		end
 	end
 end

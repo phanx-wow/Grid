@@ -23,7 +23,7 @@
 ## Non-Ace Libraries
 #libs\UTF8\utf8data.lua
 libs\UTF8\utf8.lua
-libs\Healcomm\Healcomm.lua
+libs\CastCommLib\CastCommLib.lua
 
 ## Ace Libraries
 libs\AceLibrary\AceLibrary.lua
