@@ -37,6 +37,8 @@ function GridFrame_OnAttributeChanged(self, name, value)
 			frame.unitName = nil
 			frame.unit = value
 		end
+	elseif name == "type1" and value == nil then
+		error(string.format("LeftButton action on frame %s (%s) set to nil!", tostring(self:GetName()), tostring(self:GetAttribute("unit"))))
 	end
 end
 
