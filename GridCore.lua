@@ -305,17 +305,27 @@ function Grid:RosterLib_RosterUpdated()
 
 	if inBG then
 		if not prevInBG then
+			self:Debug("Grid_JoinedBattleground")
 			self:TriggerEvent("Grid_JoinedBattleground")
 		end
+		inParty = false
+		inRaid = false
 	elseif inRaid then
 		if not prevInRaid or prevInBG then
+			self:Debug("Grid_JoinedRaid")
 			self:TriggerEvent("Grid_JoinedRaid")
 		end
+		inParty = false
+		inBG = false
 	elseif inParty then
 		if not prevInParty or prevInRaid or prevInBG then
+			self:Debug("Grid_JoinedParty")
 			self:TriggerEvent("Grid_JoinedParty")
 		end
+		inRaid = false
+		inBG = false
 	elseif prevInParty or prevInRaid or prevInBG then
+		self:Debug("Grid_LeftParty")
 		self:TriggerEvent("Grid_LeftParty")
 	end
 
