@@ -185,7 +185,7 @@ function Grid:OnEnable()
 	self:EnableModules()
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
-	self:RegisterEvent("PLAYER_LEAVING_WORLD", "PLAYER_REGEN_ENABLED")
+	-- self:RegisterEvent("PLAYER_LEAVING_WORLD", "PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:TriggerEvent("Grid_Enabled")
 end
@@ -284,6 +284,9 @@ local prevInBG = false
 local prevInRaid = false
 local prevInParty = false
 function Grid:PLAYER_ENTERING_WORLD()
+	-- this is needed for zoning while in combat
+	self:PLAYER_REGEN_ENABLED()
+
 	-- this is needed to trigger an update when switching from one BG directly to another
 	prevInBG = false
 	return self:RosterLib_RosterUpdated()
