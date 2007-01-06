@@ -294,7 +294,10 @@ function Grid:RosterLib_RosterUpdated()
 	local inRaid = GetNumRaidMembers() > 0
 	local inBG = select(2, IsInInstance()) == "pvp"
 
-	self:Debug("RosterUpdated")
+	self:Debug("RosterUpdated",
+	           "Party:", prevInParty, "->", inParty,
+		   "Raid:", prevInRaid, "->", inRaid,
+		   "BG:", prevInBG, "->", inBG)
 
 	-- in bg -> (in bg | in raid | in party | left party)
 	-- in raid -> (in bg | in party | left party)
