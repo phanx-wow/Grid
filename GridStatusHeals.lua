@@ -35,7 +35,7 @@ GridStatusHeals.options = false
 -- whenever this module recieves an AceComm event, combat log scan from sender 
 -- will be skipped and AceComm will be used instead
 local gridusers = {} 
-local healcommusers = {}
+local castcommusers = {}
 
 -- spells we want to watch. need to add localizations via BabbleSpell later
 local watchSpells = {
@@ -56,6 +56,8 @@ local watchSpells = {
 function GridStatusHeals:OnInitialize()
 	self.super.OnInitialize(self)
 	self:RegisterStatus("alert_heals", L["Incoming heals"], nil, true)
+	gridusers[UnitName("player")] = true
+	castcommusers[UnitName("player")] = true
 end
 
 
@@ -68,8 +70,12 @@ function GridStatusHeals:OnEnable()
 	CastCommLib:RegisterCallback(self, "CastCommCallback")
 end
 
+function GridStatusHeals:OnDisable()
+	CastCommLib:UnregisterCallback(self)
+end
+
 function GridStatusHeals:Grid_UnitLeft(name)
-	healcommusers[name] = nil
+	castcommusers[name] = nil
 	gridusers[name] = nil
 end
 
@@ -82,7 +88,7 @@ function GridStatusHeals:UNIT_SPELLCAST_START(unit)
 	local unitid = RL:GetUnitIDFromName(helper)
 
 	if not helper or not spell or not unitid then return end
-	if healcommusers[helper] then return end
+	if castcommusers[helper] then return end
 	if gridusers[helper] then return end
 
 	if spell == BS["Prayer of Healing"] then
@@ -109,7 +115,7 @@ function GridStatusHeals:CHAT_MSG_ADDON(prefix, message, distribution, sender)
 
 	gridusers[sender] = true
 
-	if healcommusers[sender] then return end
+	if castcommusers[sender] then return end
 
 	local what, who = string.match("^([^ ]+) ?(.*)$", message)
 
@@ -154,7 +160,7 @@ end
 
 
 function GridStatusHeals:CastCommCallback(sender, senderUnit, action, target, channel, spell, rank, displayName, icon, startTime, endTime, isTradeSkill)
-	healcommusers[sender] = true
+	castcommusers[sender] = true
 
 	if action == "START" then
 		if spell == BS["Prayer of Healing"] then
@@ -167,7 +173,6 @@ function GridStatusHeals:CastCommCallback(sender, senderUnit, action, target, ch
 			self:Debug("Failed heal", sender, "->", target)
 			self:CancelScheduledEvent("HealCompleted_".. target)
 			self:HealCompleted(target)
-			--targetCache[sender] = nil
 		end
 	end
 end
