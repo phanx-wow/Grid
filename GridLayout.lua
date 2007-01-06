@@ -698,6 +698,12 @@ function GridLayout:ReloadLayout()
 	self:LoadLayout(self.db.profile.layout)
 end
 
+local function InRaidOrBG()
+	local inRaid = GetNumRaidMembers() > 0
+	local inBG = select(2, IsInInstance()) == "pvp"
+	return inRaid or inBG
+end
+
 function GridLayout:LoadLayout(layoutName)
 	local i, attr, value
 	local groupsNeeded, groupsAvailable
@@ -705,7 +711,7 @@ function GridLayout:LoadLayout(layoutName)
 
 	self:Debug("LoadLayout", layoutName)
 
-	groupsNeeded = (GetNumRaidMembers() > 0) and layout and table.getn(layout) or 0
+	groupsNeeded = InRaidOrBG() and layout and table.getn(layout) or 0
 	groupsAvailable = table.getn(self.layoutGroups)
 
 	-- create groups as needed
@@ -720,7 +726,7 @@ function GridLayout:LoadLayout(layoutName)
 	end
 
 	-- show party
-	if GetNumRaidMembers() < 1 or self.db.profile.showParty then
+	if not InRaidOrBG() or self.db.profile.showParty then
 		self.partyGroup:SetOrientation(self.db.profile.horizontal)
 		self.partyGroup.frame:Show()
 		self:PlaceGroup(self.partyGroup, 1)
@@ -770,7 +776,7 @@ function GridLayout:UpdateSize()
 	local maxWidth = 0
 	local x, y
 
-	if GetNumRaidMembers() < 1 or self.db.profile.showParty then
+	if not InRaidOrBG() or self.db.profile.showParty then
 		groupCount = groupCount + 1
 		self.partyGroup:UpdateSize()
 		maxHeight = self.partyGroup:GetFrameHeight()
@@ -818,9 +824,9 @@ function GridLayout:CheckVisibility()
 	if frameDisplay == L["Always"] then
 		self.frame:Show()
 	elseif frameDisplay == L["Grouped"] and
-		(GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0) then
+		(GetNumPartyMembers() > 0 or InRaidOrBG()) then
 		self.frame:Show()
-	elseif frameDisplay == L["Raid"] and GetNumRaidMembers() > 0 then
+	elseif frameDisplay == L["Raid"] and InRaidOrBG() then
 		self.frame:Show()
 	else
 		self.frame:Hide()

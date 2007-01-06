@@ -280,9 +280,9 @@ function Grid:RosterLib_UnitChanged(unitid, name, class, subgroup, rank, oldname
 	end
 end
 
+local prevInBG = false
 local prevInRaid = false
 local prevInParty = false
-local prevInBG = false
 function Grid:PLAYER_ENTERING_WORLD()
 	-- this is needed to trigger an update when switching from one BG directly to another
 	prevInBG = false
@@ -324,7 +324,7 @@ function Grid:RosterLib_RosterUpdated()
 		end
 		inRaid = false
 		inBG = false
-	elseif prevInParty or prevInRaid or prevInBG then
+	else
 		self:Debug("Grid_LeftParty")
 		self:TriggerEvent("Grid_LeftParty")
 	end
