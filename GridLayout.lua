@@ -752,12 +752,12 @@ function GridLayout:LoadLayout(layoutName)
 
 		-- place groups
 		layoutGroup:SetOrientation(self.db.profile.horizontal)
-		layoutGroup.frame:Show()
 		if self.db.profile.showParty then
 			self:PlaceGroup(layoutGroup, i + 1)
 		else
 			self:PlaceGroup(layoutGroup, i)
 		end
+		layoutGroup.frame:Show()
 	end
 
 	self:UpdateDisplay()
