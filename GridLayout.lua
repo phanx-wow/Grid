@@ -728,8 +728,8 @@ function GridLayout:LoadLayout(layoutName)
 	-- show party
 	if not InRaidOrBG() or self.db.profile.showParty then
 		self.partyGroup:SetOrientation(self.db.profile.horizontal)
-		self.partyGroup.frame:Show()
 		self:PlaceGroup(self.partyGroup, 1)
+		self.partyGroup.frame:Show()
 	else
 		self.partyGroup.frame:Hide()
 	end
