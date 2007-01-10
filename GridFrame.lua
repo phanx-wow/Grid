@@ -638,6 +638,7 @@ GridFrame.options = {
 					set = function (v)
 						      GridFrame.db.profile.frameWidth = v
 						      GridFrame:ResizeAllFrames()
+						      GridFrame:ScheduleEvent("GridFrame_UpdateLayoutSize", "Grid_ReloadLayout", 0.5)
 					      end,
 				},
 				["frameheight"] = {
@@ -653,6 +654,7 @@ GridFrame.options = {
 					set = function (v)
 						      GridFrame.db.profile.frameHeight = v
 						      GridFrame:ResizeAllFrames()
+						      GridFrame:ScheduleEvent("GridFrame_UpdateLayoutSize", "Grid_ReloadLayout", 0.5)
 					      end,
 				},
 				["cornersize"] = {
