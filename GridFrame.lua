@@ -1023,6 +1023,7 @@ function GridFrame:ListRegisteredFrames()
 				"|cff00ff00"..(frame.unitName or "nil").."|r" or
 				"|cffff0000"..(frame.unitName or "nil").."|r",
 			frame.frame:GetAttribute("type1"),
+			frame.frame:GetAttribute("*type1"),
 			frameStatus)
 	end
 	GridFrame:Debug("--[ END Registered Frame List ]--")
