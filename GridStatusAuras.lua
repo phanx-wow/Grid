@@ -145,8 +145,9 @@ function GridStatusAuras:OnEnable()
 	self:RegisterEvent("SpecialEvents_UnitBuffGained")
 	self:RegisterEvent("SpecialEvents_UnitBuffLost")
 	self:RegisterEvent("Grid_UnitJoined", "ScanUnitAuras")
-	self:RegisterEvent("Grid_UnitDeath")
+	self:RegisterEvent("Grid_UnitDeath", "ClearAuras")
 	self:CreateAddRemoveOptions()
+	self:UpdateAllUnitAuras()
 end
 
 
@@ -285,6 +286,14 @@ function GridStatusAuras:DeleteAura(status)
 end
 
 
+function GridStatusAuras:UpdateAllUnitAuras()
+	for u in RL:IterateRoster() do
+		self:ClearAuras(u.unitname)
+		self:ScanUnitAuras(u.unitid)
+	end
+end
+
+
 function GridStatusAuras:ScanUnitAuras(unit)
 	if string.find(unit, "pet") then return end
 
@@ -397,7 +406,7 @@ function GridStatusAuras:SpecialEvents_UnitBuffLost(unit, buff, apps, type, tex,
 end
 
 
-function GridStatusAuras:Grid_UnitDeath(unitname)
+function GridStatusAuras:ClearAuras(unitname)
 	for status, moduleName, desc in self.core:RegisteredStatusIterator() do
 		if moduleName == self.name then
 			self.core:SendStatusLost(unitname, status)
