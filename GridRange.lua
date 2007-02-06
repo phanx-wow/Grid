@@ -68,6 +68,7 @@ function GridRange:OnEnable()
 
 	self:ScanSpellbook()
 	self:RegisterEvent("LEARNED_SPELL_IN_TAB", "ScanSpellbook")
+	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "ScanSpellbook")
 end
 
 function GridRange:GetUnitRange(unit)
