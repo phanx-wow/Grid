@@ -135,6 +135,8 @@ local strings_frFR = {
 	["Class Filter"] = "Filtre de classe",
 	["Show status for the selected classes."] = "Voir les statuts pour la classe selectionn\195\169e",
 	["Show on %s."] = "Voir pour %s",
+	-- ["Show if missing"] = true,
+	-- ["Display status only if the buff is not active."] = true,
 
 	--}}}
 	--{{{ GridStatusName

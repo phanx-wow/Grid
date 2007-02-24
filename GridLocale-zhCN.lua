@@ -136,6 +136,8 @@ local strings_zhCN = {
 	["Class Filter"] = "职业过滤",
 	["Show status for the selected classes."] = "显示选定职业的状态",
 	["Show on %s."] = "在%s上显示",
+	-- ["Show if missing"] = true,
+	-- ["Display status only if the buff is not active."] = true,
 
 	--}}}
 	--{{{ GridStatusName

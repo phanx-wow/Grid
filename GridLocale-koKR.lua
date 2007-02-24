@@ -155,6 +155,8 @@ local strings_koKR = {
 	["Class Filter"] = "직업 필터",
 	["Show status for the selected classes."] = "선택된 직업의 상태를 표시합니다.",
 	["Show on %s."] = "%s 표시",
+	-- ["Show if missing"] = true,
+	-- ["Display status only if the buff is not active."] = true,
 	["[^%a]"] = "[^%S]",
 
 	--}}}

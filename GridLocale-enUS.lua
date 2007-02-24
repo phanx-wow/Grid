@@ -155,6 +155,8 @@ local strings_enUS = {
 	["Class Filter"] = true,
 	["Show status for the selected classes."] = true,
 	["Show on %s."] = true,
+	["Show if missing"] = true,
+	["Display status only if the buff is not active."] = true,
 	["[^%a]"] = true,
 
 	--}}}

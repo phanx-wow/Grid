@@ -121,8 +121,10 @@ function GridStatusAuras:RegisterStatuses()
 	for status, statusTbl in pairs(self.db.profile) do
 		if type(statusTbl) == "table" and statusTbl.text then
 			local desc = statusTbl.desc or statusTbl.text
+			local isBuff = statusForSpell(statusTbl.text, true) == status
 			self:Debug("registering", status, desc)
-			self:RegisterStatus(status, desc, self:OptionsForStatus(status))
+			self:RegisterStatus(status, desc,
+					    self:OptionsForStatus(status, isBuff))
 		end
 	end
 end
@@ -144,8 +146,9 @@ function GridStatusAuras:OnEnable()
 	self:RegisterEvent("SpecialEvents_UnitDebuffLost")
 	self:RegisterEvent("SpecialEvents_UnitBuffGained")
 	self:RegisterEvent("SpecialEvents_UnitBuffLost")
-	self:RegisterEvent("Grid_UnitJoined", "ScanUnitAuras")
+	self:RegisterEvent("Grid_UnitJoined")
 	self:RegisterEvent("Grid_UnitDeath", "ClearAuras")
+	self:Debug("OnEnable")
 	self:CreateAddRemoveOptions()
 	self:UpdateAllUnitAuras()
 end
@@ -160,7 +163,7 @@ function GridStatusAuras:Reset()
 end
 
 
-function GridStatusAuras:OptionsForStatus(status)
+function GridStatusAuras:OptionsForStatus(status, isBuff)
 	local auraOptions = {
 		["class"] = {
 			type = "group",
@@ -168,7 +171,7 @@ function GridStatusAuras:OptionsForStatus(status)
 			desc = L["Show status for the selected classes."],
 			order = 111,
 			args = {},
-		}
+		},
 	}
 
 	local classes = {
@@ -194,6 +197,23 @@ function GridStatusAuras:OptionsForStatus(status)
 			      end,
 			set = function (v)
 				      GridStatusAuras.db.profile[status][class] = v
+				      GridStatusAuras:UpdateAllUnitAuras()
+			      end,
+		}
+	end
+
+	if isBuff then
+		auraOptions.missing = {
+			type = "toggle",
+			name = L["Show if missing"],
+			desc = L["Display status only if the buff is not active."],
+			order = 110,
+			get = function ()
+				      return GridStatusAuras.db.profile[status].missing
+			      end,
+			set = function (v)
+				      GridStatusAuras.db.profile[status].missing = v
+				      GridStatusAuras:UpdateAllUnitAuras()
 			      end,
 		}
 	end
@@ -270,10 +290,11 @@ function GridStatusAuras:AddAura(name, isBuff)
 		["enable"] = true,
 		["priority"] = 90,
 		["range"] = false,
+		["missing"] = false,
 		["color"] = { r = .5, g = .5, b = .5, a = 1 },
 	}
 
-	self:RegisterStatus(status, desc, self:OptionsForStatus(status))
+	self:RegisterStatus(status, desc, self:OptionsForStatus(status, isBuff))
 	self:CreateAddRemoveOptions()
 end
 
@@ -294,15 +315,23 @@ function GridStatusAuras:UpdateAllUnitAuras()
 end
 
 
+function GridStatusAuras:Grid_UnitJoined(name, unit)
+	self:ClearAuras(name)
+	self:ScanUnitAuras(unit)
+end
+
+
 function GridStatusAuras:ScanUnitAuras(unit)
 	if string.find(unit, "pet") then return end
+
+	self:Debug("ScanUnitAuras", unit)
 
 	for buff, index, apps, tex, rank in Aura:BuffIter(unit) do
 		self:SpecialEvents_UnitBuffGained(unit, buff, index, apps, tex, rank)
 	end
 
 	for debuff, apps, type, tex, rank, index in Aura:DebuffIter(unit) do
-		self:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type, ex, rank, index)
+		self:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type, tex, rank, index)
 	end
 end
 
@@ -334,14 +363,14 @@ function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type
 	self:Debug(unit, "gained", status, debuffNameStatus, tex)
 
 	self.core:SendStatusGained(u.name,
-			status,
-			settings.priority,
-			(settings.range and 30),
-			settings.color,
-			settings.text,
-			nil,
-			nil,
-			tex)
+				   status,
+				   settings.priority,
+				   (settings.range and 30),
+				   settings.color,
+				   settings.text,
+				   nil,
+				   nil,
+				   tex)
 end
 
 
@@ -368,6 +397,14 @@ end
 
 
 function GridStatusAuras:SpecialEvents_UnitBuffGained(unit, buff, index, apps, tex, rank)
+	return self:UnitBuff(unit, true, buff, tex)
+end
+
+function GridStatusAuras:SpecialEvents_UnitBuffLost(unit, buff, apps, tex, rank)
+	return self:UnitBuff(unit, false, buff, tex)
+end
+
+function GridStatusAuras:UnitBuff(unit, gained, buff, tex)
 	local buffNameStatus = statusForSpell(buff, true)
 	local settings = self.db.profile[buffNameStatus]
 	if not (settings and settings.enable) then return end
@@ -380,36 +417,69 @@ function GridStatusAuras:SpecialEvents_UnitBuffGained(unit, buff, index, apps, t
 	-- unit object
 	if not u or settings[strlower(u.class)] == false then return end
 
-	self:Debug("gained", buffNameStatus, tex)
-	self.core:SendStatusGained(u.name,
-			buffNameStatus,
-			settings.priority,
-			(settings.range and 40),
-			settings.color,
-			settings.text,
-			nil,
-			nil,
-			tex)
-end
-
-
-function GridStatusAuras:SpecialEvents_UnitBuffLost(unit, buff, apps, type, tex, rank)
-	local buffNameStatus = statusForSpell(buff, true)
-
-	if string.find(unit, "pet") then return end
-
-	if self.db.profile[buffNameStatus] then
+	if gained then
+		self:Debug("gained", buffNameStatus, tex)
+		
+		if settings.missing then
+			self:Debug("sending lost", buffNameStatus)
+			self.core:SendStatusLost(u.name, buffNameStatus)
+		else
+			self:Debug("sending gained", buffNameStatus)
+			self.core:SendStatusGained(u.name,
+						   buffNameStatus,
+						   settings.priority,
+						   (settings.range and 40),
+						   settings.color,
+						   settings.text,
+						   nil,
+						   nil,
+						   tex)
+		end
+	else
+		self:Debug("lost", buffNameStatus, tex)
 		if not Aura:UnitHasBuff(unit, buff) then
-			self.core:SendStatusLost(UnitName(unit), buffNameStatus)
+			if settings.missing then
+				self:Debug("sending gained", buffNameStatus)
+				self.core:SendStatusGained(u.name,
+							   buffNameStatus,
+							   settings.priority,
+							   (settings.range and 40),
+							   settings.color,
+							   settings.text,
+							   nil,
+							   nil,
+							   tex)
+			else
+				self:Debug("sending lost", buffNameStatus)
+				self.core:SendStatusLost(UnitName(unit), buffNameStatus)
+			end
 		end
 	end
 end
 
 
 function GridStatusAuras:ClearAuras(unitname)
+	self:Debug("ClearAuras", unitname)
+	local u = RL:GetUnitObjectFromName(unitname)
+
 	for status, moduleName, desc in self.core:RegisteredStatusIterator() do
 		if moduleName == self.name then
-			self.core:SendStatusLost(unitname, status)
+			local settings = self.db.profile[status]
+			self:Debug("clearing", status, settings.missing)
+
+			if settings.missing and u and settings[strlower(u.class)] then
+				self.core:SendStatusGained(unitname,
+							   status,
+							   settings.priority,
+							   (settings.range and 40),
+							   settings.color,
+							   settings.text,
+							   nil,
+							   nil,
+							   BS:GetSpellIcon(settings.text))
+			else
+				self.core:SendStatusLost(unitname, status)
+			end
 		end
 	end
 end

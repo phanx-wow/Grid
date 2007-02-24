@@ -155,6 +155,8 @@ local strings_deDE = {
 	["Class Filter"] = "Klassenfilter",
 	["Show status for the selected classes."] = "Zeige den Status f\195\188r die ausgw\195\164hlte Klasse",
 	["Show on %s."] = "Zeige %s.",
+	-- ["Show if missing"] = true,
+	-- ["Display status only if the buff is not active."] = true,
 	["[^%a]"] = "[^%a]",
 	
 	--}}}
