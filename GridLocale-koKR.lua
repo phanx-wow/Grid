@@ -155,8 +155,8 @@ local strings_koKR = {
 	["Class Filter"] = "직업 필터",
 	["Show status for the selected classes."] = "선택된 직업의 상태를 표시합니다.",
 	["Show on %s."] = "%s 표시",
-	-- ["Show if missing"] = true,
-	-- ["Display status only if the buff is not active."] = true,
+	["Show if missing"] = "사라짐 표시",
+	["Display status only if the buff is not active."] = "버프가 사라질 경우에만 상태창에 표시합니다.",
 	["[^%a]"] = "[^%S]",
 
 	--}}}
