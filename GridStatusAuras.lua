@@ -467,7 +467,7 @@ function GridStatusAuras:ClearAuras(unitname)
 			local settings = self.db.profile[status]
 			self:Debug("clearing", status, settings.missing)
 
-			if settings.missing and u and settings[strlower(u.class)] then
+			if settings.enable and settings.missing and u and settings[strlower(u.class)] then
 				self.core:SendStatusGained(unitname,
 							   status,
 							   settings.priority,
