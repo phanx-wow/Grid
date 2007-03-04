@@ -41,12 +41,17 @@ local castcommusers = {}
 local watchSpells = {
 	[BS["Holy Light"]] = true,
 	[BS["Flash of Light"]] = true,
+
+	[BS["Lesser Heal"]] = true,
+	[BS["Heal"]] = true,
 	[BS["Flash Heal"]] = true,
 	[BS["Greater Heal"]] = true,
-	[BS["Heal"]] = true,
+	[BS["Binding Heal"]] = true,
+
 	[BS["Healing Touch"]] = true,
 	[BS["Lesser Healing Wave"]] = true,
 	[BS["Healing Wave"]] = true,
+	
 	[BS["Regrowth"]] = true,
 	[BS["Prayer of Healing"]] = true,
 }
@@ -167,12 +172,19 @@ function GridStatusHeals:CastCommCallback(sender, senderUnit, action, target, ch
 			self:GroupHeal(sender)
 		elseif watchSpells[spell] then
 			self:UnitIsHealed(target)
+			if spell == BS["Binding Heal"] then
+				self:UnitIsHealed(sender)
+			end
 		end
 	elseif action == "INTERRUPTED" or action == "FAILED" then
 		if watchSpells[spell] and target then
 			self:Debug("Failed heal", sender, "->", target)
 			self:CancelScheduledEvent("HealCompleted_".. target)
 			self:HealCompleted(target)
+			if spell == BS["Binding Heal"] then
+				self:CancelScheduledEvent("HealCompleted_".. sender)
+				self:HealCompleted(sender)
+			end
 		end
 	end
 end
