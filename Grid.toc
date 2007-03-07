@@ -1,4 +1,4 @@
-## Interface: 20003
+﻿## Interface: 20003
 ## Title: Grid |cff7fff7f -Ace2-|r
 ## Notes: A modular, lightweight and screen-estate saving grid of party/raid unit frames
 ## Notes-zhCN: 珨跺耀輸宒ㄛ腴梩蚚ㄛ誹吽茷躉諾潔腔※跡赽§ㄛ蚚懂珆尨芶勦/勦斪腔袨怓
@@ -11,7 +11,7 @@
 ## X-Category: UnitFrame
 ## X-AceForum: 2525
 ## X-RelSite-WoWI: 5747
- 
+
 ## DefaultState: enabled
 ## LoadOnDemand: 0
 
