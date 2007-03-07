@@ -177,6 +177,8 @@ local strings_enUS = {
 	--{{{ GridStatusHeals
 	["Heals"] = true,
 	["Incoming heals"] = true,
+	["Ignore Self"] = true,
+	["Ignore heals cast by you."] = true,
 	["(.+) begins to cast (.+)."] = true,
 	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = true,
 	["^Corpse of (.+)$"] = true,

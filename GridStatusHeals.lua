@@ -21,6 +21,7 @@ GridStatusHeals.defaultDB = {
 		color = { r = 0, g = 1, b = 0, a = 1 },
 		priority = 50,
 		range = false,
+		ignore_self = false,
 	},
 }
 
@@ -56,11 +57,25 @@ local watchSpells = {
 	[BS["Prayer of Healing"]] = true,
 }
 
+local healsOptions = {
+	["ignoreSelf"] = {
+		type = "toggle",
+		name = L["Ignore Self"],
+		desc = L["Ignore heals cast by you."],
+		get  = function ()
+			       return GridStatusHeals.db.profile.alert_heals.ignore_self
+		       end,
+		set  = function (v)
+			       GridStatusHeals.db.profile.alert_heals.ignore_self = v
+		       end,
+	}
+}
+
 --}}}
 
 function GridStatusHeals:OnInitialize()
 	self.super.OnInitialize(self)
-	self:RegisterStatus("alert_heals", L["Incoming heals"], nil, true)
+	self:RegisterStatus("alert_heals", L["Incoming heals"], healsOptions, true)
 	gridusers[UnitName("player")] = true
 	castcommusers[UnitName("player")] = true
 end
@@ -166,6 +181,11 @@ end
 
 function GridStatusHeals:CastCommCallback(sender, senderUnit, action, target, channel, spell, rank, displayName, icon, startTime, endTime, isTradeSkill)
 	castcommusers[sender] = true
+
+	if self.db.profile.alert_heals.ignore_self and
+		sender == UnitName("player") then
+		return
+	end
 
 	if action == "START" then
 		if spell == BS["Prayer of Healing"] then
