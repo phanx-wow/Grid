@@ -177,6 +177,8 @@ local strings_koKR = {
 	--{{{ GridStatusHeals
 	["Heals"] = "치유",
 	["Incoming heals"] = "들어오는 치유",
+	["Ignore Self"] = "자신 무시",
+	["Ignore heals cast by you."] = "당신의 치유 주문을 무시합니다.",
 	["(.+) begins to cast (.+)."] = "(.+)|1이;가; (.+)|1을;를; 시전합니다.",
 	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = "(.+)|1이;가; 생명력 전환|1으로;로; (.+)의 (.+)|1을;를; 얻었습니다.",
 	["^Corpse of (.+)$"] = "(.+)의 시체",
