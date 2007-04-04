@@ -20,7 +20,7 @@ local function statusForSpell(spell, isBuff)
 		prefix = "buff_"
 	end
 
-	return prefix .. string.gsub(spell, L["[^%a]"], "")
+	return prefix .. string.gsub(spell, " ", "")
 end
 
 
