@@ -157,7 +157,7 @@ local strings_koKR = {
 	["Show on %s."] = "%s 표시",
 	["Show if missing"] = "사라짐 표시",
 	["Display status only if the buff is not active."] = "버프가 사라질 경우에만 상태창에 표시합니다.",
-	["[^%a]"] = "[^%S]",
+	-- ["[^%a]"] = "[^%S]",
 
 	--}}}
 	--{{{ GridStatusName
