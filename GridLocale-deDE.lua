@@ -155,9 +155,9 @@ local strings_deDE = {
 	["Class Filter"] = "Klassenfilter",
 	["Show status for the selected classes."] = "Zeige den Status f\195\188r die ausgw\195\164hlte Klasse",
 	["Show on %s."] = "Zeige %s.",
-	-- ["Show if missing"] = true,
-	-- ["Display status only if the buff is not active."] = true,
-	["[^%a]"] = "[^%a]",
+	["Show if missing"] = "Zeige wenn es fehlt",
+	["Display status only if the buff is not active."] = "Zeige nur den Status wenn der St\195\164rkungszaube nicht aktiv ist",
+	--["[^%a]"] = "[^%a]",
 	
 	--}}}
 	--{{{ GridStatusName
@@ -167,7 +167,7 @@ local strings_deDE = {
 	--}}}
 	--{{{ GridStatusMana
 	["Mana"] = "Mana",
-	
+	--["Low Mana"] = "Wenig Mana",
 	["Mana threshold"] = "Mana Grenzwert",
 	["Set the percentage for the low mana warning."] = "Setzt den % Grenzwert f\195\188r die Wenig-Mana Warnung",
 	["Low Mana warning"] = "Wenig-Mana Warnung",
@@ -177,6 +177,8 @@ local strings_deDE = {
 	--{{{ GridStatusHeals
 	["Heals"] = "Heilungen",
 	["Incoming heals"] = "eingehende Heilung",
+	["Ignore Self"] = "Sich selbst ignorieren",
+	["Ignore heals cast by you."] = "Ignoriere Heilungen die von dir gezaubert werden",
 	["(.+) begins to cast (.+)."] = "(.+) beginnt (.+) zu wirken.",
 	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = "(.+) bekommt (.+) Mana durch (.+)'s Lebensentzug.",
 	["^Corpse of (.+)$"] = "^Corpse of (.+)$",
@@ -185,10 +187,12 @@ local strings_deDE = {
 	--{{{ GridStatusHealth
 	["Low HP"] = "Wenig HP",
 	["DEAD"] = "TOT",
+	["FD"] = "TG",
 	["Offline"] = "Offline",
 	["Unit health"] = "Gesundheit",
 	["Health deficit"] = "Gesundheitsdefizit",
 	["Low HP warning"] = "Wenig-HP Warnung",
+	["Feign Death warning"] = "Warnung wenn totgestellt",
 	["Death warning"] = "Todeswarnung",
 	["Offline warning"] = "Offlinewarnung",
 	["Health"] = "Gesundheit",
