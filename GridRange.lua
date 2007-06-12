@@ -17,7 +17,7 @@ local function addRange(range, check)
 	-- 100 yards is the farthest possible range
 	if range > 100 then return end
 
-	for i = 1,table.getn(ranges) do
+	for i = 1,#ranges do
 		if ranges[i].range == range then
 			ranges[i].check = check
 			return
