@@ -58,9 +58,9 @@ GridStatusAuras.defaultDB = {
 		["range"] = false,
 		["color"] = { r = .6, g =  0, b =  1, a = 1 },
 	},
-	[statusForSpell(BS["Ghost"])] = {
-		["desc"] = string.format(L["Debuff: %s"], BS["Ghost"]),
-		["text"] = BS["Ghost"],
+	[statusForSpell(L["Ghost"])] = {
+		["desc"] = string.format(L["Debuff: %s"], L["Ghost"]),
+		["text"] = L["Ghost"],
 		["enable"] = true,
 		["priority"] = 90,
 		["range"] = false,

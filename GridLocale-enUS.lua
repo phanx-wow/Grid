@@ -144,6 +144,7 @@ local strings_enUS = {
 	["Disease"] = true,
 	["Magic"] = true,
 	["Curse"] = true,
+	["Ghost"] = true,
 	["Add new Buff"] = true,
 	["Adds a new buff to the status module"] = true,
 	["Add new Debuff"] = true,
