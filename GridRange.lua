@@ -49,7 +49,7 @@ function GridRange:ScanSpellbook()
 	if UnitIsDeadOrGhost("player") then
 		self:RegisterEvent("PLAYER_UNGHOST", "ScanSpellbook")
 		self:RegisterEvent("PLAYER_ALIVE", "ScanSpellbook")
-	else
+	elseif self:IsEventRegistered("PLAYER_UNGHOST") then
 		self:UnregisterEvent("PLAYER_UNGHOST")
 		self:UnregisterEvent("PLAYER_ALIVE")
 	end
