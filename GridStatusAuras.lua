@@ -58,6 +58,15 @@ GridStatusAuras.defaultDB = {
 		["range"] = false,
 		["color"] = { r = .6, g =  0, b =  1, a = 1 },
 	},
+	[statusForSpell(BS["Ghost"])] = {
+		["desc"] = string.format(L["Debuff: %s"], BS["Ghost"]),
+		["text"] = BS["Ghost"],
+		["enable"] = true,
+		["priority"] = 90,
+		["range"] = false,
+		["color"] = { r = .5, g = .5, b = .5, a = 1 },
+
+	},
 	[statusForSpell(BS["Weakened Soul"])] = {
 		["desc"] = string.format(L["Debuff: %s"], BS["Weakened Soul"]),
 		["text"] = BS["Weakened Soul"],

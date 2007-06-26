@@ -1,4 +1,4 @@
-﻿-- GridFrame.lua
+-- GridFrame.lua
 
 --{{{ Libraries
 
@@ -52,14 +52,15 @@ local GridFrameClass = AceOO.Class("AceEvent-2.0", "AceDebug-2.0")
 GridFrameClass.prototype.indicators = {
 	{ type = "border",     order = 1,  name = L["Border"] },
 	{ type = "bar",        order = 2,  name = L["Health Bar"] },
-	{ type = "text",       order = 3,  name = L["Center Text"] },
-	{ type = "text2",      order = 4,  name = L["Center Text 2"] },
-	{ type = "icon",       order = 5,  name = L["Center Icon"] },
-	{ type = "corner4",    order = 6,  name = L["Top Left Corner"] },
-	{ type = "corner3",    order = 7,  name = L["Top Right Corner"] },
-	{ type = "corner1",    order = 8,  name = L["Bottom Left Corner"] },
-	{ type = "corner2",    order = 9,  name = L["Bottom Right Corner"] },
-	{ type = "frameAlpha", order = 10, name = L["Frame Alpha"] },
+	{ type = "barcolor",   order = 3,  name = L["Health Bar Color"] },
+	{ type = "text",       order = 4,  name = L["Center Text"] },
+	{ type = "text2",      order = 5,  name = L["Center Text 2"] },
+	{ type = "icon",       order = 6,  name = L["Center Icon"] },
+	{ type = "corner4",    order = 7,  name = L["Top Left Corner"] },
+	{ type = "corner3",    order = 8,  name = L["Top Right Corner"] },
+	{ type = "corner1",    order = 9,  name = L["Bottom Left Corner"] },
+	{ type = "corner2",    order = 10, name = L["Bottom Right Corner"] },
+	{ type = "frameAlpha", order = 11, name = L["Frame Alpha"] },
 }
 
 -- frame is passed from GridFrame_OnLoad()
@@ -95,8 +96,8 @@ function GridFrameClass.prototype:CreateFrames()
 	f:SetAttribute("*type1", "target")
 
 	-- tooltip support
-	f:SetScript("OnEnter", function() self:OnEnter() end)
-	f:SetScript("OnLeave", function() self:OnLeave() end)
+	f:SetScript("OnEnter", function(this) self:OnEnter(this) end)
+	f:SetScript("OnLeave", function(this) self:OnLeave(this) end)
 	
 	-- create border
 	f:SetBackdrop({
@@ -165,15 +166,21 @@ function GridFrameClass.prototype:CreateFrames()
 end
 
 -- shows the default unit tooltip
-function GridFrameClass.prototype:OnEnter()
+function GridFrameClass.prototype:OnEnter(frame)
 	if GridFrame.db.profile.showTooltip == L["Always"] or
 		(GridFrame.db.profile.showTooltip == L["OOC"] and
 			(not Grid.inCombat or
 				(self.unit and UnitIsDeadOrGhost(self.unit)))) then
 
-		self.frame.unit = self.unit
+		frame.unit = self.unit
 		UnitFrame_OnEnter()
+		frame:SetScript("OnUpdate", UnitFrame_OnUpdate)
 	end
+end
+
+function GridFrameClass.prototype:OnLeave(frame)
+	UnitFrame_OnLeave()
+	frame:SetScript("OnUpdate", nil)
 end
 
 function GridFrameClass.prototype:SetWidth(width)
@@ -274,10 +281,6 @@ end
 function GridFrameClass.prototype:SetFontSize(size)
 	self.frame.Text:SetFont(STANDARD_TEXT_FONT,size)
 	self.frame.Text2:SetFont(STANDARD_TEXT_FONT,size)
-end
-
-function GridFrameClass.prototype:OnLeave()
-	UnitFrame_OnLeave()
 end
 
 -- pass through functions to our main frame
@@ -422,7 +425,13 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 		if value and maxValue then
 			self:SetBar(value, maxValue)
 		end
-		if type(color) == "table" then
+		if not GridFrame.db.profile.enableBarColor and
+			type(color) == "table" then
+			self:SetBarColor(color.r, color.g, color.b, color.a)
+		end
+	elseif indicator == "barcolor" then
+		if GridFrame.db.profile.enableBarColor and
+			type(color) == "table" then
 			self:SetBarColor(color.r, color.g, color.b, color.a)
 		end
 	elseif indicator == "icon" then
@@ -466,7 +475,13 @@ function GridFrameClass.prototype:ClearIndicator(indicator)
 		self.frame:SetAlpha(1)
 	elseif indicator == "bar" then
 		self:SetBar(100)
-		self:SetBarColor(0, 0, 0, 1)
+		if not GridFrame.db.profile.enableBarColor then
+			self:SetBarColor(0, 0, 0, 1)
+		end
+	elseif indicator == "barcolor" then
+		if GridFrame.db.profile.enableBarColor then
+			self:SetBarColor(0, 0, 0, 1)
+		end
 	elseif indicator == "icon" then
 		self.frame.Icon:SetTexture(1,1,1,0)
 		self.frame.Icon:Hide()
@@ -488,6 +503,7 @@ GridFrame.defaultDB = {
 	cornerSize = 5,
 	orientation = "VERTICAL",
 	enableText2 = false,
+	enableBarColor = false,
 	fontSize = 8,
 	iconSize = 16,
 	debug = false,
@@ -535,6 +551,13 @@ GridFrame.defaultDB = {
 			alert_death = true,
 			alert_offline = true,
 			unit_health = true,
+			debuff_ghost = true,
+		},
+		["barcolor"] = {
+			alert_death = true,
+			alert_offline = true,
+			unit_health = true,
+			debuff_ghost = true,
 		},
 		["icon"] = {
 			debuff_poison = true,
@@ -622,6 +645,19 @@ GridFrame.options = {
 					set = function (v)
 							GridFrame.db.profile.enableText2 = v
 							GridFrame:WithAllFrames(function (f) f:EnableText2(v) end)
+							GridFrame:UpdateOptionsMenu()
+						end,
+				},
+				["barcolor"] = {
+					type = "toggle",
+					name = string.format(L["Enable %s indicator"], L["Bar Color"]),
+					desc = string.format(L["Toggle the %s indicator."], L["Bar Color"]),
+					order = 5,
+					get = function ()
+						      return GridFrame.db.profile.enableBarColor
+					      end,
+					set = function (v)
+							GridFrame.db.profile.enableBarColor = v
 							GridFrame:UpdateOptionsMenu()
 						end,
 				},
@@ -931,6 +967,12 @@ function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
 
 	if indicator == "text2" and not self.db.profile.enableText2 then
 		self:Debug("indicator text2 is disabled")
+		menu[indicator] = nil
+		return
+	end
+
+	if indicator == "barcolor" and not self.db.profile.enableBarColor then
+		self:Debug("indicator barcolor is disabled")
 		menu[indicator] = nil
 		return
 	end

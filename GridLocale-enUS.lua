@@ -25,6 +25,7 @@ local strings_enUS = {
 	["Indicators"] = true,
 	["Border"] = true,
 	["Health Bar"] = true,
+	["Health Bar Color"] = true,
 	["Center Text"] = true,
 	["Center Text 2"] = true,
 	["Center Icon"] = true,
