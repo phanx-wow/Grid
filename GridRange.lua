@@ -44,6 +44,16 @@ function GridRange:ScanSpellbook()
 
 	initRanges()
 
+	-- using IsSpellInRange doesn't work for dead players.
+	-- reschedule the spell scanning for when the player is alive
+	if UnitIsDeadOrGhost("player") then
+		self:RegisterEvent("PLAYER_UNGHOST", "ScanSpellbook")
+		self:RegisterEvent("PLAYER_ALIVE", "ScanSpellbook")
+	else
+		self:UnregisterEvent("PLAYER_UNGHOST")
+		self:UnregisterEvent("PLAYER_ALIVE")
+	end
+
 	repeat
 		local sIndex = i
 		sName, sRank = GetSpellName(i, BOOKTYPE_SPELL)
