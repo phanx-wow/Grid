@@ -650,8 +650,8 @@ GridFrame.options = {
 				},
 				["barcolor"] = {
 					type = "toggle",
-					name = string.format(L["Enable %s indicator"], L["Bar Color"]),
-					desc = string.format(L["Toggle the %s indicator."], L["Bar Color"]),
+					name = string.format(L["Enable %s indicator"], L["Health Bar Color"]),
+					desc = string.format(L["Toggle the %s indicator."], L["Health Bar Color"]),
 					order = 5,
 					get = function ()
 						      return GridFrame.db.profile.enableBarColor
