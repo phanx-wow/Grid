@@ -109,6 +109,7 @@ local strings_koKR = {
 	["By Group 10"] = "그룹 10",
 	["By Class"] = "직업",
 	["Onyxia"] = "오닉시아",
+	["By Group 25 w/tanks"] = "그룹 25 탱커",
 	
 	--}}}
 	--{{{ GridRange
@@ -159,7 +160,6 @@ local strings_koKR = {
 	["Show on %s."] = "%s 표시",
 	["Show if missing"] = "사라짐 표시",
 	["Display status only if the buff is not active."] = "버프가 사라질 경우에만 상태창에 표시합니다.",
-	-- ["[^%a]"] = "[^%S]",
 
 	--}}}
 	--{{{ GridStatusName
