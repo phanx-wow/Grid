@@ -153,3 +153,29 @@ GridLayout:AddLayout(L["Onyxia"], {
 			groupFilter = "8",
 		},
 	})
+
+GridLayout:AddLayout(L["By Group 25 w/tanks"],
+		     {
+			     [1] = {
+				     groupFilter = "MAINTANK,MAINASSIST",
+				     groupingOrder = "MAINTANK,MAINASSIST",
+			     },
+			     -- spacer
+			     [2] = {},
+			     [3] = {
+				     groupFilter = "1",
+			     },
+			     [4] = {
+				     groupFilter = "2",
+			     },
+			     [5] = {
+				     groupFilter = "3",
+			     },
+			     [6] = {
+				     groupFilter = "4",
+			     },
+			     [7] = {
+				     groupFilter = "5",
+			     }
+		     })
+				     

@@ -109,7 +109,8 @@ local strings_enUS = {
 	["By Group 10"] = true,
 	["By Class"] = true,
 	["Onyxia"] = true,
-	
+	["By Group 25 w/tanks"] = true,
+
 	--}}}
 	--{{{ GridRange
 	-- used for getting spell range from tooltip
