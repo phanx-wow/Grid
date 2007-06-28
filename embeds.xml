@@ -23,4 +23,6 @@
 <Script file="libs\Babble-Spell-2.2\Babble-Spell-2.2.lua"/>
 <Script file="libs\Babble-Class-2.2\Babble-Class-2.2.lua"/>
 
+<Script file="libs\Waterfall-1.0\Waterfall-1.0.lua"/>
+
 </Ui>

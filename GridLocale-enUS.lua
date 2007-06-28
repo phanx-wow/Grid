@@ -6,6 +6,8 @@ local strings_enUS = {
 	["Module debugging menu."] = true,
 	["Debug"] = true,
 	["Toggle debugging for %s."] = true,
+	["Configure"] = true,
+	["Configure Grid"] = true,
 	
 	--}}}
 	--{{{ GridFrame

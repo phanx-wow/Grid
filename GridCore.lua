@@ -5,6 +5,7 @@
 
 local RL = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local waterfall = AceLibrary:HasInstance("Waterfall-1.0") and AceLibrary("Waterfall-1.0")
 
 --}}}
 --{{{ Grid
@@ -34,6 +35,19 @@ Grid.options = {
 		},
 	},
 }
+
+if waterfall then
+	Grid.options.args["config"] = {
+		type = "execute",
+		name = L["Configure"],
+		desc = L["Configure Grid"],
+		func = function () 
+			    waterfall:Open("Grid")
+		       end,
+       }
+
+       waterfall:Register("Grid", "aceOptions", Grid.options, "title", "Grid Configuration")
+end
 
 --}}}
 --{{{ AceDB defaults

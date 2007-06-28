@@ -161,7 +161,9 @@ GridLayout:AddLayout(L["By Group 25 w/tanks"],
 				     groupingOrder = "MAINTANK,MAINASSIST",
 			     },
 			     -- spacer
-			     [2] = {},
+			     [2] = {
+				     groupFilter = "",
+			     },
 			     [3] = {
 				     groupFilter = "1",
 			     },
