@@ -6,6 +6,8 @@ local strings_zhCN = {
 	["Module debugging menu."] = "除错模组设置",
 	["Debug"] = "除错",
 	["Toggle debugging for %s."] = "激活%s的除错",
+	--["Configure"] = true,
+	--["Configure Grid"] = true,
 	
 	--}}}
 	--{{{ GridFrame
@@ -109,6 +111,7 @@ local strings_zhCN = {
 	["By Group 10"] = "10人团队",
 	["By Class"] = "以职业排列",
 	["Onyxia"] = "单数双数队伍排列",
+	--["By Group 25 w/tanks"] = true,
 	
 	--}}}
 	--{{{ GridRange
@@ -139,7 +142,7 @@ local strings_zhCN = {
 	--}}}
 	--{{{ GridStatusAuras
 	["Auras"] = "光环",
-	["Debuff type: %s"] = "Debuff类型： %s",
+	["Debuff type: %s"] = "Debuff类型：%s",
 	["Poison"] = "毒药",
 	["Disease"] = "疾病",
 	["Magic"] = "魔法",
@@ -152,8 +155,8 @@ local strings_zhCN = {
 	["Delete (De)buff"] = "删除(De)buff",
 	["Deletes an existing debuff from the status module"] = "删除状态模组内已有的一个debuff",
 	["Remove %s from the menu"] = "从列表中移除%s",
-	["Debuff: %s"] = "Debuff： %s",
-	["Buff: %s"] = "Buff： %s",
+	["Debuff: %s"] = "Debuff：%s",
+	["Buff: %s"] = "Buff：%s",
 	["Class Filter"] = "职业过滤",
 	["Show status for the selected classes."] = "显示选定职业的状态",
 	["Show on %s."] = "在%s上显示",
@@ -192,7 +195,7 @@ local strings_zhCN = {
 	["Unit health"] = "血量",
 	["Health deficit"] = "损失的血量",
 	["Low HP warning"] = "低血量警报",
-	["Feign Death warning"] = true,
+	--["Feign Death warning"] = true,
 	["Death warning"] = "死亡警报",
 	["Offline warning"] = "掉线警报",
 	["Health"] = "血量",
