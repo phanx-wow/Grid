@@ -1,4 +1,3 @@
-﻿
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local strings_zhCN = {
@@ -25,9 +24,11 @@ local strings_zhCN = {
 
 	["Indicators"] = "提示器",
 	["Border"] = "外框",
-	["Health Bar"] = "血条",
-	["Center Text"] = "中间文字",
-	["Center Icon"] = "中间图像",
+	["Health Bar"] = "生命条",
+	["Health Bar Color"] = "生命条颜色",
+	["Center Text"] = "中心文字",
+	["Center Text 2"] = "中心文字2",
+	["Center Icon"] = "中心图标",
 	["Top Left Corner"] = "左上角",
 	["Top Right Corner"] = "右上角",
 	["Bottom Left Corner"] = "左下角",
@@ -37,6 +38,24 @@ local strings_zhCN = {
 	["Options for %s indicator."] = "%s提示器的选项",
 	["Statuses"] = "状态",
 	["Toggle status display."] = "选择显示状态",
+
+	-- Advanced options
+	["Advanced"] = "高级",
+	["Advanced options."] = "高级选项",
+	["Enable %s indicator"] = "激活%s指示",
+	["Toggle the %s indicator."] = "打开/关闭%s指示",
+	["Frame Width"] = "框架宽度",
+	["Adjust the width of each unit's frame."] = "调整个体框架的宽度",
+	["Frame Height"] = "框架高度",
+	["Adjust the height of each unit's frame."] = "调整个体框架的高度",
+	["Corner Size"] = "指示大小",
+	["Adjust the size of the corner indicators."] = "调整边角指示的大小",
+	["Font Size"] = "字体大小",
+	["Adjust the font size."] = "调整字体尺寸",
+	["Orientation"] = "方向",
+	["Set frame orientation."] = "设置框架方向",
+	["Icon Size"] = "图标大小",
+	["Adjust the size of the center icon."] = "调整中心图标的尺寸",
 
 	--}}}
 	--{{{ GridLayout
@@ -119,11 +138,13 @@ local strings_zhCN = {
 	
 	--}}}
 	--{{{ GridStatusAuras
+	["Auras"] = "光环",
 	["Debuff type: %s"] = "Debuff类型： %s",
 	["Poison"] = "毒药",
 	["Disease"] = "疾病",
 	["Magic"] = "魔法",
 	["Curse"] = "诅咒",
+	["Ghost"] = "幽灵",
 	["Add new Buff"] = "增加新的Buff",
 	["Adds a new buff to the status module"] = "状态模组添加一个新的buff",
 	["Add new Debuff"] = "增加新的Debuff",
@@ -146,24 +167,32 @@ local strings_zhCN = {
 	
 	--}}}
 	--{{{ GridStatusMana
-	["Mana threshold"] = "魔法临界点",
-	["Set the percentage for the low mana warning."] = "设置低魔法警告的临界点",
-	["Low Mana warning"] = "低魔法警报",
-	["Low Mana"] = "低魔法",
-	
+	["Mana"] = "法力",
+	["Low Mana"] = "低法力",
+	["Mana threshold"] = "法力临界点",
+	["Set the percentage for the low mana warning."] = "设置低法力警告的临界点",
+	["Low Mana warning"] = "低法力警报",
+		
 	--}}}
 	--{{{ GridStatusHeals
 	["Heals"] = "治疗",
 	["Incoming heals"] = "正被治疗",
+	["Ignore Self"] = "忽略自己",
+	["Ignore heals cast by you."] = "忽略对自己施放的治疗",
 	["(.+) begins to cast (.+)."] = "(.+)开始施放(.+)",
 	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = "(.+)从(.+)的生命分流获得了(.+)点法力值",
 	["^Corpse of (.+)$"] = "^(.+)的尸体$",
 	
 	--}}}
 	--{{{ GridStatusHealth
+	["Low HP"] = "低",
+	["DEAD"] = "死",
+	["FD"] = "假",
+	["Offline"] = "离",
 	["Unit health"] = "血量",
 	["Health deficit"] = "损失的血量",
 	["Low HP warning"] = "低血量警报",
+	["Feign Death warning"] = true,
 	["Death warning"] = "死亡警报",
 	["Offline warning"] = "掉线警报",
 	["Health"] = "血量",
@@ -179,12 +208,14 @@ local strings_zhCN = {
 
 	--}}}
 	--{{{ GridStatusRange
+	["Range"] = "距离",
 	["Range check frequency"] = "距离检测的频率",
 	["Seconds between range checks"] = "多少秒检测一次距离",
 	["Out of Range"] = "距离外",
 
 	--}}}
 	--{{{ GridStatusTarget
+	["Target"] = "目标",
 	["Your Target"] = "你的目标",
 
 	--}}}
