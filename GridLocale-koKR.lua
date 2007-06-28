@@ -6,6 +6,8 @@ local strings_koKR = {
 	["Module debugging menu."] = "모듈 디버깅 메뉴를 설정합니다.",
 	["Debug"] = "디버그",
 	["Toggle debugging for %s."] = "%s 디버깅를 전환합니다.",
+	["Configure"] = "설정", 
+	["Configure Grid"] = "Grid 설정", 
 	
 	--}}}
 	--{{{ GridFrame
