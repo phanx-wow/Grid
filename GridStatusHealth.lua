@@ -1,4 +1,4 @@
-﻿--{{{ Libraries
+--{{{ Libraries
 
 local RL = AceLibrary("Roster-2.1")
 local Aura = AceLibrary("SpecialEvents-Aura-2.0")
@@ -164,6 +164,7 @@ function GridStatusHealth:OnEnable()
 	self:RegisterEvent("Grid_UnitChanged")
 	--self:RegisterBucketEvent("UNIT_HEALTH", 0.2)
 	self:RegisterEvent("UNIT_HEALTH", "UpdateUnit")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
 end
 
 function GridStatusHealth:Reset()
@@ -212,17 +213,17 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 	if not name then return end
 	if string.find(unitid, "pet") then return end
 
-	if UnitIsDeadOrGhost(unitid) and not self.deathCache[unitid] then
-		if not Aura:UnitHasBuff(unitid, BS["Feign Death"]) then
-			self:Debug("Death")
-			self:StatusDeath(unitid, true)
-			self.deathCache[unitid] = true
-		else
+	if UnitIsDeadOrGhost(unitid) then
+		if Aura:UnitHasBuff(unitid, BS["Feign Death"]) then
 			self:Debug("Feign Death")
 			self:StatusFeignDeath(unitid, true)
 			self.deathCache[unitid] = true
+		else
+			self:Debug("Death")
+			self:StatusDeath(unitid, true)
+			self.deathCache[unitid] = true
 		end
-	elseif not UnitIsDeadOrGhost(unitid) and self.deathCache[unitid] then
+	elseif self.deathCache[unitid] then
 		self:StatusFeignDeath(unitid, false)
 		self:StatusDeath(unitid, false)
 		self.deathCache[unitid] = nil
