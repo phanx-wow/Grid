@@ -150,7 +150,7 @@ local low_healthOptions = {
 
 function GridStatusHealth:OnInitialize()
 	self.super.OnInitialize(self)
-	self.deathCache = {}
+
 	self:RegisterStatus("unit_health", L["Unit health"], healthOptions)
 	self:RegisterStatus("unit_healthDeficit", L["Health deficit"], healthDeficitOptions)
 	self:RegisterStatus("alert_lowHealth", L["Low HP warning"], low_healthOptions)
@@ -174,8 +174,6 @@ end
 
 function GridStatusHealth:UpdateAllUnits()
 	local name, status, statusTbl
-
-	self.deathCache = {}
 
 	for name, status, statusTbl in self.core:CachedStatusIterator("unit_health") do
 		self:Grid_UnitJoined(name)
@@ -217,16 +215,13 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 		if Aura:UnitHasBuff(unitid, BS["Feign Death"]) then
 			self:Debug("Feign Death")
 			self:StatusFeignDeath(unitid, true)
-			self.deathCache[unitid] = true
 		else
 			self:Debug("Death")
 			self:StatusDeath(unitid, true)
-			self.deathCache[unitid] = true
 		end
-	elseif self.deathCache[unitid] then
+	else
 		self:StatusFeignDeath(unitid, false)
 		self:StatusDeath(unitid, false)
-		self.deathCache[unitid] = nil
 	end
 
 	self:StatusOffline(unitid, not UnitIsConnected(unitid))
