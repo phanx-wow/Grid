@@ -8,7 +8,7 @@ local strings_enUS = {
 	["Toggle debugging for %s."] = true,
 	["Configure"] = true,
 	["Configure Grid"] = true,
-	
+
 	--}}}
 	--{{{ GridFrame
 	["Frame"] = true,
@@ -50,8 +50,12 @@ local strings_enUS = {
 	["Adjust the width of each unit's frame."] = true,
 	["Frame Height"] = true,
 	["Adjust the height of each unit's frame."] = true,
+	["Frame Texture"] = true,
+	["Adjust the texture of each unit's frame."] = true,
 	["Corner Size"] = true,
 	["Adjust the size of the corner indicators."] = true,
+	["Font"] = true,
+	["Adjust the font settings"] = true,
 	["Font Size"] = true,
 	["Adjust the font size."] = true,
 	["Orientation"] = true,
@@ -133,12 +137,12 @@ local strings_enUS = {
 	["Range filter for %s"] = true,
 	["Enable"] = true,
 	["Enable %s"] = true,
-	
+
 	--}}}
 	--{{{ GridStatusAggro
 	["Aggro"] = true,
 	["Aggro alert"] = true,
-	
+
 	--}}}
 	--{{{ GridStatusAuras
 	["Auras"] = true,
@@ -167,7 +171,7 @@ local strings_enUS = {
 	--{{{ GridStatusName
 	["Unit Name"] = true,
 	["Color by class"] = true,
-	
+
 	--}}}
 	--{{{ GridStatusMana
 	["Mana"] = true,
@@ -176,7 +180,7 @@ local strings_enUS = {
 	["Set the percentage for the low mana warning."] = true,
 	["Low Mana warning"] = true,
 	["Low Mana"] = true,
-	
+
 	--}}}
 	--{{{ GridStatusHeals
 	["Heals"] = true,
@@ -186,7 +190,7 @@ local strings_enUS = {
 	["(.+) begins to cast (.+)."] = true,
 	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = true,
 	["^Corpse of (.+)$"] = true,
-	
+
 	--}}}
 	--{{{ GridStatusHealth
 	["Low HP"] = true,

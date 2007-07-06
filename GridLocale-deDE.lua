@@ -6,7 +6,7 @@ local strings_deDE = {
 	["Module debugging menu."] = "Debug-Men\195\188",
 	["Debug"] = "Debug",
 	["Toggle debugging for %s."] = "Aktiviere das Debuggen f\195\188r %s.",
-	
+
 	--}}}
 	--{{{ GridFrame
 	["Frame"] = "Rahmen",
@@ -37,12 +37,14 @@ local strings_deDE = {
 	["Options for %s indicator."] = "Optionen f\195\188r den %s Indikator",
 	["Statuses"] = "Zust\195\164nde",
 	["Toggle status display."] = "Aktiviere die Anzeige des Zustands",
-	
+
 	-- Advanced options
 	["Advanced"] = "Erweitert",
 	["Advanced options."] = "Erweiterte Einstellungen",
 	["Enable %s indicator"] = "Indikator f\195\188r %s ",
 	["Toggle the %s indicator."] = "Aktiviere den %s Indikator",
+	["Frame Texture"] = "Rahmentextur",
+	["Adjust the texture of each unit's frame."] = "Die Textur von jedem Einheitenfenster anpassen",
 	["Frame Width"] = "Rahmenbreite",
 	["Adjust the width of each unit's frame."] = "Die Weite von jedem Einheitenfenster anpassen",
 	["Frame Height"] = "Rahmenh\195\182he",
@@ -51,11 +53,13 @@ local strings_deDE = {
 	["Adjust the size of the corner indicators."] = "Die Gr\195\182\195\159e der Eckenindikatoren anpassen",
 	["Font Size"] = "Schriftgr\195\182\195\159e",
 	["Adjust the font size."] = "Die Schriftg\195\182\195\159e anpassen",
+	["Font"] = "Schriftart",
+	["Adjust the font settings"] = "Die Schriftart anpassen",
 	["Orientation"] = "Ausrichtung",
 	["Set frame orientation."] = "Rahmenausrichtung festlegen",
 	["Icon Size"] = "Icongr\195\182\195\159e",
 	["Adjust the size of the center icon."] = "Die Gr\195\182\195\159e des Icons im Zentrum anpassen",
-		
+
 	--}}}
 	--{{{ GridLayout
 	["Layout"] = "Anordnung",
@@ -108,7 +112,7 @@ local strings_deDE = {
 	["By Group 10"] = "10er Gruppe",
 	["By Class"] = "Nach Klasse",
 	["Onyxia"] = "Onyxia",
-	
+
 	--}}}
 	--{{{ GridRange
 	-- used for getting spell range from tooltip
@@ -129,12 +133,12 @@ local strings_deDE = {
 	["Range filter for %s"] = "Entfernungsfilter f\195\188r %s",
 	["Enable"] = "Aktivieren",
 	["Enable %s"] = "Aktiviere %s",
-	
+
 	--}}}
 	--{{{ GridStatusAggro
 	["Aggro"] = "Aggro",
 	["Aggro alert"] = "Aggro-Alarm",
-	
+
 	--}}}
 	--{{{ GridStatusAuras
 	["Auras"] = "Auren",
@@ -158,12 +162,12 @@ local strings_deDE = {
 	["Show if missing"] = "Zeige wenn es fehlt",
 	["Display status only if the buff is not active."] = "Zeige nur den Status wenn der St\195\164rkungszaube nicht aktiv ist",
 	--["[^%a]"] = "[^%a]",
-	
+
 	--}}}
 	--{{{ GridStatusName
 	["Unit Name"] = "Namen",
 	["Color by class"] = "In Klassenfarbe",
-	
+
 	--}}}
 	--{{{ GridStatusMana
 	["Mana"] = "Mana",
@@ -172,7 +176,7 @@ local strings_deDE = {
 	["Set the percentage for the low mana warning."] = "Setzt den % Grenzwert f\195\188r die Wenig-Mana Warnung",
 	["Low Mana warning"] = "Wenig-Mana Warnung",
 	["Low Mana"] = "Wenig Mana",
-	
+
 	--}}}
 	--{{{ GridStatusHeals
 	["Heals"] = "Heilungen",
@@ -182,7 +186,7 @@ local strings_deDE = {
 	["(.+) begins to cast (.+)."] = "(.+) beginnt (.+) zu wirken.",
 	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = "(.+) bekommt (.+) Mana durch (.+)'s Lebensentzug.",
 	["^Corpse of (.+)$"] = "^Corpse of (.+)$",
-	
+
 	--}}}
 	--{{{ GridStatusHealth
 	["Low HP"] = "Wenig HP",
@@ -219,8 +223,8 @@ local strings_deDE = {
 	["Your Target"] = "Dein Ziel",
 
 	--}}}
-	
-	
+
+
 }
 
 L:RegisterTranslations("deDE", function() return strings_deDE end)

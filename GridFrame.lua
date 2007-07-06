@@ -7,6 +7,9 @@ local RL = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local GridRange = GridRange
 
+local SML = AceLibrary:HasInstance("SharedMedia-1.0") and AceLibrary("SharedMedia-1.0") or nil
+if SML then SML:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32") end
+
 --}}}
 
 --{{{  locals
@@ -19,7 +22,7 @@ function GridFrame_OnLoad(self)
 end
 
 function GridFrame_OnAttributeChanged(self, name, value)
-	local frame = GridFrame.registeredFrames[self:GetName()] 
+	local frame = GridFrame.registeredFrames[self:GetName()]
 
 	if not frame then return end
 
@@ -86,11 +89,15 @@ function GridFrameClass.prototype:CreateFrames()
 	-- create frame
 	-- self.frame is created by using the xml template and is passed via the object's constructor
 	local f = self.frame
+	
+	-- set media based on shared media
+	font = SML and SML:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
+	local texture = SML and SML:Fetch("statusbar", GridFrame.db.profile.texture) or "Interface\\Addons\\Grid\\gradient32x32"
 
 	-- f:Hide()
-	f:EnableMouse(true)			
+	f:EnableMouse(true)
 	f:RegisterForClicks("LeftButtonUp", "RightButtonUp", "MiddleButtonUp", "Button4Up", "Button5Up")
-	
+
 	-- set our left-click action
 	f:SetAttribute("type1", "target")
 	f:SetAttribute("*type1", "target")
@@ -98,7 +105,7 @@ function GridFrameClass.prototype:CreateFrames()
 	-- tooltip support
 	f:SetScript("OnEnter", function(this) self:OnEnter(this) end)
 	f:SetScript("OnLeave", function(this) self:OnLeave(this) end)
-	
+
 	-- create border
 	f:SetBackdrop({
 		bgFile = "Interface\\Addons\\Grid\\white16x16", tile = true, tileSize = 16,
@@ -107,16 +114,16 @@ function GridFrameClass.prototype:CreateFrames()
 	})
 	f:SetBackdropBorderColor(0,0,0,0)
 	f:SetBackdropColor(0,0,0,1)
-	
+
 	-- create bar BG (which users will think is the real bar, as it is the one that has a shiny color)
 	-- this is necessary as there's no other way to implement status bars that grow in the other direction than normal
 	f.BarBG = f:CreateTexture()
-	f.BarBG:SetTexture("Interface\\Addons\\Grid\\gradient32x32")
+	f.BarBG:SetTexture(texture)
 	f.BarBG:SetPoint("CENTER", f, "CENTER")
 
 	-- create bar
 	f.Bar = CreateFrame("StatusBar", nil, f)
-	f.Bar:SetStatusBarTexture("Interface\\Addons\\Grid\\gradient32x32")
+	f.Bar:SetStatusBarTexture(texture)
 	f.Bar:SetOrientation("VERTICAL")
 	f.Bar:SetMinMaxValues(0,100)
 	f.Bar:SetValue(100)
@@ -127,7 +134,7 @@ function GridFrameClass.prototype:CreateFrames()
 	-- create center text
 	f.Text = f.Bar:CreateFontString(nil, "ARTWORK")
 	f.Text:SetFontObject(GameFontHighlightSmall)
-	f.Text:SetFont(STANDARD_TEXT_FONT,GridFrame.db.profile.fontSize)
+	f.Text:SetFont(font ,GridFrame.db.profile.fontSize)
 	f.Text:SetJustifyH("CENTER")
 	f.Text:SetJustifyV("CENTER")
 	f.Text:SetPoint("BOTTOM", f, "CENTER")
@@ -135,12 +142,12 @@ function GridFrameClass.prototype:CreateFrames()
 	-- create center text2
 	f.Text2 = f.Bar:CreateFontString(nil, "ARTWORK")
 	f.Text2:SetFontObject(GameFontHighlightSmall)
-	f.Text2:SetFont(STANDARD_TEXT_FONT,GridFrame.db.profile.fontSize)
+	f.Text2:SetFont(font ,GridFrame.db.profile.fontSize)
 	f.Text2:SetJustifyH("CENTER")
 	f.Text2:SetJustifyV("CENTER")
 	f.Text2:SetPoint("TOP", f, "CENTER")
 	f.Text2:Hide()
-	
+
 	-- create icon
 	f.Icon = f.Bar:CreateTexture("Icon", "OVERLAY")
 	f.Icon:SetWidth(GridFrame.db.profile.iconSize)
@@ -148,18 +155,18 @@ function GridFrameClass.prototype:CreateFrames()
 	f.Icon:SetPoint("CENTER", f, "CENTER")
 	f.Icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
 	f.Icon:SetTexture(1,1,1,0)
-	
+
 	-- set texture
 	f:SetNormalTexture(1,1,1,0)
 	f:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
-	
+
 	self.frame = f
 
 	self:SetWidth(GridFrame:GetFrameWidth())
 	self:SetHeight(GridFrame:GetFrameHeight())
 	self:SetOrientation(GridFrame.db.profile.orientation)
 	self:EnableText2(GridFrame.db.profile.enableText2)
-	
+
 	-- set up click casting
 	ClickCastFrames = ClickCastFrames or {}
 	ClickCastFrames[self.frame] = true
@@ -278,9 +285,14 @@ function GridFrameClass.prototype:SetIconSize(size)
 	f.Icon:SetHeight(size)
 end
 
-function GridFrameClass.prototype:SetFontSize(size)
-	self.frame.Text:SetFont(STANDARD_TEXT_FONT,size)
-	self.frame.Text2:SetFont(STANDARD_TEXT_FONT,size)
+function GridFrameClass.prototype:SetFrameFont(font, size)
+	self.frame.Text:SetFont(font ,size)
+	self.frame.Text2:SetFont(font ,size)
+end
+
+function GridFrameClass.prototype:SetFrameTexture(texture)
+	self.frame.BarBG:SetTexture(texture)
+	self.frame.Bar:SetStatusBarTexture(texture)
 end
 
 -- pass through functions to our main frame
@@ -381,7 +393,7 @@ function GridFrameClass.prototype:CreateIndicator(indicator)
 	self.frame[indicator]:SetBackdropColor(1,1,1,1)
 	self.frame[indicator]:SetFrameLevel(5)
 	self.frame[indicator]:Hide()
-	
+
 	-- position indicator wherever needed
 	if indicator == "corner1" then
 		self.frame[indicator]:SetPoint("BOTTOMLEFT", self.frame, "BOTTOMLEFT", 1, 1)
@@ -398,10 +410,10 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 	if not color then color = { r = 1, g = 1, b = 1, a = 1 } end
 	if indicator == "border" then
 		self.frame:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
-	elseif indicator == "corner1" 
-	or indicator == "corner2" 
-	or indicator == "corner3" 
-	or indicator == "corner4" 
+	elseif indicator == "corner1"
+	or indicator == "corner2"
+	or indicator == "corner3"
+	or indicator == "corner4"
 	then
 		-- create indicator on demand if not available yet
 		if not self.frame[indicator] then
@@ -452,10 +464,10 @@ end
 function GridFrameClass.prototype:ClearIndicator(indicator)
 	if indicator == "border" then
 		self.frame:SetBackdropBorderColor(0, 0, 0, 0)
-	elseif indicator == "corner1" 
-	or indicator == "corner2" 
-	or indicator == "corner3" 
-	or indicator == "corner4" 
+	elseif indicator == "corner1"
+	or indicator == "corner2"
+	or indicator == "corner3"
+	or indicator == "corner4"
 	then
 		if self.frame[indicator] then
 			self.frame[indicator]:SetBackdropColor(1, 1, 1, 1)
@@ -505,6 +517,8 @@ GridFrame.defaultDB = {
 	enableText2 = false,
 	enableBarColor = false,
 	fontSize = 8,
+	font = "Friz Quadrata TT",
+	texture = "Gradient",
 	iconSize = 16,
 	debug = false,
 	invertBarColor = false,
@@ -735,7 +749,8 @@ GridFrame.options = {
 					      end,
 					set = function (v)
 						      GridFrame.db.profile.fontSize = v
-						      GridFrame:WithAllFrames(function (f) f:SetFontSize(v) end)
+						      font = SML and SML:Fetch('font', GridFrame.db.profile.font) or STANDARD_TEXT_FONT
+						      GridFrame:WithAllFrames(function (f) f:SetFrameFont(font, v) end)
 					      end,
 				},
 				["orientation"] = {
@@ -755,6 +770,44 @@ GridFrame.options = {
 		},
 	},
 }
+
+if SML then
+	local sml_options = {
+				["font"] = {
+					type = "text",
+					name = L["Font"],
+					desc = L["Adjust the font settings"],
+					validate = SML:List("font"),
+					get = function ()
+						  	  return GridFrame.db.profile.font
+						  end,
+					set = function (v)
+						  	  GridFrame.db.profile.font = v
+						  	  local font = SML:Fetch("font", v)
+						  	  local fontsize = GridFrame.db.profile.fontSize
+						  	  GridFrame:WithAllFrames(function (f) f:SetFrameFont(font, fontsize) end)
+						  end,
+				},
+				["texture"] = {
+					type = "text",
+					name = L["Frame Texture"],
+					desc = L["Adjust the texture of each unit's frame."],
+					validate = SML:List("statusbar"),
+					get = function ()
+							  return GridFrame.db.profile.texture
+						  end,
+					set = function (v)
+						  	  GridFrame.db.profile.texture = v
+						  	  local texture = SML:Fetch("statusbar", v)
+						  	  GridFrame:WithAllFrames(function (f) f:SetFrameTexture(texture) end)
+						  end,
+				},
+	}
+	
+	table.insert(GridFrame.options.args["advanced"].args, sml_options["font"])
+	table.insert(GridFrame.options.args["advanced"].args, sml_options["texture"])
+	
+end
 
 --}}}
 
@@ -790,7 +843,7 @@ end
 
 function GridFrame:RegisterFrame(frame)
 	self:Debug("RegisterFrame", frame:GetName())
-	
+
 	self.registeredFrameCount = (self.registeredFrameCount or 0) + 1
 	self.registeredFrames[frame:GetName()] = self.frameClass:new(frame)
 end
@@ -1012,9 +1065,9 @@ function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
 		-- needs to be local for the get/set closures
 		local indicatorType = indicator
 		local statusKey = status
-		
+
 		-- self:Debug(indicator.type, status)
-		
+
 		if not indicatorMenu[status] then
 			indicatorMenu[status] = {
 				type = "toggle",
@@ -1028,7 +1081,7 @@ function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
 					      GridFrame:UpdateAllFrames()
 				      end,
 			}
-			
+
 			-- self:Debug("Added", indicator.type, status)
 		end
 	end
