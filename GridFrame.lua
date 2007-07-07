@@ -89,9 +89,9 @@ function GridFrameClass.prototype:CreateFrames()
 	-- create frame
 	-- self.frame is created by using the xml template and is passed via the object's constructor
 	local f = self.frame
-	
+
 	-- set media based on shared media
-	font = SML and SML:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
+	local font = SML and SML:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
 	local texture = SML and SML:Fetch("statusbar", GridFrame.db.profile.texture) or "Interface\\Addons\\Grid\\gradient32x32"
 
 	-- f:Hide()
@@ -213,6 +213,11 @@ function GridFrameClass.prototype:SetOrientation(orientation)
 	self:PlaceIndicators()
 end
 
+function GridFrameClass.prototype:SetTextOrientation(textorientation)
+	self.textorientation = textorientation
+	self:PlaceIndicators()
+end
+
 function GridFrameClass.prototype:EnableText2(enabled)
 	self.enableText2 = enabled
 	self:PlaceIndicators()
@@ -223,8 +228,12 @@ function GridFrameClass.prototype:PlaceIndicators()
 
 	if self.orientation == "HORIZONTAL" then
 		f.Bar:SetOrientation("HORIZONTAL")
-
-		f.Text:SetJustifyH("LEFT")
+	else
+		f.Bar:SetOrientation("VERTICAL")
+	end
+	
+	if self.textorientation == "HORIZONTAL" then
+	   f.Text:SetJustifyH("LEFT")
 		f.Text:SetJustifyV("CENTER")
 		f.Text:SetHeight(f:GetHeight())
 		f.Text:ClearAllPoints()
@@ -244,8 +253,6 @@ function GridFrameClass.prototype:PlaceIndicators()
 			f.Text2:SetPoint("RIGHT", f, "RIGHT", -2, 0)
 		end
 	else
-		f.Bar:SetOrientation("VERTICAL")
-
 		f.Text:SetJustifyH("CENTER")
 		f.Text:SetJustifyV("CENTER")
 		f.Text:SetWidth(f:GetWidth())
@@ -514,6 +521,7 @@ GridFrame.defaultDB = {
 	frameWidth = 26,
 	cornerSize = 5,
 	orientation = "VERTICAL",
+	textorientation = "VERTICAL",
 	enableText2 = false,
 	enableBarColor = false,
 	fontSize = 8,
@@ -755,7 +763,7 @@ GridFrame.options = {
 				},
 				["orientation"] = {
 					type = "text",
-					name = L["Orientation"],
+					name = L["Orientation of Frame"],
 					desc = L["Set frame orientation."],
 					get = function ()
 						      return GridFrame.db.profile.orientation
@@ -763,6 +771,19 @@ GridFrame.options = {
 					set = function (v)
 						      GridFrame.db.profile.orientation = v
 						      GridFrame:WithAllFrames(function (f) f:SetOrientation(v) end)
+						end,
+					validate = { "VERTICAL", "HORIZONTAL" }
+				},
+				["textorientation"] = {
+					type = "text",
+					name = L["Orientation of Text"],
+					desc = L["Set frame text orientation."],
+					get = function ()
+						      return GridFrame.db.profile.textorientation
+						end,
+					set = function (v)
+						      GridFrame.db.profile.textorientation = v
+						      GridFrame:WithAllFrames(function (f) f:SetTextOrientation(v) end)
 						end,
 					validate = { "VERTICAL", "HORIZONTAL" }
 				},
@@ -803,10 +824,10 @@ if SML then
 						  end,
 				},
 	}
-	
+
 	table.insert(GridFrame.options.args["advanced"].args, sml_options["font"])
 	table.insert(GridFrame.options.args["advanced"].args, sml_options["texture"])
-	
+
 end
 
 --}}}

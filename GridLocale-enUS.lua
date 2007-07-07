@@ -58,8 +58,10 @@ local strings_enUS = {
 	["Adjust the font settings"] = true,
 	["Font Size"] = true,
 	["Adjust the font size."] = true,
-	["Orientation"] = true,
+	["Orientation of Frame"] = true,
 	["Set frame orientation."] = true,
+	["Orientation of Text"] = true,
+	["Set frame text orientation."] = true,
 	["Icon Size"] = true,
 	["Adjust the size of the center icon."] = true,
 

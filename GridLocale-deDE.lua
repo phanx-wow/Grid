@@ -55,8 +55,10 @@ local strings_deDE = {
 	["Adjust the font size."] = "Die Schriftg\195\182\195\159e anpassen",
 	["Font"] = "Schriftart",
 	["Adjust the font settings"] = "Die Schriftart anpassen",
-	["Orientation"] = "Ausrichtung",
-	["Set frame orientation."] = "Rahmenausrichtung festlegen",
+	["Orientation of Frame"] = "Ausrichtung der Statusleiste",
+	["Set frame orientation."] = "Ausrichtung der Statusleiste festlegen",
+	["Orientation of Text"] = "Ausrichtung des Texts",
+	["Set frame text orientation."] = "Text Ausrichtung festlegen",
 	["Icon Size"] = "Icongr\195\182\195\159e",
 	["Adjust the size of the center icon."] = "Die Gr\195\182\195\159e des Icons im Zentrum anpassen",
 
