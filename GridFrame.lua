@@ -82,6 +82,7 @@ function GridFrameClass.prototype:Reset()
 	self:SetWidth(GridFrame:GetFrameWidth())
 	self:SetHeight(GridFrame:GetFrameHeight())
 	self:SetOrientation(GridFrame.db.profile.orientation)
+	self:SetTextOrientation(GridFrame.db.profile.textorientation)
 	self:EnableText2(GridFrame.db.profile.enableText2)
 end
 
@@ -165,6 +166,7 @@ function GridFrameClass.prototype:CreateFrames()
 	self:SetWidth(GridFrame:GetFrameWidth())
 	self:SetHeight(GridFrame:GetFrameHeight())
 	self:SetOrientation(GridFrame.db.profile.orientation)
+	self:SetTextOrientation(GridFrame.db.profile.textorientation)
 	self:EnableText2(GridFrame.db.profile.enableText2)
 
 	-- set up click casting
@@ -231,7 +233,7 @@ function GridFrameClass.prototype:PlaceIndicators()
 	else
 		f.Bar:SetOrientation("VERTICAL")
 	end
-	
+
 	if self.textorientation == "HORIZONTAL" then
 	   f.Text:SetJustifyH("LEFT")
 		f.Text:SetJustifyV("CENTER")
