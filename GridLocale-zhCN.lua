@@ -50,12 +50,18 @@ local strings_zhCN = {
 	["Adjust the width of each unit's frame."] = "调整个体框架的宽度",
 	["Frame Height"] = "框架高度",
 	["Adjust the height of each unit's frame."] = "调整个体框架的高度",
+	["Frame Texture"] = "框架纹理",
+	["Adjust the texture of each unit's frame."] = "调整个体框架的纹理",
 	["Corner Size"] = "指示大小",
 	["Adjust the size of the corner indicators."] = "调整边角指示的大小",
+	["Font"] = "字体",
+	["Adjust the font settings"] = "调整字体",
 	["Font Size"] = "字体大小",
 	["Adjust the font size."] = "调整字体尺寸",
-	["Orientation"] = "方向",
+	["Orientation of Frame"] = "框架方向",
 	["Set frame orientation."] = "设置框架方向",
+	["Orientation of Text"] = "文字方向",
+	["Set frame text orientation."] = "设置文字方向",
 	["Icon Size"] = "图标大小",
 	["Adjust the size of the center icon."] = "调整中心图标的尺寸",
 
@@ -175,6 +181,7 @@ local strings_zhCN = {
 	["Mana threshold"] = "法力临界点",
 	["Set the percentage for the low mana warning."] = "设置低法力警告的临界点",
 	["Low Mana warning"] = "低法力警报",
+	--["Low Mana"] = true,
 		
 	--}}}
 	--{{{ GridStatusHeals
