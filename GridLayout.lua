@@ -243,7 +243,7 @@ GridLayout.defaultDB = {
 	FrameDisplay = "Always",
 	layout = "By Group 40",
 	showParty = false,
-	horizonal = false,
+	horizontal = false,
 	FrameLock = false,
 
 	Padding = 1,
