@@ -79,6 +79,8 @@ local strings_deDE = {
 	["Show party/self as an extra group."] = "Zeigen Gruppe/sich selbst als extra Gruppe an.",
 	["Horizontal groups"] = "Horizontal gruppieren",
 	["Switch between horzontal/vertical groups."] = "Wechselt zwischen horizontaler/verikaler Gruppierung",
+	["Clamped to screen"] = "Im Bildschirm lassen",
+	["Toggle whether to permit movement out of screen."] = "Legt fest ob der Rahmen im Bildschirm bleiben soll",
 	["Frame lock"] = "Rahmen sperren",
 	["Locks/unlocks the grid for movement."] = "Sperrt/entsperrt den Rahmen zum Bewegen",
 

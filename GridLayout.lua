@@ -92,7 +92,7 @@ function GridLayoutPartyClass.prototype:SetOrientation(horizontal)
 			yOffset = padding
 		end
 	end
-	
+
 	self.playerFrame:ClearAllPoints()
 	self.playerFrame:SetPoint(anchor, self.frame, anchor, 0, 0)
 
@@ -118,7 +118,7 @@ function GridLayoutPartyClass.prototype:UpdateSize()
 			height = height + layoutSettings.Padding + self.partyFrame:GetHeight()
 		end
 	end
-	
+
 	self.frame:SetWidth(width)
 	self.frame:SetHeight(height)
 end
@@ -244,6 +244,7 @@ GridLayout.defaultDB = {
 	layout = "By Group 40",
 	showParty = false,
 	horizontal = false,
+	clamp = true,
 	FrameLock = false,
 
 	Padding = 1,
@@ -329,11 +330,24 @@ GridLayout.options = {
 				      GridLayout:ReloadLayout()
 			      end,
 		},
+		["clamp"] = {
+			type = "toggle",
+			name = L["Clamped to screen"],
+			desc = L["Toggle whether to permit movement out of screen."],
+			order = ORDER_LAYOUT + 5,
+			get = function ()
+				      return GridLayout.db.profile.clamp
+			      end,
+			set = function (v)
+				      GridLayout.db.profile.clamp = v
+				      GridLayout:SetClamp()
+			      end,
+		},
 		["lock"] = {
 			type = "toggle",
 			name = L["Frame lock"],
 			desc = L["Locks/unlocks the grid for movement."],
-			order = ORDER_LAYOUT + 5,
+			order = ORDER_LAYOUT + 6,
 			get = function() return GridLayout.db.profile.FrameLock end,
 			set = function(v)
 				GridLayout.db.profile.FrameLock = v
@@ -599,7 +613,7 @@ function GridLayout:CreateFrames()
 	local f = CreateFrame("Frame", "GridLayoutFrame", UIParent)
 	f:EnableMouse(not self.db.profile.FrameLock)
 	f:SetMovable(true)
-	f:SetClampedToScreen(true)
+	f:SetClampedToScreen(self.db.profile.clamp)
 	f:SetPoint("CENTER", UIParent, "CENTER")
 	f:SetScript("OnMouseUp", function () self:StopMoveFrame() end)
 	f:SetScript("OnHide", function () self:StopMoveFrame() end)
@@ -690,7 +704,7 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 			relPoint, xMult, yMult = "BOTTOMLEFT", -1, 1
 		end
 	end
-	
+
 	if groupNumber == 1 then
 		frame:ClearAllPoints()
 		frame:SetParent(self.frame)
@@ -714,6 +728,10 @@ end
 function GridLayout:AddLayout(layoutName, layout)
 	self.layoutSettings[layoutName] = layout
 	table.insert(self.options.args.layout.validate, layoutName)
+end
+
+function GridLayout:SetClamp()
+	self.frame:SetClampedToScreen(self.db.profile.clamp)
 end
 
 function GridLayout:ReloadLayout()

@@ -82,6 +82,8 @@ local strings_enUS = {
 	["Show party/self as an extra group."] = true,
 	["Horizontal groups"] = true,
 	["Switch between horzontal/vertical groups."] = true,
+	["Clamped to screen"] = true,
+	["Toggle whether to permit movement out of screen."] = true,
 	["Frame lock"] = true,
 	["Locks/unlocks the grid for movement."] = true,
 
