@@ -6,9 +6,9 @@ local strings_koKR = {
 	["Module debugging menu."] = "모듈 디버깅 메뉴를 설정합니다.",
 	["Debug"] = "디버그",
 	["Toggle debugging for %s."] = "%s 디버깅를 전환합니다.",
-	["Configure"] = "설정", 
-	["Configure Grid"] = "Grid 설정", 
-	
+	["Configure"] = "설정",
+	["Configure Grid"] = "Grid 설정",
+
 	--}}}
 	--{{{ GridFrame
 	["Frame"] = "프레임",
@@ -82,6 +82,8 @@ local strings_koKR = {
 	["Show party/self as an extra group."] = "공격대시 자신의 그룹을 표시합니다.",
 	["Horizontal groups"] = "수평 그룹",
 	["Switch between horzontal/vertical groups."] = "그룹을 수평 및 수직으로 전환합니다.",
+	["Clamped to screen"] = "스크린 고정",
+	["Toggle whether to permit movement out of screen."] = "스크린의 이동을 전환합니다.",
 	["Frame lock"] = "프레임 고정",
 	["Locks/unlocks the grid for movement."] = "그리드 프레임의 위치를 고정시키거나 이동시킵니다.",
 
@@ -118,7 +120,7 @@ local strings_koKR = {
 	["By Class"] = "직업",
 	["Onyxia"] = "오닉시아",
 	["By Group 25 w/tanks"] = "그룹 25 탱커",
-	
+
 	--}}}
 	--{{{ GridRange
 	-- used for getting spell range from tooltip
@@ -139,12 +141,12 @@ local strings_koKR = {
 	["Range filter for %s"] = "%s 범위 필터",
 	["Enable"] = "활성화",
 	["Enable %s"] = "%s 활성화",
-	
+
 	--}}}
 	--{{{ GridStatusAggro
 	["Aggro"] = "어그로",
 	["Aggro alert"] = "어그로 경고",
-	
+
 	--}}}
 	--{{{ GridStatusAuras
 	["Auras"] = "효과",
@@ -173,7 +175,7 @@ local strings_koKR = {
 	--{{{ GridStatusName
 	["Unit Name"] = "유닛 이름",
 	["Color by class"] = "직업 색상",
-	
+
 	--}}}
 	--{{{ GridStatusMana
 	["Mana"] = "마나",
@@ -182,7 +184,7 @@ local strings_koKR = {
 	["Set the percentage for the low mana warning."] = "낮은 마나 경고를 위한 백분율을 설정합니다.",
 	["Low Mana warning"] = "마나 낮음 경고",
 	["Low Mana"] = "마나 낮음",
-	
+
 	--}}}
 	--{{{ GridStatusHeals
 	["Heals"] = "치유",
@@ -192,7 +194,7 @@ local strings_koKR = {
 	["(.+) begins to cast (.+)."] = "(.+)|1이;가; (.+)|1을;를; 시전합니다.",
 	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = "(.+)|1이;가; 생명력 전환|1으로;로; (.+)의 (.+)|1을;를; 얻었습니다.",
 	["^Corpse of (.+)$"] = "(.+)의 시체",
-	
+
 	--}}}
 	--{{{ GridStatusHealth
 	["Low HP"] = "체력 낮음",
