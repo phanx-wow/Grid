@@ -6,6 +6,8 @@ local strings_deDE = {
 	["Module debugging menu."] = "Debug-Men\195\188",
 	["Debug"] = "Debug",
 	["Toggle debugging for %s."] = "Aktiviere das Debuggen f\195\188r %s.",
+	["Configure"] = "Konfigurieren"
+	["Configure Grid"] = "Grid konfigurieren",
 
 	--}}}
 	--{{{ GridFrame
@@ -25,6 +27,7 @@ local strings_deDE = {
 	["Indicators"] = "Indikatoren",
 	["Border"] = "Rand",
 	["Health Bar"] = "Gesundheitsleiste",
+	["Health Bar Color"] = "Gesundheitsleistenfarbe",
 	["Center Text"] = "Text im der Mitte",
 	["Center Text 2"] = "2. Text in der Mitte",
 	["Center Icon"] = "Icon im Zentrum",
@@ -43,18 +46,18 @@ local strings_deDE = {
 	["Advanced options."] = "Erweiterte Einstellungen",
 	["Enable %s indicator"] = "Indikator f\195\188r %s ",
 	["Toggle the %s indicator."] = "Aktiviere den %s Indikator",
+	["Frame Width"] = "Rahmenbreite",
+	["Adjust the width of each unit's frame."] = "Die Breite von jedem Einheitenfenster anpassen",
+	["Frame Height"] = "Rahmenh\195\182he",	
+	["Adjust the height of each unit's frame."] = "Die H\195\182he von jedem Einheitenfenster anpassen",
 	["Frame Texture"] = "Rahmentextur",
 	["Adjust the texture of each unit's frame."] = "Die Textur von jedem Einheitenfenster anpassen",
-	["Frame Width"] = "Rahmenbreite",
-	["Adjust the width of each unit's frame."] = "Die Weite von jedem Einheitenfenster anpassen",
-	["Frame Height"] = "Rahmenh\195\182he",
-	["Adjust the height of each unit's frame."] = "Die H\195\182he von jedem Einheitenfenster anpassen",
 	["Corner Size"] = "Eckengr\195\182\195\159e",
 	["Adjust the size of the corner indicators."] = "Die Gr\195\182\195\159e der Eckenindikatoren anpassen",
+	["Font"] = "Schriftart",	
+	["Adjust the font settings"] = "Die Schriftart anpassen",
 	["Font Size"] = "Schriftgr\195\182\195\159e",
 	["Adjust the font size."] = "Die Schriftg\195\182\195\159e anpassen",
-	["Font"] = "Schriftart",
-	["Adjust the font settings"] = "Die Schriftart anpassen",
 	["Orientation of Frame"] = "Ausrichtung der Statusleiste",
 	["Set frame orientation."] = "Ausrichtung der Statusleiste festlegen",
 	["Orientation of Text"] = "Ausrichtung des Texts",
@@ -116,6 +119,7 @@ local strings_deDE = {
 	["By Group 10"] = "10er Gruppe",
 	["By Class"] = "Nach Klasse",
 	["Onyxia"] = "Onyxia",
+	["By Group 25 w/tanks"] = "25er Gruppe mit Tanks",
 
 	--}}}
 	--{{{ GridRange
@@ -151,6 +155,7 @@ local strings_deDE = {
 	["Disease"] = "Krankheit",
 	["Magic"] = "Magie",
 	["Curse"] = "Fluch",
+	["Ghost"] = "Geist",
 	["Add new Buff"] = "Neuen St\195\164rkungszauber hinzuf\195\188gen",
 	["Adds a new buff to the status module"] = "F\195\188gt einen neuen St\195\164rkungszauber zum Status Modul hinzu",
 	["Add new Debuff"] = "Neuen Schw\195\164chungszauber hinzuf\195\188gen",
@@ -175,11 +180,11 @@ local strings_deDE = {
 	--}}}
 	--{{{ GridStatusMana
 	["Mana"] = "Mana",
-	--["Low Mana"] = "Wenig Mana",
 	["Mana threshold"] = "Mana Grenzwert",
 	["Set the percentage for the low mana warning."] = "Setzt den % Grenzwert f\195\188r die Wenig-Mana Warnung",
 	["Low Mana warning"] = "Wenig-Mana Warnung",
 	["Low Mana"] = "Wenig Mana",
+	
 
 	--}}}
 	--{{{ GridStatusHeals
