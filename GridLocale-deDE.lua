@@ -6,7 +6,7 @@ local strings_deDE = {
 	["Module debugging menu."] = "Debug-Men\195\188",
 	["Debug"] = "Debug",
 	["Toggle debugging for %s."] = "Aktiviere das Debuggen f\195\188r %s.",
-	["Configure"] = "Konfigurieren"
+	["Configure"] = "Konfigurieren",
 	["Configure Grid"] = "Grid konfigurieren",
 
 	--}}}
