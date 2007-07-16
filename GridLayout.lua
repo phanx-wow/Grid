@@ -240,8 +240,8 @@ GridLayout = Grid:NewModule("GridLayout")
 GridLayout.defaultDB = {
 	debug = false,
 
-	FrameDisplay = "Always",
-	layout = "By Group 40",
+	FrameDisplay = L["Always"],
+	layout = L["By Group 40"],
 	showParty = false,
 	horizontal = false,
 	clamp = true,
