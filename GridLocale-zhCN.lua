@@ -6,8 +6,8 @@ local strings_zhCN = {
 	["Module debugging menu."] = "除错模组设置",
 	["Debug"] = "除错",
 	["Toggle debugging for %s."] = "激活%s的除错",
-	--["Configure"] = true,
-	--["Configure Grid"] = true,
+	["Configure"] = "设置",
+	["Configure Grid"] = "修改Grid的设置",
 	
 	--}}}
 	--{{{ GridFrame
@@ -82,6 +82,8 @@ local strings_zhCN = {
 	["Show party/self as an extra group."] = "把自己/小队单独显示出来",
 	["Horizontal groups"] = "横向排列队伍",
 	["Switch between horzontal/vertical groups."] = "选择横向/竖向显示队伍",
+	["Clamped to screen"] = "保持在屏幕上",
+	["Toggle whether to permit movement out of screen."] = "打开/关闭是否允许把窗口移到超出屏幕的位置",
 	["Frame lock"] = "锁定框架",
 	["Locks/unlocks the grid for movement."] = "锁/解锁格子来让其移动",
 
@@ -117,7 +119,7 @@ local strings_zhCN = {
 	["By Group 10"] = "10人团队",
 	["By Class"] = "以职业排列",
 	["Onyxia"] = "单数双数队伍排列",
-	--["By Group 25 w/tanks"] = true,
+	["By Group 25 w/tanks"] = "25人团队及MT",
 	
 	--}}}
 	--{{{ GridRange
@@ -166,8 +168,8 @@ local strings_zhCN = {
 	["Class Filter"] = "职业过滤",
 	["Show status for the selected classes."] = "显示选定职业的状态",
 	["Show on %s."] = "在%s上显示",
-	-- ["Show if missing"] = true,
-	-- ["Display status only if the buff is not active."] = true,
+	["Show if missing"] = "缺少时显示",
+	["Display status only if the buff is not active."] = "仅在BUFF缺少时才显示状态",
 
 	--}}}
 	--{{{ GridStatusName
@@ -181,7 +183,6 @@ local strings_zhCN = {
 	["Mana threshold"] = "法力临界点",
 	["Set the percentage for the low mana warning."] = "设置低法力警告的临界点",
 	["Low Mana warning"] = "低法力警报",
-	--["Low Mana"] = true,
 		
 	--}}}
 	--{{{ GridStatusHeals
@@ -202,7 +203,7 @@ local strings_zhCN = {
 	["Unit health"] = "血量",
 	["Health deficit"] = "损失的血量",
 	["Low HP warning"] = "低血量警报",
-	--["Feign Death warning"] = true,
+	["Feign Death warning"] = "假死提示",
 	["Death warning"] = "死亡警报",
 	["Offline warning"] = "掉线警报",
 	["Health"] = "血量",

@@ -1,4 +1,4 @@
-﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local strings_enUS = {
 	--{{{ GridCore
@@ -183,7 +183,6 @@ local strings_enUS = {
 	["Mana threshold"] = true,
 	["Set the percentage for the low mana warning."] = true,
 	["Low Mana warning"] = true,
-	["Low Mana"] = true,
 
 	--}}}
 	--{{{ GridStatusHeals
