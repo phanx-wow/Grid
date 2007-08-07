@@ -151,8 +151,16 @@ end
 function GridLayoutHeaderClass.prototype:Reset()
 	self.frame:SetAttribute("nameList", nil)
 	self.frame:SetAttribute("groupFilter", nil)
+	self.frame:SetAttribute("strictFiltering", nil)
 	self.frame:SetAttribute("sortMethod", "NAME")
 	self.frame:SetAttribute("sortDir", nil)
+	self.frame:SetAttribute("groupBy", nil)
+	self.frame:SetAttribute("groupingOrder", nil)
+	self.frame:SetAttribute("maxColumns", nil)
+	self.frame:SetAttribute("unitsPerColumn", nil)
+	self.frame:SetAttribute("startingIndex", nil)
+	self.frame:SetAttribute("columnSpacing", nil)
+	self.frame:SetAttribute("columnAnchorPoint", nil)
 	self.frame:Hide()
 end
 
@@ -505,7 +513,8 @@ function GridLayout:OnEnable()
 	self:RestorePosition()
 	self:Scale()
 
-	self:RegisterEvent("PLAYER_ENTERING_WORLD", "RaidHeaderFix")
+	-- self:RegisterEvent("PLAYER_ENTERING_WORLD", "RaidHeaderFix")
+	self:RegisterEvent("UNIT_NAME_UPDATE", "RaidHeaderFix")
 
 	self:RegisterEvent("Grid_ReloadLayout", "PartyTypeChanged")
 	self:RegisterEvent("Grid_JoinedBattleground", "PartyTypeChanged")

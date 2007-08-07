@@ -240,6 +240,7 @@ end
 
 function GridStatus:SendStatusGained(name, status, priority, range, color, text,  value, maxValue, texture)
 	local u = RL:GetUnitObjectFromName(name)
+	local cache = self.cache
 	local cached
 
 	-- ignore unit if it is not in the roster
@@ -256,15 +257,15 @@ function GridStatus:SendStatusGained(name, status, priority, range, color, text,
 	end
 
 	-- create cache for unit if needed
-	if not self.cache[name] then
-		self.cache[name] = {}
+	if not cache[name] then
+		cache[name] = {}
 	end
 
-	if not self.cache[name][status] then
-		self.cache[name][status] = {}
+	if not cache[name][status] then
+		cache[name][status] = {}
 	end
 
-	cached = self.cache[name][status]
+	cached = cache[name][status]
 
 	-- if no changes were made, return rather than triggering an event
 	if cached and
@@ -291,7 +292,6 @@ function GridStatus:SendStatusGained(name, status, priority, range, color, text,
 	self:TriggerEvent("Grid_StatusGained", name, status,
 			  priority, range, color, text, value, maxValue,
 			  texture)
-
 end
 
 function GridStatus:SendStatusLost(name, status)
@@ -311,7 +311,8 @@ function GridStatus:RemoveFromCache(name)
 end
 
 function GridStatus:GetCachedStatus(name, status)
-	return (self.cache[name] and self.cache[name][status])
+	local cache = self.cache
+	return (cache[name] and cache[name][status])
 end
 
 function GridStatus:CachedStatusIterator(status)
