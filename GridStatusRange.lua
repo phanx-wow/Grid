@@ -20,7 +20,7 @@ GridStatusRange.defaultDB = {
     debug = false,
 
     alert_range_oor = {
-        text = "OOR",
+        text = L["OOR"],
         enable = true,
         color = { r = 1, g = 1, b = 1, a = 0.5 },
         priority = 80,

@@ -1,4 +1,4 @@
--- GridFrame.lua
+﻿-- GridFrame.lua
 
 --{{{ Libraries
 
@@ -176,8 +176,8 @@ end
 
 -- shows the default unit tooltip
 function GridFrameClass.prototype:OnEnter(frame)
-	if GridFrame.db.profile.showTooltip == L["Always"] or
-		(GridFrame.db.profile.showTooltip == L["OOC"] and
+	if GridFrame.db.profile.showTooltip == "Always" or
+		(GridFrame.db.profile.showTooltip == "OOC" and
 			(not Grid.inCombat or
 				(self.unit and UnitIsDeadOrGhost(self.unit)))) then
 
@@ -532,7 +532,7 @@ GridFrame.defaultDB = {
 	iconSize = 16,
 	debug = false,
 	invertBarColor = false,
-	showTooltip = L["OOC"],
+	showTooltip = "OOC",
 	textlength = 4,
 	statusmap = {
 		["text"] = {
@@ -612,7 +612,7 @@ GridFrame.options = {
 			set = function (v)
 				GridFrame.db.profile.showTooltip = v
 			end,
-			validate = { L["Always"], L["Never"], L["OOC"] }
+			validate={["Always"] = L["Always"], ["Never"] = L["Never"], ["OOC"] = L["OOC"]},
 		},
 		["textlength"] = {
 			type = "range",
@@ -774,7 +774,7 @@ GridFrame.options = {
 						      GridFrame.db.profile.orientation = v
 						      GridFrame:WithAllFrames(function (f) f:SetOrientation(v) end)
 						end,
-					validate = { "VERTICAL", "HORIZONTAL" }
+					validate={["VERTICAL"] = L["VERTICAL"], ["HORIZONTAL"] = L["HORIZONTAL"]}
 				},
 				["textorientation"] = {
 					type = "text",
@@ -787,7 +787,7 @@ GridFrame.options = {
 						      GridFrame.db.profile.textorientation = v
 						      GridFrame:WithAllFrames(function (f) f:SetTextOrientation(v) end)
 						end,
-					validate = { "VERTICAL", "HORIZONTAL" }
+					validate={["VERTICAL"] = L["VERTICAL"], ["HORIZONTAL"] = L["HORIZONTAL"]}
 				},
 			},
 		},

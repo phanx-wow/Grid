@@ -1,4 +1,4 @@
--- GridLayout.lua
+﻿-- GridLayout.lua
 -- insert boilerplate
 
 --{{{ Libraries
@@ -248,8 +248,8 @@ GridLayout = Grid:NewModule("GridLayout")
 GridLayout.defaultDB = {
 	debug = false,
 
-	FrameDisplay = L["Always"],
-	layout = L["By Group 40"],
+	FrameDisplay = "Always",
+	layout = "By Group 40",
 	showParty = false,
 	horizontal = false,
 	clamp = true,
@@ -296,7 +296,7 @@ GridLayout.options = {
 				GridLayout.db.profile.FrameDisplay = v
 				GridLayout:CheckVisibility()
 			end,
-			validate = {L["Always"], L["Grouped"], L["Raid"]},
+			validate={["Always"] = L["Always"], ["Grouped"] = L["Grouped"], ["Raid"] = L["Raid"]},
 		},
 		["layout"] = {
 			type = "text",
@@ -466,7 +466,7 @@ GridLayout.options = {
 						      GridLayout:SavePosition()
 						      GridLayout:RestorePosition()
 					      end,
-					validate = { "CENTER", "TOP", "BOTTOM", "LEFT", "RIGHT", "TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT" },
+					validate={["CENTER"] = L["CENTER"], ["TOP"] = L["TOP"], ["BOTTOM"] = L["BOTTOM"], ["LEFT"] = L["LEFT"], ["RIGHT"] = L["RIGHT"], ["TOPLEFT"] = L["TOPLEFT"], ["TOPRIGHT"] = L["TOPRIGHT"], ["BOTTOMLEFT"] = L["BOTTOMLEFT"], ["BOTTOMRIGHT"] = L["BOTTOMRIGHT"] },
 				},
 				["groupanchor"] = {
 					type = "text",
@@ -478,7 +478,7 @@ GridLayout.options = {
 						      GridLayout.db.profile.groupAnchor = v
 						      GridLayout:ReloadLayout()
 					      end,
-					validate = { "TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT" },
+					validate={["TOPLEFT"] = L["TOPLEFT"], ["TOPRIGHT"] = L["TOPRIGHT"], ["BOTTOMLEFT"] = L["BOTTOMLEFT"], ["BOTTOMRIGHT"] = L["BOTTOMRIGHT"] },
 				},
 				["reset"] = {
 					type = "execute",
@@ -870,12 +870,12 @@ end
 function GridLayout:CheckVisibility()
 	local frameDisplay = self.db.profile.FrameDisplay
 
-	if frameDisplay == L["Always"] then
+	if frameDisplay == "Always" then
 		self.frame:Show()
-	elseif frameDisplay == L["Grouped"] and
+	elseif frameDisplay == "Grouped" and
 		(GetNumPartyMembers() > 0 or InRaidOrBG()) then
 		self.frame:Show()
-	elseif frameDisplay == L["Raid"] and InRaidOrBG() then
+	elseif frameDisplay == "Raid" and InRaidOrBG() then
 		self.frame:Show()
 	else
 		self.frame:Hide()

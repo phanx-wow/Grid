@@ -1,4 +1,4 @@
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local strings_enUS = {
 	--{{{ GridCore
@@ -62,6 +62,8 @@ local strings_enUS = {
 	["Set frame orientation."] = true,
 	["Orientation of Text"] = true,
 	["Set frame text orientation."] = true,
+	["VERTICAL"] = true,
+	["HORIZONTAL"] = true,
 	["Icon Size"] = true,
 	["Adjust the size of the center icon."] = true,
 
@@ -86,6 +88,16 @@ local strings_enUS = {
 	["Toggle whether to permit movement out of screen."] = true,
 	["Frame lock"] = true,
 	["Locks/unlocks the grid for movement."] = true,
+
+	["CENTER"] = true,
+	["TOP"] = true,
+	["BOTTOM"] = true,
+	["LEFT"] = true,
+	["RIGHT"] = true,
+	["TOPLEFT"] = true,
+	["TOPRIGHT"] = true,
+	["BOTTOMLEFT"] = true,
+	["BOTTOMRIGHT"] = true,
 
 	-- Display options
 	["Padding"] = true,
@@ -158,8 +170,10 @@ local strings_enUS = {
 	["Ghost"] = true,
 	["Add new Buff"] = true,
 	["Adds a new buff to the status module"] = true,
+	["<buff name>"] = true,
 	["Add new Debuff"] = true,
 	["Adds a new debuff to the status module"] = true,
+	["<debuff name>"] = true,
 	["Delete (De)buff"] = true,
 	["Deletes an existing debuff from the status module"] = true,
 	["Remove %s from the menu"] = true,
@@ -223,6 +237,7 @@ local strings_enUS = {
 	["Range check frequency"] = true,
 	["Seconds between range checks"] = true,
 	["Out of Range"] = true,
+	["OOR"] = true,
 
 	--}}}
 	--{{{ GridStatusTarget

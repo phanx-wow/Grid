@@ -241,7 +241,7 @@ function GridStatusAuras:CreateAddRemoveOptions()
 		name = L["Add new Buff"],
 		desc = L["Adds a new buff to the status module"],
 		get = false,
-		usage = "<buff name>",
+		usage = L["<buff name>"],
 		set = function(v) self:AddAura(v, true) end,
 		order = -3
 	}
@@ -250,7 +250,7 @@ function GridStatusAuras:CreateAddRemoveOptions()
 		name = L["Add new Debuff"],
 		desc = L["Adds a new debuff to the status module"],
 		get = false,
-		usage = "<debuff name>",
+		usage = L["<debuff name>"],
 		set = function(v) self:AddAura(v, false) end,
 		order = -2
 	}
@@ -428,7 +428,7 @@ function GridStatusAuras:UnitBuff(unit, gained, buff, tex)
 
 	if gained then
 		self:Debug("gained", buffNameStatus, tex)
-		
+
 		if settings.missing then
 			self:Debug("sending lost", buffNameStatus)
 			self.core:SendStatusLost(u.name, buffNameStatus)
