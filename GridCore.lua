@@ -120,7 +120,7 @@ function Grid.modulePrototype:RegisterModule(name, module)
 		module.options = {
 			type = "group",
 			name = (module.menuName or module.name),
-			desc = "Options for ".. module.name,
+			desc = string.format(L["Options for %s."], module.name),
 			args = {},
 		}
 
