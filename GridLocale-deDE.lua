@@ -12,15 +12,15 @@ local strings_deDE = {
 	--}}}
 	--{{{ GridFrame
 	["Frame"] = "Rahmen",
-	["Options for GridFrame."] = "Einstellungen f\195\188r den Grid Rahmen",
+	["Options for GridFrame."] = "Einstellungen f\195\188r den Grid Rahmen.",
 
 	["Show Tooltip"] = "Zeige Tooltip",
-	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "Anzeige des Tooltips. W\195\164hle 'Immer', 'Nie', oder 'auﬂerhalb des Kampfes'.",
+	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "Anzeige des Tooltips. W\195\164hle 'Immer', 'Nie' oder 'au\195\159erhalb des Kampfes'.",
 	["Always"] = "Immer",
 	["Never"] = "Nie",
 	["OOC"] = "au\195\159erhalb des Kampfes",
 	["Center Text Length"] = "L\195\164nge des mittleren Textes",
-	["Number of characters to show on Center Text indicator."] = "Anzahl des Buchstaben die im mittleren Text angezeigt werden",
+	["Number of characters to show on Center Text indicator."] = "Anzahl der Buchstaben die im mittleren Text angezeigt werden.",
 	["Invert Bar Color"] = "Invertiere die Leistenfarbe",
 	["Swap foreground/background colors on bars."] = "Tausche die Vordergrund-/Hintergrundfarbe der Leisten",
 
@@ -28,7 +28,7 @@ local strings_deDE = {
 	["Border"] = "Rand",
 	["Health Bar"] = "Gesundheitsleiste",
 	["Health Bar Color"] = "Gesundheitsleistenfarbe",
-	["Center Text"] = "Text im der Mitte",
+	["Center Text"] = "Text in der Mitte",
 	["Center Text 2"] = "2. Text in der Mitte",
 	["Center Icon"] = "Icon im Zentrum",
 	["Top Left Corner"] = "Obere linke Ecke",
@@ -39,31 +39,31 @@ local strings_deDE = {
 
 	["Options for %s indicator."] = "Optionen f\195\188r den %s Indikator",
 	["Statuses"] = "Zust\195\164nde",
-	["Toggle status display."] = "Aktiviere die Anzeige des Zustands",
+	["Toggle status display."] = "Aktiviere die Anzeige des Zustands.",
 
 	-- Advanced options
 	["Advanced"] = "Erweitert",
-	["Advanced options."] = "Erweiterte Einstellungen",
+	["Advanced options."] = "Erweiterte Einstellungen.",
 	["Enable %s indicator"] = "Indikator f\195\188r %s ",
-	["Toggle the %s indicator."] = "Aktiviere den %s Indikator",
+	["Toggle the %s indicator."] = "Aktiviere den %s Indikator.",
 	["Frame Width"] = "Rahmenbreite",
-	["Adjust the width of each unit's frame."] = "Die Breite von jedem Einheitenfenster anpassen",
+	["Adjust the width of each unit's frame."] = "Die Breite von jedem Einheitenfenster anpassen.",
 	["Frame Height"] = "Rahmenh\195\182he",	
-	["Adjust the height of each unit's frame."] = "Die H\195\182he von jedem Einheitenfenster anpassen",
+	["Adjust the height of each unit's frame."] = "Die H\195\182he von jedem Einheitenfenster anpassen.",
 	["Frame Texture"] = "Rahmentextur",
-	["Adjust the texture of each unit's frame."] = "Die Textur von jedem Einheitenfenster anpassen",
+	["Adjust the texture of each unit's frame."] = "Die Textur von jedem Einheitenfenster anpassen.",
 	["Corner Size"] = "Eckengr\195\182\195\159e",
-	["Adjust the size of the corner indicators."] = "Die Gr\195\182\195\159e der Eckenindikatoren anpassen",
+	["Adjust the size of the corner indicators."] = "Die Gr\195\182\195\159e der Eckenindikatoren anpassen.",
 	["Font"] = "Schriftart",	
 	["Adjust the font settings"] = "Die Schriftart anpassen",
 	["Font Size"] = "Schriftgr\195\182\195\159e",
-	["Adjust the font size."] = "Die Schriftg\195\182\195\159e anpassen",
+	["Adjust the font size."] = "Die Schriftg\195\182\195\159e anpassen.",
 	["Orientation of Frame"] = "Ausrichtung der Statusleiste",
-	["Set frame orientation."] = "Ausrichtung der Statusleiste festlegen",
+	["Set frame orientation."] = "Ausrichtung der Statusleiste festlegen.",
 	["Orientation of Text"] = "Ausrichtung des Texts",
-	["Set frame text orientation."] = "Text Ausrichtung festlegen",
+	["Set frame text orientation."] = "Text Ausrichtung festlegen.",
 	["Icon Size"] = "Icongr\195\182\195\159e",
-	["Adjust the size of the center icon."] = "Die Gr\195\182\195\159e des Icons im Zentrum anpassen",
+	["Adjust the size of the center icon."] = "Die Gr\195\182\195\159e des Icons im Zentrum anpassen.",
 
 	--}}}
 	--{{{ GridLayout
@@ -72,24 +72,24 @@ local strings_deDE = {
 
 	-- Layout options
 	["Show Frame"] = "Zeige den Rahmen",
-	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "Setzt die Sichtbarkeit von Grid: W\195\164hle 'immer', 'in Gruppe', oder 'in Schlachtzug'.",
+	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "Setzt die Sichtbarkeit von Grid: W\195\164hle 'immer', 'in Gruppe' oder 'in Schlachtzug'.",
 	["Always"] = "immer",
 	["Grouped"] = "in Gruppe",
 	["Raid"] = "in Schlachtzug",
 	["Raid Layout"] = "Schlachtzug-Anordnung",
-	["Select which raid layout to use."] = "W\195\164hle welche Schlachtzug-Anordnung benutzt wird",
+	["Select which raid layout to use."] = "W\195\164hle welche Schlachtzug-Anordnung benutzt werden soll.",
 	["Show Party in Raid"] = "Zeige Gruppe im Schlachtzug",
 	["Show party/self as an extra group."] = "Zeigen Gruppe/sich selbst als extra Gruppe an.",
 	["Horizontal groups"] = "Horizontal gruppieren",
-	["Switch between horzontal/vertical groups."] = "Wechselt zwischen horizontaler/verikaler Gruppierung",
+	["Switch between horzontal/vertical groups."] = "Wechselt zwischen horizontaler/vertikaler Gruppierung.",
 	["Clamped to screen"] = "Im Bildschirm lassen",
-	["Toggle whether to permit movement out of screen."] = "Legt fest ob der Rahmen im Bildschirm bleiben soll",
+	["Toggle whether to permit movement out of screen."] = "Legt fest ob der Rahmen im Bildschirm bleiben soll.",
 	["Frame lock"] = "Rahmen sperren",
-	["Locks/unlocks the grid for movement."] = "Sperrt/entsperrt den Rahmen zum Bewegen",
+	["Locks/unlocks the grid for movement."] = "Sperrt/entsperrt den Rahmen zum Bewegen.",
 
 	-- Display options
 	["Padding"] = "Zwischenabstand",
-	["Adjust frame padding."] = "Den Zwischenabstand anpassen",
+	["Adjust frame padding."] = "Den Zwischenabstand anpassen.",
 	["Spacing"] = "Abstand",
 	["Adjust frame spacing."] = "Den Abstand anpassen.",
 	["Scale"] = "Skalierung",
@@ -101,13 +101,13 @@ local strings_deDE = {
 
 	-- Advanced options
 	["Advanced"] = "Erweitert",
-	["Advanced options."] = "Erweiterte Einstellungen",
+	["Advanced options."] = "Erweiterte Einstellungen.",
 	["Layout Anchor"] = "Ankerpunkt des Layouts",
-	["Sets where Grid is anchored relative to the screen."] = "Setzt den Ankerpunkt von Grid, realtive zum Bildschirm",
+	["Sets where Grid is anchored relative to the screen."] = "Setzt den Ankerpunkt von Grid, relativ zum Bildschirm.",
 	["Group Anchor"] = "Ankerpunkt der Gruppe",
-	["Sets where groups are anchored relative to the layout frame."] = "Setzt den Ankerpunkt der Gruppe, realtive zum Layoutrahmen",
+	["Sets where groups are anchored relative to the layout frame."] = "Setzt den Ankerpunkt der Gruppe, relativ zum Layoutrahmen.",
 	["Reset Position"] = "Position zur\195\188cksetzen",
-	["Resets the layout frame's position and anchor."] = "Setzt den Ankerpunkt und die Position des Layoutrahmens zur\195\188ck",
+	["Resets the layout frame's position and anchor."] = "Setzt den Ankerpunkt und die Position des Layoutrahmens zur\195\188ck.",
 
 	--}}}
 	--{{{ GridLayoutLayouts
@@ -166,10 +166,10 @@ local strings_deDE = {
 	["Debuff: %s"] = "Schw\195\164chungszauber: %s",
 	["Buff: %s"] = "St\195\164rkungszauber: %s",
 	["Class Filter"] = "Klassenfilter",
-	["Show status for the selected classes."] = "Zeige den Status f\195\188r die ausgw\195\164hlte Klasse",
+	["Show status for the selected classes."] = "Zeige den Status f\195\188r die ausgw\195\164hlte Klasse.",
 	["Show on %s."] = "Zeige %s.",
 	["Show if missing"] = "Zeige wenn es fehlt",
-	["Display status only if the buff is not active."] = "Zeige nur den Status wenn der St\195\164rkungszaube nicht aktiv ist",
+	["Display status only if the buff is not active."] = "Zeige nur den Status wenn der St\195\164rkungszauber nicht aktiv ist.",
 	--["[^%a]"] = "[^%a]",
 
 	--}}}
@@ -181,7 +181,7 @@ local strings_deDE = {
 	--{{{ GridStatusMana
 	["Mana"] = "Mana",
 	["Mana threshold"] = "Mana Grenzwert",
-	["Set the percentage for the low mana warning."] = "Setzt den % Grenzwert f\195\188r die Wenig-Mana Warnung",
+	["Set the percentage for the low mana warning."] = "Setzt den % Grenzwert f\195\188r die Wenig-Mana Warnung.",
 	["Low Mana warning"] = "Wenig-Mana Warnung",
 	["Low Mana"] = "Wenig Mana",
 	
@@ -191,7 +191,7 @@ local strings_deDE = {
 	["Heals"] = "Heilungen",
 	["Incoming heals"] = "eingehende Heilung",
 	["Ignore Self"] = "Sich selbst ignorieren",
-	["Ignore heals cast by you."] = "Ignoriere Heilungen die von dir gezaubert werden",
+	["Ignore heals cast by you."] = "Ignoriere Heilungen die von dir gezaubert werden.",
 	["(.+) begins to cast (.+)."] = "(.+) beginnt (.+) zu wirken.",
 	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = "(.+) bekommt (.+) Mana durch (.+)'s Lebensentzug.",
 	["^Corpse of (.+)$"] = "^Corpse of (.+)$",
@@ -210,20 +210,20 @@ local strings_deDE = {
 	["Offline warning"] = "Offlinewarnung",
 	["Health"] = "Gesundheit",
 	["Show dead as full health"] = "Zeige Tote mit voller Gesundheit an",
-	["Treat dead units as being full health."] = "Behandele Tote als h\195\164tten sie volle Gesundheit",
+	["Treat dead units as being full health."] = "Behandle Tote als h\195\164tten sie volle Gesundheit",
 	["Use class color"] = "Benutze Klassenfarbe",
-	["Color health based on class."] = "F\195\164rbe den Gesundheitsbalken in Klassenfarbe",
+	["Color health based on class."] = "F\195\164rbe den Gesundheitsbalken in Klassenfarbe.",
 	["Health threshold"] = "Gesundheitsgrenzwert",
-	["Only show deficit above % damage."] = "Zeige Defizit bei mehr als % Schaden",
-	["Color deficit based on class."] = "F\195\164rbe das Defizit nach Klassenfarbe",
+	["Only show deficit above % damage."] = "Zeige Defizit bei mehr als % Schaden.",
+	["Color deficit based on class."] = "F\195\164rbe das Defizit nach Klassenfarbe.",
 	["Low HP threshold"] = "Wenig HP Grenzwert",
-	["Set the HP % for the low HP warning."] = "Setzt den % Grenzwert f\195\188r die Wenig-Gesundheit Warnung",
+	["Set the HP % for the low HP warning."] = "Setzt den % Grenzwert f\195\188r die Wenig HP Warnung.",
 
 	--}}}
 	--{{{ GridStatusRange
 	["Range"] = "Entfernung",
-	["Range check frequency"] = "H\195\164ufigkeit der Reichweitensmessung",
-	["Seconds between range checks"] = "Sekunden zwischen der Reichweitensmessung",
+	["Range check frequency"] = "H\195\164ufigkeit der Reichweitenmessung",
+	["Seconds between range checks"] = "Sekunden zwischen den Reichweitenmessungen",
 	["Out of Range"] = "Au\195\159er Reichweite",
 
 	--}}}
