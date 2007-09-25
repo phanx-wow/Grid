@@ -182,13 +182,15 @@ function GridFrameClass.prototype:OnEnter(frame)
 				(self.unit and UnitIsDeadOrGhost(self.unit)))) then
 
 		frame.unit = self.unit
-		UnitFrame_OnEnter()
+		UnitFrame_OnEnter(frame)
 		frame:SetScript("OnUpdate", UnitFrame_OnUpdate)
+	else
+		self:OnLeave(frame)
 	end
 end
 
 function GridFrameClass.prototype:OnLeave(frame)
-	UnitFrame_OnLeave()
+	UnitFrame_OnLeave(frame)
 	frame:SetScript("OnUpdate", nil)
 end
 
