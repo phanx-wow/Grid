@@ -244,6 +244,11 @@ local strings_koKR = {
 	["Your Target"] = "당신의 대상",
 
 	--}}}
+	--{{{ GridStatusVoiceComm
+	["Voice Chat"] = "음성 대화",
+	["Talking"] = "대화중",
+
+	--}}}
 }
 
 L:RegisterTranslations("koKR", function() return strings_koKR end)
