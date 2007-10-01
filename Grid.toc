@@ -52,3 +52,4 @@ GridStatusHeals.lua
 GridStatusAuras.lua
 GridStatusTarget.lua
 GridStatusRange.lua
+GridStatusVoiceComm.lua

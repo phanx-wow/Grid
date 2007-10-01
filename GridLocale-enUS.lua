@@ -245,6 +245,11 @@ local strings_enUS = {
 	["Your Target"] = true,
 
 	--}}}
+	--{{{ GridStatusVoiceComm
+	["Voice Chat"] = true,
+	["Talking"] = true,
+
+	--}}}
 }
 
 L:RegisterTranslations("enUS", function() return strings_enUS end)
