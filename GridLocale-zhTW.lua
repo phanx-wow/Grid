@@ -245,6 +245,11 @@ local strings_zhTW = {
 	["Your Target"] = "你的目標",
 
 	--}}}
+	--{{{ GridStatusVoiceComm
+	["Voice Chat"] = "語音",
+	["Talking"] = "說話中",
+
+	--}}}
 }
 
 L:RegisterTranslations("zhTW", function() return strings_zhTW end)
