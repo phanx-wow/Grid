@@ -14,8 +14,8 @@
 ## DefaultState: enabled
 ## LoadOnDemand: 0
 
-## OptionalDeps: Ace2, Babble-2.2, Clique, CT_RaidAssist, DewdropLib, FuBar, FuBarPlugin-2.0, GratuityLib, JustClick, oRA2, ProximityLib, RosterLib, TabletLib, BanzaiLib, SharedMediaLib, SpecialEventsEmbed, CastCommLib, UTF8, ChatThrottleLib, SpecialEvents-Aura-2.0
-## X-Embeds: Ace2, Babble-2.2, DewdropLib, FuBarPlugin-2.0, GratuityLib, ProximityLib, RosterLib, TabletLib, BanzaiLib, SpecialEventsEmbed, CastCommLib, UTF8
+## OptionalDeps: Ace2, Babble-2.2, Clique, CT_RaidAssist, DewdropLib, FuBar, FuBarPlugin-2.0, GratuityLib, JustClick, oRA2, ProximityLib, RosterLib, BanzaiLib, SharedMediaLib, SpecialEventsEmbed, CastCommLib, UTF8, ChatThrottleLib, SpecialEvents-Aura-2.0
+## X-Embeds: Ace2, Babble-2.2, DewdropLib, FuBarPlugin-2.0, GratuityLib, ProximityLib, RosterLib, BanzaiLib, SpecialEventsEmbed, CastCommLib, UTF8
 
 ## SavedVariables: GridDB
 

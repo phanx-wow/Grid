@@ -15,7 +15,6 @@
 
 <Script file="libs\Dewdrop-2.0\Dewdrop-2.0.lua"/>
 <Script file="libs\Roster-2.1\Roster-2.1.lua"/>
-<Script file="libs\Tablet-2.0\Tablet-2.0.lua"/>
 <Script file="libs\FuBarPlugin-2.0\FuBarPlugin-2.0.lua"/>
 <Script file="libs\Gratuity-2.0\Gratuity-2.0.lua"/>
 <Script file="libs\SpecialEvents-Aura-2.0\SpecialEvents-Aura-2.0.lua"/>
