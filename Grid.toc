@@ -1,4 +1,4 @@
-﻿## Interface: 20200
+## Interface: 20200
 ## Title: Grid |cff7fff7f -Ace2-|r
 ## Notes: A modular, lightweight and screen-estate saving grid of party/raid unit frames
 ## Notes-zhCN: 珨跺耀輸宒ㄛ腴梩蚚ㄛ誹吽茷躉諾潔腔※跡赽§ㄛ蚚懂珆尨芶勦/勦斪腔袨怓
@@ -14,8 +14,8 @@
 ## DefaultState: enabled
 ## LoadOnDemand: 0
 
-## OptionalDeps: Ace2, Babble-2.2, Clique, CT_RaidAssist, DewdropLib, FuBar, FuBarPlugin-2.0, GratuityLib, JustClick, oRA2, ProximityLib, RosterLib, BanzaiLib, SharedMediaLib, SpecialEventsEmbed, CastCommLib, UTF8, ChatThrottleLib, SpecialEvents-Aura-2.0
-## X-Embeds: Ace2, Babble-2.2, DewdropLib, FuBarPlugin-2.0, GratuityLib, ProximityLib, RosterLib, BanzaiLib, SpecialEventsEmbed, CastCommLib, UTF8
+## OptionalDeps: Ace2, Babble-2.2, Clique, CT_RaidAssist, DewdropLib, FuBar, FuBarPlugin-2.0, GratuityLib, JustClick, oRA2, RosterLib, BanzaiLib, SharedMediaLib, SpecialEventsEmbed, CastCommLib, UTF8, ChatThrottleLib, SpecialEvents-Aura-2.0
+## X-Embeds: Ace2, Babble-2.2, DewdropLib, FuBarPlugin-2.0, GratuityLib, RosterLib, BanzaiLib, SpecialEventsEmbed, CastCommLib, UTF8
 
 ## SavedVariables: GridDB
 
