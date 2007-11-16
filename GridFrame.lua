@@ -7,8 +7,8 @@ local RL = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local GridRange = GridRange
 
-local SML = AceLibrary:HasInstance("SharedMedia-1.0") and AceLibrary("SharedMedia-1.0") or nil
-if SML then SML:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32") end
+local media = LibStub("LibSharedMedia-2.0", true)
+if media then media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32") end
 
 --}}}
 
@@ -92,8 +92,8 @@ function GridFrameClass.prototype:CreateFrames()
 	local f = self.frame
 
 	-- set media based on shared media
-	local font = SML and SML:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
-	local texture = SML and SML:Fetch("statusbar", GridFrame.db.profile.texture) or "Interface\\Addons\\Grid\\gradient32x32"
+	local font = media and media:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
+	local texture = media and media:Fetch("statusbar", GridFrame.db.profile.texture) or "Interface\\Addons\\Grid\\gradient32x32"
 
 	-- f:Hide()
 	f:EnableMouse(true)
@@ -761,7 +761,7 @@ GridFrame.options = {
 					      end,
 					set = function (v)
 						      GridFrame.db.profile.fontSize = v
-						      font = SML and SML:Fetch('font', GridFrame.db.profile.font) or STANDARD_TEXT_FONT
+						      font = media and media:Fetch('font', GridFrame.db.profile.font) or STANDARD_TEXT_FONT
 						      GridFrame:WithAllFrames(function (f) f:SetFrameFont(font, v) end)
 					      end,
 				},
@@ -796,19 +796,19 @@ GridFrame.options = {
 	},
 }
 
-if SML then
-	local sml_options = {
+if media then
+	local media_options = {
 				["font"] = {
 					type = "text",
 					name = L["Font"],
 					desc = L["Adjust the font settings"],
-					validate = SML:List("font"),
+					validate = media:List("font"),
 					get = function ()
 						  	  return GridFrame.db.profile.font
 						  end,
 					set = function (v)
 						  	  GridFrame.db.profile.font = v
-						  	  local font = SML:Fetch("font", v)
+						  	  local font = media:Fetch("font", v)
 						  	  local fontsize = GridFrame.db.profile.fontSize
 						  	  GridFrame:WithAllFrames(function (f) f:SetFrameFont(font, fontsize) end)
 						  end,
@@ -817,20 +817,20 @@ if SML then
 					type = "text",
 					name = L["Frame Texture"],
 					desc = L["Adjust the texture of each unit's frame."],
-					validate = SML:List("statusbar"),
+					validate = media:List("statusbar"),
 					get = function ()
 							  return GridFrame.db.profile.texture
 						  end,
 					set = function (v)
 						  	  GridFrame.db.profile.texture = v
-						  	  local texture = SML:Fetch("statusbar", v)
+						  	  local texture = media:Fetch("statusbar", v)
 						  	  GridFrame:WithAllFrames(function (f) f:SetFrameTexture(texture) end)
 						  end,
 				},
 	}
 
-	table.insert(GridFrame.options.args["advanced"].args, sml_options["font"])
-	table.insert(GridFrame.options.args["advanced"].args, sml_options["texture"])
+	table.insert(GridFrame.options.args["advanced"].args, media_options["font"])
+	table.insert(GridFrame.options.args["advanced"].args, media_options["texture"])
 
 end
 
