@@ -787,6 +787,8 @@ function GridLayout:LoadLayout(layoutName)
 	for i = 1, groupsNeeded do
 		local layoutGroup = self.layoutGroups[i]
 
+		layoutGroup:Reset()
+
 		-- apply defaults
 		if layout.defaults then
 			for attr,value in pairs(layout.defaults) do
