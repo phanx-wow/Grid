@@ -12,6 +12,7 @@ local BS = AceLibrary("Babble-Spell-2.2")
 GridRange = Grid:NewModule("GridRange")
 
 local ranges = {}
+local select = select
 
 local function addRange(range, check)
 	-- 100 yards is the farthest possible range
@@ -60,7 +61,7 @@ function GridRange:ScanSpellbook()
 		-- beneficial spell with a range
 		if sName and IsSpellInRange(i, "spell", "player") ~= nil  and sName ~= BS["Mend Pet"] and sName ~= BS["Health Funnel"] then
 			gratuity:SetSpell(i, BOOKTYPE_SPELL)
-			_, _, sRange = gratuity:Find(L["(%d+) yd range"], 2, 2)
+			sRange = select(3, gratuity:Find(L["(%d+) yd range"], 2, 2))
 			if sRange then
 				addRange(tonumber(sRange),
 					 function (unit) return IsSpellInRange(sIndex, "spell", unit) == 1 end)
