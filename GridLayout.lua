@@ -1,4 +1,4 @@
-﻿-- GridLayout.lua
+-- GridLayout.lua
 -- insert boilerplate
 
 --{{{ Libraries
@@ -110,12 +110,19 @@ function GridLayoutPartyClass.prototype:UpdateSize()
 
 	local width  = self.playerFrame:GetWidth()
 	local height = self.playerFrame:GetHeight()
+	local padding = layoutSettings.Padding
 
 	if GetNumPartyMembers() > 0 then
 		if layoutSettings.horizontal then
-			width = width + layoutSettings.Padding + self.partyFrame:GetWidth()
+			local pwidth = self.partyFrame:GetWidth()
+			if self.partyFrame:IsVisible() and pwidth > 0 then
+				width = width + padding + pwidth
+			end
 		else
-			height = height + layoutSettings.Padding + self.partyFrame:GetHeight()
+			local pheight = self.partyFrame:GetHeight()
+			if self.partyFrame:IsVisible() and pheight > 0 then
+				height = height + padding + pheight
+			end
 		end
 	end
 
@@ -686,33 +693,7 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 	local spacing = settings.Spacing
 	local groupAnchor = settings.groupAnchor
 
-	local relPoint, xMult, yMult
-
-	if groupAnchor == "TOPLEFT" then
-		if horizontal then
-			relPoint, xMult, yMult = "BOTTOMLEFT", 1, -1
-		else
-			relPoint, xMult, yMult = "TOPRIGHT", 1, -1
-		end
-	elseif groupAnchor == "TOPRIGHT" then
-		if horizontal then
-			relPoint, xMult, yMult = "BOTTOMRIGHT", -1, -1
-		else
-			relPoint, xMult, yMult = "TOPLEFT", -1, -1
-		end
-	elseif groupAnchor == "BOTTOMLEFT" then
-		if horizontal then
-			relPoint, xMult, yMult =  "TOPLEFT", 1, 1
-		else
-			relPoint, xMult, yMult = "BOTTOMRIGHT", 1, 1
-		end
-	elseif groupAnchor == "BOTTOMRIGHT" then
-		if horizontal then
-			relPoint, xMult, yMult = "TOPRIGHT", -1, 1
-		else
-			relPoint, xMult, yMult = "BOTTOMLEFT", -1, 1
-		end
-	end
+	local relPoint, xMult, yMult = getRelativePoint(groupAnchor, horizontal)
 
 	if groupNumber == 1 then
 		frame:ClearAllPoints()
@@ -753,61 +734,105 @@ local function InRaidOrBG()
 	return inRaid or inBG
 end
 
+local function getColumnAnchorPoint(point, horizontal)
+	if not horizontal then
+		if point == "TOPLEFT" or point == "BOTTOMLEFT" then
+			return "LEFT"
+		elseif point == "TOPRIGHT" or point == "BOTTOMRIGHT" then
+			return "RIGHT"
+		end
+	else
+		if point == "TOPLEFT" or point == "TOPRIGHT" then
+			return "TOP"
+		elseif point == "BOTTOMLEFT" or point == "BOTTOMRIGHT" then
+			return "BOTTOM"
+		end
+	end
+	return point
+end
+
 function GridLayout:LoadLayout(layoutName)
-	local i, attr, value
-	local groupsNeeded, groupsAvailable
+	local p = self.db.profile
+	local horizontal = p.horizontal
 	local layout = self.layoutSettings[layoutName]
 
 	self:Debug("LoadLayout", layoutName)
 
-	groupsNeeded = InRaidOrBG() and layout and #layout or 0
-	groupsAvailable = #self.layoutGroups
+	-- show party
+	local iPlaceOffset
+	if not InRaidOrBG() or p.showParty then
+		iPlaceOffset = 1
+		self.partyGroup:SetOrientation(horizontal)
+		self:PlaceGroup(self.partyGroup, 1)
+		self.partyGroup.frame:Show()
+	else
+		self.partyGroup.frame:Hide()
+		iPlaceOffset = 0
+	end
+
+	if not InRaidOrBG() or not layout or #layout < 1 then
+		for _, g in ipairs(self.layoutGroups) do
+			g:Reset()
+		end
+		self:UpdateDisplay()
+		return
+	end
+
+	local groupsNeeded, groupsAvailable 
+		= 0, #self.layoutGroups
+
+	for _, l in ipairs(layout) do
+		groupsNeeded = groupsNeeded + 1
+	end
 
 	-- create groups as needed
 	while groupsNeeded > groupsAvailable do
 		table.insert(self.layoutGroups, self.layoutHeaderClass:new())
 		groupsAvailable = groupsAvailable + 1
 	end
-
+	
 	-- hide unused groups
 	for i = groupsNeeded + 1, groupsAvailable, 1 do
 		self.layoutGroups[i]:Reset()
 	end
-
-	-- show party
-	if not InRaidOrBG() or self.db.profile.showParty then
-		self.partyGroup:SetOrientation(self.db.profile.horizontal)
-		self:PlaceGroup(self.partyGroup, 1)
-		self.partyGroup.frame:Show()
-	else
-		self.partyGroup.frame:Hide()
-	end
-
+	
+	local defaults = layout.defaults
+	local iGroup = 1
 	-- configure groups
-	for i = 1, groupsNeeded do
-		local layoutGroup = self.layoutGroups[i]
+	for i, l in ipairs(layout) do
+		local layoutGroup
+		layoutGroup = self.layoutGroups[iGroup]
+		iGroup = iGroup + 1
 
 		layoutGroup:Reset()
 
 		-- apply defaults
-		if layout.defaults then
-			for attr,value in pairs(layout.defaults) do
-				layoutGroup:SetFrameAttribute(attr, value)
+		if defaults then
+			for attr, value in pairs(defaults) do
+				if attr == "unitsPerColumn" then
+					layoutGroup:SetFrameAttribute("unitsPerColumn", value)
+					layoutGroup:SetFrameAttribute("columnSpacing", p.Padding)
+					layoutGroup:SetFrameAttribute("columnAnchorPoint", getColumnAnchorPoint(p.groupAnchor, p.horizontal))
+				else
+					layoutGroup:SetFrameAttribute(attr, value)
+				end
 			end
 		end
 
 		-- apply settings
-		for attr,value in pairs(layout[i]) do
-			layoutGroup:SetFrameAttribute(attr, value)
+		for attr, value in pairs(l) do
+			if attr == "unitsPerColumn" then
+				layoutGroup:SetFrameAttribute("unitsPerColumn", value)
+				layoutGroup:SetFrameAttribute("columnSpacing", p.Padding)
+				layoutGroup:SetFrameAttribute("columnAnchorPoint",  getColumnAnchorPoint(p.groupAnchor, p.horizontal))
+			else
+				layoutGroup:SetFrameAttribute(attr, value)
+			end
 		end
 
 		-- place groups
-		layoutGroup:SetOrientation(self.db.profile.horizontal)
-		if self.db.profile.showParty then
-			self:PlaceGroup(layoutGroup, i + 1)
-		else
-			self:PlaceGroup(layoutGroup, i)
-		end
+		layoutGroup:SetOrientation(horizontal)
+		self:PlaceGroup(layoutGroup, i + iPlaceOffset)
 		layoutGroup.frame:Show()
 	end
 
@@ -821,39 +846,42 @@ function GridLayout:UpdateDisplay()
 end
 
 function GridLayout:UpdateSize()
+	local p = self.db.profile
 	local layoutGroup
-	local groupCount = 0
-	local maxHeight = 0
-	local maxWidth = 0
+	local groupCount, curWidth, curHeight, maxWidth, maxHeight
 	local x, y
 
-	if not InRaidOrBG() or self.db.profile.showParty then
-		groupCount = groupCount + 1
-		self.partyGroup:UpdateSize()
-		maxHeight = self.partyGroup:GetFrameHeight()
-		maxWidth = self.partyGroup:GetFrameWidth()
+	if not InRaidOrBG() or p.showParty then
+		local f = self.partyGroup
+		f:UpdateSize()
+		local width, height = f:GetFrameWidth(), f:GetFrameHeight()
+		groupCount, curWidth, curHeight = 0, width, height
+		maxWidth, maxHeight = width, height
+	else
+		groupCount, curWidth, curHeight, maxWidth, maxHeight = -1, 0, 0, 0, 0
 	end
+	
 
-	for _,layoutGroup in ipairs(self.layoutGroups) do
+	local Padding, Spacing = p.Padding, p.Spacing * 2
+
+	for _, layoutGroup in ipairs(self.layoutGroups) do
 		if layoutGroup:IsFrameVisible() then
 			groupCount = groupCount + 1
-			if layoutGroup:GetFrameHeight() > maxHeight then
-				maxHeight = layoutGroup:GetFrameHeight()
-			end
-			if layoutGroup:GetFrameWidth() > maxWidth then
-				maxWidth = layoutGroup:GetFrameWidth()
-			end
+			local width, height = layoutGroup:GetFrameWidth(), layoutGroup:GetFrameHeight()
+			curWidth = curWidth + width + Padding
+			curHeight = curHeight + height + Padding
+			if maxWidth < width then maxWidth = width end
+			if maxHeight < height then maxHeight = height end
 		end
 	end
 
-	if self.db.profile.horizontal then
-		x = maxWidth + self.db.profile.Spacing * 2
-		y = groupCount * (maxHeight + self.db.profile.Padding) -
-			self.db.profile.Padding + self.db.profile.Spacing * 2
+	if p.horizontal then
+		x = maxWidth + Spacing
+		y = curHeight + Spacing
+
 	else
-		x = groupCount * (maxWidth + self.db.profile.Padding) -
-			self.db.profile.Padding + self.db.profile.Spacing * 2
-		y = maxHeight + self.db.profile.Spacing * 2
+		x = curWidth + Spacing
+		y = maxHeight + Spacing
 	end
 
 	self.frame:SetWidth(x)
