@@ -862,6 +862,12 @@ end
 function GridFrame:Reset()
 	self.super.Reset(self)
 	self:UpdateOptionsMenu()
+
+	-- Fix for font size not updating on profile change
+	-- Can probably be done better
+  font = media and media:Fetch('font', GridFrame.db.profile.font) or STANDARD_TEXT_FONT
+  GridFrame:WithAllFrames(function (f) f:SetFrameFont(font, GridFrame.db.profile.fontSize) end)
+
 	self:ResetAllFrames()
 	self:UpdateAllFrames()
 end
