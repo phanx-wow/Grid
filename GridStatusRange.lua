@@ -26,6 +26,7 @@ GridStatusRange.defaultDB = {
         priority = 80,
         range = false,
         frequency = 2.0,
+		t_range = 40,
     },
 }
 
@@ -39,12 +40,24 @@ local rangeOptions = {
 			GridStatusRange.db.profile.alert_range_oor.frequency = v
 			GridStatusRange:UpdateFrequency()
 		end,
-		min = 0.5,
+		min = 0.1,
 		max = 5,
-		step = 0.5,
+		step = 0.1,
 		isPercent = false,
 	},
-	["range"] = false,    -- this module doesnt need a range filter, becuase, well... guess why
+	["track_range"] = {
+		type = 'text',
+		name = L["Range to track"],
+		desc = L["Range in yard beyond which the status will be lost."],
+		usage = "<range>",
+		get = function () return tostring(GridStatusRange.db.profile.alert_range_oor.t_range) end,
+		set = function (v)
+			GridStatusRange.db.profile.alert_range_oor.t_range = tonumber(v)
+			GridStatusRange:RangeCheck()
+		end,
+		validate = GridRange:GetAvailableRangeList(),
+	},
+	["range"] = false,    -- this module doesnt need a range filter, because, well... guess why
 }
 
 function GridStatusRange:OnInitialize()
@@ -54,7 +67,20 @@ function GridStatusRange:OnInitialize()
 end
 
 function GridStatusRange:OnEnable()
-    self:ScheduleRepeatingEvent("GridStatusRange_RangeCheck", self.RangeCheck, GridStatusRange.db.profile.alert_range_oor.frequency, self)
+	self:Grid_RangesUpdated()
+	self:RegisterEvent("Grid_RangesUpdated")
+    self:ScheduleRepeatingEvent("GridStatusRange_RangeCheck", self.RangeCheck, self.db.profile.alert_range_oor.frequency, self)
+end
+
+function GridStatusRange:Grid_RangesUpdated()
+	local c_range = self.db.profile.alert_range_oor.t_range
+	local range = nil
+	for r in GridRange:AvailableRangeIterator() do
+		if r > c_range then break end
+		range = r
+	end
+	self.db.profile.alert_range_oor.t_range = range or 40
+	rangeOptions.track_range.validate = GridRange:GetAvailableRangeList()
 end
 
 function GridStatusRange:OnDisable()
@@ -69,28 +95,37 @@ end
 -- Code kindly borrowed from PerfectRaid
 function GridStatusRange:RangeCheck()
 
-    local settings = self.db.profile.alert_range_oor
-    local now = GetTime()
+	local settings = self.db.profile.alert_range_oor
+	local core = self.core
+	local t_range = settings.t_range
+	local priority = settings.priority
+	local color = settings.color
+	local text = settings.text
+	local rangecheck = GridRange:GetRangeCheck(t_range)
+	if rangecheck then
+		for unit in roster:IterateRoster(true) do
+			if rangecheck(unit.unitid) then
+				core:SendStatusLost(unit.name, "alert_range_oor")
+			else
+				core:SendStatusGained(unit.name, "alert_range_oor",
+					priority, false, color, text)
+			end
+		end
+	else
+		for unit in roster:IterateRoster(true) do
+			local range = gr:GetUnitRange(unit.unitid)
 
-    for unit in roster:IterateRoster(false) do
-	local range = GridRange:GetUnitRange(unit.unitid)
-
-        if range and range <= 40 then
-            self.core:SendStatusLost(UnitName(unit.unitid), "alert_range_oor")
-        else
-            self.core:SendStatusGained(UnitName(unit.unitid), "alert_range_oor",
-                    settings.priority,
-                    (settings.range and 40),
-                    settings.color,
-                    settings.text,
-                    nil,
-                    nil,
-                    settings.icon)
-        end
-    end
+			if range and range <= t_range then
+				core:SendStatusLost(unit.name, "alert_range_oor")
+			else
+				core:SendStatusGained(unit.name, "alert_range_oor",
+					priority, false, color, text)
+			end
+		end
+	end
 end
 
 function GridStatusRange:UpdateFrequency()
     self:CancelScheduledEvent("GridStatusRange_RangeCheck")
-    self:ScheduleRepeatingEvent("GridStatusRange_RangeCheck", self.RangeCheck, GridStatusRange.db.profile.alert_range_oor.frequency, self)
+    self:ScheduleRepeatingEvent("GridStatusRange_RangeCheck", self.RangeCheck, self.db.profile.alert_range_oor.frequency, self)
 end

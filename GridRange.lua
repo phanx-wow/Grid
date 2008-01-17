@@ -11,37 +11,50 @@ local BS = AceLibrary("Babble-Spell-2.2")
 
 GridRange = Grid:NewModule("GridRange")
 
-local ranges = {}
+local ranges, checks, rangelist
 local select = select
+local IsSpellInRange = IsSpellInRange
+local CheckInteractDistance = CheckInteractDistance
+local UnitIsVisible = UnitIsVisible
+local BOOKTYPE_SPELL = BOOKTYPE_SPELL
+
+local invalidSpells = {
+	[BS["Mend Pet"]] = true,
+	[BS["Health Funnel"]] = true,
+}
 
 local function addRange(range, check)
 	-- 100 yards is the farthest possible range
 	if range > 100 then return end
-
-	for i = 1,#ranges do
-		if ranges[i].range == range then
-			ranges[i].check = check
-			return
-		end
+	
+	if not checks[range] then
+		ranges[#ranges + 1] = range
+		table.sort(ranges)
+		checks[range] = check
 	end
+end
 
-	table.insert(ranges, { ["range"] = range, ["check"] = check })
+local function checkRange10(unit)
+	return CheckInteractDistance(unit, 3)
+end
 
-	table.sort(ranges, function (a, b) return a.range < b.range end)
+local function checkRange28(unit)
+	return CheckInteractDistance(unit, 4)
+end
+
+local function checkRange100(unit)
+	return UnitIsVisible(unit)
 end
 
 local function initRanges()
-	ranges = {}
-	addRange(10, function (unit) return CheckInteractDistance(unit, 3) == 1 end)
-	addRange(28, function (unit) return CheckInteractDistance(unit, 4) == 1 end)
-	addRange(100, function (unit) return UnitIsVisible(unit) == 1 end)
+	ranges, checks = {}, {}
+	addRange(10, checkRange10)
+	addRange(28, checkRange28)
+	addRange(100, checkRange100)
 end
 
--- yay TBC, we can use IsSpellInRange
 function GridRange:ScanSpellbook()
-	local i = 1
 	local gratuity = AceLibrary("Gratuity-2.0")
-	local sName, sRank, sRange
 
 	initRanges()
 
@@ -55,23 +68,25 @@ function GridRange:ScanSpellbook()
 		self:UnregisterEvent("PLAYER_ALIVE")
 	end
 
-	repeat
-		local sIndex = i
-		sName, sRank = GetSpellName(i, BOOKTYPE_SPELL)
+	local i = 1
+	while true do
+		local name, rank = GetSpellName(i, BOOKTYPE_SPELL)
+		if not name then break end
 		-- beneficial spell with a range
-		if sName and IsSpellInRange(i, "spell", "player") ~= nil  and sName ~= BS["Mend Pet"] and sName ~= BS["Health Funnel"] then
+		if not invalidSpells[name] and IsSpellInRange(i, BOOKTYPE_SPELL, "player") then
 			gratuity:SetSpell(i, BOOKTYPE_SPELL)
-			sRange = select(3, gratuity:Find(L["(%d+) yd range"], 2, 2))
-			if sRange then
-				addRange(tonumber(sRange),
-					 function (unit) return IsSpellInRange(sIndex, "spell", unit) == 1 end)
-				self:Debug(string.format("%d %s (%s) has range %s", sIndex, sName, sRank, sRange))
+			local range = select(3, gratuity:Find(L["(%d+) yd range"], 2, 2))
+			if range then
+				local index = i -- we have to create an upvalue
+				addRange(tonumber(range), function (unit) return IsSpellInRange(index, BOOKTYPE_SPELL, unit) == 1 end)
+				self:Debug("%d %s (%s) has range %s", i, name, rank, range)
 			end
 		end
 		i = i + 1
-	until not sName
+	end
 
 	self:TriggerEvent("Grid_RangesUpdated")
+	rangelist = nil
 end
 
 function GridRange:OnEnable()
@@ -83,27 +98,31 @@ function GridRange:OnEnable()
 end
 
 function GridRange:GetUnitRange(unit)
-	for k,v in ipairs(ranges) do
-		local range, check = v.range, v.check
-		if check(unit) then
+	for _, range in ipairs(ranges) do
+		if checks[range](unit) then
 			return range
 		end
 	end
+end
 
-	-- no check succeeded
-	return nil
+function GridRange:GetRangeCheck(range)
+	return checks[range]
+end
+
+function GridRange:GetAvailableRangeList()
+	if not ranges or rangelist then return rangelist end
+	
+	rangelist = {}
+	for r in self:AvailableRangeIterator() do
+		rangelist[tostring(r)] = L["%d yards"]:format(r)
+	end
+	return rangelist
 end
 
 function GridRange:AvailableRangeIterator()
-	local k = 0
-
+	local i = 0
 	return function ()
-		k = k + 1
-
-		if ranges[k] then
-			return ranges[k].range
-		else
-			return nil
-		end
+		i = i + 1
+		return ranges[i]
 	end
 end

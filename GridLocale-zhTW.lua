@@ -238,6 +238,8 @@ local strings_zhTW = {
 	["Seconds between range checks"] = "設定程式多少秒檢測一次距離",
 	["Out of Range"] = "超出距離",
 	["OOR"] = "太遠",
+--	["Range to track"] = true,
+--	["Range in yard beyond which the status will be lost."] = true,
 
 	--}}}
 	--{{{ GridStatusTarget

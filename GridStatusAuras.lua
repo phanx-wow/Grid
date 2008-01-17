@@ -26,6 +26,7 @@ end
 
 GridStatusAuras.defaultDB = {
 	debug = false,
+	abolish = true,
 	["debuff_poison"] = {
 		["desc"] = string.format(L["Debuff type: %s"], L["Poison"]),
 		["text"] = L["Poison"],
@@ -118,11 +119,44 @@ GridStatusAuras.defaultDB = {
 	},
 }
 
+local abolishMap = {
+	debuff_poison = BS["Abolish Poison"],
+	debuff_disease = BS["Abolish Disease"],
+}
+
+local function buildReverseAbolishMap()
+	--[[
+		we create and add the reverse map to abolishMap.
+		This is to speed up lookup in Unit_BuffGain and because it's not
+		possible to have a name collision between keys and values (well, as 
+		long as Blizzard does not start calling an Abolish buff "debuff_poison")
+	]]
+	local rev = {}
+	for k, v in pairs(abolishMap) do
+		rev[v] = k
+	end
+	for k, v in pairs(rev) do
+		abolishMap[k] = v
+	end
+end
 
 function GridStatusAuras:OnInitialize()
 	self.super.OnInitialize(self)
 
 	self:RegisterStatuses()
+	
+	self.options.args.abolish = {
+		type = "toggle",
+		name = L["Filter Abolished units"],
+		desc = L["Skip units that have an active Abolish buff."],
+		get = function() return GridStatusAuras.db.profile.abolish end,
+		set = function()
+			GridStatusAuras.db.profile.abolish = 
+				not GridStatusAuras.db.profile.abolish
+		end,
+		order = 180
+	}
+	buildReverseAbolishMap()
 end
 
 
@@ -317,7 +351,7 @@ end
 
 
 function GridStatusAuras:UpdateAllUnitAuras()
-	for u in RL:IterateRoster() do
+	for u in RL:IterateRoster(true) do
 		self:ClearAuras(u.unitname)
 		self:ScanUnitAuras(u.unitid)
 	end
@@ -331,8 +365,6 @@ end
 
 
 function GridStatusAuras:ScanUnitAuras(unit)
-	if string.find(unit, "pet") then return end
-
 	self:Debug("ScanUnitAuras", unit)
 
 	for buff, index, apps, tex, rank in Aura:BuffIter(unit) do
@@ -348,15 +380,13 @@ end
 function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type, tex, rank, index)
 	-- check if this is a specific debuff or a debuff type
 	local debuffNameStatus = statusForSpell(debuff, false)
-	local debuffTypeStatus = "debuff_" .. strlower(type)
+	local debuffTypeStatus = type and "debuff_" .. strlower(type)
 	local settings, status
-
-	if string.find(unit, "pet") then return end
 
 	if self.db.profile[debuffNameStatus] then
 		settings = self.db.profile[debuffNameStatus]
 		status = debuffNameStatus
-	else
+	elseif debuffTypeStatus then
 		settings = self.db.profile[debuffTypeStatus]
 		status = debuffTypeStatus
 	end
@@ -368,6 +398,10 @@ function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type
 	-- ignore the event if we're skipping this class or if we don't have a valid
 	-- unit object
 	if not u or settings[strlower(u.class)] == false then return end
+	
+	local abolish = self.db.profile.abolish and abolishMap[debuffTypeStatus]
+	
+	if abolish and Aura:UnitHasBuff(unit, abolish) then return end
 
 	self:Debug(unit, "gained", status, debuffNameStatus, tex)
 
@@ -377,7 +411,7 @@ function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type
 				   (settings.range and 30),
 				   settings.color,
 				   settings.text,
-				   nil,
+				   apps,
 				   nil,
 				   tex)
 end
@@ -385,9 +419,7 @@ end
 
 function GridStatusAuras:SpecialEvents_UnitDebuffLost(unit, debuff, apps, type, tex, rank)
 	local debuffNameStatus = statusForSpell(debuff, false)
-	local debuffTypeStatus = "debuff_" .. strlower(type)
-
-	if string.find(unit, "pet") then return end
+	local debuffTypeStatus = type and "debuff_" .. strlower(type)
 
 	local name = UnitName(unit)
 
@@ -398,7 +430,7 @@ function GridStatusAuras:SpecialEvents_UnitDebuffLost(unit, debuff, apps, type, 
 		end
 	end
 
-	if not Aura:UnitHasDebuffType(unit, type) then
+	if type and not Aura:UnitHasDebuffType(unit, type) then
 		self:Debug(unit, "lost", debuffTypeStatus, debuffNameStatus)
 		self.core:SendStatusLost(name, debuffTypeStatus)
 	end
@@ -406,19 +438,17 @@ end
 
 
 function GridStatusAuras:SpecialEvents_UnitBuffGained(unit, buff, index, apps, tex, rank)
-	return self:UnitBuff(unit, true, buff, tex)
+	return self:UnitBuff(unit, true, buff, tex, apps)
 end
 
 function GridStatusAuras:SpecialEvents_UnitBuffLost(unit, buff, apps, tex, rank)
-	return self:UnitBuff(unit, false, buff, tex)
+	return self:UnitBuff(unit, false, buff, tex, apps)
 end
 
-function GridStatusAuras:UnitBuff(unit, gained, buff, tex)
+function GridStatusAuras:UnitBuff(unit, gained, buff, tex, apps)
 	local buffNameStatus = statusForSpell(buff, true)
 	local settings = self.db.profile[buffNameStatus]
 	if not (settings and settings.enable) then return end
-
-	if string.find(unit, "pet") then return end
 
 	local u = RL:GetUnitObjectFromUnit(unit)
 
@@ -440,9 +470,18 @@ function GridStatusAuras:UnitBuff(unit, gained, buff, tex)
 						   (settings.range and 40),
 						   settings.color,
 						   settings.text,
-						   nil,
+						   apps,
 						   nil,
 						   tex)
+			if self.db.profile.abolish then
+				local debuffTypeStatus = abolishMap[buff]
+		
+				if debuffTypeStatus and
+						self.db.profile[debuffTypeStatus] and 
+						Aura:UnitHasDebuffType(unit, string.sub(debuffTypeStatus, 8)) then
+					self.core:SendStatusLost(u.name, debuffTypeStatus)
+				end
+			end
 		end
 	else
 		self:Debug("lost", buffNameStatus, tex)
@@ -455,12 +494,35 @@ function GridStatusAuras:UnitBuff(unit, gained, buff, tex)
 							   (settings.range and 40),
 							   settings.color,
 							   settings.text,
-							   nil,
+							   apps,
 							   nil,
 							   tex)
 			else
 				self:Debug("sending lost", buffNameStatus)
 				self.core:SendStatusLost(UnitName(unit), buffNameStatus)
+
+				if self.db.profile.abolish then
+					local debuffTypeStatus = abolishMap[buff]
+					
+			
+					if debuffTypeStatus then
+						local settings = self.db.profile[debuffTypeStatus]
+						if not (settings and settings.enable) then return end
+						local index = Aura:UnitHasDebuffType(unit, string.sub(debuffTypeStatus, 8))
+						if index then
+							local name, _, tex = UnitDebuff("unit", index)
+							
+							self.core:SendStatusGained(name,
+								debuffTypeStatus, settings.priority,
+								(settings.range and 40),			
+								settings.color,
+								settings.text,
+								apps,
+								nil,
+								tex)
+						end
+					end
+				end
 			end
 		end
 	end

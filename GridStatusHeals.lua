@@ -150,7 +150,7 @@ function GridStatusHeals:GroupHeal(healer)
 	local u1 = RL:GetUnitObjectFromName(healer)
 	if not u1 then return end
 
-	for u2 in RL:IterateRoster() do
+	for u2 in RL:IterateRoster(true) do
 		if u2.subgroup == u1.subgroup then
 			self:UnitIsHealed(u2.name)
 		end

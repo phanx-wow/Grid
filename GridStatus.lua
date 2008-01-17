@@ -157,6 +157,14 @@ end
 GridStatus.defaultDB = {
 	debug = false,
 	range = false,
+	colors = {
+		PetColorType = "Using Fallback color",
+		UNKNOWN_UNIT = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
+		UNKNOWN_PET = { r = 0, g = 1, b = 0, a = 1 },
+		[L["Beast"]] = { r = 0.93725490196078, g = 0.75686274509804, b = 0.27843137254902, a = 1 },
+		[L["Demon"]] = { r = 0.54509803921569, g = 0.25490196078431, b = 0.68627450980392, a = 1 },
+		[L["Humanoid"]] = { r = 0.91764705882353, g = 0.67450980392157, b = 0.84705882352941, a = 1 },
+	},
 }
 
 --}}}
@@ -167,6 +175,92 @@ GridStatus.options = {
 	name = L["Status"],
 	desc = string.format(L["Options for %s."], GridStatus.name),
 	args = {
+		["color"] = {
+			type = "group",
+			name = L["Colors"],
+			desc = L["Color options for class and pets."],
+			order = -1,
+			args = {
+				["fallback"] = {
+					type = "group",
+					name = L["Fallback colors"],
+					desc = L["Color of unknown units or pets."],
+					args = {
+						["unit"] = {
+							type = "color",
+							name = L["Unknown Unit"],
+							desc = L["The color of unknown units."],
+							order = 100,
+							get = function ()
+									  local c = GridStatus.db.profile.colors.UNKNOWN_UNIT
+									  return c.r, c.g, c.b, c.a
+								  end,
+							set = function (r, g, b, a)
+									  local c = GridStatus.db.profile.colors.UNKNOWN_UNIT
+									  c.r, c.g, c.b, c.a = r, g, b, a
+									  for unit in RL:IterateRoster(false) do
+										  GridStatus:TriggerEvent("Grid_UnitChanged", unit.name, unit.unitid)
+									  end
+								  end,
+							hasAlpha = false,
+						},
+						["pet"] = {
+							type = "color",
+							name = L["Unknown Pet"],
+							desc = L["The color of unknown pets."],
+							order = 100,
+							get = function ()
+									  local c = GridStatus.db.profile.colors.UNKNOWN_PET
+									  return c.r, c.g, c.b, c.a
+								  end,
+							set = function (r, g, b, a)
+									  local c = GridStatus.db.profile.colors.UNKNOWN_PET
+									  c.r, c.g, c.b, c.a = r, g, b, a
+									  for unit in RL:IterateRoster(true) do
+										if unit.class == "PET" then
+										  GridStatus:TriggerEvent("Grid_UnitChanged", unit.name, unit.unitid)
+										end
+									  end
+								  end,
+							hasAlpha = false,
+						},
+					},
+				},
+				["class"] = {
+					type = "group",
+					name = L["Class colors"],
+					desc = L["Color of player unit classes."],
+					args = {
+					},
+				},
+				["creaturetype"] = {
+					type = "group",
+					name = L["Creature type colors"],
+					desc = L["Color of pet unit creature types."],
+					args = {
+					},
+				},
+				["petcolortype"] = {
+					type = "text",
+					name = L["Pet coloring"],
+					desc = L["Set the coloring strategy of pet units."],
+					order = 200,
+					get = function ()
+							  return GridStatus.db.profile.colors.PetColorType
+						  end,
+					set = function (v)
+							  GridStatus.db.profile.colors.PetColorType = v
+							  for unit in RL:IterateRoster(true) do
+								if unit.class == "PET" then
+								  GridStatus:TriggerEvent("Grid_UnitChanged", unit.name, unit.unitid)
+								end
+							  end
+							  GridStatus:CheckPetColorNeedsUpdating()
+						  end,
+					validate = {["By Owner Class"] = L["By Owner Class"], ["By Creature Type"] = L["By Creature Type"], ["Using Fallback color"] = L["Using Fallback color"]},
+				},
+			},
+		},
 		["Header"] = {
 			type = "header",
 			order = 110,
@@ -176,11 +270,66 @@ GridStatus.options = {
 
 --}}}
 
+function GridStatus:FillColorOptions(options)
+	local BC = AceLibrary("Babble-Class-2.2")
+	local colors = self.db.profile.colors
+	for _, class in ipairs{
+		"Warlock", "Warrior", "Hunter", "Mage",
+		"Priest", "Druid", "Paladin", "Shaman", "Rogue"
+	} do
+		local name = class:upper()
+		local l_class = BC[class]
+		if not colors[class] then
+			local r, g, b = BC:GetColor(class)
+			colors[name] = { r = r, g = g, b = b, a = 1, }
+		end
+		options.args.class.args[class] = {
+			type = "color",
+			name = l_class,
+			desc = L["Color for %s."]:format(l_class),
+			get = function ()
+				local c = colors[name]
+				return c.r, c.g, c.b
+			end,
+			set = function (r, g, b)
+				local c = colors[name]
+				c.r, c.g, c.b = r, g, b
+				for unit in RL:IterateRoster(false) do
+					if unit.class == name then
+						self:TriggerEvent("Grid_UnitChanged", unit.name, unit.unitid)
+					end
+				end
+			end,
+		}
+	end
+	for _, class in ipairs{L["Beast"],L["Demon"],L["Humanoid"]} do
+		options.args.creaturetype.args[class] = {
+			type = "color",
+			name = class,
+			desc = L["Color for %s."]:format(class),
+			get = function ()
+				local c = colors[class]
+				return c.r, c.g, c.b
+			end,
+			set = function (r, g, b)
+				local c = colors[class]
+				c.r, c.g, c.b = r, g, b
+				for unit in RL:IterateRoster(true) do
+					if unit.class == "PET" then
+						self:TriggerEvent("Grid_UnitChanged", unit.name, unit.unitid)
+					end
+				end
+			end,
+		}
+	end
+end
+
 function GridStatus:OnInitialize()
 	self.super.OnInitialize(self)
 	self.registry = {}
 	self.registryDescriptions = {}
 	self.cache = {}
+	self:FillColorOptions(self.options.args.color)
 end
 
 function GridStatus:OnEnable()
@@ -361,5 +510,62 @@ function GridStatus:CachedStatusIterator(status)
 end
 
 --}}}
+--{{{ Unit Colors
+
+local ownerFromPet = setmetatable({}, { __index = function (table, unit)
+		local result
+		if unit == "pet" then
+			result = "player"
+		elseif unit:find("^partypet") then
+			result = "party"..unit:sub(9)
+		elseif unit:find("^raidpet") then
+			result = "raid"..unit:sub(8)
+		end
+		rawset(table, unit, result)
+		return result
+	end
+})
+
+function GridStatus:UnitColor(u)
+	local colors = self.db.profile.colors
+	if not u then return colors.UNKNOWN_UNIT end
+	local class = u.class
+	if class == "PET" then
+		local type = colors.PetColorType
+		if type == "By Owner Class" then
+			local unitid = ownerFromPet[u.unitid]
+			if unitid then
+				u = RL:GetUnitObjectFromUnit(unitid)
+				local class = u and u.class or select(2, UnitClass(unitid))
+				return class and colors[class] or colors.UNKNOWN_PET
+			end
+		elseif type == "By Creature Type" then
+			local t = UnitCreatureType(u.unitid)
+			return t and colors[t] or colors.UNKNOWN_PET
+		end
+		return colors.UNKNOWN_PET
+	else
+		return class and colors[class] or colors.UNKNOWN_UNIT
+	end
+end
+
+function GridStatus:CheckPetColorNeedsUpdating()
+	if self.db.profile.colors.PetColorType == "By Creature Type" then
+		if not self:IsEventRegistered("UNIT_PORTRAIT_UPDATE") then
+			self:RegisterEvent("UNIT_PORTRAIT_UPDATE", "UpdatePetColor")
+		end
+	elseif self:IsEventRegistered("UNIT_PORTRAIT_UPDATE") then
+		self:UnregisterEvent("UNIT_PORTRAIT_UPDATE")
+	end
+end
+
+function GridStatus:UpdatePetColor(unit)
+	if unit:find("pet", 1, true) then
+		self:TriggerEvent("Grid_UnitChanged", UnitName(unit), unit)
+	end
+end
+
 --}}}
+--}}}
+
 

@@ -279,18 +279,15 @@ end
 function Grid:RosterLib_UnitChanged(unitid, name, class, subgroup, rank, oldname, oldunitid, oldclass, oldsubgroup, oldrank)
 	local needsUpdate = false
 
-	-- don't attempt to update frames if it's only a pet that died
-	if class ~= "PET" and oldclass ~= "PET" then
-		if not name then
-			self:Debug("UnitLeft "..(oldname))
-			self:TriggerEvent("Grid_UnitLeft", oldname)
-		elseif not oldname then
-			self:Debug("UnitJoined "..(name))
-			self:TriggerEvent("Grid_UnitJoined", name, unitid)
-		else
-			self:Debug("UnitChanged "..(name))
-			self:TriggerEvent("Grid_UnitChanged", name, unitid)
-		end
+	if not name then
+		self:Debug("UnitLeft "..(oldname))
+		self:TriggerEvent("Grid_UnitLeft", oldname)
+	elseif not oldname then
+		self:Debug("UnitJoined "..(name))
+		self:TriggerEvent("Grid_UnitJoined", name, unitid)
+	else
+		self:Debug("UnitChanged "..(name))
+		self:TriggerEvent("Grid_UnitChanged", name, unitid)
 	end
 end
 

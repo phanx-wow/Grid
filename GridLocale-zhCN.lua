@@ -80,6 +80,8 @@ local strings_zhCN = {
 	["Select which raid layout to use."] = "选择使用哪个团队布局",
 	["Show Party in Raid"] = "在团队中显示小队",
 	["Show party/self as an extra group."] = "把自己/小队单独显示出来",
+--	["Show Pets for Party"] = true,
+--	["Show the pets for the party below the party itself."] = true,
 	["Horizontal groups"] = "横向排列队伍",
 	["Switch between horzontal/vertical groups."] = "选择横向/竖向显示队伍",
 	["Clamped to screen"] = "保持在屏幕上",
@@ -98,6 +100,16 @@ local strings_zhCN = {
 	["Adjust border color and alpha."] = "调整边缘的颜色和透明度",
 	["Background"] = "背景",
 	["Adjust background color and alpha."] = "调整背景颜色和透明度",
+--	["Pet color"] = true,
+--	["Set the color of pet units."] = true,
+--	["Pet coloring"] = true,
+--	["Set the coloring strategy of pet units."] = true,
+--	["By Owner Class"] = true,
+--	["By Creature Type"] = true,
+--	["Using Pet color"] = true,
+--	["Beast"] = true,
+--	["Demon"] = true,
+--	["Humanoid"] = true,
 
 	-- Advanced options
 	["Advanced"] = "高级",
@@ -114,10 +126,13 @@ local strings_zhCN = {
 	["None"] = "无",
 	["By Group 40"] = "40人团队",
 	["By Group 25"] = "25人团队",
+--	["By Group 25 w/Pets"] = true,
 	["By Group 20"] = "20人团队",
 	["By Group 15"] = "15人团队",
 	["By Group 10"] = "10人团队",
+--	["By Group 10 w/Pets"] = true,
 	["By Class"] = "以职业排列",
+--	["By Class w/Pets"] = true,
 	["Onyxia"] = "单数双数队伍排列",
 	["By Group 25 w/tanks"] = "25人团队及MT",
 	
@@ -223,6 +238,8 @@ local strings_zhCN = {
 	["Range check frequency"] = "距离检测的频率",
 	["Seconds between range checks"] = "多少秒检测一次距离",
 	["Out of Range"] = "距离外",
+--	["Range to track"] = true,
+--	["Range in yard beyond which the status will be lost."] = true,
 
 	--}}}
 	--{{{ GridStatusTarget

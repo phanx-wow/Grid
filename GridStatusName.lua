@@ -67,11 +67,7 @@ function GridStatusName:UpdateUnit(name, unitid)
 	local text = name
 	
 	-- set color
-	local color = settings.color
-	if settings.class then
-		color = RAID_CLASS_COLORS[u.class]
-		color.a = 1
-	end
+	local color = settings.class and self.core:UnitColor(u) or settings.color
 
 	self.core:SendStatusGained(name, "unit_name",
 				    settings.priority,

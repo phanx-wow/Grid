@@ -1,4 +1,4 @@
---{{{ Libraries
+﻿--{{{ Libraries
 
 local RL = AceLibrary("Roster-2.1")
 local Aura = AceLibrary("SpecialEvents-Aura-2.0")
@@ -210,26 +210,29 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 	local priority = settings.priority
 
 	if not name then return end
-	if string.find(unitid, "pet") then return end
 
 	if UnitIsDeadOrGhost(unitid) then
-		if Aura:UnitHasBuff(unitid, BS["Feign Death"]) then
-			self:Debug("Feign Death")
-			self:StatusFeignDeath(unitid, true)
-		else
-			self:Debug("Death")
-			self:StatusDeath(unitid, true)
+		self:StatusDeath(unitid, true)
+		self:StatusFeignDeath(unitid, false)
+		self:StatusLowHealth(unitid, false)
+		if settings.deadAsFullHealth then
+			cur = max
 		end
 	else
-		self:StatusFeignDeath(unitid, false)
 		self:StatusDeath(unitid, false)
+		if UnitIsFeignDeath(unitid) then
+			self:StatusFeignDeath(unitid, true)
+		else
+			self:StatusFeignDeath(unitid, false)
+		end
+		if self:IsLowHealth(name, cur, max) then
+			self:StatusLowHealth(unitid, true)
+		else
+			self:StatusLowHealth(unitid, false)
+		end
 	end
 
 	self:StatusOffline(unitid, not UnitIsConnected(unitid))
-
-	if settings.deadAsFullHealth and UnitIsDeadOrGhost(unitid) then
-		cur = max
-	end
 
 	if cur < max then
 		healthText = self:FormatHealthText(cur,max)
@@ -237,18 +240,12 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 		priority = 1
 	end
 
-	if self:IsLowHealth(name, cur, max) and
-		not UnitIsDeadOrGhost(unitid) then
-		self:StatusLowHealth(unitid, true)
-	else
-		self:StatusLowHealth(unitid, false)
-	end
-
 	if (cur / max * 100) <= deficitSettings.threshold then
 		self.core:SendStatusGained(name, "unit_healthDeficit",
 					    deficitSettings.priority,
 					    (deficitSettings.range and 40),
-					    (deficitSettings.useClassColors and self:UnitClassColor(name) or
+					    (deficitSettings.useClassColors and 
+						 self.core:UnitColor(RL:GetUnitObjectFromName(name)) or
 					     deficitSettings.color),
 					    healthText,
 					    cur, max,
@@ -260,7 +257,8 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 	self.core:SendStatusGained(name, "unit_health",
 				    priority,
 				    (ignoreRange ~= true and settings.range and 40),
-				    (settings.useClassColors and self:UnitClassColor(name) or
+				    (settings.useClassColors and 
+					 self.core:UnitColor(RL:GetUnitObjectFromName(name)) or
 				     settings.color),
 					nil,
 					cur, max,
@@ -277,11 +275,6 @@ function GridStatusHealth:FormatHealthText(cur, max)
 	end
 
 	return healthText
-end
-
-function GridStatusHealth:UnitClassColor(name)
-	local u = RL:GetUnitObjectFromName(name)
-	return (u and RAID_CLASS_COLORS[u.class])
 end
 
 function GridStatusHealth:IsLowHealth(name, cur, max)

@@ -34,8 +34,6 @@ function GridStatusVoiceComm:OnEnable()
 end
 
 function GridStatusVoiceComm:VOICE_START(unitid)
-	if string.find(unitid, "pet") then return end
-
 	local settings = self.db.profile.alert_voice
 
 	self.core:SendStatusGained(

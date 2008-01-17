@@ -3,7 +3,6 @@
 --{{{ Libraries
 
 local AceOO = AceLibrary("AceOO-2.0")
-local RL = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local GridRange = GridRange
 
@@ -17,8 +16,27 @@ if media then media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\
 --}}}
 --{{{ FrameXML functions
 
+local function GridFrame_OnShow(self)
+	GridFrame:TriggerEvent("Grid_UpdateLayoutSize")
+end
+
 function GridFrame_OnLoad(self)
 	GridFrame:RegisterFrame(self)
+	self:SetScript("OnShow", GridFrame_OnShow)
+end
+
+local function GridFrame_OnEvent(self, event, unit)
+	if unit == self.unit then
+		local unitName = UnitName(unit)
+		if unitName ~= UNKNOWNOBJECT then
+			self:UnregisterEvent("UNIT_NAME_UPDATE")
+			self:SetScript("OnEvent", nil)
+			local frame = GridFrame.registeredFrames[self:GetName()]
+			frame.unitName = unitName
+			GridFrame:TriggerEvent("Grid_UnitChanged", unitName, unit)
+			self.unit = nil
+		end
+	end
 end
 
 function GridFrame_OnAttributeChanged(self, name, value)
@@ -29,8 +47,14 @@ function GridFrame_OnAttributeChanged(self, name, value)
 	if name == "unit" then
 		if value then
 			local unitName = UnitName(value)
-			frame.unitName = unitName
 			frame.unit = value
+			if unitName == UNKNOWNOBJECT then
+				self.unit = value
+				self:SetScript("OnEvent", GridFrame_OnEvent)
+				self:RegisterEvent("UNIT_NAME_UPDATE")
+			else
+				frame.unitName = unitName
+			end
 			GridFrame:Debug("updated", self:GetName(), name, value, unitName)
 			GridFrame:UpdateIndicators(frame)
 		else
@@ -40,8 +64,7 @@ function GridFrame_OnAttributeChanged(self, name, value)
 			frame.unitName = nil
 			frame.unit = value
 		end
-	elseif name == "type1" and value == nil then
-		GridFrame:Debug(string.format("LeftButton action on frame %s (%s) set to nil!", tostring(self:GetName()), tostring(self:GetAttribute("unit"))), debugstack())
+	elseif name == "type1" and not value or value == "" then
 		self:SetAttribute("type1", "target")
 	end
 end
@@ -933,8 +956,8 @@ end
 
 function GridFrame:UpdateIndicators(frame)
 	local indicator, status
-	local unitid = frame.unit
-	local name = frame.unitName
+	local unitid = frame.unit or frame.frame and frame.frame.GetAttribute and frame.frame:GetAttribute("unit")
+	if not unitid then return end
 
 	-- self.statusmap[indicator][status]
 	for indicator in pairs(self.db.profile.statusmap) do
@@ -1013,7 +1036,6 @@ end
 --{{{ Event handlers
 
 function GridFrame:Grid_StatusGained(name, status, priority, range, color, text, value, maxValue, texture)
-	-- local unitid = RL:GetUnitIDFromName(name)
 	local frameName, frame
 
 	for frameName,frame in pairs(self.registeredFrames) do
@@ -1025,7 +1047,6 @@ end
 
 function GridFrame:Grid_StatusLost(name, status)
 	-- self:Debug("StatusLost", status, "on", name)
-	-- local unitid = RL:GetUnitIDFromName(name)
 	local frameName, frame
 
 	for frameName,frame in pairs(self.registeredFrames) do

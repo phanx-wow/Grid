@@ -1,4 +1,4 @@
--- GridLayout.lua
+﻿-- GridLayout.lua
 -- insert boilerplate
 
 --{{{ Libraries
@@ -40,10 +40,20 @@ function GridLayoutPartyClass.prototype:CreateFrames()
 
 	self.playerFrame:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 0, 0)
 	self.partyFrame:SetPoint("TOPLEFT", self.playerFrame, "BOTTOMLEFT", 0, 0)
+	
+	self.partyPetFrame = CreateFrame("Frame", "GridLayoutPartyPetHeader", GridLayoutParty, "SecurePartyPetHeaderTemplate")
+	self.partyPetFrame:SetAttribute("template", "GridFrameTemplateSecure")
+	self.partyPetFrame:SetAttribute("filterOnPet", true)
+	self.partyPetFrame:SetAttribute("showPlayer", true)
+	self.partyPetFrame:SetAttribute("showSolo", true)
+	self.partyPetFrame.initialConfigFunction = GridLayout_InitialConfigFunction
+	self.partyPetFrame:SetPoint("TOPLEFT", self.partyFrame, "BOTTOMLEFT", 0, 0)
+	
 	self:UpdateSize()
 	self.frame:Show()
 	self.playerFrame:Show()
 	self.partyFrame:Show()
+	self.partyPetFrame:Show()
 end
 
 function GridLayoutPartyClass.prototype:Reset()
@@ -102,6 +112,12 @@ function GridLayoutPartyClass.prototype:SetOrientation(horizontal)
 	self.partyFrame:SetAttribute("yOffset", yOffset)
 	self.partyFrame:SetAttribute("point", point)
 
+	self.partyPetFrame:ClearAllPoints()
+	self.partyPetFrame:SetPoint(anchorf1, self.partyFrame, anchorf2, xOffset, yOffset)
+	self.partyPetFrame:SetAttribute("xOffset", xOffset)
+	self.partyPetFrame:SetAttribute("yOffset", yOffset)
+	self.partyPetFrame:SetAttribute("point", point)
+
 	-- self:UpdateSize() -- not needed because GridLayout:UpdateSize() will call it
 end
 
@@ -112,17 +128,23 @@ function GridLayoutPartyClass.prototype:UpdateSize()
 	local height = self.playerFrame:GetHeight()
 	local padding = layoutSettings.Padding
 
-	if GetNumPartyMembers() > 0 then
-		if layoutSettings.horizontal then
-			local pwidth = self.partyFrame:GetWidth()
-			if self.partyFrame:IsVisible() and pwidth > 0 then
-				width = width + padding + pwidth
-			end
-		else
-			local pheight = self.partyFrame:GetHeight()
-			if self.partyFrame:IsVisible() and pheight > 0 then
-				height = height + padding + pheight
-			end
+	if layoutSettings.horizontal then
+		local pwidth = self.partyFrame:GetWidth()
+		if self.partyFrame:IsVisible() and pwidth > 0 then
+			width = width + padding + pwidth
+		end
+		pwidth = self.partyPetFrame:GetWidth()
+		if self.partyPetFrame:IsVisible() and pwidth > 0 then
+			width = width + padding + pwidth
+		end
+	else
+		local pheight = self.partyFrame:GetHeight()
+		if self.partyFrame:IsVisible() and pheight > 0 then
+			height = height + padding + pheight
+		end
+		pheight = self.partyPetFrame:GetHeight()
+		if self.partyPetFrame:IsVisible() and pheight > 0 then
+			height = height + padding + pheight
 		end
 	end
 
@@ -148,9 +170,9 @@ end
 local GridLayoutHeaderClass = AceOO.Class()
 local NUM_HEADERS = 0
 
-function GridLayoutHeaderClass.prototype:init()
+function GridLayoutHeaderClass.prototype:init(isPetGroup)
 	GridLayoutHeaderClass.super.prototype.init(self)
-	self:CreateFrames()
+	self:CreateFrames(isPetGroup)
 	self:Reset()
 	self:SetOrientation()
 end
@@ -171,10 +193,11 @@ function GridLayoutHeaderClass.prototype:Reset()
 	self.frame:Hide()
 end
 
-function GridLayoutHeaderClass.prototype:CreateFrames()
+function GridLayoutHeaderClass.prototype:CreateFrames(isPetGroup)
 	NUM_HEADERS = NUM_HEADERS + 1
 
-	self.frame = CreateFrame("Frame", "GridLayoutHeader"..NUM_HEADERS, GridLayoutFrame, "SecureRaidGroupHeaderTemplate")
+	self.frame = CreateFrame("Frame", "GridLayoutHeader"..NUM_HEADERS, GridLayoutFrame, 
+		isPetGroup and "SecureRaidPetHeaderTemplate" or "SecureRaidGroupHeaderTemplate")
 	self.frame:SetAttribute("template", "GridFrameTemplateSecure")
 	self.frame.initialConfigFunction = GridLayout_InitialConfigFunction
 end
@@ -258,9 +281,11 @@ GridLayout.defaultDB = {
 	FrameDisplay = "Always",
 	layout = "By Group 40",
 	showParty = false,
+	showPartyPets = false,
 	horizontal = false,
 	clamp = true,
 	FrameLock = false,
+	ClickThrough = false,
 
 	Padding = 1,
 	Spacing = 10,
@@ -332,6 +357,19 @@ GridLayout.options = {
 				GridLayout:ReloadLayout()
 			end,
 		},
+		["partypets"] = {
+			type = "toggle",
+			name = L["Show Pets for Party"],
+			desc = L["Show the pets for the party below the party itself."],
+			order = ORDER_LAYOUT + 3,
+			get = function ()
+				return GridLayout.db.profile.showPartyPets
+			end,
+			set = function (v)
+				GridLayout.db.profile.showPartyPets = v
+				GridLayout:ReloadLayout()
+			end,
+		},
 		["horizontal"] = {
 			type = "toggle",
 			name = L["Horizontal groups"],
@@ -366,8 +404,19 @@ GridLayout.options = {
 			get = function() return GridLayout.db.profile.FrameLock end,
 			set = function(v)
 				GridLayout.db.profile.FrameLock = v
+			end,
+		},
+		["clickthrough"] = {
+			type = "toggle",
+			name = L["Click through the Grid Frame"],
+			desc = L["Allows mouse click through the Grid Frame."],
+			order = ORDER_LAYOUT + 7,
+			get = function() return GridLayout.db.profile.ClickThrough end,
+			set = function(v)
+				GridLayout.db.profile.ClickThrough = v
 				GridLayout.frame:EnableMouse(not v)
 			end,
+			disabled = function () return not GridLayout.db.profile.FrameLock end,
 		},
 
 		["DisplayHeader"] = {
@@ -455,7 +504,6 @@ GridLayout.options = {
 			      end,
 			hasAlpha = true
 		},
-
 		["advanced"] = {
 			type = "group",
 			name = L["Advanced"],
@@ -509,6 +557,7 @@ GridLayout.layoutHeaderClass = GridLayoutHeaderClass
 function GridLayout:OnInitialize()
 	self.super.OnInitialize(self)
 	self.layoutGroups = {}
+	self.layoutPetGroups = {}
 end
 
 function GridLayout:OnEnable()
@@ -529,7 +578,7 @@ function GridLayout:OnEnable()
 	self:RegisterEvent("Grid_JoinedParty", "PartyTypeChanged")
 	self:RegisterEvent("Grid_LeftParty", "PartyTypeChanged")
 
-	self:RegisterEvent("Grid_UpdateLayoutSize", "PartyMembersChanged")
+	self:RegisterBucketEvent("Grid_UpdateLayoutSize", 0.2, "PartyMembersChanged")
 	--self:RegisterEvent("Grid_UnitJoined", "PartyMembersChanged")
 	--self:RegisterEvent("Grid_UnitLeft", "PartyMembersChanged")
 	--self:RegisterEvent("Grid_UnitChanged", "PartyMembersChanged")
@@ -537,7 +586,7 @@ function GridLayout:OnEnable()
 
 	self:RegisterEvent("Grid_EnteringCombat", "EnteringOrLeavingCombat")
 	self:RegisterEvent("Grid_LeavingCombat", "EnteringOrLeavingCombat")
-
+	
 	self.super.OnEnable(self)
 end
 
@@ -563,6 +612,7 @@ end
 function GridLayout:RaidHeaderFix()
 	-- if true then return end
 	self.partyGroup.partyFrame:UnregisterEvent("UNIT_NAME_UPDATE")
+	self.partyGroup.partyPetFrame:UnregisterEvent("UNIT_NAME_UPDATE")
 	for _,layoutGroup in pairs(self.layoutGroups) do
 		layoutGroup.frame:UnregisterEvent("UNIT_NAME_UPDATE")
 	end
@@ -571,6 +621,7 @@ end
 
 function GridLayout:RaidHeaderUnfix()
 	self.partyGroup.partyFrame:RegisterEvent("UNIT_NAME_UPDATE")
+	self.partyGroup.partyPetFrame:RegisterEvent("UNIT_NAME_UPDATE")
 	for _,layoutGroup in pairs(self.layoutGroups) do
 		layoutGroup.frame:RegisterEvent("UNIT_NAME_UPDATE")
 	end
@@ -627,7 +678,7 @@ end
 function GridLayout:CreateFrames()
 	-- create main frame to hold all our gui elements
 	local f = CreateFrame("Frame", "GridLayoutFrame", UIParent)
-	f:EnableMouse(not self.db.profile.FrameLock)
+	f:EnableMouse(not (self.db.profile.FrameLock and self.db.profile.ClickThrough))
 	f:SetMovable(true)
 	f:SetClampedToScreen(self.db.profile.clamp)
 	f:SetPoint("CENTER", UIParent, "CENTER")
@@ -765,6 +816,11 @@ function GridLayout:LoadLayout(layoutName)
 		self.partyGroup:SetOrientation(horizontal)
 		self:PlaceGroup(self.partyGroup, 1)
 		self.partyGroup.frame:Show()
+		if p.showPartyPets then
+			self.partyGroup.partyPetFrame:Show()
+		else
+			self.partyGroup.partyPetFrame:Hide()
+		end
 	else
 		self.partyGroup.frame:Hide()
 		iPlaceOffset = 0
@@ -774,35 +830,54 @@ function GridLayout:LoadLayout(layoutName)
 		for _, g in ipairs(self.layoutGroups) do
 			g:Reset()
 		end
+		for _, g in ipairs(self.layoutPetGroups) do
+			g:Reset()
+		end
 		self:UpdateDisplay()
 		return
 	end
 
-	local groupsNeeded, groupsAvailable 
-		= 0, #self.layoutGroups
+	local groupsNeeded, groupsAvailable, petGroupsNeeded, petGroupsAvailable 
+		= 0, #self.layoutGroups, 0, #self.layoutPetGroups
 
 	for _, l in ipairs(layout) do
-		groupsNeeded = groupsNeeded + 1
+		if l.isPetGroup then
+			petGroupsNeeded = petGroupsNeeded + 1
+		else
+			groupsNeeded = groupsNeeded + 1
+		end
 	end
 
 	-- create groups as needed
 	while groupsNeeded > groupsAvailable do
-		table.insert(self.layoutGroups, self.layoutHeaderClass:new())
+		table.insert(self.layoutGroups, self.layoutHeaderClass:new(false))
 		groupsAvailable = groupsAvailable + 1
 	end
-	
+	while petGroupsNeeded > petGroupsAvailable do
+		table.insert(self.layoutPetGroups, self.layoutHeaderClass:new(true))
+		petGroupsAvailable = petGroupsAvailable + 1
+	end
+
 	-- hide unused groups
 	for i = groupsNeeded + 1, groupsAvailable, 1 do
 		self.layoutGroups[i]:Reset()
 	end
-	
+	for i = petGroupsNeeded + 1, petGroupsAvailable, 1 do
+		self.layoutPetGroups[i]:Reset()
+	end
+
 	local defaults = layout.defaults
-	local iGroup = 1
+	local iGroup, iPetGroup = 1, 1
 	-- configure groups
 	for i, l in ipairs(layout) do
 		local layoutGroup
-		layoutGroup = self.layoutGroups[iGroup]
-		iGroup = iGroup + 1
+		if l.isPetGroup then
+			layoutGroup = self.layoutPetGroups[iPetGroup]
+			iPetGroup = iPetGroup + 1
+		else
+			layoutGroup = self.layoutGroups[iGroup]
+			iGroup = iGroup + 1
+		end
 
 		layoutGroup:Reset()
 
@@ -825,7 +900,7 @@ function GridLayout:LoadLayout(layoutName)
 				layoutGroup:SetFrameAttribute("unitsPerColumn", value)
 				layoutGroup:SetFrameAttribute("columnSpacing", p.Padding)
 				layoutGroup:SetFrameAttribute("columnAnchorPoint",  getColumnAnchorPoint(p.groupAnchor, p.horizontal))
-			else
+			elseif attr ~= "isPetGroup" then
 				layoutGroup:SetFrameAttribute(attr, value)
 			end
 		end
@@ -875,10 +950,20 @@ function GridLayout:UpdateSize()
 		end
 	end
 
+	for _, layoutGroup in ipairs(self.layoutPetGroups) do
+		if layoutGroup:IsFrameVisible() then
+			groupCount = groupCount + 1
+			local width, height = layoutGroup:GetFrameWidth(), layoutGroup:GetFrameHeight()
+			curWidth = curWidth + width + Padding
+			curHeight = curHeight + height + Padding
+			if maxWidth < width then maxWidth = width end
+			if maxHeight < height then maxHeight = height end
+		end
+	end
+
 	if p.horizontal then
 		x = maxWidth + Spacing
 		y = curHeight + Spacing
-
 	else
 		x = curWidth + Spacing
 		y = maxHeight + Spacing

@@ -32,7 +32,6 @@ end
 
 function GridStatusAggro:Banzai_UnitGainedAggro(unitid)
 	local settings = self.db.profile.alert_aggro
-	if string.find(unitid, "pet") then return end
 
 	self.core:SendStatusGained(UnitName(unitid), "alert_aggro",
 				    settings.priority,
@@ -46,7 +45,5 @@ function GridStatusAggro:Banzai_UnitGainedAggro(unitid)
 end
 
 function GridStatusAggro:Banzai_UnitLostAggro(unitid)
-	if string.find(unitid, "pet") then return end
-
 	self.core:SendStatusLost(UnitName(unitid), "alert_aggro")
 end	
