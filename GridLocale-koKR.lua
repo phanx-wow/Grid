@@ -23,6 +23,7 @@ local strings_koKR = {
 	["Number of characters to show on Center Text indicator."] = "중앙 문자 지시기 위에 표시할 캐릭터의 숫자를 설정합니다.",
 	["Invert Bar Color"] = "바 색상 반대로",
 	["Swap foreground/background colors on bars."] = "바들의 전경/배경 색상을 변경합니다.",
+
 	["Indicators"] = "지시기",
 	["Border"] = "테두리",
 	["Health Bar"] = "생명력 바",
@@ -74,6 +75,7 @@ local strings_koKR = {
 	-- Layout options
 	["Show Frame"] = "창 표시",
 	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "Grid 표시 설정: '항상', '파티' 또는 '공격대'를 선택합니다.",
+	["Always"] = "항상",
 	["Grouped"] = "파티",
 	["Raid"] = "공격대",
 	["Raid Layout"] = "공격대 배치",
@@ -88,6 +90,8 @@ local strings_koKR = {
 	["Toggle whether to permit movement out of screen."] = "화면 밖으로 창이 나가지 않도록 사용합니다.",
 	["Frame lock"] = "창 고정",
 	["Locks/unlocks the grid for movement."] = "Grid 창을 고정하거나 이동시킵니다.",
+	["Click through the Grid Frame"] = "Grid 창을 통해 클릭",
+	["Allows mouse click through the Grid Frame."] = "Grid 창을 통해 마우스 클릭을 허락합니다.",
 
 	["CENTER"] = "중앙",
 	["TOP"] = "상단",
@@ -149,13 +153,13 @@ local strings_koKR = {
 	["None"] = "없음",
 	["By Group 40"] = "40인",
 	["By Group 25"] = "25인",
-	["By Group 25 w/Pets"] = "25인 - 소환수",
+	["By Group 25 w/Pets"] = "25인, 소환수",
 	["By Group 20"] = "20인",
 	["By Group 15"] = "15인",
 	["By Group 10"] = "10인",
-	["By Group 10 w/Pets"] = "10인 - 소환수",
+	["By Group 10 w/Pets"] = "10인, 소환수",
 	["By Class"] = "직업별",
-	["By Class w/Pets"] = "직업별 - 소환수",
+	["By Class w/Pets"] = "직업별, 소환수",
 	["Onyxia"] = "오닉시아",
 	["By Group 25 w/tanks"] = "25인, 탱커",
 
@@ -210,6 +214,8 @@ local strings_koKR = {
 	["Show on %s."] = "%s 표시",
 	["Show if missing"] = "사라짐 표시",
 	["Display status only if the buff is not active."] = "버프가 사라졌을 경우에만 상태를 표시합니다.",
+	["Filter Abolished units"] = "해제 유닛 필터",
+	["Skip units that have an active Abolish buff."] = "버프를 해제할 수 있는 유닛을 무시합니다.",
 
 	--}}}
 	--{{{ GridStatusName
@@ -264,8 +270,9 @@ local strings_koKR = {
 	["Seconds between range checks"] = "거리 체크의 시간(초)를 설정합니다.",
 	["Out of Range"] = "사정 거리 벗어남",
 	["OOR"] = "벗어남",
---	["Range to track"] = true,
---	["Range in yard beyond which the status will be lost."] = true,
+	["Range to track"] = "거리 체크",
+	["Range in yard beyond which the status will be lost."] = "상태에 벗어남을 표시할 체크 거리를 설정합니다.",
+	["%d yards"] = "%d 미터",
 
 	--}}}
 	--{{{ GridStatusTarget
