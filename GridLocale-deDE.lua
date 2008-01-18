@@ -1,28 +1,28 @@
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local strings_deDE = {
 	--{{{ GridCore
 	["Debugging"] = "Debuggen",
-	["Module debugging menu."] = "Debug-Men\195\188",
+	["Module debugging menu."] = "Debug-Menü",
 	["Debug"] = "Debug",
-	["Toggle debugging for %s."] = "Aktiviere das Debuggen f\195\188r %s.",
+	["Toggle debugging for %s."] = "Aktiviere das Debuggen für %s.",
 	["Configure"] = "Konfigurieren",
 	["Configure Grid"] = "Grid konfigurieren",
 
 	--}}}
 	--{{{ GridFrame
 	["Frame"] = "Rahmen",
-	["Options for GridFrame."] = "Einstellungen f\195\188r den Grid Rahmen.",
+	["Options for GridFrame."] = "Einstellungen für den Grid Rahmen.",
 
 	["Show Tooltip"] = "Zeige Tooltip",
-	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "Anzeige des Tooltips. W\195\164hle 'Immer', 'Nie' oder 'au\195\159erhalb des Kampfes'.",
+	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "Anzeige des Tooltips. Wähle 'Immer', 'Nie' oder 'außerhalb des Kampfes'.",
 	["Always"] = "Immer",
 	["Never"] = "Nie",
-	["OOC"] = "au\195\159erhalb des Kampfes",
-	["Center Text Length"] = "L\195\164nge des mittleren Textes",
+	["OOC"] = "außerhalb des Kampfes",
+	["Center Text Length"] = "Länge des mittleren Textes",
 	["Number of characters to show on Center Text indicator."] = "Anzahl der Buchstaben die im mittleren Text angezeigt werden.",
 	["Invert Bar Color"] = "Invertiere die Leistenfarbe",
-	["Swap foreground/background colors on bars."] = "Tausche die Vordergrund-/Hintergrundfarbe der Leisten",
+	["Swap foreground/background colors on bars."] = "Tausche die Vordergrund-/Hintergrundfarbe der Leisten.",
 
 	["Indicators"] = "Indikatoren",
 	["Border"] = "Rand",
@@ -37,49 +37,51 @@ local strings_deDE = {
 	["Bottom Right Corner"] = "Untere rechte Ecke",
 	["Frame Alpha"] = "Rahmentransparenz",
 
-	["Options for %s indicator."] = "Optionen f\195\188r den %s Indikator",
-	["Statuses"] = "Zust\195\164nde",
+	["Options for %s indicator."] = "Optionen für den %s Indikator.",
+	["Statuses"] = "Zustände",
 	["Toggle status display."] = "Aktiviere die Anzeige des Zustands.",
 
 	-- Advanced options
 	["Advanced"] = "Erweitert",
 	["Advanced options."] = "Erweiterte Einstellungen.",
-	["Enable %s indicator"] = "Indikator f\195\188r %s ",
+	["Enable %s indicator"] = "Indikator für %s ",
 	["Toggle the %s indicator."] = "Aktiviere den %s Indikator.",
 	["Frame Width"] = "Rahmenbreite",
 	["Adjust the width of each unit's frame."] = "Die Breite von jedem Einheitenfenster anpassen.",
-	["Frame Height"] = "Rahmenh\195\182he",	
-	["Adjust the height of each unit's frame."] = "Die H\195\182he von jedem Einheitenfenster anpassen.",
+	["Frame Height"] = "Rahmenhöhe",	
+	["Adjust the height of each unit's frame."] = "Die Höhe von jedem Einheitenfenster anpassen.",
 	["Frame Texture"] = "Rahmentextur",
 	["Adjust the texture of each unit's frame."] = "Die Textur von jedem Einheitenfenster anpassen.",
-	["Corner Size"] = "Eckengr\195\182\195\159e",
-	["Adjust the size of the corner indicators."] = "Die Gr\195\182\195\159e der Eckenindikatoren anpassen.",
+	["Corner Size"] = "Eckengröße",
+	["Adjust the size of the corner indicators."] = "Die Größe der Eckenindikatoren anpassen.",
 	["Font"] = "Schriftart",	
 	["Adjust the font settings"] = "Die Schriftart anpassen",
-	["Font Size"] = "Schriftgr\195\182\195\159e",
-	["Adjust the font size."] = "Die Schriftg\195\182\195\159e anpassen.",
+	["Font Size"] = "Schriftgröße",
+	["Adjust the font size."] = "Die Schriftgröße anpassen.",
 	["Orientation of Frame"] = "Ausrichtung der Statusleiste",
 	["Set frame orientation."] = "Ausrichtung der Statusleiste festlegen.",
 	["Orientation of Text"] = "Ausrichtung des Texts",
 	["Set frame text orientation."] = "Text Ausrichtung festlegen.",
-	["Icon Size"] = "Icongr\195\182\195\159e",
-	["Adjust the size of the center icon."] = "Die Gr\195\182\195\159e des Icons im Zentrum anpassen.",
+	["VERTICAL"] = "VERTIKAL",
+	["HORIZONTAL"] = "HORIZONTAL",
+	["Icon Size"] = "Icongröße",
+	["Adjust the size of the center icon."] = "Die Größe des Icons im Zentrum anpassen.",
 
 	--}}}
 	--{{{ GridLayout
 	["Layout"] = "Anordnung",
-	["Options for GridLayout."] = "Optionen f\195\188r die Anordnung von Grid.",
+	["Options for GridLayout."] = "Optionen für die Anordnung von Grid.",
 
 	-- Layout options
 	["Show Frame"] = "Zeige den Rahmen",
-	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "Setzt die Sichtbarkeit von Grid: W\195\164hle 'immer', 'in Gruppe' oder 'in Schlachtzug'.",
+	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "Setzt die Sichtbarkeit von Grid: Wähle 'immer', 'in Gruppe' oder 'in Schlachtzug'.",
 	["Always"] = "immer",
 	["Grouped"] = "in Gruppe",
 	["Raid"] = "in Schlachtzug",
 	["Raid Layout"] = "Schlachtzug-Anordnung",
-	["Select which raid layout to use."] = "W\195\164hle welche Schlachtzug-Anordnung benutzt werden soll.",
+	["Select which raid layout to use."] = "Wähle welche Schlachtzug-Anordnung benutzt werden soll.",
 	["Show Party in Raid"] = "Zeige Gruppe im Schlachtzug",
-	["Show party/self as an extra group."] = "Zeigen Gruppe/sich selbst als extra Gruppe an.",
+	["Show party/self as an extra group."] = "Zeigt Gruppe/sich selbst als extra Gruppe an.",
 	["Show Pets for Party"] = "Zeige Begleiter in der Gruppe",
 	["Show the pets for the party below the party itself."] = "Zeigt die Begleiter der Gruppe unterhalb der Gruppe.",
 	["Horizontal groups"] = "Horizontal gruppieren",
@@ -88,6 +90,18 @@ local strings_deDE = {
 	["Toggle whether to permit movement out of screen."] = "Legt fest ob der Rahmen im Bildschirm bleiben soll.",
 	["Frame lock"] = "Rahmen sperren",
 	["Locks/unlocks the grid for movement."] = "Sperrt/entsperrt den Rahmen zum Bewegen.",
+	["Click through the Grid Frame"] = "Durch Grid Rahmen klicken",
+	["Allows mouse click through the Grid Frame."] = "Erlaubt Mausklicks durch den Grid Rahmen.",
+
+	["CENTER"] = "ZENTRIERT",
+	["TOP"] = "OBEN",
+	["BOTTOM"] = "UNTEN",
+	["LEFT"] = "LINKS",
+	["RIGHT"] = "RECHTS",
+	["TOPLEFT"] = "OBENLINKS",
+	["TOPRIGHT"] = "OBENRECHTS",
+	["BOTTOMLEFT"] = "UNTENLINKS",
+	["BOTTOMRIGHT"] = "UNTENRECHTS",
 
 	-- Display options
 	["Padding"] = "Zwischenabstand",
@@ -102,37 +116,37 @@ local strings_deDE = {
 	["Adjust background color and alpha."] = "Anpassen der Hintergrundfarbe und Transparenz.",
 	["Pet color"] = "Begleiterfarbe",
 	["Set the color of pet units."] = "Legt die Begleiterfarbe fest.",
-	["Pet coloring"] = "Begleiterf\195\164rbung",
-	["Set the coloring strategy of pet units."] = "Legt fest, wie die Begleiter eingef\195\164rbt werden.",
+	["Pet coloring"] = "Begleiterfärbung",
+	["Set the coloring strategy of pet units."] = "Legt fest, wie die Begleiter eingefärbt werden.",
 	["By Owner Class"] = "Nach Besitzerklasse",
 	["By Creature Type"] = "Nach Kreaturtyp",
 	["Using Fallback color"] = "Nach Standardfarben",
 	["Beast"] = "Tier",
-	["Demon"] = "D\195\164mon",
+	["Demon"] = "Dämon",
 	["Humanoid"] = "Humanoid",
 	["Colors"] = "Farben",
-	["Color options for class and pets."] = "Legt fest, wie Klassen und Begleiter eingef\195\164rbt werden.",
+	["Color options for class and pets."] = "Legt fest, wie Klassen und Begleiter eingefärbt werden.",
 	["Fallback colors"] = "Standardfarben",
-	["Color of unknown units or pets."] = "Farben f\195\188r unbekannte Einheiten oder Begleiter.",
+	["Color of unknown units or pets."] = "Farben für unbekannte Einheiten oder Begleiter.",
 	["Unknown Unit"] = "Unbekannte Einheit",
-	["The color of unknown units."] = "Farbe f\195\188r unbekannte Einheit.",
+	["The color of unknown units."] = "Farbe für unbekannte Einheit.",
 	["Unknown Pet"] = "Unbekannter Begleiter",
-	["The color of unknown pets."] = "Farbe f\195\188r unbekannten Begleiter.",
+	["The color of unknown pets."] = "Farbe für unbekannten Begleiter.",
 	["Class colors"] = "Klassenfarben",
-	["Color of player unit classes."] = "Farben f\195\188r Spielerklassen.",
+	["Color of player unit classes."] = "Farben für Spielerklassen.",
 	["Creature type colors"] = "Kreaturtypfarben",
-	["Color of pet unit creature types."] = "Farben f\195\188r verschiedene Kreaturtypen.",
-	["Color for %s."] = "Farbe f\195\188r %s.",
+	["Color of pet unit creature types."] = "Farben für verschiedene Kreaturtypen.",
+	["Color for %s."] = "Farbe für %s.",
 
 	-- Advanced options
 	["Advanced"] = "Erweitert",
 	["Advanced options."] = "Erweiterte Einstellungen.",
 	["Layout Anchor"] = "Ankerpunkt des Layouts",
-	["Sets where Grid is anchored relative to the screen."] = "Setzt den Ankerpunkt von Grid, relativ zum Bildschirm.",
+	["Sets where Grid is anchored relative to the screen."] = "Setzt den Ankerpunkt von Grid relativ zum Bildschirm.",
 	["Group Anchor"] = "Ankerpunkt der Gruppe",
-	["Sets where groups are anchored relative to the layout frame."] = "Setzt den Ankerpunkt der Gruppe, relativ zum Layoutrahmen.",
-	["Reset Position"] = "Position zur\195\188cksetzen",
-	["Resets the layout frame's position and anchor."] = "Setzt den Ankerpunkt und die Position des Layoutrahmens zur\195\188ck.",
+	["Sets where groups are anchored relative to the layout frame."] = "Setzt den Ankerpunkt der Gruppe relativ zum Layoutrahmen.",
+	["Reset Position"] = "Position zurücksetzen",
+	["Resets the layout frame's position and anchor."] = "Setzt den Ankerpunkt und die Position des Layoutrahmens zurück.",
 
 	--}}}
 	--{{{ GridLayoutLayouts
@@ -157,16 +171,16 @@ local strings_deDE = {
 	--}}}
 	--{{{ GridStatus
 	["Status"] = "Status",
-	["Options for %s."] = "Optionen f\195\188r %s.",
+	["Options for %s."] = "Optionen für %s.",
 
 	-- module prototype
 	["Status: %s"] = "Status: %s",
 	["Color"] = "Farbe",
-	["Color for %s"] = "Farbe f\195\188r %s",
-	["Priority"] = "Priorit\195\164t",
-	["Priority for %s"] = "Priorit\195\164t f\195\188r %s",
+	["Color for %s"] = "Farbe für %s",
+	["Priority"] = "Priorität",
+	["Priority for %s"] = "Priorität für %s",
 	["Range filter"] = "Entfernungsfilter",
-	["Range filter for %s"] = "Entfernungsfilter f\195\188r %s",
+	["Range filter for %s"] = "Entfernungsfilter für %s",
 	["Enable"] = "Aktivieren",
 	["Enable %s"] = "Aktiviere %s",
 
@@ -178,27 +192,30 @@ local strings_deDE = {
 	--}}}
 	--{{{ GridStatusAuras
 	["Auras"] = "Auren",
-	["Debuff type: %s"] = "Schw\195\164chungszaubertyp: %s",
+	["Debuff type: %s"] = "Schwächungszaubertyp: %s",
 	["Poison"] = "Gift",
 	["Disease"] = "Krankheit",
 	["Magic"] = "Magie",
 	["Curse"] = "Fluch",
 	["Ghost"] = "Geist",
-	["Add new Buff"] = "Neuen St\195\164rkungszauber hinzuf\195\188gen",
-	["Adds a new buff to the status module"] = "F\195\188gt einen neuen St\195\164rkungszauber zum Status Modul hinzu",
-	["Add new Debuff"] = "Neuen Schw\195\164chungszauber hinzuf\195\188gen",
-	["Adds a new debuff to the status module"] = "F\195\188gt einen neuen Schw\195\164chungszauber zum Status Modul hinzu",
-	["Delete (De)buff"] = "L\195\182sche Schw\195\164chungs-/St\195\164rkungszauber",
-	["Deletes an existing debuff from the status module"] = "L\195\182scht einen Schw\195\164chungszauber vom Status Modul",
-	["Remove %s from the menu"] = "Entfernt %s vom Men\195\188",
-	["Debuff: %s"] = "Schw\195\164chungszauber: %s",
-	["Buff: %s"] = "St\195\164rkungszauber: %s",
+	["Add new Buff"] = "Neuen Stärkungszauber hinzufügen",
+	["Adds a new buff to the status module"] = "Fügt einen neuen Stärkungszauber zum Status Modul hinzu",
+	["<buff name>"] = "<buff name>",
+	["Add new Debuff"] = "Neuen Schwächungszauber hinzufügen",
+	["Adds a new debuff to the status module"] = "Fügt einen neuen Schwächungszauber zum Status Modul hinzu",
+	["<debuff name>"] = "<debuff name>",
+	["Delete (De)buff"] = "Lösche Schwächungs-/Stärkungszauber",
+	["Deletes an existing debuff from the status module"] = "Löscht einen Schwächungszauber vom Status Modul",
+	["Remove %s from the menu"] = "Entfernt %s vom Menü",
+	["Debuff: %s"] = "Schwächungszauber: %s",
+	["Buff: %s"] = "Stärkungszauber: %s",
 	["Class Filter"] = "Klassenfilter",
-	["Show status for the selected classes."] = "Zeige den Status f\195\188r die ausgw\195\164hlte Klasse.",
+	["Show status for the selected classes."] = "Zeige den Status für die ausgwählte Klasse.",
 	["Show on %s."] = "Zeige %s.",
 	["Show if missing"] = "Zeige wenn es fehlt",
-	["Display status only if the buff is not active."] = "Zeige nur den Status wenn der St\195\164rkungszauber nicht aktiv ist.",
-	--["[^%a]"] = "[^%a]",
+	["Display status only if the buff is not active."] = "Zeige nur den Status wenn der Stärkungszauber nicht aktiv ist.",
+	["Filter Abolished units"] = "Bereinigte Einheiten filtern",
+	["Skip units that have an active Abolish buff."] = "Einheiten verwerfen, die einen aktiven bereinigenden Stärkungszauber haben (Krankheit/Vergiftung aufheben).",
 
 	--}}}
 	--{{{ GridStatusName
@@ -208,11 +225,10 @@ local strings_deDE = {
 	--}}}
 	--{{{ GridStatusMana
 	["Mana"] = "Mana",
-	["Mana threshold"] = "Mana Grenzwert",
-	["Set the percentage for the low mana warning."] = "Setzt den % Grenzwert f\195\188r die Wenig-Mana Warnung.",
-	["Low Mana warning"] = "Wenig-Mana Warnung",
 	["Low Mana"] = "Wenig Mana",
-	
+	["Mana threshold"] = "Mana Grenzwert",
+	["Set the percentage for the low mana warning."] = "Setzt den % Grenzwert für die Wenig Mana Warnung.",
+	["Low Mana warning"] = "Wenig Mana Warnung",
 
 	--}}}
 	--{{{ GridStatusHeals
@@ -222,7 +238,7 @@ local strings_deDE = {
 	["Ignore heals cast by you."] = "Ignoriere Heilungen die von dir gezaubert werden.",
 	["(.+) begins to cast (.+)."] = "(.+) beginnt (.+) zu wirken.",
 	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = "(.+) bekommt (.+) Mana durch (.+)'s Lebensentzug.",
-	["^Corpse of (.+)$"] = "^Corpse of (.+)$",
+	["^Corpse of (.+)$"] = "^Leichnam von (.+)$",
 
 	--}}}
 	--{{{ GridStatusHealth
@@ -232,29 +248,31 @@ local strings_deDE = {
 	["Offline"] = "Offline",
 	["Unit health"] = "Gesundheit",
 	["Health deficit"] = "Gesundheitsdefizit",
-	["Low HP warning"] = "Wenig-HP Warnung",
+	["Low HP warning"] = "Wenig HP Warnung",
 	["Feign Death warning"] = "Warnung wenn totgestellt",
 	["Death warning"] = "Todeswarnung",
 	["Offline warning"] = "Offlinewarnung",
 	["Health"] = "Gesundheit",
 	["Show dead as full health"] = "Zeige Tote mit voller Gesundheit an",
-	["Treat dead units as being full health."] = "Behandle Tote als h\195\164tten sie volle Gesundheit",
+	["Treat dead units as being full health."] = "Behandle Tote als hätten sie volle Gesundheit.",
 	["Use class color"] = "Benutze Klassenfarbe",
-	["Color health based on class."] = "F\195\164rbe den Gesundheitsbalken in Klassenfarbe.",
+	["Color health based on class."] = "Färbe den Gesundheitsbalken in Klassenfarbe.",
 	["Health threshold"] = "Gesundheitsgrenzwert",
 	["Only show deficit above % damage."] = "Zeige Defizit bei mehr als % Schaden.",
-	["Color deficit based on class."] = "F\195\164rbe das Defizit nach Klassenfarbe.",
+	["Color deficit based on class."] = "Färbe das Defizit nach Klassenfarbe.",
 	["Low HP threshold"] = "Wenig HP Grenzwert",
-	["Set the HP % for the low HP warning."] = "Setzt den % Grenzwert f\195\188r die Wenig HP Warnung.",
+	["Set the HP % for the low HP warning."] = "Setzt den % Grenzwert für die Wenig HP Warnung.",
 
 	--}}}
 	--{{{ GridStatusRange
 	["Range"] = "Entfernung",
-	["Range check frequency"] = "H\195\164ufigkeit der Reichweitenmessung",
+	["Range check frequency"] = "Häufigkeit der Reichweitenmessung",
 	["Seconds between range checks"] = "Sekunden zwischen den Reichweitenmessungen",
-	["Out of Range"] = "Au\195\159er Reichweite",
---	["Range to track"] = true,
---	["Range in yard beyond which the status will be lost."] = true,
+	["Out of Range"] = "Außer Reichweite",
+	["OOR"] = "OOR",
+	["Range to track"] = "Entfernungreichweite",
+	["Range in yard beyond which the status will be lost."] = "Reichweite in Meter bei welcher der Status verloren geht.",
+	["%d yards"] = "%d meter",
 
 	--}}}
 	--{{{ GridStatusTarget
@@ -262,8 +280,11 @@ local strings_deDE = {
 	["Your Target"] = "Dein Ziel",
 
 	--}}}
+	--{{{ GridStatusVoiceComm
+	["Voice Chat"] = "Voice Chat",
+	["Talking"] = "Redet",
 
-
+	--}}}
 }
 
 L:RegisterTranslations("deDE", function() return strings_deDE end)
