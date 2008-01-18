@@ -104,7 +104,11 @@ function GridStatusRange:RangeCheck()
 	local rangecheck = GridRange:GetRangeCheck(t_range)
 	if rangecheck then
 		for unit in roster:IterateRoster(true) do
-			if rangecheck(unit.unitid) then
+			local unitid = unit.unitid
+			if rangecheck(unitid) or 
+				-- needed because typical test (IsSpellInRange()) fails if the unit is dead.
+				UnitIsDead(unitid) and GridRange:GetUnitRange(unitid) < t_range
+			then
 				core:SendStatusLost(unit.name, "alert_range_oor")
 			else
 				core:SendStatusGained(unit.name, "alert_range_oor",
