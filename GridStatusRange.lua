@@ -108,8 +108,8 @@ function GridStatusRange:RangeCheck()
 			local in_range
 			if rangecheck(unitid) then
 				in_range = true
-			elseif UnitIsDead(unitid) then
-				-- needed because typical test (IsSpellInRange()) fails if the unit is dead.
+			elseif UnitIsDead(unitid) or not UnitCanAssist("player", unitid) then
+				-- needed because typical test (IsSpellInRange()) fails if the unit is dead or charmed.
 				local range = GridRange:GetUnitRange(unitid)
 				if range and range < t_range then
 					in_range = true
