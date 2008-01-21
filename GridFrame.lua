@@ -64,8 +64,6 @@ function GridFrame_OnAttributeChanged(self, name, value)
 			frame.unitName = nil
 			frame.unit = value
 		end
-	elseif name == "type1" and not value or value == "" then
-		self:SetAttribute("type1", "target")
 	end
 end
 
