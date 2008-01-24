@@ -279,7 +279,7 @@ function GridStatus:FillColorOptions(options)
 	} do
 		local name = class:upper()
 		local l_class = BC[class]
-		if not colors[class] then
+		if not colors[name] then
 			local r, g, b = BC:GetColor(class)
 			colors[name] = { r = r, g = g, b = b, a = 1, }
 		end
