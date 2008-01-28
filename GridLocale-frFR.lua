@@ -86,10 +86,12 @@ local strings_frFR = {
 	["Show the pets for the party below the party itself."] = "Affiche les familiers du groupe sous le groupe lui-même.",
 	["Horizontal groups"] = "Disposition horizontale",
 	["Switch between horzontal/vertical groups."] = "Disposer les groupes horizontalement",
-	["Frame lock"] = "Verrouiller",
-	["Locks/unlocks the grid for movement."] = "Verrouiller l'emplacement de la grille",
 	["Clamped to screen"] = "Garder à l'écran",
 	["Toggle whether to permit movement out of screen."] = "Permet ou non de déplacer la grille hors de l'écran.",
+	["Frame lock"] = "Verrouiller",
+	["Locks/unlocks the grid for movement."] = "Verrouiller l'emplacement de la grille",
+	--["Click through the Grid Frame"] = true,
+	--["Allows mouse click through the Grid Frame."] = true,
 
 	["CENTER"] = "CENTRE",
 	["TOP"] = "HAUT",
@@ -212,8 +214,8 @@ local strings_frFR = {
 	["Show on %s."] = "Affiche le statut pour la classe %s.",
 	["Show if missing"] = "Afficher si manquant",
 	["Display status only if the buff is not active."] = "Affiche le statut uniquement si le buff n'est pas actif.",
---	["Filter Abolished units"] = true,
---	["Skip units that have an active Abolish buff."] = true,
+	["Filter Abolished units"] = "Filtre les unités abolies",
+	--["Skip units that have an active Abolish buff."] = true,
 
 	--}}}
 	--{{{ GridStatusName
@@ -270,6 +272,7 @@ local strings_frFR = {
 	["OOR"] = "ODP",
 	["Range to track"] = "Portée à vérifier",
 	["Range in yard beyond which the status will be lost."] = "Portée en mètres au-dela de laquelle le statut est faux.",
+	["%d yards"] = "%d mètres",
 
 	--}}}
 	--{{{ GridStatusTarget
