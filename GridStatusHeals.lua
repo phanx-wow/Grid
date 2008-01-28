@@ -87,11 +87,16 @@ function GridStatusHeals:OnEnable()
 
 	self:RegisterEvent("UNIT_SPELLCAST_START")
 	self:RegisterEvent("CHAT_MSG_ADDON")
-	CastCommLib:RegisterCallback(self, "CastCommCallback")
+
+	if CastCommLib then
+		CastCommLib:RegisterCallback(self, "CastCommCallback")
+	end
 end
 
 function GridStatusHeals:OnDisable()
-	CastCommLib:UnregisterCallback(self)
+	if CastCommLib then
+		CastCommLib:UnregisterCallback(self)
+	end
 end
 
 function GridStatusHeals:Grid_UnitLeft(name)

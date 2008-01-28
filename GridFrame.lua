@@ -386,7 +386,11 @@ function GridFrameClass.prototype:InvertBarColor()
 end
 
 function GridFrameClass.prototype:SetText(text, color)
-	text = text:utf8sub(1, GridFrame.db.profile.textlength)
+	if text.utf8sub then
+		text = text:utf8sub(1, GridFrame.db.profile.textlength)
+	else
+		text = text:sub(1, GridFrame.db.profile.textlength)
+	end
 	self.frame.Text:SetText(text)
 	if text and text ~= "" then
 		self.frame.Text:Show()
@@ -399,7 +403,11 @@ function GridFrameClass.prototype:SetText(text, color)
 end
 
 function GridFrameClass.prototype:SetText2(text, color)
-	text = text:utf8sub(1, GridFrame.db.profile.textlength)
+	if text.utf8sub then
+		text = text:utf8sub(1, GridFrame.db.profile.textlength)
+	else
+		text = text:sub(1, GridFrame.db.profile.textlength)
+	end
 	self.frame.Text2:SetText(text)
 	if text and text ~= "" then
 		self.frame.Text2:Show()
