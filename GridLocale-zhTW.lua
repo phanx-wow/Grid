@@ -82,13 +82,17 @@ local strings_zhTW = {
 	["Select which raid layout to use."] = "選擇團隊版面編排方式。",
 	["Show Party in Raid"] = "在團隊中顯示小隊",
 	["Show party/self as an extra group."] = "把自己/小隊顯示為額外小組。",
+	["Show Pets for Party"] = "在隊伍中顯示寵物",
+	["Show the pets for the party below the party itself."] = "在隊伍中顯示該隊伍中的寵物",
 	["Horizontal groups"] = "橫向顯示小組",
 	["Switch between horzontal/vertical groups."] = "轉換橫向/垂直顯示小組。",
 	["Clamped to screen"] = "限制框架於視窗內",
 	["Toggle whether to permit movement out of screen."] = "限制框架於視窗內，避免拖曳出視窗外。",
 	["Frame lock"] = "鎖定框架",
 	["Locks/unlocks the grid for movement."] = "鎖定/解鎖 Grid 框架。",
-
+	["Click through the Grid Frame"] = "透過點擊 Grid 框架", 
+	["Allows mouse click through the Grid Frame."] = "允許透過滑鼠點擊 Grid 框架。", 
+	
 	["CENTER"] = "中",
 	["TOP"] = "上",
 	["BOTTOM"] = "下",
@@ -110,6 +114,29 @@ local strings_zhTW = {
 	["Adjust border color and alpha."] = "調整邊框顏色與透明度。",
 	["Background"] = "背景",
 	["Adjust background color and alpha."] = "調整背景顏色與透明度。",
+	["Pet color"] = "寵物顏色",
+	["Set the color of pet units."] = "設定寵物使用的顏色",
+	["Pet coloring"] = "寵物配色",
+	["Set the coloring strategy of pet units."] = "設定寵物的配色方案。",
+	["By Owner Class"] = "依玩家職業",
+	["By Creature Type"] = "依支配類型",
+	["Using Fallback color"] = "使用備用顏色",
+	["Beast"] = "野獸",
+	["Demon"] = "惡魔",
+	["Humanoid"] = "人形生物",
+	["Colors"] = "顏色",
+	["Color options for class and pets."] = "職業與寵物的顏色選項。",
+	["Fallback colors"] = "備用顏色",
+	["Color of unknown units or pets."] = "未知單位或寵物的顏色。",
+	["Unknown Unit"] = "未知單位",
+	["The color of unknown units."] = "未知單位的顏色。",
+	["Unknown Pet"] = "未知寵物",
+	["The color of unknown pets."] = "未知寵物的顏色。",
+	["Class colors"] = "職業顏色",
+	["Color of player unit classes."] = "玩家職業的顏色。",
+	["Creature type colors"] = "召喚類型的顏色",
+	["Color of pet unit creature types."] = "玩家召喚之寵物的顏色。",
+	["Color for %s."] = "%s的顏色",
 
 	-- Advanced options
 	["Advanced"] = "進階",
@@ -126,10 +153,13 @@ local strings_zhTW = {
 	["None"] = "無",
 	["By Group 40"] = "40人團隊",
 	["By Group 25"] = "25人團隊",
+	["By Group 25 w/Pets"] = "25人團隊及寵物",
 	["By Group 20"] = "20人團隊",
 	["By Group 15"] = "15人團隊",
 	["By Group 10"] = "10人團隊",
+	["By Group 10 w/Pets"] = "10人團隊及寵物",
 	["By Class"] = "以職業排列",
+	["By Class w/Pets"] = "以職業排列及寵物",
 	["Onyxia"] = "單數雙數小隊交錯排列",
 	["By Group 25 w/tanks"] = "25人團隊及坦克",	
 
@@ -184,6 +214,8 @@ local strings_zhTW = {
 	["Show on %s."] = "在%s上顯示。",
 	["Show if missing"] = "顯示缺少",
 	["Display status only if the buff is not active."] = "當缺少增益時提示。",
+	["Filter Abolished units"] = "Filter Abolished units",
+	["Skip units that have an active Abolish buff."] = "Skip units that have an active Abolish buff.",
 
 	--}}}
 	--{{{ GridStatusName
@@ -204,9 +236,9 @@ local strings_zhTW = {
 	["Incoming heals"] = "治療中",
 	["Ignore Self"] = "忽略自己",
 	["Ignore heals cast by you."] = "忽略自己施放的治療法術。",
--- no use anymore	["(.+) begins to cast (.+)."] = true,
--- no use anymore	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = true,
--- no use anymore	["^Corpse of (.+)$"] = true,
+	["(.+) begins to cast (.+)."] = "(.+)開始施放(.+)",
+	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = "(.+)從(.+)的生命分流獲得了(.+)點法力值",
+	["^Corpse of (.+)$"] = "^(.+)的屍體$",
 
 	--}}}
 	--{{{ GridStatusHealth
@@ -238,8 +270,9 @@ local strings_zhTW = {
 	["Seconds between range checks"] = "設定程式多少秒檢測一次距離",
 	["Out of Range"] = "超出距離",
 	["OOR"] = "太遠",
---	["Range to track"] = true,
---	["Range in yard beyond which the status will be lost."] = true,
+	["Range to track"] = "追蹤距離",
+	["Range in yard beyond which the status will be lost."] = "距離超過太遠時有些資訊會遺失。",
+	["%d yards"] = "%d 碼",
 
 	--}}}
 	--{{{ GridStatusTarget
