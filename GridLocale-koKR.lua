@@ -90,7 +90,7 @@ local strings_koKR = {
 	["Toggle whether to permit movement out of screen."] = "화면 밖으로 창이 나가지 않도록 사용합니다.",
 	["Frame lock"] = "창 고정",
 	["Locks/unlocks the grid for movement."] = "Grid 창을 고정하거나 이동시킵니다.",
-	["Click through the Grid Frame"] = "Grid 창을 통해 클릭",
+	["Click through the Grid Frame"] = "창을 통해 클릭",
 	["Allows mouse click through the Grid Frame."] = "Grid 창을 통해 마우스 클릭을 허락합니다.",
 
 	["CENTER"] = "중앙",
@@ -151,17 +151,17 @@ local strings_koKR = {
 	--}}}
 	--{{{ GridLayoutLayouts
 	["None"] = "없음",
-	["By Group 40"] = "40인",
-	["By Group 25"] = "25인",
-	["By Group 25 w/Pets"] = "25인, 소환수",
-	["By Group 20"] = "20인",
-	["By Group 15"] = "15인",
-	["By Group 10"] = "10인",
-	["By Group 10 w/Pets"] = "10인, 소환수",
+	["By Group 40"] = "40인 공격대",
+	["By Group 25"] = "25인 공격대",
+	["By Group 25 w/Pets"] = "25인 공격대, 소환수",
+	["By Group 20"] = "20인 공격대",
+	["By Group 15"] = "15인 공격대",
+	["By Group 10"] = "10인 공격대",
+	["By Group 10 w/Pets"] = "10인 공격대, 소환수",
 	["By Class"] = "직업별",
 	["By Class w/Pets"] = "직업별, 소환수",
 	["Onyxia"] = "오닉시아",
-	["By Group 25 w/tanks"] = "25인, 탱커",
+	["By Group 25 w/tanks"] = "25인 공격대, 탱커",
 
 	--}}}
 	--{{{ GridRange
