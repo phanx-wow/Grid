@@ -19,7 +19,7 @@
 <Script file="libs\FuBarPlugin-2.0\FuBarPlugin-2.0.lua"/>
 <Script file="libs\Gratuity-2.0\Gratuity-2.0.lua"/>
 <Script file="libs\SpecialEvents-Aura-2.0\SpecialEvents-Aura-2.0.lua"/>
-<Script file="libs\Banzai-1.1\Banzai-1.1.lua"/>
+<Script file="libs\LibBanzai-2.0\lib.xml"/>
 <Script file="libs\Babble-Spell-2.2\Babble-Spell-2.2.lua"/>
 <Script file="libs\Babble-Class-2.2\Babble-Class-2.2.lua"/>
 

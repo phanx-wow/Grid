@@ -1,7 +1,7 @@
 ﻿--{{{ Libraries
 
 local RL = AceLibrary("Roster-2.1")
-local Banzai = AceLibrary("Banzai-1.1")
+local Banzai = AceLibrary("LibBanzai-2.0")
 local BS = AceLibrary("Babble-Spell-2.2")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local CastCommLib = CastCommLib
@@ -123,7 +123,7 @@ function GridStatusHeals:UNIT_SPELLCAST_START(unit)
 		if not u then return end
 --		self:Debug(UnitName(unit), "is healing", u.name)
 		-- filter units that are probably not the correct unit
-		if UnitHealth(u.unitid)/UnitHealthMax(u.unitid) < 0.9 or Banzai:GetUnitAggroByUnitId(u.unitid) then
+		if UnitHealth(u.unitid)/UnitHealthMax(u.unitid) < 0.9 or Banzai:GetUnitAggroByUnitName(u.name) then
 			self:UnitIsHealed(u.name)
 		end
 	end

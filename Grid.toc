@@ -14,8 +14,8 @@
 ## DefaultState: enabled
 ## LoadOnDemand: 0
 
-## OptionalDeps: Ace2, Babble-2.2, Clique, CT_RaidAssist, DewdropLib, FuBar, FuBarPlugin-2.0, GratuityLib, JustClick, oRA2, RosterLib, BanzaiLib, LibSharedMedia-2.0, SharedMedia-2.0, SpecialEventsEmbed, CastCommLib, UTF8, ChatThrottleLib, SpecialEvents-Aura-2.0
-## X-Embeds: Ace2, Babble-2.2, DewdropLib, FuBarPlugin-2.0, GratuityLib, RosterLib, BanzaiLib, SpecialEventsEmbed, CastCommLib, UTF8, LibSharedMedia-2.0
+## OptionalDeps: Ace2, Babble-2.2, Clique, CT_RaidAssist, DewdropLib, FuBar, FuBarPlugin-2.0, GratuityLib, JustClick, oRA2, RosterLib, LibBanzai-2.0, LibSharedMedia-2.0, SharedMedia-2.0, SpecialEventsEmbed, CastCommLib, UTF8, ChatThrottleLib, SpecialEvents-Aura-2.0
+## X-Embeds: Ace2, Babble-2.2, DewdropLib, FuBarPlugin-2.0, GratuityLib, RosterLib, LibBanzai-2.0, SpecialEventsEmbed, CastCommLib, UTF8, LibSharedMedia-2.0
 
 ## SavedVariables: GridDB
 
@@ -53,3 +53,4 @@ GridStatusAuras.lua
 GridStatusTarget.lua
 GridStatusRange.lua
 GridStatusVoiceComm.lua
+
