@@ -111,7 +111,7 @@ function GridStatusRange:RangeCheck()
 			elseif UnitIsDead(unitid) or not UnitCanAssist("player", unitid) then
 				-- needed because typical test (IsSpellInRange()) fails if the unit is dead or charmed.
 				local range = GridRange:GetUnitRange(unitid)
-				if range and range < t_range then
+				if range and range <= t_range then
 					in_range = true
 				end
 			end
