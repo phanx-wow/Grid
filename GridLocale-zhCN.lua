@@ -277,9 +277,9 @@ local strings_zhCN = {
 
 	--}}}
 	--{{{ GridStatusVoiceComm
---	["Voice Chat"] = "语音聊天",
---	["Talking"] = "正在说话",
---voice chat is not availabe in cwow
+	["Voice Chat"] = "语音",
+	["Talking"] = "正在说话",
+
 	--}}}
 }
 
