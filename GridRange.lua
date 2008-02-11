@@ -52,6 +52,7 @@ local function initRanges()
 	addRange(28, checkRange28)
 	addRange(100, checkRange100)
 end
+initRanges()
 
 function GridRange:ScanSpellbook()
 	local gratuity = AceLibrary("Gratuity-2.0")
