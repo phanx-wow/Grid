@@ -25,4 +25,11 @@
 
 <Script file="libs\Waterfall-1.0\Waterfall-1.0.lua"/>
 
+<!--Dependencies for GridStatusHeals-->
+<!--Needed by LibHealComm-->
+<Include file="libs\CallbackHandler-1.0\CallbackHandler-1.0.xml"/>
+<Include file="libs\LibBabble-Spell-3.0\lib.xml"/>
+<!--directly needed by GridStatusHeals-->
+<Include file="libs\LibHealComm-3.0\lib.xml"/>
+
 </Ui>

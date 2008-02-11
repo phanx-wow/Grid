@@ -1,11 +1,7 @@
-﻿--{{{ Libraries
-
-local RL = AceLibrary("Roster-2.1")
-local Banzai = AceLibrary("LibBanzai-2.0")
-local BS = AceLibrary("Babble-Spell-2.2")
+--{{{ Libraries
+local HealComm = LibStub:GetLibrary("LibHealComm-3.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
-local CastCommLib = CastCommLib
-
+local Roster = AceLibrary("Roster-2.1")
 --}}}
 
 GridStatusHeals = GridStatus:NewModule("GridStatusHeals")
@@ -22,194 +18,238 @@ GridStatusHeals.defaultDB = {
 		priority = 50,
 		range = false,
 		ignore_self = false,
+		icon = nil,
 	},
 }
 
 --}}}
---{{{ Options
 
 GridStatusHeals.options = false
 
---}}}
---{{{ locals
-
--- whenever this module recieves an AceComm event, combat log scan from sender 
--- will be skipped and AceComm will be used instead
-local gridusers = {} 
-local castcommusers = {}
-
--- spells we want to watch. need to add localizations via BabbleSpell later
-local watchSpells = {
-	[BS["Holy Light"]] = true,
-	[BS["Flash of Light"]] = true,
-
-	[BS["Lesser Heal"]] = true,
-	[BS["Heal"]] = true,
-	[BS["Flash Heal"]] = true,
-	[BS["Greater Heal"]] = true,
-	[BS["Binding Heal"]] = true,
-
-	[BS["Healing Touch"]] = true,
-	[BS["Lesser Healing Wave"]] = true,
-	[BS["Healing Wave"]] = true,
-	
-	[BS["Regrowth"]] = true,
-	[BS["Prayer of Healing"]] = true,
-}
-
 local healsOptions = {
-	["ignoreSelf"] = {
-		type = "toggle",
-		name = L["Ignore Self"],
-		desc = L["Ignore heals cast by you."],
-		get  = function ()
-			       return GridStatusHeals.db.profile.alert_heals.ignore_self
-		       end,
-		set  = function (v)
-			       GridStatusHeals.db.profile.alert_heals.ignore_self = v
-		       end,
-	}
+    ["ignoreSelf"] = {
+	    type = "toggle",
+	    name = L["Ignore Self"],
+	    desc = L["Ignore heals cast by you."],
+	    get  = function ()
+			   return GridStatusHeals.db.profile.alert_heals.ignore_self
+		   end,
+	    set  = function (v)
+			   GridStatusHeals.db.profile.alert_heals.ignore_self = v
+		   end,
+    },
+    ["versioncheck"] = {
+	    type = "execute",
+	    name = L["Show HealComm Users"],
+	    desc = L["Displays HealComm users and versions."],
+	    func = function () GridStatusHeals:ShowHealCommVersions() end,
+    },
 }
 
---}}}
+local settings
 
+--{{{ Initialisation
 function GridStatusHeals:OnInitialize()
 	self.super.OnInitialize(self)
+    self.playerName = UnitName("player")
+    
+    self.ownHeals = {}
+    settings = GridStatusHeals.db.profile.alert_heals
 	self:RegisterStatus("alert_heals", L["Incoming heals"], healsOptions, true)
-	gridusers[UnitName("player")] = true
-	castcommusers[UnitName("player")] = true
 end
 
-
 function GridStatusHeals:OnEnable()
-	-- register events
-	self:RegisterEvent("Grid_UnitLeft")
-
-	self:RegisterEvent("UNIT_SPELLCAST_START")
-	self:RegisterEvent("CHAT_MSG_ADDON")
-
-	if CastCommLib then
-		CastCommLib:RegisterCallback(self, "CastCommCallback")
-	end
+    -- register events
+    self:RegisterEvent("Grid_UnitLeft")
+    self:RegisterEvent("Grid_LeftParty")
+    self:RegisterEvent("UNIT_HEALTH", "UpdateHealsForUnit")
+    self:RegisterEvent("UNIT_HEALTH_MAX", "UpdateHealsForUnit")
+    
+	-- register callbacks
+	HealComm.RegisterCallback(self, "HealComm_DirectHealStart")
+    HealComm.RegisterCallback(self, "HealComm_DirectHealStop")
+    HealComm.RegisterCallback(self, "HealComm_DirectHealDelayed")
+    HealComm.RegisterCallback(self, "HealComm_HealModifierUpdate")
 end
 
 function GridStatusHeals:OnDisable()
-	if CastCommLib then
-		CastCommLib:UnregisterCallback(self)
+	HealComm.UnregisterCallback(self, "HealComm_DirectHealStart")
+    HealComm.UnregisterCallback(self, "HealComm_DirectHealStop")
+    HealComm.UnregisterCallback(self, "HealComm_DirectHealDelayed")
+    HealComm.UnregisterCallback(self, "HealComm_HealModifierUpdate")
+
+    self:UnregisterEvent("Grid_UnitLeft")
+    self:UnregisterEvent("Grid_LeftParty")
+    self:UnregisterEvent("UNIT_HEALTH")
+    self:UnregisterEvent("UNIT_HEALTH_MAX")
+end
+--}}}
+
+--{{{ Event/Callback handling
+
+--[[free the leaving units entry in own-heals-table]]
+function GridStatusHeals:Grid_UnitLeft(gridName)    
+    --this doesn't work in battlegrounds because I currently can't find
+    --an easy way of getting the realm of the leaving unit because it isn't
+    --in the raid anymore
+    self.ownHeals[gridName] = nil
+end
+
+--[[wipe own-heals-table clean]]
+function GridStatusHeals:Grid_LeftParty()    
+    self.ownHeals = {}
+end
+
+function GridStatusHeals:HealComm_DirectHealStart(event, healerFullName, healSize, endTime, ...)
+    --DEFAULT_CHAT_FRAME:AddMessage("direct start with "..healSize.." from "..healerFullName);
+    self:HandleIncomingHeal(healerFullName, healSize, ...)
+end
+
+function GridStatusHeals:HealComm_DirectHealStop(event, healerFullName, healSize, succeeded, ...)
+    --set healSize to zero to make track of ownHeals easier
+    --remember this in case you nead the healsize in the future
+    --DEFAULT_CHAT_FRAME:AddMessage("direct end with "..healSize.." from "..healerFullName);
+    self:HandleIncomingHeal(healerFullName, 0, ...)
+end
+
+function GridStatusHeals:HealComm_DirectHealDelayed(event, healerFullName, healSize, endTime, ...)
+    --DEFAULT_CHAT_FRAME:AddMessage("direct delay with "..healSize.." from "..healerFullName);
+    self:HandleIncomingHeal(healerFullName, healSize, ...)
+end
+
+function GridStatusHeals:HealComm_HealModifierUpdate(event, unit, targetFullName, healModifier)
+    --DEFAULT_CHAT_FRAME:AddMessage("modifier on "..targetFullName);
+    self:UpdateIncomingHeals(targetFullName)
+end
+
+function GridStatusHeals:HandleIncomingHeal(healerFullName, healSize, ...)
+    --DEFAULT_CHAT_FRAME:AddMessage("update: "..healSize.." from "..healerFullName);
+    local isOwnHeal = (healerFullName == self.playerName)
+    if isOwnHeal and settings.ignore_self then
+        return
+    end
+    --DEFAULT_CHAT_FRAME:AddMessage("targets:");
+    
+    --iterate through targets of heal and update them
+    for i=1,select('#', ...) do
+        local targetFullName = select(i, ...)   
+        --DEFAULT_CHAT_FRAME:AddMessage(targetFullName);
+        --track own heals
+        if isOwnHeal then
+            self.ownHeals[targetFullName] = healSize
+        end
+        
+        self:UpdateIncomingHeals(targetFullName, isOwnHeal)
+    end
+end
+
+function GridStatusHeals:UpdateHealsForUnit(unitid)
+    local name, realm = UnitName(unitid);    
+    local fullName
+
+    if (realm and realm ~= "") then
+        fullName = name .. "-" .. realm;
+    else
+        fullName = name
+    end
+    self:UpdateIncomingHeals(name)
+end
+
+--}}}
+
+--{{{ General functionality
+
+function GridStatusHeals:ShowHealCommVersions()
+	local versions = HealComm:GetRaidOrPartyVersions()
+	Grid:Print(L["HealComm Users"])
+	local your_version = versions[(UnitName("player"))]
+	for user, version in pairs(versions) do
+		if version then
+			if version < your_version then
+				version = ("|cffff0000%d|r"):format(version)
+			elseif version > your_version then
+				version = ("|cff00ff00%d|r"):format(version)
+			end
+			Grid:Print(("%s: %s"):format(user, version))
+		end
 	end
 end
 
-function GridStatusHeals:Grid_UnitLeft(name)
-	castcommusers[name] = nil
-	gridusers[name] = nil
+function GridStatusHeals:UpdateIncomingHeals(fullName, isOwnHeal)
+    --get incoming heals from other healers
+    --DEFAULT_CHAT_FRAME:AddMessage("update at: "..fullName);
+    local incoming = HealComm:UnitIncomingHealGet(fullName, GetTime() + 100.0) or 0
+    --DEFAULT_CHAT_FRAME:AddMessage("incoming without own: "..incoming.." after: "..after);
+    
+    --add own incoming heals if not ignored
+    if not settings.ignore_self then
+        incoming = incoming + (self.ownHeals[fullName] or 0)
+    end
+    
+    --DEFAULT_CHAT_FRAME:AddMessage("incoming with own: "..incoming);
+    
+    local gridName = self:GetGridName(fullName)
+    if incoming > 0 then
+        local effectiveIncoming = incoming * HealComm:UnitHealModifierGet(fullName)
+        --DEFAULT_CHAT_FRAME:AddMessage("send gained at "..gridName.." with "..effectiveIncoming);
+        self:SendIncomingHealsStatus(gridName, effectiveIncoming,
+				     UnitHealth(fullName) + effectiveIncoming,
+				     UnitHealthMax(fullName))
+    else
+        self.core:SendStatusLost(gridName, "alert_heals")
+    end    
 end
 
-function GridStatusHeals:UNIT_SPELLCAST_START(unit)
-	local spell, rank, displayName, icon, startTime, endTime = UnitCastingInfo(unit)
-	-- find out how spell and displayName differ. I guess displayName is localized?
+function GridStatusHeals:SendIncomingHealsStatus(gridName, incoming, estimatedHealth, maxHealth)
 
-	if not watchSpells[spell] then return end
-	local helper = UnitName(unit)
-	local unitid = RL:GetUnitIDFromName(helper)
+    --add heal modifier to incoming value caused by buffs and debuffs
+    --local modifier = UnitHealModifierGet(unitName)
+    -- local effectiveIncoming = modifier * incoming
+   
+    local incomingText = self:FormatIncomingText(incoming)
+    --DEFAULT_CHAT_FRAME:AddMessage("send status at "..gridName.." with "..incomingText);
+    self.core:SendStatusGained( gridName, "alert_heals",
+                                settings.priority,
+                                (settings.range and 40),
+                                settings.color,
+                                incomingText,
+                                estimatedHealth, maxHealth,
+                                settings.icon)
+end
 
-	if not helper or not spell or not unitid then return end
-	if castcommusers[helper] then return end
-	if gridusers[helper] then return end
+--[[Converts the full name (which is the name of the unit together with 
+    its realm) to the grid name (which is the name of the unit)]]
+function GridStatusHeals:GetGridName(fullName)
+    return fullName:match("(.+)%-") or fullName
+end
 
-	if spell == BS["Prayer of Healing"] then
-		self:GroupHeal(helper)
+--[[Converts a grid name (which is the name of the unit) to the full 
+    name (which is the name of the unit together with its realm)]]
+function GridStatusHeals:GetFullName(gridName)
+    --this won't work if there are actually two players with the same
+    --name in the battleground but by now grid doesn't care 
+    local unit = Roster:GetUnitIDFromName(gridName)
+    
+    if not unit or unit == "" then
+        return gridName
+    end
+    
+    local name, realm = UnitName(gridName);    
+    
+    if (realm and realm ~= "") then
+        return name .. "-" .. realm;
+    else
+        return name
+    end
+end
+
+function GridStatusHeals:FormatIncomingText(incoming)
+    local incomingText
+    if incoming > 999 then
+		incomingText = string.format("%.1fk", incoming/1000.0)
 	else
-		local u = RL:GetUnitObjectFromUnit(unit.."target")
-		if not u then return end
---		self:Debug(UnitName(unit), "is healing", u.name)
-		-- filter units that are probably not the correct unit
-		if UnitHealth(u.unitid)/UnitHealthMax(u.unitid) < 0.9 or Banzai:GetUnitAggroByUnitName(u.name) then
-			self:UnitIsHealed(u.name)
-		end
+		incomingText = string.format("%d", incoming)
 	end
+    return incomingText
 end
-
-
-function GridStatusHeals:CHAT_MSG_ADDON(prefix, message, distribution, sender)
-	if prefix ~= self.name then return end
-
-	self:Debug("OnCommReceive", prefix, message, sender, distribution)
-
-	if sender == UnitName("player") then return end
-	if not RL:GetUnitIDFromName(sender) then return end
-
-	gridusers[sender] = true
-
-	if castcommusers[sender] then return end
-
-	local what, who = string.match("^([^ ]+) ?(.*)$", message)
-
-	if what == "HN" then
-		self:UnitIsHealed(who)
-	elseif what == "HG" then
-		self:GroupHeal(sender)
-	end
-end
-
-function GridStatusHeals:GroupHeal(healer)
-	local u1 = RL:GetUnitObjectFromName(healer)
-	if not u1 then return end
-
-	for u2 in RL:IterateRoster(true) do
-		if u2.subgroup == u1.subgroup then
-			self:UnitIsHealed(u2.name)
-		end
-	end
-end
-
-
-function GridStatusHeals:UnitIsHealed(name)
-	local settings = self.db.profile.alert_heals
-	self.core:SendStatusGained(name, "alert_heals",
-			  settings.priority,
-			  (settings.range and 40),
-			  settings.color,
-			  settings.text,
-			  nil,
-			  nil,
-			  settings.icon)
-
-	-- this will overwrite any previously scheduled event for the same name
-	self:ScheduleEvent("HealCompleted_"..name, self.HealCompleted, 2, self, name)
-end
-
-
-function GridStatusHeals:HealCompleted(name)
-	self.core:SendStatusLost(name, "alert_heals")
-end
-
-
-function GridStatusHeals:CastCommCallback(sender, senderUnit, action, target, channel, spell, rank, displayName, icon, startTime, endTime, isTradeSkill)
-	castcommusers[sender] = true
-
-	if self.db.profile.alert_heals.ignore_self and
-		sender == UnitName("player") then
-		return
-	end
-
-	if action == "START" then
-		if spell == BS["Prayer of Healing"] then
-			self:GroupHeal(sender)
-		elseif watchSpells[spell] then
-			self:UnitIsHealed(target)
-			if spell == BS["Binding Heal"] then
-				self:UnitIsHealed(sender)
-			end
-		end
-	elseif action == "INTERRUPTED" or action == "FAILED" then
-		if watchSpells[spell] and target then
-			self:Debug("Failed heal", sender, "->", target)
-			self:CancelScheduledEvent("HealCompleted_".. target)
-			self:HealCompleted(target)
-			if spell == BS["Binding Heal"] then
-				self:CancelScheduledEvent("HealCompleted_".. sender)
-				self:HealCompleted(sender)
-			end
-		end
-	end
-end
+--}}}

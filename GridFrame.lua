@@ -79,14 +79,15 @@ GridFrameClass.prototype.indicators = {
 	{ type = "border",     order = 1,  name = L["Border"] },
 	{ type = "bar",        order = 2,  name = L["Health Bar"] },
 	{ type = "barcolor",   order = 3,  name = L["Health Bar Color"] },
-	{ type = "text",       order = 4,  name = L["Center Text"] },
-	{ type = "text2",      order = 5,  name = L["Center Text 2"] },
-	{ type = "icon",       order = 6,  name = L["Center Icon"] },
-	{ type = "corner4",    order = 7,  name = L["Top Left Corner"] },
-	{ type = "corner3",    order = 8,  name = L["Top Right Corner"] },
-	{ type = "corner1",    order = 9,  name = L["Bottom Left Corner"] },
-	{ type = "corner2",    order = 10, name = L["Bottom Right Corner"] },
-	{ type = "frameAlpha", order = 11, name = L["Frame Alpha"] },
+	{ type = "healingBar",   order = 4,  name = L["Healing Bar"] },
+	{ type = "text",       order = 5,  name = L["Center Text"] },
+	{ type = "text2",      order = 6,  name = L["Center Text 2"] },
+	{ type = "icon",       order = 7,  name = L["Center Icon"] },
+	{ type = "corner4",    order = 8,  name = L["Top Left Corner"] },
+	{ type = "corner3",    order = 9,  name = L["Top Right Corner"] },
+	{ type = "corner1",    order = 10, name = L["Bottom Left Corner"] },
+	{ type = "corner2",    order = 11, name = L["Bottom Right Corner"] },
+	{ type = "frameAlpha", order = 12, name = L["Frame Alpha"] },
 }
 
 -- frame is passed from GridFrame_OnLoad()
@@ -145,6 +146,16 @@ function GridFrameClass.prototype:CreateFrames()
 	f.BarBG:SetTexture(texture)
 	f.BarBG:SetPoint("CENTER", f, "CENTER")
 
+	-- create healing bar
+	f.HealingBar = CreateFrame("StatusBar", nil, f)
+	f.HealingBar:SetStatusBarTexture(texture)
+	f.HealingBar:SetOrientation("VERTICAL")
+	f.HealingBar:SetMinMaxValues(0, 100)
+	f.HealingBar:SetValue(0)
+	f.HealingBar:SetStatusBarColor(0, 0, 0, 0)
+	f.HealingBar:SetPoint("TOPLEFT", f.BarBG, "TOPLEFT")
+	f.HealingBar:SetPoint("BOTTOMRIGHT", f.BarBG, "BOTTOMRIGHT")
+
 	-- create bar
 	f.Bar = CreateFrame("StatusBar", nil, f)
 	f.Bar:SetStatusBarTexture(texture)
@@ -152,8 +163,8 @@ function GridFrameClass.prototype:CreateFrames()
 	f.Bar:SetMinMaxValues(0,100)
 	f.Bar:SetValue(100)
 	f.Bar:SetStatusBarColor(0,0,0,0.8)
-	f.Bar:SetPoint("CENTER", f, "CENTER")
-	f.Bar:SetFrameLevel(4)
+	f.Bar:SetPoint("TOPLEFT", f.HealingBar, "TOPLEFT")
+	f.Bar:SetPoint("BOTTOMRIGHT", f.HealingBar, "BOTTOMRIGHT")
 
 	-- create center text
 	f.Text = f.Bar:CreateFontString(nil, "ARTWORK")
@@ -222,6 +233,7 @@ function GridFrameClass.prototype:SetWidth(width)
 	f:SetWidth(width)
 	f.Bar:SetWidth(width-4)
 	f.BarBG:SetWidth(width-4)
+	f.HealingBar:SetWidth(width-4)
 
 	self:PlaceIndicators()
 end
@@ -231,6 +243,7 @@ function GridFrameClass.prototype:SetHeight(height)
 	f:SetHeight(height)
 	f.Bar:SetHeight(height-4)
 	f.BarBG:SetHeight(height-4)
+	f.HealingBar:SetHeight(height-4)
 
 	self:PlaceIndicators()
 end
@@ -255,12 +268,14 @@ function GridFrameClass.prototype:PlaceIndicators()
 
 	if self.orientation == "HORIZONTAL" then
 		f.Bar:SetOrientation("HORIZONTAL")
+		f.HealingBar:SetOrientation("HORIZONTAL")
 	else
 		f.Bar:SetOrientation("VERTICAL")
+		f.HealingBar:SetOrientation("VERTICAL")
 	end
 
 	if self.textorientation == "HORIZONTAL" then
-	   f.Text:SetJustifyH("LEFT")
+		f.Text:SetJustifyH("LEFT")
 		f.Text:SetJustifyV("CENTER")
 		f.Text:SetHeight(f:GetHeight())
 		f.Text:ClearAllPoints()
@@ -327,6 +342,7 @@ end
 function GridFrameClass.prototype:SetFrameTexture(texture)
 	self.frame.BarBG:SetTexture(texture)
 	self.frame.Bar:SetStatusBarTexture(texture)
+	self.frame.HealingBar:SetStatusBarTexture(texture)
 end
 
 -- pass through functions to our main frame
@@ -367,6 +383,14 @@ function GridFrameClass.prototype:SetBar(value, max)
 	self.frame.Bar:SetValue(value/max*100)
 end
 
+function GridFrameClass.prototype:SetHealingBar(value, max)
+	if max == nil then
+		max = 100
+	end
+	self.frame.HealingBar:SetValue(value/max*100)
+	self:UpdateHealingBarColor()
+end
+
 function GridFrameClass.prototype:SetBarColor(r, g, b, a)
 	if GridFrame.db.profile.invertBarColor then
 		self.frame.Bar:SetStatusBarColor(r, g, b, a)
@@ -374,6 +398,24 @@ function GridFrameClass.prototype:SetBarColor(r, g, b, a)
 	else
 		self.frame.Bar:SetStatusBarColor(0, 0, 0, 0.8)
 		self.frame.BarBG:SetVertexColor(r, g, b ,a)
+	end
+
+	self:UpdateHealingBarColor()
+end
+
+function GridFrameClass.prototype:UpdateHealingBarColor()
+	local intensity = GridFrame.db.profile.healingBar_intensity
+	if GridFrame.db.profile.invertBarColor then
+		local r, g, b, a = self.frame.Bar:GetStatusBarColor()
+		self.frame.HealingBar:SetStatusBarColor(r, g, b, a * intensity)
+	elseif self.frame.HealingBar:GetValue() > 0 then
+		local alpha = 0.8
+		local healingBar_alpha = intensity * alpha
+		local bar_alpha = 1 - (1 - alpha) / (1 - healingBar_alpha)
+		self.frame.Bar:SetStatusBarColor(0, 0, 0, bar_alpha)
+		self.frame.HealingBar:SetStatusBarColor(0, 0, 0, healingBar_alpha)
+	else
+		self.frame.Bar:SetStatusBarColor(0, 0, 0, 0.8)
 	end
 end
 
@@ -488,6 +530,10 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 			type(color) == "table" then
 			self:SetBarColor(color.r, color.g, color.b, color.a)
 		end
+	elseif indicator == "healingBar" then
+		if value and maxValue then
+			self:SetHealingBar(value, maxValue)
+		end
 	elseif indicator == "icon" then
 		if texture then
 			self.frame.Icon:SetTexture(texture)
@@ -536,6 +582,8 @@ function GridFrameClass.prototype:ClearIndicator(indicator)
 		if GridFrame.db.profile.enableBarColor then
 			self:SetBarColor(0, 0, 0, 1)
 		end
+	elseif indicator == "healingBar" then
+		self:SetHealingBar(0)
 	elseif indicator == "icon" then
 		self.frame.Icon:SetTexture(1,1,1,0)
 		self.frame.Icon:Hide()
@@ -567,6 +615,7 @@ GridFrame.defaultDB = {
 	invertBarColor = false,
 	showTooltip = "OOC",
 	textlength = 4,
+	healingBar_intensity = 0.5,
 	statusmap = {
 		["text"] = {
 			alert_death = true,
@@ -574,6 +623,7 @@ GridFrame.defaultDB = {
 			alert_offline = true,
 			unit_name = true,
 			unit_healthDeficit = true,
+            alert_heals = true,
 		},
 		["text2"] = {
 			alert_death = true,
@@ -615,6 +665,9 @@ GridFrame.defaultDB = {
 			alert_offline = true,
 			unit_health = true,
 			debuff_ghost = true,
+		},
+		["healingBar"] = {
+			alert_heals = true,
 		},
 		["icon"] = {
 			debuff_poison = true,
@@ -673,6 +726,25 @@ GridFrame.options = {
 				GridFrame.db.profile.invertBarColor = v
 				GridFrame:InvertBarColor()
 			end,
+		},
+		["healingBar_intensity"] = {
+			type = "range",
+			name = L["Healing Bar Opacity"],
+			desc = L["Sets the opacity of the healing bar."],
+			min = 0,
+			max = 1,
+			step = 0.01,
+			bigStep = 0.05,
+			order = 13,
+			get = function ()
+				      return GridFrame.db.profile.healingBar_intensity
+			      end,
+			set = function (v)
+				      GridFrame.db.profile.healingBar_intensity = v
+				      GridFrame:WithAllFrames(function (f)
+								      f:UpdateHealingBarColor()
+							      end)
+			      end,
 		},
 		["IndicatorsHeaderGap"] = {
 			type = "header",
@@ -1088,6 +1160,12 @@ function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
 		self:Debug("indicator barcolor is disabled")
 		menu[indicator] = nil
 		return
+	end
+
+	-- ensure statusmap entry exists for indicator
+	local statusmap = self.db.profile.statusmap
+	if not statusmap[indicator] then
+		statusmap[indicator] = {}
 	end
 
 	-- create menu for indicator

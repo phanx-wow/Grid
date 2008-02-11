@@ -23,11 +23,14 @@ local strings_deDE = {
 	["Number of characters to show on Center Text indicator."] = "Anzahl der Buchstaben die im mittleren Text angezeigt werden.",
 	["Invert Bar Color"] = "Invertiere die Leistenfarbe",
 	["Swap foreground/background colors on bars."] = "Tausche die Vordergrund-/Hintergrundfarbe der Leisten.",
-
+    ["Faded Bar Intensity"] = "Intensität der blassen Leiste",
+	["Sets the intensity of the faded bar."] = "Verändert die intensität der blassen Gesundheitsleiste.",
+    
 	["Indicators"] = "Indikatoren",
 	["Border"] = "Rand",
 	["Health Bar"] = "Gesundheitsleiste",
 	["Health Bar Color"] = "Gesundheitsleistenfarbe",
+    ["Faded Bar"] = "Blasse Leiste",
 	["Center Text"] = "Text in der Mitte",
 	["Center Text 2"] = "2. Text in der Mitte",
 	["Center Icon"] = "Icon im Zentrum",

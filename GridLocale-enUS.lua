@@ -23,11 +23,14 @@ local strings_enUS = {
 	["Number of characters to show on Center Text indicator."] = true,
 	["Invert Bar Color"] = true,
 	["Swap foreground/background colors on bars."] = true,
+	["Healing Bar Opacity"] = true,
+	["Sets the opacity of the healing bar."] = true,
 
 	["Indicators"] = true,
 	["Border"] = true,
 	["Health Bar"] = true,
 	["Health Bar Color"] = true,
+	["Healing Bar"] = true,
 	["Center Text"] = true,
 	["Center Text 2"] = true,
 	["Center Icon"] = true,
@@ -236,9 +239,9 @@ local strings_enUS = {
 	["Incoming heals"] = true,
 	["Ignore Self"] = true,
 	["Ignore heals cast by you."] = true,
-	["(.+) begins to cast (.+)."] = true,
-	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = true,
-	["^Corpse of (.+)$"] = true,
+	["Show HealComm Users"] = true,
+	["Displays HealComm users and versions."] = true,
+	["HealComm Users"] = true,
 
 	--}}}
 	--{{{ GridStatusHealth
