@@ -23,11 +23,14 @@ local strings_koKR = {
 	["Number of characters to show on Center Text indicator."] = "중앙 문자 지시기 위에 표시할 캐릭터의 숫자를 설정합니다.",
 	["Invert Bar Color"] = "바 색상 반대로",
 	["Swap foreground/background colors on bars."] = "바들의 전경/배경 색상을 변경합니다.",
+	["Healing Bar Opacity"] = "치유 바 투명도",
+	["Sets the opacity of the healing bar."] = "치유 바의 투명도를 설정합니다.",
 
 	["Indicators"] = "지시기",
 	["Border"] = "테두리",
 	["Health Bar"] = "생명력 바",
 	["Health Bar Color"] = "생명력 바 색상",
+	["Healing Bar"] = "치유 바",
 	["Center Text"] = "중앙 문자",
 	["Center Text 2"] = "중앙 문자 2",
 	["Center Icon"] = "중앙 아이콘",
@@ -236,9 +239,9 @@ local strings_koKR = {
 	["Incoming heals"] = "치유 받음",
 	["Ignore Self"] = "자신 무시",
 	["Ignore heals cast by you."] = "자신의 치유 시전은 무시합니다.",
-	["(.+) begins to cast (.+)."] = "(.+)|1이;가; (.+)|1을;를; 시전합니다.",
-	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = "(.+)|1이;가; 생명력 전환|1으로;로; (.+)의 (.+)|1을;를; 얻었습니다.",
-	["^Corpse of (.+)$"] = "^(.+)의 시체$",
+	["Show HealComm Users"] = "HealComm 사용자 표시",
+	["Displays HealComm users and versions."] = "HealComm 사용자와 버전을 표시합니다.",
+	["HealComm Users"] = "HealComm 사용자",
 
 	--}}}
 	--{{{ GridStatusHealth
