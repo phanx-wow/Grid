@@ -4,7 +4,8 @@ local Aura = AceLibrary("SpecialEvents-Aura-2.0")
 local Dewdrop = AceLibrary("Dewdrop-2.0")
 local RL = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
-local BS = AceLibrary("Babble-Spell-2.2")
+local BabbleSpell = LibStub:GetLibrary("LibBabble-Spell-3.0")
+local BS = BabbleSpell:GetLookupTable()
 local BC = AceLibrary("Babble-Class-2.2")
 
 --}}}
@@ -34,6 +35,7 @@ GridStatusAuras.defaultDB = {
 		["priority"] = 90,
 		["range"] = false,
 		["color"] = { r =  0, g = .6, b =  0, a = 1 },
+		["order"] = 25,
 	},
 	["debuff_disease"] = {
 		["desc"] = string.format(L["Debuff type: %s"], L["Disease"]),
@@ -42,6 +44,7 @@ GridStatusAuras.defaultDB = {
 		["priority"] = 90,
 		["range"] = false,
 		["color"] = { r = .6, g = .4, b =  0, a = 1 },
+		["order"] = 25,
 	},
 	["debuff_magic"] = {
 		["desc"] = string.format(L["Debuff type: %s"], L["Magic"]),
@@ -50,6 +53,7 @@ GridStatusAuras.defaultDB = {
 		["priority"] = 90,
 		["range"] = false,
 		["color"] = { r = .2, g = .6, b =  1, a = 1 },
+		["order"] = 25,
 	},
 	["debuff_curse"] = {
 		["desc"] = string.format(L["Debuff type: %s"], L["Curse"]),
@@ -58,6 +62,7 @@ GridStatusAuras.defaultDB = {
 		["priority"] = 90,
 		["range"] = false,
 		["color"] = { r = .6, g =  0, b =  1, a = 1 },
+		["order"] = 25,
 	},
 	[statusForSpell(L["Ghost"])] = {
 		["desc"] = string.format(L["Debuff: %s"], L["Ghost"]),
@@ -145,6 +150,33 @@ function GridStatusAuras:OnInitialize()
 
 	self:RegisterStatuses()
 	
+	self.options.args.header_buffs = {
+		type = "header",
+		name = L["Buffs"],
+		order = 10,
+	}
+	self.options.args.header_debufftypes_gap = {
+		type = "header",
+		order = 19,
+	}
+	self.options.args.header_debufftypes = {
+		type = "header",
+		name = L["Debuff Types"],
+		order = 20,
+	}
+	self.options.args.header_debuffs_gap = {
+		type = "header",
+		order = 29,
+	}
+	self.options.args.header_debuffs = {
+		type = "header",
+		name = L["Debuffs"],
+		order = 30,
+	}
+	self.options.args.header_gap_abolish = {
+		type = "header",
+		order = 179,
+	}
 	self.options.args.abolish = {
 		type = "toggle",
 		name = L["Filter Abolished units"],
@@ -165,9 +197,10 @@ function GridStatusAuras:RegisterStatuses()
 		if type(statusTbl) == "table" and statusTbl.text then
 			local desc = statusTbl.desc or statusTbl.text
 			local isBuff = statusForSpell(statusTbl.text, true) == status
+			local order = statusTbl.order or (isBuff and 15 or 35)
 			self:Debug("registering", status, desc)
 			self:RegisterStatus(status, desc,
-					    self:OptionsForStatus(status, isBuff))
+					    self:OptionsForStatus(status, isBuff), false, order)
 		end
 	end
 end
@@ -261,6 +294,7 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 		}
 	end
 
+
 	return auraOptions
 end
 
@@ -337,7 +371,8 @@ function GridStatusAuras:AddAura(name, isBuff)
 		["color"] = { r = .5, g = .5, b = .5, a = 1 },
 	}
 
-	self:RegisterStatus(status, desc, self:OptionsForStatus(status, isBuff))
+	local order = isBuff and 15 or 35
+	self:RegisterStatus(status, desc, self:OptionsForStatus(status, isBuff), false, order)
 	self:CreateAddRemoveOptions()
 end
 
@@ -547,7 +582,7 @@ function GridStatusAuras:ClearAuras(unitname)
 							   settings.text,
 							   nil,
 							   nil,
-							   BS:GetSpellIcon(settings.text))
+							   BabbleSpell:GetSpellIcon(settings.text))
 			else
 				self.core:SendStatusLost(unitname, status)
 			end

@@ -1,4 +1,4 @@
-## Interface: 20300
+## Interface: 20400
 ## Title: Grid |cff7fff7f -Ace2-|r
 ## Notes: A modular, lightweight and screen-estate saving grid of party/raid unit frames
 ## Notes-zhCN: 珨跺耀輸宒ㄛ腴梩蚚ㄛ誹吽茷躉諾潔腔※跡赽§ㄛ蚚懂珆尨芶勦/勦斪腔袨怓
@@ -10,14 +10,15 @@
 ## X-Category: UnitFrame
 ## X-AceForum: 2525
 ## X-RelSite-WoWI: 5747
+## X-RelSite-Curse: 9503
+
+## SavedVariables: GridDB
 
 ## DefaultState: enabled
 ## LoadOnDemand: 0
 
-## OptionalDeps: Ace2, Babble-2.2, Clique, CT_RaidAssist, DewdropLib, FuBar, FuBarPlugin-2.0, GratuityLib, JustClick, oRA2, RosterLib, LibBanzai-2.0, LibSharedMedia-2.0, SharedMedia-2.0, SpecialEventsEmbed, CastCommLib, UTF8, ChatThrottleLib, SpecialEvents-Aura-2.0, CallbackHandler-1.0, LibBabble-Spell-3.0, LibHealComm-3.0
-## X-Embeds: Ace2, Babble-2.2, DewdropLib, FuBarPlugin-2.0, GratuityLib, RosterLib, LibBanzai-2.0, SpecialEventsEmbed, CastCommLib, UTF8, LibSharedMedia-2.0, CallbackHandler-1.0, LibBabble-Spell-3.0, LibHealComm-3.0
-
-## SavedVariables: GridDB
+## OptionalDeps: Ace2, Babble-2.2, Clique, CT_RaidAssist, DewdropLib, FuBar, FuBarPlugin-2.0, GratuityLib, JustClick, oRA2, RosterLib, LibBanzai-2.0, LibSharedMedia-2.0, SharedMedia-2.0, SpecialEventsEmbed, UTF8, ChatThrottleLib, SpecialEvents-Aura-2.0, CallbackHandler-1.0, LibBabble-Spell-3.0, LibHealComm-3.0
+## X-Embeds: Ace2, Babble-2.2, DewdropLib, FuBarPlugin-2.0, GratuityLib, RosterLib, LibBanzai-2.0, SpecialEventsEmbed, UTF8, LibSharedMedia-2.0, CallbackHandler-1.0, LibBabble-Spell-3.0, LibHealComm-3.0
 
 ## Non-Ace Libraries
 #libs\UTF8\utf8data.lua

@@ -49,7 +49,7 @@ function GridStatus.modulePrototype:InitializeOptions()
 	end
 end
 
-function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMainMenu)
+function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMainMenu, order)
 	local module = self
 	local optionMenu
 
@@ -70,7 +70,7 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 			type = "group",
 			name = desc,
 			desc = string.format(L["Status: %s"], desc),
-			order = inMainMenu and 111 or nil,
+			order = inMainMenu and 111 or order,
 			args = {
 				["color"] = {
 					type = "color",

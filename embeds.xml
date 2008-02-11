@@ -20,15 +20,14 @@
 <Script file="libs\Gratuity-2.0\Gratuity-2.0.lua"/>
 <Script file="libs\SpecialEvents-Aura-2.0\SpecialEvents-Aura-2.0.lua"/>
 <Include file="libs\LibBanzai-2.0\lib.xml"/>
-<Script file="libs\Babble-Spell-2.2\Babble-Spell-2.2.lua"/>
 <Script file="libs\Babble-Class-2.2\Babble-Class-2.2.lua"/>
-
 <Script file="libs\Waterfall-1.0\Waterfall-1.0.lua"/>
+
+<Include file="libs\LibBabble-Spell-3.0\lib.xml"/>
 
 <!--Dependencies for GridStatusHeals-->
 <!--Needed by LibHealComm-->
 <Include file="libs\CallbackHandler-1.0\CallbackHandler-1.0.xml"/>
-<Include file="libs\LibBabble-Spell-3.0\lib.xml"/>
 <!--directly needed by GridStatusHeals-->
 <Include file="libs\LibHealComm-3.0\lib.xml"/>
 
