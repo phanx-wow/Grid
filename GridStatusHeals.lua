@@ -152,7 +152,7 @@ function GridStatusHeals:UpdateHealsForUnit(unitid)
     else
         fullName = name
     end
-    self:UpdateIncomingHeals(name)
+    self:UpdateIncomingHeals(fullName)
 end
 
 --}}}
