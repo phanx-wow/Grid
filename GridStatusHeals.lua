@@ -246,7 +246,7 @@ end
 function GridStatusHeals:FormatIncomingText(incoming)
     local incomingText
     if incoming > 999 then
-		incomingText = string.format("%.1fk", incoming/1000.0)
+		incomingText = string.format("%.1f", incoming/1000.0)
 	else
 		incomingText = string.format("%d", incoming)
 	end
