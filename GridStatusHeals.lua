@@ -1,5 +1,6 @@
 --{{{ Libraries
-local HealComm = LibStub:GetLibrary("LibHealComm-3.0")
+local HealComm = LibStub:GetLibrary("LibHealComm-3.0", true)
+if not HealComm then return end
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local Roster = AceLibrary("Roster-2.1")
 --}}}
@@ -65,22 +66,18 @@ function GridStatusHeals:OnEnable()
 	self:RegisterEvent("UNIT_HEALTH", "UpdateHealsForUnit")
 	self:RegisterEvent("UNIT_HEALTH_MAX", "UpdateHealsForUnit")
 
-	if HealComm then
-		-- register callbacks
-		HealComm.RegisterCallback(self, "HealComm_DirectHealStart")
-		HealComm.RegisterCallback(self, "HealComm_DirectHealStop")
-		HealComm.RegisterCallback(self, "HealComm_DirectHealDelayed")
-		HealComm.RegisterCallback(self, "HealComm_HealModifierUpdate")
-	end
+	-- register callbacks
+	HealComm.RegisterCallback(self, "HealComm_DirectHealStart")
+	HealComm.RegisterCallback(self, "HealComm_DirectHealStop")
+	HealComm.RegisterCallback(self, "HealComm_DirectHealDelayed")
+	HealComm.RegisterCallback(self, "HealComm_HealModifierUpdate")
 end
 
 function GridStatusHeals:OnDisable()
-	if HealComm then
-		HealComm.UnregisterCallback(self, "HealComm_DirectHealStart")
-		HealComm.UnregisterCallback(self, "HealComm_DirectHealStop")
-		HealComm.UnregisterCallback(self, "HealComm_DirectHealDelayed")
-		HealComm.UnregisterCallback(self, "HealComm_HealModifierUpdate")
-	end
+	HealComm.UnregisterCallback(self, "HealComm_DirectHealStart")
+	HealComm.UnregisterCallback(self, "HealComm_DirectHealStop")
+	HealComm.UnregisterCallback(self, "HealComm_DirectHealDelayed")
+	HealComm.UnregisterCallback(self, "HealComm_HealModifierUpdate")
 end
 --}}}
 
