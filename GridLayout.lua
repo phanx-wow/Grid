@@ -569,9 +569,6 @@ function GridLayout:OnEnable()
 	self:RestorePosition()
 	self:Scale()
 
-	-- self:RegisterEvent("PLAYER_ENTERING_WORLD", "RaidHeaderFix")
-	self:RegisterEvent("UNIT_NAME_UPDATE", "RaidHeaderFix")
-
 	self:RegisterEvent("Grid_ReloadLayout", "PartyTypeChanged")
 	self:RegisterEvent("Grid_JoinedBattleground", "PartyTypeChanged")
 	self:RegisterEvent("Grid_JoinedRaid", "PartyTypeChanged")
@@ -605,28 +602,6 @@ function GridLayout:Reset()
 end
 
 --{{{ Event handlers
-
--- BEGIN fix for 2.1 raid header problems
--- Based on comments from http://www.wowace.com/forums/index.php?topic=6824.msg113821#msg113821
---
-function GridLayout:RaidHeaderFix()
-	-- if true then return end
-	self.partyGroup.partyFrame:UnregisterEvent("UNIT_NAME_UPDATE")
-	self.partyGroup.partyPetFrame:UnregisterEvent("UNIT_NAME_UPDATE")
-	for _,layoutGroup in pairs(self.layoutGroups) do
-		layoutGroup.frame:UnregisterEvent("UNIT_NAME_UPDATE")
-	end
-	self:ScheduleEvent("GridLayout_RaidHeaderUnfix", self.RaidHeaderUnfix, 5, self)
-end
-
-function GridLayout:RaidHeaderUnfix()
-	self.partyGroup.partyFrame:RegisterEvent("UNIT_NAME_UPDATE")
-	self.partyGroup.partyPetFrame:RegisterEvent("UNIT_NAME_UPDATE")
-	for _,layoutGroup in pairs(self.layoutGroups) do
-		layoutGroup.frame:RegisterEvent("UNIT_NAME_UPDATE")
-	end
-end
--- END fix for 2.1 raid header problems
 
 local reloadLayoutQueued
 local updateSizeQueued
