@@ -23,6 +23,8 @@ local strings_zhCN = {
 	["Number of characters to show on Center Text indicator."] = "中间文字提示器所显示文字的长度",
 	["Invert Bar Color"] = "反转颜色",
 	["Swap foreground/background colors on bars."] = "反转提示条上背景/前景的颜色",
+	["Healing Bar Opacity"] = "治疗条透明度",
+	["Sets the opacity of the healing bar."] = "设置治疗条的透明度",
 
 	["Indicators"] = "提示器",
 	["Border"] = "外框",
@@ -156,8 +158,11 @@ local strings_zhCN = {
 	["By Group 25 w/Pets"] = "25人团队以及宠物",
 	["By Group 20"] = "20人团队",
 	["By Group 15"] = "15人团队",
+	["By Group 15 w/Pets"] = "15人团队以及宠物",
 	["By Group 10"] = "10人团队",
 	["By Group 10 w/Pets"] = "10人团队以及宠物",
+	["By Group 5"] = "5人小队",
+	["By Group 5 w/Pets"] = "5人小队以及宠物",
 	["By Class"] = "以职业排列",
 	["By Class w/Pets"] = "By Class",
 	["Onyxia"] = "单数双数队伍排列",
@@ -198,10 +203,15 @@ local strings_zhCN = {
 	["Magic"] = "魔法",
 	["Curse"] = "诅咒",
 	["Ghost"] = "幽灵",
+	["Buffs"] = "Buffs",
+	["Debuff Types"] = "Debuff 类型",
+	["Debuffs"] = "Debuffs",
 	["Add new Buff"] = "增加新的Buff",
 	["Adds a new buff to the status module"] = "状态模组添加一个新的buff",
+	["<buff name>"] = "<buff 名称>",
 	["Add new Debuff"] = "增加新的Debuff",
 	["Adds a new debuff to the status module"] = "状态模组添加一个新的debuff",
+	["<debuff name>"] = "<debuff 名称>",
 	["Delete (De)buff"] = "删除(De)buff",
 	["Deletes an existing debuff from the status module"] = "删除状态模组内已有的一个debuff",
 	["Remove %s from the menu"] = "从列表中移除%s",
@@ -212,6 +222,8 @@ local strings_zhCN = {
 	["Show on %s."] = "在%s上显示",
 	["Show if missing"] = "缺少时显示",
 	["Display status only if the buff is not active."] = "仅在BUFF缺少时才显示状态",
+	["Filter Abolished units"] = "Filter Abolished units",--i do not fully understand
+	["Skip units that have an active Abolish buff."] = "Skip units that have an active Abolish buff.",--i do not fully understand
 
 	--}}}
 	--{{{ GridStatusName
@@ -232,9 +244,9 @@ local strings_zhCN = {
 	["Incoming heals"] = "正被治疗",
 	["Ignore Self"] = "忽略自己",
 	["Ignore heals cast by you."] = "忽略对自己施放的治疗",
-	["(.+) begins to cast (.+)."] = "(.+)开始施放(.+)",
-	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = "(.+)从(.+)的生命分流获得了(.+)点法力值",
-	["^Corpse of (.+)$"] = "^(.+)的尸体$",
+	["Show HealComm Users"] = "显示HealComm库使用者",
+	["Displays HealComm users and versions."] = "显示HealComm库使用者及其版本",
+	["HealComm Users"] = "HealComm使用者名单",
 	
 	--}}}
 	--{{{ GridStatusHealth
