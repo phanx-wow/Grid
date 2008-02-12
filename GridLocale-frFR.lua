@@ -1,4 +1,4 @@
-﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local strings_frFR = {
 	--{{{ GridCore
@@ -23,11 +23,14 @@ local strings_frFR = {
 	["Number of characters to show on Center Text indicator."] = "Détermine le nombre de caractère à afficher pour le texte central.",
 	["Invert Bar Color"] = "Inverser la couleur de la barre",
 	["Swap foreground/background colors on bars."] = "Permute la couleur de l'avant-plan et de l'arrière-plan des barres.",
+	["Healing Bar Opacity"] = "Opacité de la barre de soins",
+	["Sets the opacity of the healing bar."] = "Définit l'opacité de la barre de soins.",
 
 	["Indicators"] = "Indicateurs",
 	["Border"] = "Bordure",
 	["Health Bar"] = "Barre de vie",
 	["Health Bar Color"] = "Couleur de la barre de vie",
+	["Healing Bar"] = "Barre de soins",
 	["Center Text"] = "Texte central",
 	["Center Text 2"] = "Texte central 2",
 	["Center Icon"] = "Icône central",
@@ -90,8 +93,8 @@ local strings_frFR = {
 	["Toggle whether to permit movement out of screen."] = "Permet ou non de déplacer la grille hors de l'écran.",
 	["Frame lock"] = "Verrouiller",
 	["Locks/unlocks the grid for movement."] = "Verrouiller l'emplacement de la grille",
-	--["Click through the Grid Frame"] = true,
-	--["Allows mouse click through the Grid Frame."] = true,
+	["Click through the Grid Frame"] = "Cliquer à travers la frame de Grid",
+	["Allows mouse click through the Grid Frame."] = "Permet les clicks à travers la frame de Grid",
 
 	["CENTER"] = "CENTRE",
 	["TOP"] = "HAUT",
@@ -156,8 +159,11 @@ local strings_frFR = {
 	["By Group 25 w/Pets"] = "Raid de 25 avec familiers",
 	["By Group 20"] = "Raid de 20",
 	["By Group 15"] = "Raid de 15",
+	["By Group 15 w/Pets"] = "Raid de 15 avec familiers",
 	["By Group 10"] = "Raid de 10",
 	["By Group 10 w/Pets"] = "Raid de 10 avec familiers",
+	["By Group 5"] = "Groupe de 5",
+	["By Group 5 w/Pets"] = "Groupe de 5 avec familiers",
 	["By Class"] = "Par classe",
 	["By Class w/Pets"] = "Par classe avec familiers",
 	["Onyxia"] = "Onyxia",
@@ -198,6 +204,9 @@ local strings_frFR = {
 	["Magic"] = "Magie",
 	["Curse"] = "Malédiction",
 	["Ghost"] = "Fantôme",
+	["Buffs"] = "Buffs",
+	["Debuff Types"] = "Types de débuff",
+	["Debuffs"] = "Débuffs",
 	["Add new Buff"] = "Ajouter un nouveau buff",
 	["Adds a new buff to the status module"] = "Ajoute un nouveau buff au module Statut.",
 	["<buff name>"] = "<nom du buff>",
@@ -215,7 +224,7 @@ local strings_frFR = {
 	["Show if missing"] = "Afficher si manquant",
 	["Display status only if the buff is not active."] = "Affiche le statut uniquement si le buff n'est pas actif.",
 	["Filter Abolished units"] = "Filtre les unités abolies",
-	--["Skip units that have an active Abolish buff."] = true,
+	["Skip units that have an active Abolish buff."] = "Passer les unités qui ont un buff Abolition actif",
 
 	--}}}
 	--{{{ GridStatusName
@@ -236,10 +245,10 @@ local strings_frFR = {
 	["Incoming heals"] = "Soins entrants",
 	["Ignore Self"] = "Vous ignorer",
 	["Ignore heals cast by you."] = "Ignore les soins que vous incantez.",
-	["(.+) begins to cast (.+)."] = "(.+) commence à lancer (.+).",
-	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = "Connexion de (.+) fait gagner (.+) Mana à (.+).",
-	["^Corpse of (.+)$"] = "^Cadavre de (.+)$",
-
+	["Show HealComm Users"] = "Utilisateurs HealComm",
+	["Displays HealComm users and versions."] = "Affiche les utilisateurs de HealComm et leur version",
+	["HealComm Users"] = "Utilisateurs de HealComm",
+	
 	--}}}
 	--{{{ GridStatusHealth
 	["Low HP"] = "Vie f.",
