@@ -5,7 +5,8 @@
 --{{{ Libraries
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
-local BS = AceLibrary("Babble-Spell-2.2")
+local BabbleSpell = LibStub:GetLibrary("LibBabble-Spell-3.0")
+local BS = BabbleSpell:GetLookupTable()
 
 --}}}
 
