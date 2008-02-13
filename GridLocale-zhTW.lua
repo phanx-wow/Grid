@@ -24,7 +24,7 @@ local strings_zhTW = {
 	["Invert Bar Color"] = "調換顏色",
 	["Swap foreground/background colors on bars."] = "調換提示條背景與前景之顏色。",
 	["Healing Bar Opacity"] = "治療條透明度",
-	["Sets the opacity of the healing bar."] = "設定治療條的透明度",
+	["Sets the opacity of the healing bar."] = "設定治療條的透明度。",
 
 	["Indicators"] = "提示器",
 	["Border"] = "邊框",
@@ -95,7 +95,7 @@ local strings_zhTW = {
 	["Locks/unlocks the grid for movement."] = "鎖定/解鎖 Grid 框架。",
 	["Click through the Grid Frame"] = "透過點擊 Grid 框架", 
 	["Allows mouse click through the Grid Frame."] = "允許透過滑鼠點擊 Grid 框架。", 
-	
+
 	["CENTER"] = "中",
 	["TOP"] = "上",
 	["BOTTOM"] = "下",
@@ -245,9 +245,9 @@ local strings_zhTW = {
 	["Incoming heals"] = "治療中",
 	["Ignore Self"] = "忽略自己",
 	["Ignore heals cast by you."] = "忽略自己施放的治療法術。",
-	["(.+) begins to cast (.+)."] = "(.+)開始施放(.+)",
-	["(.+) gains (.+) Mana from (.+)'s Life Tap."] = "(.+)從(.+)的生命分流獲得了(.+)點法力值",
-	["^Corpse of (.+)$"] = "^(.+)的屍體$",
+	["Show HealComm Users"] = "顯示 HealComm 使用者",
+	["Displays HealComm users and versions."] = "顯示 HealComm 使用者及版本。",
+	["HealComm Users"] = "HealComm 使用者",
 
 	--}}}
 	--{{{ GridStatusHealth
