@@ -53,6 +53,7 @@ local rangeOptions = {
 		get = function () return tostring(GridStatusRange.db.profile.alert_range_oor.t_range) end,
 		set = function (v)
 			GridStatusRange.db.profile.alert_range_oor.t_range = tonumber(v)
+			GridStatusRange.t_range = nil
 			GridStatusRange:RangeCheck()
 		end,
 		validate = GridRange:GetAvailableRangeList(),
@@ -79,12 +80,17 @@ function GridStatusRange:Grid_RangesUpdated()
 		if r > c_range then break end
 		range = r
 	end
-	self.db.profile.alert_range_oor.t_range = range or 40
+	if range ~= c_range then
+		self.t_range = range
+	else
+		self.t_range = nil
+	end
 	rangeOptions.track_range.validate = GridRange:GetAvailableRangeList()
 end
 
 function GridStatusRange:OnDisable()
     self:CancelScheduledEvent("GridStatusRange_RangeCheck")
+	self.t_range = nil
 end
 
 function GridStatusRange:Reset()
@@ -97,7 +103,7 @@ function GridStatusRange:RangeCheck()
 
 	local settings = self.db.profile.alert_range_oor
 	local core = self.core
-	local t_range = settings.t_range
+	local t_range = self.t_range or settings.t_range
 	local priority = settings.priority
 	local color = settings.color
 	local text = settings.text
