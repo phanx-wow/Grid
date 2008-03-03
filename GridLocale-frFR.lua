@@ -277,10 +277,7 @@ local strings_frFR = {
 	["Range"] = "Portée",
 	["Range check frequency"] = "Fréquence des vérifications de portée",
 	["Seconds between range checks"] = "Détermine le nombre de secondes entre chaque vérification de portée.",
-	["Out of Range"] = "Hors de portée",
-	["OOR"] = "ODP",
-	["Range to track"] = "Portée à vérifier",
-	["Range in yard beyond which the status will be lost."] = "Portée en mètres au-dela de laquelle le statut est faux.",
+	["More than %d yards away"] = "A plus de %d mètres",
 	["%d yards"] = "%d mètres",
 
 	--}}}
