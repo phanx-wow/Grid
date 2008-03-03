@@ -652,7 +652,11 @@ GridFrame.defaultDB = {
 		["frameAlpha"] = {
 			alert_death = true,
 			alert_offline = true,
-			alert_range_oor = true,
+			alert_range_10 = true,
+			alert_range_28 = true,
+			alert_range_30 = true
+			alert_range_40 = true,
+			alert_range_100 = true,
 		},
 		["bar"] = {
 			alert_death = true,
