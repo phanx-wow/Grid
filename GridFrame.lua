@@ -654,7 +654,7 @@ GridFrame.defaultDB = {
 			alert_offline = true,
 			alert_range_10 = true,
 			alert_range_28 = true,
-			alert_range_30 = true
+			alert_range_30 = true,
 			alert_range_40 = true,
 			alert_range_100 = true,
 		},
