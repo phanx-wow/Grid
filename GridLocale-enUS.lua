@@ -277,10 +277,7 @@ local strings_enUS = {
 	["Range"] = true,
 	["Range check frequency"] = true,
 	["Seconds between range checks"] = true,
-	["Out of Range"] = true,
-	["OOR"] = true,
-	["Range to track"] = true,
-	["Range in yard beyond which the status will be lost."] = true,
+	["More than %d yards away"] = true,
 	["%d yards"] = true,
 
 	--}}}
