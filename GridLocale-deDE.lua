@@ -1,4 +1,4 @@
-﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local strings_deDE = {
 	--{{{ GridCore
@@ -277,10 +277,7 @@ local strings_deDE = {
 	["Range"] = "Entfernung",
 	["Range check frequency"] = "Häufigkeit der Reichweitenmessung",
 	["Seconds between range checks"] = "Sekunden zwischen den Reichweitenmessungen",
-	["Out of Range"] = "Außer Reichweite",
-	["OOR"] = "OOR",
-	["Range to track"] = "Entfernungreichweite",
-	["Range in yard beyond which the status will be lost."] = "Reichweite in Meter bei welcher der Status verloren geht.",
+	["More than %d yards away"] = "Mehr als %d meter entfernt",
 	["%d yards"] = "%d meter",
 
 	--}}}
