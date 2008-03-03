@@ -277,10 +277,7 @@ local strings_zhTW = {
 	["Range"] = "距離",
 	["Range check frequency"] = "距離檢測頻率",
 	["Seconds between range checks"] = "設定程式多少秒檢測一次距離",
-	["Out of Range"] = "超出距離",
-	["OOR"] = "太遠",
-	["Range to track"] = "追蹤距離",
-	["Range in yard beyond which the status will be lost."] = "距離超過太遠時有些資訊會遺失。",
+	["More than %d yards away"] = "距離超過%d碼",
 	["%d yards"] = "%d 碼",
 
 	--}}}
