@@ -1,4 +1,4 @@
-﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local strings_koKR = {
 	--{{{ GridCore
@@ -12,7 +12,7 @@ local strings_koKR = {
 	--}}}
 	--{{{ GridFrame
 	["Frame"] = "창",
-	["Options for GridFrame."] = "Grid 창을 위한 옵션을 설정합니다.",
+	["Options for GridFrame."] = "각 유닛 창의 표시를 위한 옵션을 설정합니다.",
 
 	["Show Tooltip"] = "툴팁 표시",
 	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "유닛 툴팁을 표시합니다. '항상', '안함' 또는 '비전투'을 선택합니다.",
@@ -73,7 +73,7 @@ local strings_koKR = {
 	--}}}
 	--{{{ GridLayout
 	["Layout"] = "배치",
-	["Options for GridLayout."] = "Grid 배치를 위한 옵션을 설정합니다.",
+	["Options for GridLayout."] = "배치 창과 그룹 배치를 위한 옵션을 설정합니다.",
 
 	-- Layout options
 	["Show Frame"] = "창 표시",
@@ -92,9 +92,9 @@ local strings_koKR = {
 	["Clamped to screen"] = "화면에 고정",
 	["Toggle whether to permit movement out of screen."] = "화면 밖으로 창이 나가지 않도록 사용합니다.",
 	["Frame lock"] = "창 고정",
-	["Locks/unlocks the grid for movement."] = "Grid 창을 고정하거나 이동시킵니다.",
+	["Locks/unlocks the grid for movement."] = "배치 창을 고정하거나 이동시킵니다.",
 	["Click through the Grid Frame"] = "창을 통해 클릭",
-	["Allows mouse click through the Grid Frame."] = "Grid 창을 통해 마우스 클릭을 허락합니다.",
+	["Allows mouse click through the Grid Frame."] = "배치 창 위의 마우스 클릭을 허락합니다.",
 
 	["CENTER"] = "중앙",
 	["TOP"] = "상단",
@@ -121,9 +121,9 @@ local strings_koKR = {
 	["Set the color of pet units."] = "소환수 유닛의 색상을 설정합니다.",
 	["Pet coloring"] = "소환수 채색",
 	["Set the coloring strategy of pet units."] = "소환수의 유닛 채색 방법을 설정합니다." ,
-	["By Owner Class"] = "소환자의 직업에 의하여",
-	["By Creature Type"] = "창조물의 타입에 의하여",
-	["Using Fallback color"] = "소환수의 색상 사용",
+	["By Owner Class"] = "소환자의 직업에 의해",
+	["By Creature Type"] = "창조물의 타입에 의해",
+	["Using Fallback color"] = "사용자의 색상에 의해",
 	["Beast"] = "야수형",
 	["Demon"] = "악마형",
 	["Humanoid"] = "인간형",
@@ -277,10 +277,7 @@ local strings_koKR = {
 	["Range"] = "거리",
 	["Range check frequency"] = "거리 체크 빈도",
 	["Seconds between range checks"] = "거리 체크의 시간(초)를 설정합니다.",
-	["Out of Range"] = "사정 거리 벗어남",
-	["OOR"] = "벗어남",
-	["Range to track"] = "거리 체크",
-	["Range in yard beyond which the status will be lost."] = "상태에 벗어남을 표시할 체크 거리를 설정합니다.",
+	["More than %d yards away"] = "%d 미터 이상",
 	["%d yards"] = "%d 미터",
 
 	--}}}
