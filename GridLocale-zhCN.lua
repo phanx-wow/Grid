@@ -276,10 +276,7 @@ local strings_zhCN = {
 	["Range"] = "距离",
 	["Range check frequency"] = "距离检测的频率",
 	["Seconds between range checks"] = "多少秒检测一次距离",
-	["Out of Range"] = "距离外",
-	["OOR"] = "距离外",
-	["Range to track"] = "距离过滤",
-	["Range in yard beyond which the status will be lost."] = "设置需要检测的距离的零界点",
+	["More than %d yards away"] = "距离超过 %d 码",
 	["%d yards"] = "%d 码",
 
 	--}}}
