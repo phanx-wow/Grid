@@ -15,7 +15,7 @@ GridStatusRange = GridStatus:NewModule("GridStatusRange", "AceEvent-2.0")
 GridStatusRange.menuName = L["Range"]
 
 -- table, map range to status name
-local check_ranges
+local check_ranges = {}
 GridStatusRange.check_ranges = check_ranges
 
 local function statusForRange(range)
