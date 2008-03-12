@@ -16,6 +16,7 @@ GridStatusRange.menuName = L["Range"]
 
 -- table, map range to status name
 local check_ranges
+GridStatusRange.check_ranges = check_ranges
 
 local function statusForRange(range)
     return ("alert_range_%d"):format(range)
@@ -74,11 +75,14 @@ end
 
 function GridStatusRange:EnableRange(range)
     check_ranges[range] = statusForRange(range)
+    self:UpdateFrequency()
 end
 
 function GridStatusRange:DisableRange(range)
     local status = check_ranges[range]
     check_ranges[range] = nil
+
+    self:UpdateFrequency()
 
     if not status then
 	return
@@ -90,7 +94,10 @@ function GridStatusRange:DisableRange(range)
 end
 
 function GridStatusRange:Grid_RangesUpdated()
-    check_ranges = {}
+    for k,v in pairs(check_ranges) do
+	check_ranges[k] = nil
+    end
+
     for r in GridRange:AvailableRangeIterator() do
 	self:RegisterStatusForRange(r)
     end
@@ -135,12 +142,6 @@ function GridStatusRange:RegisterStatusForRange(range)
 	    self.db.profile[status_name] = settings
 	end
 
-	if self.db.profile[status_name].enable then
-	    self:EnableRange(range)
-	else
-	    self:DisableRange(range)
-	end
-
 	-- override some of the default options
 	local options = {
 	    ["range"] = false,
@@ -164,6 +165,12 @@ function GridStatusRange:RegisterStatusForRange(range)
 	}
 
 	self:RegisterStatus(status_name, status_desc, options, false, range)
+    end
+
+    if self.db.profile[status_name].enable then
+	self:EnableRange(range)
+    else
+	self:DisableRange(range)
     end
 end
 
