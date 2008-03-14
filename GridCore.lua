@@ -152,9 +152,11 @@ function Grid.modulePrototype:DisableModules()
 end
 
 function Grid.modulePrototype:ResetModules()
-	for name,module in self:IterateModules() do
-		module:Reset()
-	end
+    for name,module in self:IterateModules() do
+	self:Debug("Resetting " .. name)
+	module.db = self.core:AcquireDBNamespace(name)
+	module:Reset()
+    end
 end
 
 function Grid.modulePrototype:ADDON_LOADED(addon)
@@ -268,10 +270,11 @@ function Grid:DisableModules()
 end
 
 function Grid:ResetModules()
-	for name,module in self:IterateModules() do
-		module.db = self:AcquireDBNamespace(name)
-		module:Reset()
-	end
+    for name,module in self:IterateModules() do
+	self:Debug("Resetting " .. name)
+	module.db = self:AcquireDBNamespace(name)
+	module:Reset()
+    end
 end
 
 --{{{ Event handlers

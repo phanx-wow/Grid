@@ -61,16 +61,11 @@ end
 
 function GridStatusRange:OnDisable()
     self:CancelScheduledEvent("GridStatusRange_RangeCheck")
-    self.t_range = nil
 end
 
 function GridStatusRange:Reset()
     self:OnDisable()
     self:OnEnable()
-end
-
-function GridStatusRange:OnProfileEnable()
-    self:Reset()
 end
 
 function GridStatusRange:EnableRange(range)
@@ -107,39 +102,41 @@ function GridStatusRange:RegisterStatusForRange(range)
     local status_name = statusForRange(range)
     local status_desc = L["More than %d yards away"]:format(range)
 
+    local settings = self.db.profile[status_name]
+
+    -- create default settings if none exist
+    if not settings then
+	local enabled = true
+
+	if range == 10 or range == 100 then
+	    enabled = false
+	elseif range < 40 and GridRange:GetRangeCheck(40) then
+	    enabled = false
+	end
+
+	settings = {
+	    ["text"] = L["%d yards"]:format(range),
+	    ["desc"] = status_desc,
+	    ["enable"] = enabled,
+	    ["priority"] = 80 + floor((range + 2) * .1),
+	    ["range"] = false,
+	    ["color"] = {
+		r = (range % 100) / 100,
+		g = ((range * 2) % 100) / 100,
+		b = ((range * 3) % 100) / 100,
+		a = 1 - (range % 51) / 55,
+	    },
+	}
+	
+	self.db.profile[status_name] = settings
+    end
+
     if not self.core:IsStatusRegistered(status_name) then
 	-- don't register 28 yards if we have a 30 yard check
 	-- this prevents melee settings from conflicting with
 	-- ranged/healer settings in the same profile
 	if range == 28 and GridRange:GetRangeCheck(30) then
 	    return
-	end
-
-	-- create default settings if none exist
-	if not self.db.profile[status_name] then
-	    local enabled = true
-
-	    if range == 10 or range == 100 then
-		enabled = false
-	    elseif range < 40 and GridRange:GetRangeCheck(40) then
-		enabled = false
-	    end
-
-	    local settings = {
-		["text"] = L["%d yards"]:format(range),
-		["desc"] = status_desc,
-		["enable"] = enabled,
-		["priority"] = floor(range * .8),
-		["range"] = false,
-		["color"] = {
-		    r = (range % 100) / 100,
-		    g = ((range * 2) % 100) / 100,
-		    b = ((range * 3) % 100) / 100,
-		    a = 1 - (range % 51) / 55,
-		},
-	    }
-	    
-	    self.db.profile[status_name] = settings
 	end
 
 	-- override some of the default options
@@ -167,7 +164,7 @@ function GridStatusRange:RegisterStatusForRange(range)
 	self:RegisterStatus(status_name, status_desc, options, false, range)
     end
 
-    if self.db.profile[status_name].enable then
+    if settings.enabled then
 	self:EnableRange(range)
     else
 	self:DisableRange(range)
