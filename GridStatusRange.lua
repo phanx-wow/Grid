@@ -164,7 +164,7 @@ function GridStatusRange:RegisterStatusForRange(range)
 	self:RegisterStatus(status_name, status_desc, options, false, range)
     end
 
-    if settings.enabled then
+    if settings.enable then
 	self:EnableRange(range)
     else
 	self:DisableRange(range)
@@ -183,7 +183,8 @@ function GridStatusRange:RangeCheck()
 	    if unit_range > range and settings.enable then
 		-- msg = msg .. ("|cff00ff00%d|r "):format(range)
 		self.core:SendStatusGained(unit.name, status_name,
-					   settings.priority, false, settings.color,
+					   settings.priority, false,
+					   settings.color,
 					   settings.txt)
 	    else
 		-- msg = msg .. ("|cffff0000%d|r "):format(range)
