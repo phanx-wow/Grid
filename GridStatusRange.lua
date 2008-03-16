@@ -14,9 +14,13 @@ GridStatusRange = GridStatus:NewModule("GridStatusRange", "AceEvent-2.0")
 
 GridStatusRange.menuName = L["Range"]
 
+
+-- ranges to check
+local ranges = {}
 -- table, map range to status name
-local check_ranges = {}
-GridStatusRange.check_ranges = check_ranges
+local ranges_status = {}
+-- table, map range to check function
+local ranges_check = {}
 
 local function statusForRange(range)
     return ("alert_range_%d"):format(range)
@@ -64,38 +68,53 @@ function GridStatusRange:OnDisable()
 end
 
 function GridStatusRange:Reset()
-    self:OnDisable()
-    self:OnEnable()
+   self:OnDisable()
+   self:OnEnable()
 end
 
 function GridStatusRange:EnableRange(range)
-    check_ranges[range] = statusForRange(range)
-    self:UpdateFrequency()
+   if not ranges_status[range] then
+      ranges[#ranges + 1] = range
+      table.sort(ranges)
+
+      ranges_status[range] = statusForRange(range)
+      ranges_check[range] = GridRange:GetRangeCheck(range)
+
+      self:UpdateFrequency()
+   end
 end
 
 function GridStatusRange:DisableRange(range)
-    local status = check_ranges[range]
-    check_ranges[range] = nil
+   for k,v in ipairs(ranges) do
+      if v == range then
+	 table.remove(ranges, k)
+	 break
+      end
+   end
 
-    self:UpdateFrequency()
+   local status = ranges_status[range]
+   ranges_status[range] = nil
+   ranges_check[range] = nil
 
-    if not status then
-	return
-    end
+   self:UpdateFrequency()
 
-    for unit in roster:IterateRoster(true) do
-	self.core:SendStatusLost(unit.name, status)
-    end
+   if not status then
+      return
+   end
+   
+   for unit in roster:IterateRoster(true) do
+      self.core:SendStatusLost(unit.name, status)
+   end
 end
 
 function GridStatusRange:Grid_RangesUpdated()
-    for k,v in pairs(check_ranges) do
-	check_ranges[k] = nil
-    end
+   ranges = {}
+   ranges_status = {}
+   ranges_check = {}
 
-    for r in GridRange:AvailableRangeIterator() do
-	self:RegisterStatusForRange(r)
-    end
+   for r in GridRange:AvailableRangeIterator() do
+      self:RegisterStatusForRange(r)
+   end
 end
 
 function GridStatusRange:RegisterStatusForRange(range)
@@ -172,34 +191,44 @@ function GridStatusRange:RegisterStatusForRange(range)
 end
 
 function GridStatusRange:RangeCheck()
-    for unit in roster:IterateRoster(true) do
-	local unit_range = GridRange:GetUnitRange(unit.unitid) or 10000
+   for unit in roster:IterateRoster(true) do
+      local unitid = unit.unitid
+      local unit_range
 
-	-- local msg = ("%s(%d): "):format(unit.name, unit_range)
+      for _, range in ipairs(ranges) do
+	 if ranges_check[range](unitid) then
+	    unit_range = range
+	    break
+	 end
+      end
+      
+      if not unit_range and
+	 (UnitIsDead(unitid) or not UnitCanAssist("player", unitid)) then
+	 unit_range = GridRange:GetUnitRange(unitid)
+      end
 
-	for range, status_name in pairs(check_ranges) do
-	    local settings = self.db.profile[status_name]
+      if not unit_range then unit_range = 100000 end
 
-	    if unit_range > range and settings.enable then
-		-- msg = msg .. ("|cff00ff00%d|r "):format(range)
-		self.core:SendStatusGained(unit.name, status_name,
-					   settings.priority, false,
-					   settings.color,
-					   settings.txt)
-	    else
-		-- msg = msg .. ("|cffff0000%d|r "):format(range)
-		self.core:SendStatusLost(unit.name, status_name)
-	    end
-	end
-	-- self:Debug(msg)
-    end
+      for range, status_name in pairs(ranges_status) do
+	 local settings = self.db.profile[status_name]
+	 
+	 if unit_range > range then
+	    self.core:SendStatusGained(unit.name, status_name,
+				       settings.priority, false,
+				       settings.color,
+				       settings.txt)
+	 else
+	    self.core:SendStatusLost(unit.name, status_name)
+	 end
+      end
+   end
 end
 
 function GridStatusRange:UpdateFrequency()
     self:CancelScheduledEvent("GridStatusRange_RangeCheck")
 
     -- don't schedule the event if we don't have any ranges to check
-    if not next(check_ranges) then
+    if not next(ranges) then
 	return
     end
 
