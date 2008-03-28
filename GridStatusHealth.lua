@@ -166,6 +166,7 @@ function GridStatusHealth:OnEnable()
 	--self:RegisterBucketEvent("UNIT_HEALTH", 0.2)
 	self:RegisterEvent("UNIT_HEALTH", "UpdateUnit")
 	self:RegisterEvent("UNIT_MAXHEALTH", "UpdateUnit")
+	self:RegisterEvent("UNIT_AURA", "UpdateUnit")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
 end
 

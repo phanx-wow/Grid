@@ -7,6 +7,7 @@
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local BabbleSpell = LibStub:GetLibrary("LibBabble-Spell-3.0")
 local BS = BabbleSpell:GetLookupTable()
+local gratuity = AceLibrary("Gratuity-2.0")
 
 --}}}
 
@@ -56,8 +57,6 @@ end
 initRanges()
 
 function GridRange:ScanSpellbook()
-	local gratuity = AceLibrary("Gratuity-2.0")
-
 	initRanges()
 
 	-- using IsSpellInRange doesn't work for dead players.
