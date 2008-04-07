@@ -1,4 +1,4 @@
-﻿-- GridFrame.lua
+-- GridFrame.lua
 
 --{{{ Libraries
 
@@ -66,6 +66,7 @@ end
 
 local function GridFrame_Initialize(self)
 	GridFrame:RegisterFrame(self)
+	self:SetAttribute("*type1", "target")
 	self:SetScript("OnShow", GridFrame_OnShow)
 	self:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
 end
