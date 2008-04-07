@@ -31,15 +31,12 @@ end
 function GridLayoutPartyClass.prototype:CreateFrames()
 	self.frame = CreateFrame("Frame", "GridLayoutParty", GridLayoutFrame, nil)
 
-	self.playerFrame = CreateFrame("Button", "GridLayoutPartyPlayer", GridLayoutParty, "GridFrameTemplateSecure")
 	self.partyFrame = CreateFrame("Frame", "GridLayoutPartyHeader", GridLayoutParty, "SecurePartyHeaderTemplate")
+	self.partyFrame:SetAttribute("showPlayer", true)
+	self.partyFrame:SetAttribute("showSolo", true)
 	self.partyFrame:SetAttribute("template", "GridFrameTemplateSecure")
 	self.partyFrame.initialConfigFunction = GridLayout_InitialConfigFunction
-
-	self.playerFrame:SetAttribute("unit", "player")
-
-	self.playerFrame:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 0, 0)
-	self.partyFrame:SetPoint("TOPLEFT", self.playerFrame, "BOTTOMLEFT", 0, 0)
+	self.partyFrame:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 0, 0)
 	
 	self.partyPetFrame = CreateFrame("Frame", "GridLayoutPartyPetHeader", GridLayoutParty, "SecurePartyPetHeaderTemplate")
 	self.partyPetFrame:SetAttribute("template", "GridFrameTemplateSecure")
@@ -50,8 +47,8 @@ function GridLayoutPartyClass.prototype:CreateFrames()
 	self.partyPetFrame:SetPoint("TOPLEFT", self.partyFrame, "BOTTOMLEFT", 0, 0)
 	
 	self:UpdateSize()
+
 	self.frame:Show()
-	self.playerFrame:Show()
 	self.partyFrame:Show()
 	self.partyPetFrame:Show()
 end
@@ -103,11 +100,8 @@ function GridLayoutPartyClass.prototype:SetOrientation(horizontal)
 		end
 	end
 
-	self.playerFrame:ClearAllPoints()
-	self.playerFrame:SetPoint(anchor, self.frame, anchor, 0, 0)
-
 	self.partyFrame:ClearAllPoints()
-	self.partyFrame:SetPoint(anchorf1, self.playerFrame, anchorf2, xOffset, yOffset)
+	self.partyFrame:SetPoint(anchor, self.frame, anchor, 0, 0)
 	self.partyFrame:SetAttribute("xOffset", xOffset)
 	self.partyFrame:SetAttribute("yOffset", yOffset)
 	self.partyFrame:SetAttribute("point", point)
@@ -124,25 +118,17 @@ end
 function GridLayoutPartyClass.prototype:UpdateSize()
 	local layoutSettings = GridLayout.db.profile
 
-	local width  = self.playerFrame:GetWidth()
-	local height = self.playerFrame:GetHeight()
+	local width  = self.partyFrame:GetWidth()
+	local height = self.partyFrame:GetHeight()
 	local padding = layoutSettings.Padding
 
 	if layoutSettings.horizontal then
-		local pwidth = self.partyFrame:GetWidth()
-		if self.partyFrame:IsVisible() and pwidth > 0 then
-			width = width + padding + pwidth
-		end
-		pwidth = self.partyPetFrame:GetWidth()
+		local pwidth = self.partyPetFrame:GetWidth()
 		if self.partyPetFrame:IsVisible() and pwidth > 0 then
 			width = width + padding + pwidth
 		end
 	else
-		local pheight = self.partyFrame:GetHeight()
-		if self.partyFrame:IsVisible() and pheight > 0 then
-			height = height + padding + pheight
-		end
-		pheight = self.partyPetFrame:GetHeight()
+		local pheight = self.partyPetFrame:GetHeight()
 		if self.partyPetFrame:IsVisible() and pheight > 0 then
 			height = height + padding + pheight
 		end

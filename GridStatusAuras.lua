@@ -4,10 +4,24 @@ local Aura = AceLibrary("SpecialEvents-Aura-2.0")
 local Dewdrop = AceLibrary("Dewdrop-2.0")
 local RL = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
-local BabbleSpell = LibStub:GetLibrary("LibBabble-Spell-3.0")
-local BS = BabbleSpell:GetLookupTable()
+-- local BabbleSpell = LibStub:GetLibrary("LibBabble-Spell-3.0")
+-- local BS = BabbleSpell:GetLookupTable()
 local BC = AceLibrary("Babble-Class-2.2")
 
+--}}}
+
+--{{{ Get Spell Names
+local BS = {
+	["Power Word: Shield"] = GetSpellInfo(17),
+	["Weakened Soul"] = GetSpellInfo(6788),
+	["Mortal Strike"] = GetSpellInfo(12294),
+	["Renew"] = GetSpellInfo(139),
+	["Regrowth"] = GetSpellInfo(8936),
+	["Rejuvenation"] = GetSpellInfo(774),
+	["Lifebloom"] = GetSpellInfo(33763),
+	["Abolish Poison"] = GetSpellInfo(2893),
+	["Abolish Disease"] = GetSpellInfo(552),
+}
 --}}}
 
 GridStatusAuras = GridStatus:NewModule("GridStatusAuras")

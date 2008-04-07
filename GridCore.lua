@@ -14,7 +14,7 @@ local waterfall = AceLibrary:HasInstance("Waterfall-1.0") and AceLibrary("Waterf
 Grid = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceDebug-2.0", "AceModuleCore-2.0", "AceConsole-2.0", "FuBarPlugin-2.0")
 Grid:SetModuleMixins("AceDebug-2.0", "AceEvent-2.0", "AceModuleCore-2.0")
 Grid:RegisterDB("GridDB")
-Grid.debugFrame = ChatFrame2
+Grid.debugFrame = ChatFrame1
 
 --{{{ AceOptions table
 

@@ -5,8 +5,8 @@
 --{{{ Libraries
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
-local BabbleSpell = LibStub:GetLibrary("LibBabble-Spell-3.0")
-local BS = BabbleSpell:GetLookupTable()
+-- local BabbleSpell = LibStub:GetLibrary("LibBabble-Spell-3.0")
+-- local BS = BabbleSpell:GetLookupTable()
 local gratuity = AceLibrary("Gratuity-2.0")
 
 --}}}
@@ -19,6 +19,11 @@ local IsSpellInRange = IsSpellInRange
 local CheckInteractDistance = CheckInteractDistance
 local UnitIsVisible = UnitIsVisible
 local BOOKTYPE_SPELL = BOOKTYPE_SPELL
+
+local BS = {
+	["Mend Pet"] = GetSpellInfo(136),
+	["Health Funnel"] = GetSpellInfo(755),
+}
 
 local invalidSpells = {
 	[BS["Mend Pet"]] = true,
