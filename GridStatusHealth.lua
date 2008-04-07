@@ -258,7 +258,7 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 				    (settings.useClassColors and 
 					 self.core:UnitColor(RL:GetUnitObjectFromName(name)) or
 				     settings.color),
-					nil,
+					healthText,
 					cur, max,
 					settings.icon)
 end
