@@ -35,6 +35,7 @@ function GridLayoutPartyClass.prototype:CreateFrames()
 	self.partyFrame = CreateFrame("Frame", "GridLayoutPartyHeader", GridLayoutParty, "SecurePartyHeaderTemplate")
 	self.partyFrame:SetAttribute("showPlayer", true)
 	self.partyFrame:SetAttribute("showSolo", true)
+	self.partyFrame:SetAttribute("template", "SecureUnitButtonTemplate") 
 	self.partyFrame.initialConfigFunction = GridLayout_InitialConfigFunction
 	self.partyFrame:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 0, 0)
 	
@@ -42,6 +43,7 @@ function GridLayoutPartyClass.prototype:CreateFrames()
 	self.partyPetFrame:SetAttribute("filterOnPet", true)
 	self.partyPetFrame:SetAttribute("showPlayer", true)
 	self.partyPetFrame:SetAttribute("showSolo", true)
+	self.partyPetFrame:SetAttribute("template", "SecureUnitButtonTemplate") 
 	self.partyPetFrame.initialConfigFunction = GridLayout_InitialConfigFunction
 	self.partyPetFrame:SetPoint("TOPLEFT", self.partyFrame, "BOTTOMLEFT", 0, 0)
 	
@@ -183,6 +185,7 @@ function GridLayoutHeaderClass.prototype:CreateFrames(isPetGroup)
 
 	self.frame = CreateFrame("Frame", "GridLayoutHeader"..NUM_HEADERS, GridLayoutFrame, 
 		isPetGroup and "SecureRaidPetHeaderTemplate" or "SecureRaidGroupHeaderTemplate")
+	self.frame:SetAttribute("template", "SecureUnitButtonTemplate") 
 	self.frame.initialConfigFunction = GridLayout_InitialConfigFunction
 end
 
