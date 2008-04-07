@@ -121,7 +121,10 @@ function GridFrameClass.prototype:CreateFrames()
 	local texture = media and media:Fetch("statusbar", GridFrame.db.profile.texture) or "Interface\\Addons\\Grid\\gradient32x32"
 
 	-- f:Hide()
-	f:EnableMouse(true)
+	if not InCombatLockdown() then
+		-- most probably unneeded anyway
+		f:EnableMouse(true)
+	end
 	f:RegisterForClicks("LeftButtonUp", "RightButtonUp", "MiddleButtonUp", "Button4Up", "Button5Up")
 
 	-- set our left-click action
@@ -231,7 +234,11 @@ end
 
 function GridFrameClass.prototype:SetWidth(width)
 	local f = self.frame
-	f:SetWidth(width)
+	if not InCombatLockdown() then
+		f:SetWidth(width)
+	else
+		f:SetAttribute("initial-width", width)
+	end
 	f.Bar:SetWidth(width-4)
 	f.BarBG:SetWidth(width-4)
 	f.HealingBar:SetWidth(width-4)
@@ -241,7 +248,11 @@ end
 
 function GridFrameClass.prototype:SetHeight(height)
 	local f = self.frame
-	f:SetHeight(height)
+	if not InCombatLockdown() then
+		f:SetHeight(height)
+	else
+		f:SetAttribute("initial-height", height)
+	end
 	f.Bar:SetHeight(height-4)
 	f.BarBG:SetHeight(height-4)
 	f.HealingBar:SetHeight(height-4)

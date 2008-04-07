@@ -13,8 +13,6 @@ local RL = AceLibrary("Roster-2.1")
 
 function GridLayout_InitialConfigFunction(frame)
 	GridFrame.InitialConfigFunction(frame)
-	frame:SetAttribute("initial-width", GridFrame:GetFrameWidth())
-	frame:SetAttribute("initial-height", GridFrame:GetFrameHeight())
 end
 
 --}}}
