@@ -174,10 +174,8 @@ function GridStatusHealth:Reset()
 end
 
 function GridStatusHealth:UpdateAllUnits()
-	local name, status, statusTbl
-
-	for name, status, statusTbl in self.core:CachedStatusIterator("unit_health") do
-		self:Grid_UnitJoined(name)
+	for u in RL:IterateRoster(true) do
+		self:Grid_UnitJoined(u.unitname, u.unitid)
 	end
 end
 
