@@ -20,11 +20,6 @@ local function GridFrame_OnShow(self)
 	GridFrame:TriggerEvent("Grid_UpdateLayoutSize")
 end
 
-function GridFrame_OnLoad(self)
-	GridFrame:RegisterFrame(self)
-	self:SetScript("OnShow", GridFrame_OnShow)
-end
-
 local function GridFrame_OnEvent(self, event, unit)
 	if unit == self.unit then
 		local unitName = UnitName(unit)
@@ -39,7 +34,7 @@ local function GridFrame_OnEvent(self, event, unit)
 	end
 end
 
-function GridFrame_OnAttributeChanged(self, name, value)
+local function GridFrame_OnAttributeChanged(self, name, value)
 	local frame = GridFrame.registeredFrames[self:GetName()]
 
 	if not frame then return end
@@ -67,6 +62,12 @@ function GridFrame_OnAttributeChanged(self, name, value)
 	elseif name == "type1" and (not value or value == "") then
 		self:SetAttribute("type1", "target")
 	end
+end
+
+local function GridFrame_Initialize(self)
+	GridFrame:RegisterFrame(self)
+	self:SetScript("OnShow", GridFrame_OnShow)
+	self:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
 end
 
 --}}}
@@ -596,6 +597,7 @@ end
 
 GridFrame = Grid:NewModule("GridFrame")
 GridFrame.frameClass = GridFrameClass
+GridFrame.InitialConfigFunction = GridFrame_Initialize
 
 --{{{  AceDB defaults
 

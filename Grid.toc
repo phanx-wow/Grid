@@ -40,7 +40,6 @@ GridCore.lua
 GridRange.lua
 GridLayout.lua
 GridLayoutLayouts.lua
-GridFrame.xml
 GridFrame.lua
 GridStatus.lua
 

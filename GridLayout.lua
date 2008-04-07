@@ -12,6 +12,7 @@ local RL = AceLibrary("Roster-2.1")
 --{{{ Frame config function for secure headers
 
 function GridLayout_InitialConfigFunction(frame)
+	GridFrame.InitialConfigFunction(frame)
 	frame:SetAttribute("initial-width", GridFrame:GetFrameWidth())
 	frame:SetAttribute("initial-height", GridFrame:GetFrameHeight())
 end
@@ -34,12 +35,10 @@ function GridLayoutPartyClass.prototype:CreateFrames()
 	self.partyFrame = CreateFrame("Frame", "GridLayoutPartyHeader", GridLayoutParty, "SecurePartyHeaderTemplate")
 	self.partyFrame:SetAttribute("showPlayer", true)
 	self.partyFrame:SetAttribute("showSolo", true)
-	self.partyFrame:SetAttribute("template", "GridFrameTemplateSecure")
 	self.partyFrame.initialConfigFunction = GridLayout_InitialConfigFunction
 	self.partyFrame:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 0, 0)
 	
 	self.partyPetFrame = CreateFrame("Frame", "GridLayoutPartyPetHeader", GridLayoutParty, "SecurePartyPetHeaderTemplate")
-	self.partyPetFrame:SetAttribute("template", "GridFrameTemplateSecure")
 	self.partyPetFrame:SetAttribute("filterOnPet", true)
 	self.partyPetFrame:SetAttribute("showPlayer", true)
 	self.partyPetFrame:SetAttribute("showSolo", true)
@@ -184,7 +183,6 @@ function GridLayoutHeaderClass.prototype:CreateFrames(isPetGroup)
 
 	self.frame = CreateFrame("Frame", "GridLayoutHeader"..NUM_HEADERS, GridLayoutFrame, 
 		isPetGroup and "SecureRaidPetHeaderTemplate" or "SecureRaidGroupHeaderTemplate")
-	self.frame:SetAttribute("template", "GridFrameTemplateSecure")
 	self.frame.initialConfigFunction = GridLayout_InitialConfigFunction
 end
 
