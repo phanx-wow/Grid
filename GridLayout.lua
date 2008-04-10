@@ -816,6 +816,12 @@ function GridLayout:LoadLayout(layoutName, forceRaid)
 		end
 	end
 
+	-- layout not ready yet
+	if not next(layout) then
+		self:Debug("No groups found in layout")
+		return
+	end
+
 	local groupsNeeded, groupsAvailable, petGroupsNeeded, petGroupsAvailable 
 		= 0, #self.layoutGroups, 0, #self.layoutPetGroups
 
