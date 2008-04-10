@@ -56,7 +56,7 @@ GridStatusHealth.defaultDB = {
 	alert_offline = {
 		text = L["Offline"],
 		enable = true,
-		color = { r = 1, g = 1, g = 1, a = 0.6 },
+		color = { r = 1, g = 1, b = 1, a = 0.6 },
 		priority = 60,
 		range = false,
 	},

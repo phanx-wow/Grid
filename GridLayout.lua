@@ -1,4 +1,4 @@
-ï»¿-- GridLayout.lua
+œóòß-- GridLayout.lua
 -- insert boilerplate
 
 --{{{ Libraries
@@ -546,9 +546,14 @@ function GridLayout:OnInitialize()
 end
 
 function GridLayout:OnEnable()
+	self:Debug("OnEnable")
 	if not self.frame then
 		self:CreateFrames()
 	end
+
+	self.forceRaid = true
+	self:ScheduleEvent(self.CombatFix, 1, self)
+	
 	self:LoadLayout(self.db.profile.layout)
 	-- position and scale frame
 	self:RestorePosition()
@@ -568,7 +573,7 @@ function GridLayout:OnEnable()
 
 	self:RegisterEvent("Grid_EnteringCombat", "EnteringOrLeavingCombat")
 	self:RegisterEvent("Grid_LeavingCombat", "EnteringOrLeavingCombat")
-	
+
 	self.super.OnEnable(self)
 end
 
@@ -595,8 +600,14 @@ function GridLayout:EnteringOrLeavingCombat()
 	if updateSizeQueued then return self:PartyMembersChanged() end
 end
 
+function GridLayout:CombatFix()
+	self:Debug("CombatFix")
+	self.forceRaid = false
+	return self:ReloadLayout()
+end
+
 function GridLayout:PartyMembersChanged()
-	GridLayout:Debug("PartyMembersChanged")
+	self:Debug("PartyMembersChanged")
 	if InCombatLockdown() then
 		updateSizeQueued = true
 	else
@@ -606,7 +617,7 @@ function GridLayout:PartyMembersChanged()
 end
 
 function GridLayout:PartyTypeChanged()
-	GridLayout:Debug("PartyTypeChanged")
+	self:Debug("PartyTypeChanged")
 
 	if InCombatLockdown() then
 		reloadLayoutQueued = true
@@ -735,8 +746,8 @@ function GridLayout:SetClamp()
 	self.frame:SetClampedToScreen(self.db.profile.clamp)
 end
 
-function GridLayout:ReloadLayout()
-	self:LoadLayout(self.db.profile.layout)
+function GridLayout:ReloadLayout(forceRaid)
+	self:LoadLayout(self.db.profile.layout, forceRaid)
 end
 
 local function InRaidOrBG()
@@ -762,16 +773,22 @@ local function getColumnAnchorPoint(point, horizontal)
 	return point
 end
 
-function GridLayout:LoadLayout(layoutName)
+function GridLayout:LoadLayout(layoutName, forceRaid)
 	local p = self.db.profile
 	local horizontal = p.horizontal
 	local layout = self.layoutSettings[layoutName]
 
-	self:Debug("LoadLayout", layoutName)
+	if self.forceRaid then
+		forceRaid = true
+	end
+
+	local inRaid = InRaidOrBG()
+
+	self:Debug("LoadLayout", layoutName, forceRaid, inRaid)
 
 	-- show party
 	local iPlaceOffset
-	if not InRaidOrBG() or p.showParty then
+	if not inRaid or p.showParty then
 		iPlaceOffset = 1
 		self.partyGroup:SetOrientation(horizontal)
 		self:PlaceGroup(self.partyGroup, 1)
@@ -786,15 +803,17 @@ function GridLayout:LoadLayout(layoutName)
 		iPlaceOffset = 0
 	end
 
-	if not InRaidOrBG() or not layout or #layout < 1 then
+	if not inRaid or not layout or #layout < 1 then
 		for _, g in ipairs(self.layoutGroups) do
 			g:Reset()
 		end
 		for _, g in ipairs(self.layoutPetGroups) do
 			g:Reset()
 		end
-		self:UpdateDisplay()
-		return
+		if not forceRaid then
+			self:UpdateDisplay()
+			return
+		end
 	end
 
 	local groupsNeeded, groupsAvailable, petGroupsNeeded, petGroupsAvailable 
