@@ -817,8 +817,9 @@ function GridLayout:LoadLayout(layoutName, forceRaid)
 	end
 
 	-- layout not ready yet
-	if not next(layout) then
+	if type(layout) ~= "table" or not next(layout) then
 		self:Debug("No groups found in layout")
+		self:UpdateDisplay()
 		return
 	end
 
