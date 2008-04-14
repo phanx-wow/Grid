@@ -405,6 +405,10 @@ function GridStatus:SendStatusGained(name, status, priority, range, color, text,
 		self:Debug("Range is not a number for", status)
 	end
 
+	if text == nil then
+		text = ""
+	end
+
 	-- create cache for unit if needed
 	if not cache[name] then
 		cache[name] = {}
@@ -433,7 +437,7 @@ function GridStatus:SendStatusGained(name, status, priority, range, color, text,
 	cached.priority = priority
 	cached.range = range
 	cached.color = color
-	cached.text = (text or "")
+	cached.text = text
 	cached.value = value
 	cached.maxValue = maxValue
 	cached.texture = texture
