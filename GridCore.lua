@@ -187,8 +187,8 @@ function Grid:OnInitialize()
 	-- rename FuBar menu to avoid confusion
 	-- this should be added to FuBarPlugin btw.
 	if not FuBar then
-		self.OnMenuRequest.args.hide.guiName = "Hide minimap icon"
-		self.OnMenuRequest.args.hide.desc = "Hide minimap icon"
+		self.OnMenuRequest.args.hide.guiName = L["Hide minimap icon"]
+		self.OnMenuRequest.args.hide.desc = L["Hide minimap icon"]
 	end
 	
 	self:RegisterEvent("ADDON_LOADED")

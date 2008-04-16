@@ -8,6 +8,7 @@ local strings_enUS = {
 	["Toggle debugging for %s."] = true,
 	["Configure"] = true,
 	["Configure Grid"] = true,
+	["Hide minimap icon"] = true,
 
 	--}}}
 	--{{{ GridFrame

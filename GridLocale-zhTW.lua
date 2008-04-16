@@ -8,6 +8,7 @@ local strings_zhTW = {
 	["Toggle debugging for %s."] = "啟用 %s 的除錯訊息。",
 	["Configure"] = "設定",
 	["Configure Grid"] = "設定 Grid",
+	["Hide minimap icon"] = "隱藏小地圖按鈕",
 
 	--}}}
 	--{{{ GridFrame
