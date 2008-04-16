@@ -6,7 +6,8 @@ local RL = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local BabbleSpell = LibStub:GetLibrary("LibBabble-Spell-3.0")
 -- local BS = BabbleSpell:GetLookupTable()
-local BC = AceLibrary("Babble-Class-2.2")
+local BabbleClass = LibStub:GetLibrary("LibBabble-Class-3.0")
+local BC = BabbleClass:GetLookupTable()
 
 --}}}
 

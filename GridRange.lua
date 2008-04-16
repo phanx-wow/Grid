@@ -7,7 +7,7 @@
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 -- local BabbleSpell = LibStub:GetLibrary("LibBabble-Spell-3.0")
 -- local BS = BabbleSpell:GetLookupTable()
-local gratuity = AceLibrary("Gratuity-2.0")
+local gratuity = LibStub:GetLibrary("LibGratuity-3.0")
 
 --}}}
 

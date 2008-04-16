@@ -271,7 +271,12 @@ GridStatus.options = {
 --}}}
 
 function GridStatus:FillColorOptions(options)
-	local BC = AceLibrary("Babble-Class-2.2")
+	local BabbleClass = LibStub:GetLibrary("LibBabble-Class-3.0")
+	local BC = BabbleClass:GetLookupTable()
+	local classcolor = {}
+	for class, color in pairs(RAID_CLASS_COLORS) do
+		classcolor[class] = { color.r, color.g, color.b }
+	end
 	local colors = self.db.profile.colors
 	for _, class in ipairs{
 		"Warlock", "Warrior", "Hunter", "Mage",
@@ -281,7 +286,7 @@ function GridStatus:FillColorOptions(options)
 		local l_class = BC[class]
 		if not colors[name] then
 			local r, g, b = BC:GetColor(class)
-			colors[name] = { r = r, g = g, b = b, a = 1, }
+			colors[name] = unpack(classcolor[name])
 		end
 		options.args.class.args[class] = {
 			type = "color",

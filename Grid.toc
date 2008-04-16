@@ -17,8 +17,8 @@
 ## DefaultState: enabled
 ## LoadOnDemand: 0
 
-## OptionalDeps: Ace2, Babble-2.2, Clique, CT_RaidAssist, DewdropLib, FuBar, FuBarPlugin-2.0, GratuityLib, JustClick, oRA2, RosterLib, LibBanzai-2.0, LibSharedMedia-2.0, SharedMedia-2.0, SpecialEventsEmbed, UTF8, ChatThrottleLib, SpecialEvents-Aura-2.0, CallbackHandler-1.0, LibBabble-Spell-3.0, LibHealComm-3.0
-## X-Embeds: Ace2, Babble-2.2, DewdropLib, FuBarPlugin-2.0, GratuityLib, RosterLib, LibBanzai-2.0, SpecialEventsEmbed, UTF8, LibSharedMedia-2.0, CallbackHandler-1.0, LibBabble-Spell-3.0, LibHealComm-3.0
+## OptionalDeps: Ace2, CallbackHandler-1.0, ChatThrottleLib, LibBabble-Class-3.0, LibBabble-Spell-3.0, LibBanzai-2.0, DewdropLib, FuBarPlugin-2.0, LibGratuity-3.0, LibHealComm-3.0, RosterLib, LibSharedMedia-2.0, SpecialEventsEmbed, SpecialEvents-Aura-2.0, UTF8, Clique, CT_RaidAssist, FuBar, JustClick, oRA2, SharedMedia
+## X-Embeds: Ace2, LibBabble-Class-3.0, LibBabble-Spell-3.0, LibBanzai-2.0, DewdropLib, FuBarPlugin-2.0, LibGratuity-3.0, LibHealComm-3.0, RosterLib, LibSharedMedia-2.0, SpecialEventsEmbed, UTF8
 
 ## Non-Ace Libraries
 #libs\UTF8\utf8data.lua
