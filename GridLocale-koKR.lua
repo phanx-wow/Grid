@@ -8,6 +8,7 @@ local strings_koKR = {
 	["Toggle debugging for %s."] = "%s|1을;를; 위해 디버깅을 사용합니다.",
 	["Configure"] = "설정",
 	["Configure Grid"] = "Grid 옵션을 설정합니다.",
+	["Hide minimap icon"] = "미니맵 아이콘 숨김",
 
 	--}}}
 	--{{{ GridFrame
