@@ -104,8 +104,8 @@ function GridFrameClass.prototype:Reset()
 	for _,indicator in ipairs(self.indicators) do
 		self:ClearIndicator(indicator.type)
 	end
-	self:SetAttribute("initial-width", GridFrame:GetFrameWidth())
-	self:SetAttribute("initial-height", GridFrame:GetFrameHeight())
+	self.frame:SetAttribute("initial-width", GridFrame:GetFrameWidth())
+	self.frame:SetAttribute("initial-height", GridFrame:GetFrameHeight())
 	self:SetWidth(GridFrame:GetFrameWidth())
 	self:SetHeight(GridFrame:GetFrameHeight())
 	self:SetOrientation(GridFrame.db.profile.orientation)
