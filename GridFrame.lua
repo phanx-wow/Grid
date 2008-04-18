@@ -104,8 +104,6 @@ function GridFrameClass.prototype:Reset()
 	for _,indicator in ipairs(self.indicators) do
 		self:ClearIndicator(indicator.type)
 	end
-	self.frame:SetAttribute("initial-width", GridFrame:GetFrameWidth())
-	self.frame:SetAttribute("initial-height", GridFrame:GetFrameHeight())
 	self:SetWidth(GridFrame:GetFrameWidth())
 	self:SetHeight(GridFrame:GetFrameHeight())
 	self:SetOrientation(GridFrame.db.profile.orientation)
@@ -198,11 +196,10 @@ function GridFrameClass.prototype:CreateFrames()
 
 	self.frame = f
 
-	self:SetWidth(GridFrame:GetFrameWidth())
-	self:SetHeight(GridFrame:GetFrameHeight())
-	self:SetOrientation(GridFrame.db.profile.orientation)
-	self:SetTextOrientation(GridFrame.db.profile.textorientation)
-	self:EnableText2(GridFrame.db.profile.enableText2)
+	self.frame:SetAttribute("initial-width", GridFrame:GetFrameWidth())
+	self.frame:SetAttribute("initial-height", GridFrame:GetFrameHeight())
+
+	self:Reset()
 
 	-- set up click casting
 	ClickCastFrames = ClickCastFrames or {}
