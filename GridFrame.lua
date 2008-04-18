@@ -104,6 +104,8 @@ function GridFrameClass.prototype:Reset()
 	for _,indicator in ipairs(self.indicators) do
 		self:ClearIndicator(indicator.type)
 	end
+	self:SetAttribute("initial-width", GridFrame:GetFrameWidth())
+	self:SetAttribute("initial-height", GridFrame:GetFrameHeight())
 	self:SetWidth(GridFrame:GetFrameWidth())
 	self:SetHeight(GridFrame:GetFrameHeight())
 	self:SetOrientation(GridFrame.db.profile.orientation)
@@ -120,11 +122,6 @@ function GridFrameClass.prototype:CreateFrames()
 	local font = media and media:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
 	local texture = media and media:Fetch("statusbar", GridFrame.db.profile.texture) or "Interface\\Addons\\Grid\\gradient32x32"
 
-	-- f:Hide()
-	if not InCombatLockdown() then
-		-- most probably unneeded anyway
-		f:EnableMouse(true)
-	end
 	f:RegisterForClicks("LeftButtonUp", "RightButtonUp", "MiddleButtonUp", "Button4Up", "Button5Up")
 
 	-- set our left-click action
@@ -236,8 +233,6 @@ function GridFrameClass.prototype:SetWidth(width)
 	local f = self.frame
 	if not InCombatLockdown() then
 		f:SetWidth(width)
-	else
-		f:SetAttribute("initial-width", width)
 	end
 	f.Bar:SetWidth(width-4)
 	f.BarBG:SetWidth(width-4)
@@ -250,8 +245,6 @@ function GridFrameClass.prototype:SetHeight(height)
 	local f = self.frame
 	if not InCombatLockdown() then
 		f:SetHeight(height)
-	else
-		f:SetAttribute("initial-height", height)
 	end
 	f.Bar:SetHeight(height-4)
 	f.BarBG:SetHeight(height-4)
