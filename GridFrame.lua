@@ -6,7 +6,7 @@ local AceOO = AceLibrary("AceOO-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local GridRange = GridRange
 
-local media = LibStub("LibSharedMedia-2.0", true)
+local media = LibStub("LibSharedMedia-3.0", true)
 if media then media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32") end
 
 --}}}
@@ -906,13 +906,17 @@ GridFrame.options = {
 	},
 }
 
+local media_fonts
+local media_statusbars
 if media then
+	media_fonts = media:List("font")
+	media_statusbars = media:List("statusbar")
 	local media_options = {
 				["font"] = {
 					type = "text",
 					name = L["Font"],
 					desc = L["Adjust the font settings"],
-					validate = media:List("font"),
+					validate = media_fonts,
 					get = function ()
 						  	  return GridFrame.db.profile.font
 						  end,
@@ -927,7 +931,7 @@ if media then
 					type = "text",
 					name = L["Frame Texture"],
 					desc = L["Adjust the texture of each unit's frame."],
-					validate = media:List("statusbar"),
+					validate = media_statusbars,
 					get = function ()
 							  return GridFrame.db.profile.texture
 						  end,
@@ -938,10 +942,8 @@ if media then
 						  end,
 				},
 	}
-
 	table.insert(GridFrame.options.args["advanced"].args, media_options["font"])
 	table.insert(GridFrame.options.args["advanced"].args, media_options["texture"])
-
 end
 
 --}}}
@@ -962,6 +964,16 @@ function GridFrame:OnEnable()
 	self:RegisterEvent("Grid_StatusUnregistered", "UpdateOptionsMenu")
 	self:ResetAllFrames()
 	self:UpdateAllFrames()
+	media.RegisterCallback(self, "LibSharedMedia_Registered", "LibSharedMedia_Update")
+	media.RegisterCallback(self, "LibSharedMedia_SetGlobal", "LibSharedMedia_Update")
+end
+
+function GridFrame:LibSharedMedia_Update(callback, type, handle)
+	if type == "font" then
+		self:WithAllFrames(function (f) f:SetFrameFont(media:Fetch("font", self.db.profile.font)) end)
+	elseif type == "statusbar" then
+		self:WithAllFrames(function (f) f:SetFrameTexture(media:Fetch("statusbar", self.db.profile.texture)) end)
+	end
 end
 
 function GridFrame:OnDisable()
@@ -975,8 +987,8 @@ function GridFrame:Reset()
 
 	-- Fix for font size not updating on profile change
 	-- Can probably be done better
-  font = media and media:Fetch('font', GridFrame.db.profile.font) or STANDARD_TEXT_FONT
-  GridFrame:WithAllFrames(function (f) f:SetFrameFont(font, GridFrame.db.profile.fontSize) end)
+	font = media and media:Fetch('font', GridFrame.db.profile.font) or STANDARD_TEXT_FONT
+	GridFrame:WithAllFrames(function (f) f:SetFrameFont(font, GridFrame.db.profile.fontSize) end)
 
 	self:ResetAllFrames()
 	self:UpdateAllFrames()

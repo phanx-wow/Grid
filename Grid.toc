@@ -17,8 +17,8 @@
 ## DefaultState: enabled
 ## LoadOnDemand: 0
 
-## OptionalDeps: Ace2, CallbackHandler-1.0, ChatThrottleLib, LibBabble-Class-3.0, LibBabble-Spell-3.0, LibBanzai-2.0, DewdropLib, FuBarPlugin-2.0, LibGratuity-3.0, LibHealComm-3.0, RosterLib, LibSharedMedia-2.0, SpecialEventsEmbed, SpecialEvents-Aura-2.0, UTF8, Clique, CT_RaidAssist, FuBar, JustClick, oRA2, SharedMedia
-## X-Embeds: Ace2, LibBabble-Class-3.0, LibBabble-Spell-3.0, LibBanzai-2.0, DewdropLib, FuBarPlugin-2.0, LibGratuity-3.0, LibHealComm-3.0, RosterLib, LibSharedMedia-2.0, SpecialEventsEmbed, UTF8
+## OptionalDeps: Ace2, LibBabble-Class-3.0, LibBabble-Spell-3.0, LibBanzai-2.0, CallbackHandler-1.0, ChatThrottleLib, DewdropLib, FuBarPlugin-2.0, LibGratuity-3.0, LibHealComm-3.0, RosterLib, LibSharedMedia-3.0, SpecialEventsEmbed, SpecialEvents-Aura-2.0, UTF8, Clique, CT_RaidAssist, FuBar, JustClick, oRA2, SharedMedia
+## X-Embeds: Ace2, LibBabble-Class-3.0, LibBabble-Spell-3.0, LibBanzai-2.0, CallbackHandler-1.0, DewdropLib, FuBarPlugin-2.0, LibGratuity-3.0, LibHealComm-3.0, RosterLib, LibSharedMedia-3.0, SpecialEventsEmbed, UTF8
 
 ## Non-Ace Libraries
 #libs\UTF8\utf8data.lua
@@ -52,4 +52,3 @@ GridStatusAuras.lua
 GridStatusTarget.lua
 GridStatusRange.lua
 GridStatusVoiceComm.lua
-
