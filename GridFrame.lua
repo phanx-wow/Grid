@@ -182,13 +182,36 @@ function GridFrameClass.prototype:CreateFrames()
 	f.Text2:SetPoint("TOP", f, "CENTER")
 	f.Text2:Hide()
 
+	-- create icon background/border
+	f.IconBG = CreateFrame("Frame", nil, f)
+	f.IconBG:SetWidth(GridFrame.db.profile.iconSize)
+	f.IconBG:SetHeight(GridFrame.db.profile.iconSize)
+	f.IconBG:SetPoint("CENTER", f, "CENTER")
+	f.IconBG:SetBackdrop( {
+				bgFile = "Interface\\Addons\\Grid\\white16x16", tile = true, tileSize = 16,
+				insets = {left = -1, right = -1, top = -1, bottom = -1},
+			     })
+	f.IconBG:SetBackdropColor(1,1,1,1)
+	f.IconBG:SetFrameLevel(5)
+	f.IconBG:Hide()
+
 	-- create icon
-	f.Icon = f.Bar:CreateTexture("Icon", "OVERLAY")
-	f.Icon:SetWidth(GridFrame.db.profile.iconSize)
-	f.Icon:SetHeight(GridFrame.db.profile.iconSize)
-	f.Icon:SetPoint("CENTER", f, "CENTER")
+	f.Icon = f.IconBG:CreateTexture("Icon", "OVERLAY")
+	f.Icon:SetAllPoints(f.IconBG)
 	f.Icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
 	f.Icon:SetTexture(1,1,1,0)
+
+	-- create icon text
+	f.IconText = f.IconBG:CreateFontString()
+	f.IconText:SetAllPoints(f.IconBG)
+	f.IconText:SetFontObject(GameFontHighlightSmall)
+	f.IconText:SetFont(font, GridFrame.db.profile.fontSize)
+	f.IconText:SetJustifyH("CENTER")
+	f.IconText:SetJustifyV("CENTER")
+
+	-- create icon cooldown
+	f.IconCD = CreateFrame("Cooldown", nil, f.IconBG, "CooldownFrameTemplate")
+	f.IconCD:SetAllPoints(f.Icon)
 
 	-- set texture
 	f:SetNormalTexture(1,1,1,0)
@@ -332,8 +355,8 @@ end
 
 function GridFrameClass.prototype:SetIconSize(size)
 	local f = self.frame
-	f.Icon:SetWidth(size)
-	f.Icon:SetHeight(size)
+	f.IconBG:SetWidth(size)
+	f.IconBG:SetHeight(size)
 end
 
 function GridFrameClass.prototype:SetFrameFont(font, size)
@@ -466,30 +489,36 @@ function GridFrameClass.prototype:SetText2(text, color)
 end
 
 function GridFrameClass.prototype:CreateIndicator(indicator)
+   local f = CreateFrame("Frame", nil, self.frame)
 
-	self.frame[indicator] = CreateFrame("Frame", nil, self.frame)
-	self.frame[indicator]:SetWidth(GridFrame:GetCornerSize())
-	self.frame[indicator]:SetHeight(GridFrame:GetCornerSize())
-	self.frame[indicator]:SetBackdrop( {
-				      bgFile = "Interface\\Addons\\Grid\\white16x16", tile = true, tileSize = 16,
-				      edgeFile = "Interface\\Addons\\Grid\\white16x16", edgeSize = 1,
-				      insets = {left = 1, right = 1, top = 1, bottom = 1},
-			      })
-	self.frame[indicator]:SetBackdropBorderColor(0,0,0,1)
-	self.frame[indicator]:SetBackdropColor(1,1,1,1)
-	self.frame[indicator]:SetFrameLevel(5)
-	self.frame[indicator]:Hide()
-
-	-- position indicator wherever needed
-	if indicator == "corner1" then
-		self.frame[indicator]:SetPoint("BOTTOMLEFT", self.frame, "BOTTOMLEFT", 1, 1)
-	elseif indicator == "corner2" then
-		self.frame[indicator]:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -1, 1)
-	elseif indicator == "corner3" then
-		self.frame[indicator]:SetPoint("TOPRIGHT", self.frame, "TOPRIGHT", -1, -1)
-	elseif indicator == "corner4" then
-		self.frame[indicator]:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 1, -1)
-	end
+   f:SetWidth(GridFrame:GetCornerSize())
+   f:SetHeight(GridFrame:GetCornerSize())
+   f:SetBackdrop( {
+		    bgFile = "Interface\\Addons\\Grid\\white16x16", tile = true, tileSize = 16,
+		    edgeFile = "Interface\\Addons\\Grid\\white16x16", edgeSize = 1,
+		    insets = {left = 1, right = 1, top = 1, bottom = 1},
+		 })
+   f:SetBackdropBorderColor(0,0,0,1)
+   f:SetBackdropColor(1,1,1,1)
+   f:SetFrameLevel(5)
+   f:Hide()
+   
+   -- position indicator wherever needed
+   if indicator == "corner1" then
+      -- bottom left
+      f:SetPoint("BOTTOMLEFT", self.frame, "BOTTOMLEFT", 1, 1)
+   elseif indicator == "corner2" then
+      -- bottom right
+      f:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -1, 1)
+   elseif indicator == "corner3" then
+      -- top right
+      f:SetPoint("TOPRIGHT", self.frame, "TOPRIGHT", -1, -1)
+   elseif indicator == "corner4" then
+      -- top left
+      f:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 1, -1)
+   end
+   
+   self.frame[indicator] = f
 end
 
 function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, maxValue, texture)
@@ -540,13 +569,22 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 		if texture then
 			self.frame.Icon:SetTexture(texture)
 			self.frame.Icon:SetAlpha(1)
+			self.frame.IconBG:Show()
 			self.frame.Icon:Show()
 
 			if type(color) == "table" then
-				self.frame.Icon:SetAlpha(color.a)
+			   self.frame.IconBG:SetBackdropColor(color.r, color.g, color.b, color.a)
+			else
+			   self.frame.IconBG:SetBackdropColor(0, 0, 0, 0)
+			end
+			if type(value) == "number" and value > 0 then
+			   -- self.frame.IconCD:SetCooldown(GetTime(), value)
+			end
+			if text then
+			   -- self.frame.IconText:SetText(text)
 			end
 		else
-			self.frame.Icon:Hide()
+			self.frame.IconBG:Hide()
 		end
 	end
 end
@@ -588,7 +626,9 @@ function GridFrameClass.prototype:ClearIndicator(indicator)
 		self:SetHealingBar(0)
 	elseif indicator == "icon" then
 		self.frame.Icon:SetTexture(1,1,1,0)
-		self.frame.Icon:Hide()
+		self.frame.IconText:SetText("")
+		self.frame.IconText:SetTextColor(1, 1, 1, 1)
+		self.frame.IconBG:Hide()
 	end
 end
 
