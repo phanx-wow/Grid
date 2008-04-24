@@ -567,22 +567,30 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 		end
 	elseif indicator == "icon" then
 		if texture then
-			self.frame.Icon:SetTexture(texture)
-			self.frame.Icon:SetAlpha(1)
-			self.frame.IconBG:Show()
-			self.frame.Icon:Show()
+			if type(texture) == "table" then
+				self.frame.Icon:SetTexture(texture.r, texture.g, texture.b, texture.a)
+			else
+				self.frame.Icon:SetTexture(texture)
+			end
 
 			if type(color) == "table" then
-			   self.frame.IconBG:SetBackdropColor(color.r, color.g, color.b, color.a)
+				self.frame.IconBG:SetBackdropColor(color.r, color.g, color.b, color.a)
+				self.frame.Icon:SetAlpha(color.a)
 			else
-			   self.frame.IconBG:SetBackdropColor(0, 0, 0, 0)
+				self.frame.IconBG:SetBackdropColor(0, 0, 0, 0)
+				self.frame.Icon:SetAlpha(1)
 			end
+
 			if type(value) == "number" and value > 0 then
-			   -- self.frame.IconCD:SetCooldown(GetTime(), value)
+				-- self.frame.IconCD:SetCooldown(GetTime(), value)
 			end
+
 			if text then
-			   -- self.frame.IconText:SetText(text)
+				-- self.frame.IconText:SetText(text)
 			end
+			
+			self.frame.IconBG:Show()
+			self.frame.Icon:Show()
 		else
 			self.frame.IconBG:Hide()
 		end
