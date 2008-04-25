@@ -109,6 +109,7 @@ function GridFrameClass.prototype:Reset()
 	self:SetOrientation(GridFrame.db.profile.orientation)
 	self:SetTextOrientation(GridFrame.db.profile.textorientation)
 	self:EnableText2(GridFrame.db.profile.enableText2)
+	self:SetIconSize(GridFrame.db.profile.iconSize, GridFrame.db.profile.iconBorderSize)
 end
 
 function GridFrameClass.prototype:CreateFrames()
@@ -188,16 +189,18 @@ function GridFrameClass.prototype:CreateFrames()
 	f.IconBG:SetHeight(GridFrame.db.profile.iconSize)
 	f.IconBG:SetPoint("CENTER", f, "CENTER")
 	f.IconBG:SetBackdrop( {
-				bgFile = "Interface\\Addons\\Grid\\white16x16", tile = true, tileSize = 16,
-				insets = {left = -1, right = -1, top = -1, bottom = -1},
+				-- bgFile = "Interface\\Addons\\Grid\\white16x16", tile = true, tileSize = 16,
+				edgeFile = "Interface\\Addons\\Grid\\white16x16", edgeSize = 2,
+				insets = {left = 2, right = 2, top = 2, bottom = 2},
 			     })
-	f.IconBG:SetBackdropColor(1,1,1,1)
+	f.IconBG:SetBackdropBorderColor(1,1,1,1)
+	f.IconBG:SetBackdropColor(0, 0, 0, 0)
 	f.IconBG:SetFrameLevel(5)
 	f.IconBG:Hide()
 
 	-- create icon
 	f.Icon = f.IconBG:CreateTexture("Icon", "OVERLAY")
-	f.Icon:SetAllPoints(f.IconBG)
+	f.Icon:SetPoint("CENTER", f.IconBG, "CENTER")
 	f.Icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
 	f.Icon:SetTexture(1,1,1,0)
 
@@ -353,10 +356,30 @@ function GridFrameClass.prototype:SetCornerSize(size)
 	end
 end
 
-function GridFrameClass.prototype:SetIconSize(size)
+function GridFrameClass.prototype:SetIconSize(size, borderSize)
+	if not size then size = GridFrame.db.profile.iconSize end
+	if not borderSize then borderSize = GridFrame.db.profile.iconBorderSize end
+
 	local f = self.frame
-	f.IconBG:SetWidth(size)
-	f.IconBG:SetHeight(size)
+
+	local backdrop = f.IconBG:GetBackdrop()
+
+	backdrop.edgeSize = borderSize
+	backdrop.insets.left = borderSize
+	backdrop.insets.right = borderSize
+	backdrop.insets.top = borderSize
+	backdrop.insets.bottom = borderSize
+
+	local r, g, b, a = f.IconBG:GetBackdropBorderColor()
+
+	f.IconBG:SetBackdrop(backdrop)
+	f.IconBG:SetBackdropBorderColor(r, g, b, a)
+
+	f.IconBG:SetWidth(size + borderSize * 2)
+	f.IconBG:SetHeight(size + borderSize * 2)
+
+	f.Icon:SetWidth(size)
+	f.Icon:SetHeight(size)
 end
 
 function GridFrameClass.prototype:SetFrameFont(font, size)
@@ -574,10 +597,10 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 			end
 
 			if type(color) == "table" then
-				self.frame.IconBG:SetBackdropColor(color.r, color.g, color.b, color.a)
+				self.frame.IconBG:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
 				self.frame.Icon:SetAlpha(color.a)
 			else
-				self.frame.IconBG:SetBackdropColor(0, 0, 0, 0)
+				self.frame.IconBG:SetBackdropBorderColor(0, 0, 0, 0)
 				self.frame.Icon:SetAlpha(1)
 			end
 
@@ -661,7 +684,8 @@ GridFrame.defaultDB = {
 	fontSize = 8,
 	font = "Friz Quadrata TT",
 	texture = "Gradient",
-	iconSize = 16,
+	iconSize = 14,
+	iconBorderSize = 1,
 	debug = false,
 	invertBarColor = false,
 	showTooltip = "OOC",
@@ -904,8 +928,25 @@ GridFrame.options = {
 					      end,
 					set = function (v)
 						      GridFrame.db.profile.iconSize = v
-						      GridFrame:WithAllFrames(function (f) f:SetIconSize(v) end)
+							  local iconBorderSize = GridFrame.db.profile.iconBorderSize
+						      GridFrame:WithAllFrames(function (f) f:SetIconSize(v, borderSize) end)
 					      end,
+				},
+				["iconbordersize"] = {
+					type = "range",
+					name = L["Icon Border Size"],
+					desc = L["Adjust the size of the center icon's border."],
+					min = 0,
+					max = 9,
+					step = 1,
+					get = function ()
+							  return GridFrame.db.profile.iconBorderSize
+						  end,
+					set = function (v)
+							  GridFrame.db.profile.iconBorderSize = v
+							  local iconSize = GridFrame.db.profile.iconSize
+							  GridFrame:WithAllFrames(function (f) f:SetIconSize(iconSize, v) end)
+						  end,
 				},
 				["fontsize"] = {
 					type = "range",

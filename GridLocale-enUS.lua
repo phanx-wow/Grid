@@ -70,6 +70,8 @@ local strings_enUS = {
 	["HORIZONTAL"] = true,
 	["Icon Size"] = true,
 	["Adjust the size of the center icon."] = true,
+	["Icon Border Size"] = true,
+	["Adjust the size of the center icon's border."] = true,
 
 	--}}}
 	--{{{ GridLayout
