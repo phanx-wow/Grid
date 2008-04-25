@@ -107,13 +107,21 @@ if waterfall then
 		type = "execute",
 		name = L["Configure"],
 		desc = L["Configure Grid"],
+		guiHidden = true,
 		func = function () 
-			    waterfall:Open("Grid")
+				   waterfall:Open("Grid")
 		       end,
-       }
-
-       waterfall:Register("Grid", "aceOptions", Grid.options, "title", "Grid Configuration")
-
+	}
+	
+	waterfall:Register("Grid", "aceOptions", Grid.options, "title", "Grid Configuration")
+	
+	function Grid:OnClick ()
+		if waterfall:IsOpen("Grid") then
+			waterfall:Close("Grid")
+		else
+			waterfall:Open("Grid")
+		end
+	end
 end
 
 --}}}
