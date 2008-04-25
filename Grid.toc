@@ -1,8 +1,8 @@
 ## Interface: 20400
 ## Title: Grid |cff7fff7f -Ace2-|r
 ## Notes: A modular, lightweight and screen-estate saving grid of party/raid unit frames
-## Notes-zhCN: 珨跺耀輸宒ㄛ腴梩蚚ㄛ誹吽茷躉諾潔腔※跡赽§ㄛ蚚懂珆尨芶勦/勦斪腔袨怓
-## Notes-zhTW: 精簡的團隊框架功能。
+## Notes-zhCN: 小巧的轻量级模块化队伍框架
+## Notes-zhTW: 精簡的團隊框架功能
 ## Author: Pastamancer & Maia
 ## Version: $Rev$
 ## X-ReleaseDate: "$Date$"
