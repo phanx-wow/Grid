@@ -22,8 +22,8 @@ local strings_koKR = {
 	["OOC"] = "비전투",
 	["Center Text Length"] = "중앙 문자 길이",
 	["Number of characters to show on Center Text indicator."] = "중앙 문자 지시기 위에 표시할 캐릭터의 숫자를 설정합니다.",
-	["Invert Bar Color"] = "바 색상 반대로",
-	["Swap foreground/background colors on bars."] = "바들의 전경/배경 색상을 변경합니다.",
+	["Invert Bar Color"] = "바 색상 반전",
+	["Swap foreground/background colors on bars."] = "바 위의 전경/배경 색상을 변경합니다.",
 	["Healing Bar Opacity"] = "치유 바 투명도",
 	["Sets the opacity of the healing bar."] = "치유 바의 투명도를 설정합니다.",
 
@@ -70,6 +70,8 @@ local strings_koKR = {
 	["HORIZONTAL"] = "가로",
 	["Icon Size"] = "아이콘 크기",
 	["Adjust the size of the center icon."] = "중앙 아이콘의 크기를 조정합니다.",
+	["Icon Border Size"] = "아이콘 테두리 크기",
+	["Adjust the size of the center icon's border."] = "중앙 아이콘의 테두리 크기를 조정합니다.",
 
 	--}}}
 	--{{{ GridLayout
