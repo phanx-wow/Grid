@@ -7,6 +7,70 @@ local RL = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local waterfall = AceLibrary:HasInstance("Waterfall-1.0") and AceLibrary("Waterfall-1.0")
 
+local check_libraries
+do
+	local global_libs = {
+		"AceLibrary",
+		"LibStub",
+		-- "DoesNotExist-Global",
+	}
+
+	local ace2_libs = {
+		"AceLocale-2.2",
+		"AceOO-2.0",
+		"Dewdrop-2.0",
+		"LibBanzai-2.0",
+		"Roster-2.1",
+		"SpecialEvents-Aura-2.0",
+		"Waterfall-1.0",
+		-- "DoesNotExist-Ace2",
+	}
+
+	local libstub_libs = {
+		"LibBabble-Class-3.0",
+		"LibBabble-Spell-3.0",
+		"LibGratuity-3.0",
+		"LibHealComm-3.0",
+		"LibSharedMedia-3.0",
+		-- "DoesNotExist-LibStub",
+	}
+
+	function check_libraries ()
+		local missing = {}
+
+		for _, name in ipairs(global_libs) do
+			if not _G[name] then
+				table.insert(missing, name)
+			end
+		end
+
+		for _, name in ipairs(ace2_libs) do
+			if not AceLibrary:HasInstance(name) then
+				table.insert(missing, name)
+			end
+		end
+
+		for _, name in ipairs(libstub_libs) do
+			if not LibStub:GetLibrary(name, true) then
+				table.insert(missing, name)
+			end
+		end
+
+		if #missing > 0 then
+			local message = ("Grid was unable to find the following libraries:\n%s"):format(table.concat(missing, ", "))
+
+			StaticPopupDialogs["GRID_MISSING_LIBS"] = {
+				text = message,
+				button1 = "Okay",
+				timeout = 0,
+				whileDead = 1,
+			}
+
+			StaticPopup_Show("GRID_MISSING_LIBS")
+		end
+	end
+end
+
 --}}}
 --{{{ Grid
 --{{{  Initialization
@@ -15,6 +79,8 @@ Grid = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceDebug-2.0
 Grid:SetModuleMixins("AceDebug-2.0", "AceEvent-2.0", "AceModuleCore-2.0")
 Grid:RegisterDB("GridDB")
 Grid.debugFrame = ChatFrame1
+
+Grid.check_libraries = check_libraries
 
 --{{{ AceOptions table
 
@@ -47,6 +113,7 @@ if waterfall then
        }
 
        waterfall:Register("Grid", "aceOptions", Grid.options, "title", "Grid Configuration")
+
 end
 
 --}}}
@@ -88,6 +155,7 @@ function Grid.modulePrototype:OnInitialize()
 end
 
 function Grid.modulePrototype:OnEnable()
+	check_libraries()
 	self:RegisterEvent("ADDON_LOADED")
 	self:EnableModules()
 end
