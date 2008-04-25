@@ -1258,6 +1258,11 @@ function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
 	local menu = self.options.args
 	local status, descr, indicatorMenu
 
+	if indicator == "bar" then
+		menu[indicator] = nil
+		return
+	end
+
 	if indicator == "text2" and not self.db.profile.enableText2 then
 		self:Debug("indicator text2 is disabled")
 		menu[indicator] = nil
