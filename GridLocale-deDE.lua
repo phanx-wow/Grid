@@ -8,6 +8,7 @@ local strings_deDE = {
 	["Toggle debugging for %s."] = "Aktiviere das Debuggen für %s.",
 	["Configure"] = "Konfigurieren",
 	["Configure Grid"] = "Grid konfigurieren",
+	["Hide minimap icon"] = "Minikarten Button verstecken",
 
 	--}}}
 	--{{{ GridFrame
@@ -69,6 +70,8 @@ local strings_deDE = {
 	["HORIZONTAL"] = "HORIZONTAL",
 	["Icon Size"] = "Icongröße",
 	["Adjust the size of the center icon."] = "Die Größe des Icons im Zentrum anpassen.",
+	["Icon Border Size"] = "Iconrandbreite",
+	["Adjust the size of the center icon's border."] = "Die Randbreite des Icons im Zentrum anpassen.",
 
 	--}}}
 	--{{{ GridLayout
@@ -130,15 +133,15 @@ local strings_deDE = {
 	["Colors"] = "Farben",
 	["Color options for class and pets."] = "Legt fest, wie Klassen und Begleiter eingefärbt werden.",
 	["Fallback colors"] = "Standardfarben",
-	["Color of unknown units or pets."] = "Farben für unbekannte Einheiten oder Begleiter.",
+	["Color of unknown units or pets."] = "Farbe für unbekannte Einheiten oder Begleiter.",
 	["Unknown Unit"] = "Unbekannte Einheit",
-	["The color of unknown units."] = "Farbe für unbekannte Einheit.",
+	["The color of unknown units."] = "Farbe für unbekannte Einheiten.",
 	["Unknown Pet"] = "Unbekannter Begleiter",
-	["The color of unknown pets."] = "Farbe für unbekannten Begleiter.",
+	["The color of unknown pets."] = "Farbe für unbekannte Begleiter.",
 	["Class colors"] = "Klassenfarben",
-	["Color of player unit classes."] = "Farben für Spielerklassen.",
+	["Color of player unit classes."] = "Farbe für Spielerklassen.",
 	["Creature type colors"] = "Kreaturtypfarben",
-	["Color of pet unit creature types."] = "Farben für verschiedene Kreaturtypen.",
+	["Color of pet unit creature types."] = "Farbe für die verschiedenen Kreaturtypen.",
 	["Color for %s."] = "Farbe für %s.",
 
 	-- Advanced options
