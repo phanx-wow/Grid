@@ -8,6 +8,7 @@ local strings_zhCN = {
 	["Toggle debugging for %s."] = "激活%s的除错",
 	["Configure"] = "设置",
 	["Configure Grid"] = "修改Grid的设置",
+	["Hide minimap icon"] = "隐藏迷你地图按钮",
 	
 	--}}}
 	--{{{ GridFrame
@@ -30,6 +31,7 @@ local strings_zhCN = {
 	["Border"] = "外框",
 	["Health Bar"] = "生命条",
 	["Health Bar Color"] = "生命条颜色",
+	["Healing Bar"] = "治疗条",
 	["Center Text"] = "中心文字",
 	["Center Text 2"] = "中心文字2",
 	["Center Icon"] = "中心图标",
@@ -68,6 +70,8 @@ local strings_zhCN = {
 	["HORIZONTAL"] = "水平",
 	["Icon Size"] = "图标大小",
 	["Adjust the size of the center icon."] = "调整中心图标的尺寸",
+	["Icon Border Size"] = "图标边框大小",
+	["Adjust the size of the center icon's border."] = "调整屏幕中心图标边框的大小",
 
 	--}}}
 	--{{{ GridLayout
