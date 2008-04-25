@@ -163,7 +163,6 @@ function Grid.modulePrototype:OnInitialize()
 end
 
 function Grid.modulePrototype:OnEnable()
-	check_libraries()
 	self:RegisterEvent("ADDON_LOADED")
 	self:EnableModules()
 end
@@ -271,6 +270,8 @@ function Grid:OnInitialize()
 end
 
 function Grid:OnEnable()
+	check_libraries()
+
 	self:RegisterEvent("ADDON_LOADED")
 	self:RegisterEvent("RosterLib_UnitChanged")
 	self:RegisterEvent("RosterLib_RosterUpdated")
