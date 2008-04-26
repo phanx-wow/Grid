@@ -960,7 +960,7 @@ GridFrame.options = {
 					      end,
 					set = function (v)
 						      GridFrame.db.profile.fontSize = v
-						      font = media and media:Fetch('font', GridFrame.db.profile.font) or STANDARD_TEXT_FONT
+						      local font = media and media:Fetch('font', GridFrame.db.profile.font) or STANDARD_TEXT_FONT
 						      GridFrame:WithAllFrames(function (f) f:SetFrameFont(font, v) end)
 					      end,
 				},
@@ -1076,7 +1076,7 @@ function GridFrame:Reset()
 
 	-- Fix for font size not updating on profile change
 	-- Can probably be done better
-	font = media and media:Fetch('font', GridFrame.db.profile.font) or STANDARD_TEXT_FONT
+	local font = media and media:Fetch('font', GridFrame.db.profile.font) or STANDARD_TEXT_FONT
 	GridFrame:WithAllFrames(function (f) f:SetFrameFont(font, GridFrame.db.profile.fontSize) end)
 
 	self:ResetAllFrames()
