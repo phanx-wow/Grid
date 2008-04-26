@@ -596,7 +596,7 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 				self.frame.Icon:SetTexture(texture)
 			end
 
-			if type(color) == "table" then
+			if type(color) == "table" and not color.ignore then
 				self.frame.IconBG:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
 				self.frame.Icon:SetAlpha(color.a)
 			else

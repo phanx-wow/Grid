@@ -6,6 +6,8 @@
 local AceOO = AceLibrary("AceOO-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local RL = AceLibrary("Roster-2.1")
+local media = LibStub("LibSharedMedia-3.0")
+
 
 --}}}
 
@@ -275,6 +277,7 @@ GridLayout.defaultDB = {
 	Padding = 1,
 	Spacing = 10,
 	ScaleSize = 1.0,
+	borderTexture = "Blizzard Tooltip",
 	BorderR = .5,
 	BorderG = .5,
 	BorderB = .5,
@@ -531,6 +534,26 @@ GridLayout.options = {
 		},
 	},
 }
+
+local media_borders
+if media then
+	media_borders = media:List(media.MediaType.BORDER)
+	local border_options = {
+		type = "text",
+		name = L["Border Texture"],
+		desc = L["Choose the layout border texture."],
+		validate = media_borders,
+		get = function ()
+				  return GridLayout.db.profile.borderTexture
+			  end,
+		set = function (v)
+				  GridLayout.db.profile.borderTexture = v
+				  GridLayout:UpdateColor()
+			  end,
+	}		  
+
+	GridLayout.options.args.advanced.args["border"] = border_options
+end
 
 --}}}
 --}}}
@@ -961,6 +984,13 @@ end
 
 function GridLayout:UpdateColor()
 	local settings = self.db.profile
+
+	if media then
+		local texture = media:Fetch(media.MediaType.BORDER, settings.borderTexture)
+		local backdrop = self.frame:GetBackdrop()
+		backdrop.edgeFile = texture
+		self.frame:SetBackdrop(backdrop)
+	end
 
 	self.frame:SetBackdropBorderColor(settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA)
 	self.frame:SetBackdropColor(settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA)
