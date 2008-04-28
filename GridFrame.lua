@@ -205,7 +205,7 @@ function GridFrameClass.prototype:CreateFrames()
 	f.Icon:SetTexture(1,1,1,0)
 
 	-- create icon text
-	f.IconText = f.IconBG:CreateFontString()
+	f.IconText = f.IconBG:CreateFontString(nil, "OVERLAY")
 	f.IconText:SetAllPoints(f.IconBG)
 	f.IconText:SetFontObject(GameFontHighlightSmall)
 	f.IconText:SetFont(font, GridFrame.db.profile.fontSize)
