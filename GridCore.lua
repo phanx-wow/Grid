@@ -5,7 +5,6 @@
 
 local RL = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
-local tablet = AceLibrary("Tablet-2.0")
 local waterfall = AceLibrary:HasInstance("Waterfall-1.0") and AceLibrary("Waterfall-1.0")
 
 local check_libraries
@@ -139,7 +138,6 @@ Grid.name                   = "Grid"
 Grid.hasIcon                = true
 Grid.defaultMinimapPosition = 240
 Grid.cannotDetachTooltip    = true
-Grid.clickableTooltip 			= true
 Grid.independentProfile     = true
 Grid.defaultPosition        = "RIGHT"
 Grid.hideWithoutStandby     = true
@@ -290,39 +288,6 @@ function Grid:OnDisable()
 	self:TriggerEvent("Grid_Disabled")
 	self:DisableModules()
 end
-
-function Grid:OnTextUpdate()
-	self:SetText(GridLayout.db.profile.layout);
-end
-
-function Grid:OnTooltipUpdate()
-
-
-	local cat = tablet:AddCategory(
-		'columns', 1,
-		'child_textR', 1,
-		'child_textG', 1,
-		'child_textB', 1
-	)
-		
-	if (GridLayout) and (next(GridLayout.layoutSettings)) then
-		for i,_ in pairs(GridLayout.layoutSettings) do			
-			local line = {};	
-			line['text'] = i;
-			line['func'] = 'OnTooltipItemClick'
-			line['arg1'] = self			
-			line['arg2'] = i;
-	
-			cat:AddLine(line);			
-		end
-	end
-end
-
-function Grid:OnTooltipItemClick(v)
-	GridLayout.db.profile.layout = v
-	GridLayout:LoadLayout(v)
-end
-
 
 function Grid:OnProfileEnable()
 	self.debugging = self.db.profile.debug
