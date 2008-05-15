@@ -70,6 +70,8 @@ local strings_zhTW = {
 	["HORIZONTAL"] = "水平",
 	["Icon Size"] = "圖示大小",
 	["Adjust the size of the center icon."] = "調整中央圖示大小。",
+	["Icon Border Size"] = "圖示邊框大小",
+	["Adjust the size of the center icon's border."] = "調整中央圖示的邊框大小",
 
 	--}}}
 	--{{{ GridLayout
@@ -116,6 +118,8 @@ local strings_zhTW = {
 	["Adjust Grid scale."] = "調整 Grid 縮放比例。",
 	["Border"] = "邊框",
 	["Adjust border color and alpha."] = "調整邊框顏色與透明度。",
+	["Border Texture"] = "邊框材質",
+	["Choose the layout border texture."] = "選擇版面編排的邊框材質",
 	["Background"] = "背景",
 	["Adjust background color and alpha."] = "調整背景顏色與透明度。",
 	["Pet color"] = "寵物顏色",
