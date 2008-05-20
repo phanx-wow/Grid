@@ -34,7 +34,7 @@ local strings_deDE = {
 	["Healing Bar"] = "Heilleiste",
 	["Center Text"] = "Text in der Mitte",
 	["Center Text 2"] = "2. Text in der Mitte",
-	["Center Icon"] = "Icon im Zentrum",
+	["Center Icon"] = "Symbol im Zentrum",
 	["Top Left Corner"] = "Obere linke Ecke",
 	["Top Right Corner"] = "Obere rechte Ecke",
 	["Bottom Left Corner"] = "Untere linke Ecke",
@@ -68,10 +68,10 @@ local strings_deDE = {
 	["Set frame text orientation."] = "Text Ausrichtung festlegen.",
 	["VERTICAL"] = "VERTIKAL",
 	["HORIZONTAL"] = "HORIZONTAL",
-	["Icon Size"] = "Icongröße",
-	["Adjust the size of the center icon."] = "Die Größe des Icons im Zentrum anpassen.",
-	["Icon Border Size"] = "Iconrandbreite",
-	["Adjust the size of the center icon's border."] = "Die Randbreite des Icons im Zentrum anpassen.",
+	["Icon Size"] = "Symbolgröße",
+	["Adjust the size of the center icon."] = "Die Größe des Symbols im Zentrum anpassen.",
+	["Icon Border Size"] = "Symbolrandbreite",
+	["Adjust the size of the center icon's border."] = "Die Randbreite des Symbols im Zentrum anpassen.",
 
 	--}}}
 	--{{{ GridLayout
