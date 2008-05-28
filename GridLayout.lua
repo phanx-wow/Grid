@@ -665,7 +665,9 @@ function GridLayout:StopMoveFrame()
 		self.frame:StopMovingOrSizing()
 		self:SavePosition()
 		self.frame.isMoving = false
-		self:RestorePosition()
+		if not InCombatLockdown() then
+			self:RestorePosition()
+		end
 	end
 end
 
