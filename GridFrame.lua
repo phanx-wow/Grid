@@ -552,8 +552,7 @@ function GridFrameClass.prototype:CreateIndicator(indicator)
    self.frame[indicator] = f
 end
 
-function GridFrameClass.prototype:SetIndicator(indicator, status)
-	local color, text, value, maxValue, texture, start, duration, stack = status.color, status.text, status.value, status.maxValue, status.texture, status.start, status.duration, status.stack
+function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, maxValue, texture, start, duration, stack)
 	
 	if not color then color = { r = 1, g = 1, b = 1, a = 1 } end
 	if indicator == "border" then
@@ -1169,7 +1168,15 @@ function GridFrame:UpdateIndicators(frame)
 		status = self:StatusForIndicator(unitid, indicator)
 		if status then
 			-- self:Debug("Showing status", status.text, "for", name, "on", indicator)
-			frame:SetIndicator(indicator, status)
+			frame:SetIndicator(indicator,
+							   status.color,
+							   status.text,
+							   status.value,
+							   status.maxValue,
+							   status.texture,
+							   status.start,
+							   status.duration,
+							   status.stack)
 		else
 			-- self:Debug("Clearing indicator", indicator, "for", name)
 			frame:ClearIndicator(indicator)
