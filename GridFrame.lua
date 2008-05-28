@@ -177,7 +177,7 @@ function GridFrameClass.prototype:CreateFrames()
 	-- create center text2
 	f.Text2 = f.Bar:CreateFontString(nil, "ARTWORK")
 	f.Text2:SetFontObject(GameFontHighlightSmall)
-	f.Text2:SetFont(font, GridFrame.db.profile.fontSize, "OUTLINE")
+	f.Text2:SetFont(font, GridFrame.db.profile.fontSize)
 	f.Text2:SetJustifyH("CENTER")
 	f.Text2:SetJustifyV("CENTER")
 	f.Text2:SetPoint("TOP", f, "CENTER")
@@ -212,17 +212,17 @@ function GridFrameClass.prototype:CreateFrames()
 	f.IconText:SetJustifyH("CENTER")
 	f.IconText:SetJustifyV("CENTER")
 
+	-- create icon cooldown
+	f.IconCD = CreateFrame("Cooldown", nil, f.IconBG, "CooldownFrameTemplate")
+	f.IconCD:SetAllPoints(f.Icon)
+
 	-- create icon stack text
-	f.IconStackText = f.IconBG:CreateFontString(nil, "OVERLAY")
-	f.IconStackText:SetPoint("BOTTOMRIGHT", f.Icon, nil, -2, 2)
+	f.IconStackText = f.IconCD:CreateFontString(nil, "OVERLAY")
+	f.IconStackText:SetPoint("BOTTOMRIGHT", f.IconCD, nil, -2, 2)
 	f.IconStackText:SetFontObject(GameFontHighlightSmall)
 	f.IconStackText:SetFont(font, GridFrame.db.profile.fontSize)
 	f.IconStackText:SetJustifyH("RIGHT")
 	f.IconStackText:SetJustifyV("BOTTOM")
-
-	-- create icon cooldown
-	f.IconCD = CreateFrame("Cooldown", nil, f.IconBG, "CooldownFrameTemplate")
-	f.IconCD:SetAllPoints(f.Icon)
 
 	-- set texture
 	f:SetNormalTexture(1,1,1,0)
@@ -675,6 +675,8 @@ function GridFrameClass.prototype:ClearIndicator(indicator)
 		self.frame.IconText:SetText("")
 		self.frame.IconText:SetTextColor(1, 1, 1, 1)
 		self.frame.IconBG:Hide()
+		self.frame.IconStackText:SetText("")
+		self.frame.IconCD:Hide()
 	end
 end
 
