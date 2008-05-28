@@ -218,9 +218,9 @@ function GridFrameClass.prototype:CreateFrames()
 
 	-- create icon stack text
 	f.IconStackText = f.IconCD:CreateFontString(nil, "OVERLAY")
-	f.IconStackText:SetPoint("BOTTOMRIGHT", f.IconCD, nil, -2, 2)
+	f.IconStackText:SetPoint("BOTTOMRIGHT", f.IconBG, 2, -2)
 	f.IconStackText:SetFontObject(GameFontHighlightSmall)
-	f.IconStackText:SetFont(font, GridFrame.db.profile.fontSize)
+	f.IconStackText:SetFont(font, GridFrame.db.profile.fontSize, "OUTLINE")
 	f.IconStackText:SetJustifyH("RIGHT")
 	f.IconStackText:SetJustifyV("BOTTOM")
 
@@ -616,8 +616,10 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 			if type(duration) == "number" and duration > 0 and type(start) == "number" and start > 0 then
 				self.frame.IconCD:SetCooldown(start, duration)
 				self.frame.IconCD:Show()
+				self.frame.IconStackText:SetParent(self.frame.IconCD)
 			else
 				self.frame.IconCD:Hide()
+				self.frame.IconStackText:SetParent(self.frame.IconBG)
 			end
 
 			if stack and tonumber(stack) > 1 then
