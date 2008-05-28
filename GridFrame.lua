@@ -177,7 +177,7 @@ function GridFrameClass.prototype:CreateFrames()
 	-- create center text2
 	f.Text2 = f.Bar:CreateFontString(nil, "ARTWORK")
 	f.Text2:SetFontObject(GameFontHighlightSmall)
-	f.Text2:SetFont(font ,GridFrame.db.profile.fontSize)
+	f.Text2:SetFont(font, GridFrame.db.profile.fontSize, "OUTLINE")
 	f.Text2:SetJustifyH("CENTER")
 	f.Text2:SetJustifyV("CENTER")
 	f.Text2:SetPoint("TOP", f, "CENTER")
@@ -211,6 +211,14 @@ function GridFrameClass.prototype:CreateFrames()
 	f.IconText:SetFont(font, GridFrame.db.profile.fontSize)
 	f.IconText:SetJustifyH("CENTER")
 	f.IconText:SetJustifyV("CENTER")
+
+	-- create icon stack text
+	f.IconStackText = f.IconBG:CreateFontString(nil, "OVERLAY")
+	f.IconStackText:SetPoint("BOTTOMRIGHT", f.Icon, nil, -2, 2)
+	f.IconStackText:SetFontObject(GameFontHighlightSmall)
+	f.IconStackText:SetFont(font, GridFrame.db.profile.fontSize)
+	f.IconStackText:SetJustifyH("RIGHT")
+	f.IconStackText:SetJustifyV("BOTTOM")
 
 	-- create icon cooldown
 	f.IconCD = CreateFrame("Cooldown", nil, f.IconBG, "CooldownFrameTemplate")
@@ -544,7 +552,9 @@ function GridFrameClass.prototype:CreateIndicator(indicator)
    self.frame[indicator] = f
 end
 
-function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, maxValue, texture)
+function GridFrameClass.prototype:SetIndicator(indicator, status)
+	local color, text, value, maxValue, texture, start, duration, stack = status.color, status.text, status.value, status.maxValue, status.texture, status.start, status.duration, status.stack
+	
 	if not color then color = { r = 1, g = 1, b = 1, a = 1 } end
 	if indicator == "border" then
 		self.frame:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
@@ -604,12 +614,17 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 				self.frame.Icon:SetAlpha(1)
 			end
 
-			if type(value) == "number" and value > 0 then
-				-- self.frame.IconCD:SetCooldown(GetTime(), value)
+			if type(duration) == "number" and duration > 0 and type(start) == "number" and start > 0 then
+				self.frame.IconCD:SetCooldown(start, duration)
+				self.frame.IconCD:Show()
+			else
+				self.frame.IconCD:Hide()
 			end
 
-			if text then
-				-- self.frame.IconText:SetText(text)
+			if stack and tonumber(stack) > 1 then
+				self.frame.IconStackText:SetText(stack)
+			else
+				self.frame.IconStackText:SetText("")
 			end
 			
 			self.frame.IconBG:Show()
@@ -1152,12 +1167,7 @@ function GridFrame:UpdateIndicators(frame)
 		status = self:StatusForIndicator(unitid, indicator)
 		if status then
 			-- self:Debug("Showing status", status.text, "for", name, "on", indicator)
-			frame:SetIndicator(indicator,
-					   status.color,
-					   status.text,
-					   status.value,
-					   status.maxValue,
-					   status.texture)
+			frame:SetIndicator(indicator, status)
 		else
 			-- self:Debug("Clearing indicator", indicator, "for", name)
 			frame:ClearIndicator(indicator)
@@ -1223,7 +1233,8 @@ end
 
 --{{{ Event handlers
 
-function GridFrame:Grid_StatusGained(name, status, priority, range, color, text, value, maxValue, texture)
+function GridFrame:Grid_StatusGained(name, status, priority, range, color, text, value, maxValue, texture, start, duration, stack)
+
 	local frameName, frame
 
 	for frameName,frame in pairs(self.registeredFrames) do

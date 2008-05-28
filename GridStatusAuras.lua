@@ -463,7 +463,10 @@ function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type
 				   settings.text,
 				   apps,
 				   nil,
-				   tex)
+				   tex,
+				   nil,
+				   nil,
+				   apps)
 end
 
 
@@ -522,7 +525,10 @@ function GridStatusAuras:UnitBuff(unit, gained, buff, tex, apps)
 						   settings.text,
 						   apps,
 						   nil,
-						   tex)
+						   tex,
+						   nil,
+						   nil,
+						   apps)
 			if self.db.profile.abolish then
 				local debuffTypeStatus = abolishMap[buff]
 		

@@ -391,7 +391,7 @@ end
 --}}}
 --{{{ Caching status functions
 
-function GridStatus:SendStatusGained(name, status, priority, range, color, text,  value, maxValue, texture)
+function GridStatus:SendStatusGained(name, status, priority, range, color, text,  value, maxValue, texture, start, duration, stack)
 	local u = RL:GetUnitObjectFromName(name)
 	local cache = self.cache
 	local cached
@@ -432,7 +432,10 @@ function GridStatus:SendStatusGained(name, status, priority, range, color, text,
 		cached.text == text and
 		cached.value == value and
 		cached.maxValue == maxValue and
-		cached.texture == texture then
+		cached.texture == texture and
+		cached.start == start and
+		cached.duration == duration and
+		cached.stack == stack then
 
 		return
 	end
@@ -445,10 +448,13 @@ function GridStatus:SendStatusGained(name, status, priority, range, color, text,
 	cached.value = value
 	cached.maxValue = maxValue
 	cached.texture = texture
+	cached.start = start
+	cached.duration = duration
+	cached.stack = stack
 
 	self:TriggerEvent("Grid_StatusGained", name, status,
 			  priority, range, color, text, value, maxValue,
-			  texture)
+			  texture, start, duration, stack)
 end
 
 function GridStatus:SendStatusLost(name, status)
