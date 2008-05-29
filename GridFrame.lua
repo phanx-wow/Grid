@@ -221,7 +221,7 @@ function GridFrameClass.prototype:CreateFrames()
 	end)
 
 	-- create icon stack text
-	f.IconStackText = f.IconCD:CreateFontString(nil, "OVERLAY")
+	f.IconStackText = f.IconBG:CreateFontString(nil, "OVERLAY")
 	f.IconStackText:SetPoint("BOTTOMRIGHT", f.IconBG, 0, 2)
 	f.IconStackText:SetFontObject(GameFontHighlightSmall)
 	f.IconStackText:SetFont(font, GridFrame.db.profile.fontSize, "OUTLINE")
