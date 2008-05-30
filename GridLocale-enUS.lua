@@ -72,6 +72,10 @@ local strings_enUS = {
 	["Adjust the size of the center icon."] = true,
 	["Icon Border Size"] = true,
 	["Adjust the size of the center icon's border."] = true,
+	["Icon Stack Text"] = true,
+	["Toggle center icon's stack count text."] = true,
+	["Icon Cooldown Frame"] = true,
+	["Toggle center icon's cooldown frame."] = true,
 
 	--}}}
 	--{{{ GridLayout

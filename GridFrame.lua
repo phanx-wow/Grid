@@ -618,7 +618,9 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 				self.frame.Icon:SetAlpha(1)
 			end
 
-			if type(duration) == "number" and duration > 0 and type(start) == "number" and start > 0 then
+			if type(duration) == "number" and duration > 0 and 
+				type(start) == "number" and start > 0 and 
+				GridFrame.db.profile.enableIconCooldown then
 				self.frame.IconCD:SetCooldown(start, duration)
 				self.frame.IconCD:Show()
 				self.frame.IconStackText:SetParent(self.frame.IconCD)
@@ -627,7 +629,8 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 				self.frame.IconCD:Hide()
 			end
 
-			if stack and tonumber(stack) > 1 then
+			if stack and tonumber(stack) > 1 and 
+				GridFrame.db.profile.enableIconStackText then
 				self.frame.IconStackText:SetText(stack)
 			else
 				self.frame.IconStackText:SetText("")
@@ -709,6 +712,8 @@ GridFrame.defaultDB = {
 	texture = "Gradient",
 	iconSize = 14,
 	iconBorderSize = 1,
+	enableIconStackText = true,
+	enableIconCooldown = true,
 	debug = false,
 	invertBarColor = false,
 	showTooltip = "OOC",
@@ -946,6 +951,7 @@ GridFrame.options = {
 					min = 5,
 					max = 50,
 					step = 1,
+					order = 20,
 					get = function ()
 						      return GridFrame.db.profile.iconSize
 					      end,
@@ -962,6 +968,7 @@ GridFrame.options = {
 					min = 0,
 					max = 9,
 					step = 1,
+					order = 20,
 					get = function ()
 							  return GridFrame.db.profile.iconBorderSize
 						  end,
@@ -970,6 +977,32 @@ GridFrame.options = {
 							  local iconSize = GridFrame.db.profile.iconSize
 							  GridFrame:WithAllFrames(function (f) f:SetIconSize(iconSize, v) end)
 						  end,
+				},
+				["iconstacktext"] = {
+					type = "toggle",
+					name = string.format(L["Enable %s"], L["Icon Stack Text"]),
+					desc = L["Toggle center icon's stack count text."],
+					order = 21,
+					get = function ()
+						      return GridFrame.db.profile.enableIconStackText
+					      end,
+					set = function (v)
+							GridFrame.db.profile.enableIconStackText = v
+							GridFrame:UpdateAllFrames()
+						end,
+				},
+				["iconcooldown"] = {
+					type = "toggle",
+					name = string.format(L["Enable %s"], L["Icon Cooldown Frame"]),
+					desc = L["Toggle center icon's cooldown frame."],
+					order = 21,
+					get = function ()
+						      return GridFrame.db.profile.enableIconCooldown
+					      end,
+					set = function (v)
+							GridFrame.db.profile.enableIconCooldown = v
+							GridFrame:UpdateAllFrames()
+						end,
 				},
 				["fontsize"] = {
 					type = "range",
