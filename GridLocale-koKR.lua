@@ -72,6 +72,10 @@ local strings_koKR = {
 	["Adjust the size of the center icon."] = "중앙 아이콘의 크기를 조정합니다.",
 	["Icon Border Size"] = "아이콘 테두리 크기",
 	["Adjust the size of the center icon's border."] = "중앙 아이콘의 테두리 크기를 조정합니다.",
+	["Icon Stack Text"] = "아이콘 중첩 문자",
+	["Toggle center icon's stack count text."] = "중앙 아이콘에 중첩 갯수 문자를 표시합니다.",
+	["Icon Cooldown Frame"] = "아이콘 재사용 창",
+	["Toggle center icon's cooldown frame."] = "중앙 아이콘에 재사용 창을 표시합니다.",
 
 	--}}}
 	--{{{ GridLayout
