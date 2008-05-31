@@ -628,8 +628,8 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 			else
 				self.frame.IconCD:Hide()
 			end
-
-			if stack and tonumber(stack) > 1 and 
+			
+			if tonumber(stack) and tonumber(stack) > 1 and 
 				GridFrame.db.profile.enableIconStackText then
 				self.frame.IconStackText:SetText(stack)
 			else
