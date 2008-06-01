@@ -54,8 +54,8 @@ local strings_zhTW = {
 	["Adjust the width of each unit's frame."] = "為每一個單位框架調整寬度。",
 	["Frame Height"] = "框架高度",
 	["Adjust the height of each unit's frame."] = "為每一個單位框架調整高度。",
-	["Frame Texture"] = "框架紋理",
-	["Adjust the texture of each unit's frame."] = "調整每一個單位框架的紋理。",
+	["Frame Texture"] = "框架材質",
+	["Adjust the texture of each unit's frame."] = "調整每一個單位框架的材質。",
 	["Corner Size"] = "角落提示器大小",
 	["Adjust the size of the corner indicators."] = "調整角落提示器的大小。",
 	["Font"] = "字型設定",
@@ -72,6 +72,10 @@ local strings_zhTW = {
 	["Adjust the size of the center icon."] = "調整中央圖示大小。",
 	["Icon Border Size"] = "圖示邊框大小",
 	["Adjust the size of the center icon's border."] = "調整中央圖示的邊框大小",
+	["Icon Stack Text"] = "圖示堆疊文字",
+	["Toggle center icon's stack count text."] = "啟用圖示的堆疊計數文字。",
+	["Icon Cooldown Frame"] = "圖示冷卻時間框架",
+	["Toggle center icon's cooldown frame."] = "啟用圖示的冷卻時間框架。",
 
 	--}}}
 	--{{{ GridLayout
@@ -228,8 +232,8 @@ local strings_zhTW = {
 	["Show on %s."] = "在%s上顯示。",
 	["Show if missing"] = "顯示缺少",
 	["Display status only if the buff is not active."] = "當缺少增益時提示。",
-	["Filter Abolished units"] = "Filter Abolished units",
-	["Skip units that have an active Abolish buff."] = "Skip units that have an active Abolish buff.",
+	["Filter Abolished units"] = "過濾驅散單位", -- need check
+	["Skip units that have an active Abolish buff."] = "略過身上有驅散增益的單位。", -- need check
 
 	--}}}
 	--{{{ GridStatusName
