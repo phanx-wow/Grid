@@ -8,6 +8,7 @@ local strings_frFR = {
 	["Toggle debugging for %s."] = "Active ou non le débogage pour %s.",
 	["Configure"] = "Configurer",
 	["Configure Grid"] = "Configure Grid.",
+	["Hide minimap icon"] = "Cacher l'icone sur la minimap",
 
 	--}}}
 	--{{{ GridFrame
@@ -67,8 +68,14 @@ local strings_frFR = {
 	["Set frame text orientation."] = "Détermine l'orientation du texte de la grille.",
 	["VERTICAL"] = "VERTICAL",
 	["HORIZONTAL"] = "HORIZONTAL",
-	["Icon Size"] = "Taille de l'icône",
+	["Icon Size"] = "Taille de l'icône centrale",
 	["Adjust the size of the center icon."] = "Modifie la taille de l'icône centrale.",
+	["Icon Border Size"] = "Taille de la bordure de l'icône centrale",
+	["Adjust the size of the center icon's border."] = "Modifie la taille de la bordure de l'icône centrale.",
+	["Icon Stack Text"] = "Compteur de pile",
+	["Toggle center icon's stack count text."] = "Active ou non le compteur de pile dans l'icône centrale.",
+	["Icon Cooldown Frame"] = "Décompte",
+	["Toggle center icon's cooldown frame."] = "Active ou non le décompte dans l'icône centrale.",	
 
 	--}}}
 	--{{{ GridLayout
@@ -115,6 +122,8 @@ local strings_frFR = {
 	["Adjust Grid scale."] = "Modifie l'échelle de Grid.",
 	["Border"] = "Bordure",
 	["Adjust border color and alpha."] = "Modifie la transparence et la couleur de la bordure.",
+	["Border Texture"] = "Texture de la bordure",
+	["Choose the layout border texture."] = "Détermine la disposition de la texture de la bordure",	
 	["Background"] = "Arrière-plan",
 	["Adjust background color and alpha."] = "Modifie la transparence et la couleur de l'arrière-plan.",
 	["Pet color"] = "Couleur des familiers",
