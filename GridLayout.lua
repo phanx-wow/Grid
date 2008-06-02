@@ -984,6 +984,42 @@ function GridLayout:UpdateSize()
 	self.frame:SetHeight(y)
 end
 
+local function findVisibleUnitFrame(f)
+	if f:IsVisible() and f:GetAttribute("unit") then
+		return f
+	end
+
+	for i = 1, select('#', f:GetChildren()) do
+		local child = select(i, f:GetChildren())
+		local good = findVisibleUnitFrame(child)
+
+		if good then
+			return good
+		end
+	end
+end
+
+function GridLayout:FakeSize(width, height)
+	local p = self.db.profile
+	local f = findVisibleUnitFrame(self.frame)
+
+	if not f then
+		self:Debug("No suitable frame found.")
+		return
+	else
+		self:Debug(("Using %s"):format(f:GetName()))
+	end
+
+	local frameWidth = f:GetWidth()
+	local frameHeight = f:GetHeight()
+
+	local x = frameWidth * width + (width - 1) * p.Padding + p.Spacing * 2
+	local y = frameHeight * height + (height - 1) * p.Padding + p.Spacing * 2
+
+	self.frame:SetWidth(x)
+	self.frame:SetHeight(y)
+end
+
 function GridLayout:UpdateColor()
 	local settings = self.db.profile
 
