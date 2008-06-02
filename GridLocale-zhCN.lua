@@ -72,6 +72,10 @@ local strings_zhCN = {
 	["Adjust the size of the center icon."] = "调整中心图标的尺寸。",
 	["Icon Border Size"] = "图标边框大小",
 	["Adjust the size of the center icon's border."] = "调整屏幕中心图标边框的大小。",
+	["Icon Stack Text"] = "图标堆叠文字",
+	["Toggle center icon's stack count text."] = "启用中心图标的堆叠计数文字。",
+	["Icon Cooldown Frame"] = "图标冷却时间框架",
+	["Toggle center icon's cooldown frame."] = "启用中心图标的冷却时间框架。",
 
 	--}}}
 	--{{{ GridLayout
