@@ -722,6 +722,7 @@ GridFrame.defaultDB = {
 	statusmap = {
 		["text"] = {
 			alert_death = true,
+			debuff_Ghost = true,
 			alert_feignDeath = true,
 			alert_offline = true,
 			unit_name = true,
@@ -730,6 +731,7 @@ GridFrame.defaultDB = {
 		},
 		["text2"] = {
 			alert_death = true,
+			debuff_Ghost = true,
 			alert_feignDeath = true,
 			alert_offline = true,
 		},
