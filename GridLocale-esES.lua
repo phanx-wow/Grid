@@ -181,7 +181,7 @@ local strings_esES = {
 	--}}} 
 	--{{{ GridRange 
 	-- used for getting spell range from tooltip 
-	["(%d+) yd range"] = "alcance de (%d+) m.", 
+	["(%d+) yd range"] = "Alcance de (%d+) m", 
 	
 	--}}} 
 	--{{{ GridStatus 
