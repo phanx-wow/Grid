@@ -288,6 +288,8 @@ local strings_enUS = {
 	["Seconds between range checks"] = true,
 	["More than %d yards away"] = true,
 	["%d yards"] = true,
+	["Text"] = true,
+	["Text to display on text indicators"] = true,
 
 	--}}}
 	--{{{ GridStatusTarget

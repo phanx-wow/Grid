@@ -178,6 +178,18 @@ function GridStatusRange:RegisterStatusForRange(range)
 						  end
 					  end,
 			},
+			["text"] = {
+				type = "text",
+				name = L["Text"],
+				desc = L["Text to display on text indicators"],
+				order = 113,
+				get = function ()
+						  return GridStatusRange.db.profile[status_name].text
+					  end,
+				set = function (v)
+						  GridStatusRange.db.profile[status_name].text = v
+					  end,
+			},
 		}
 
 		self:RegisterStatus(status_name, status_desc, options, false, range)
@@ -217,7 +229,7 @@ function GridStatusRange:SimpleRangeCheck()
 			self.core:SendStatusGained(unit.name, status_name,
 									   settings.priority, false,
 									   settings.color,
-									   settings.txt)
+									   settings.text)
 		else
 			self.core:SendStatusLost(unit.name, status_name)
 		end
@@ -252,7 +264,7 @@ function GridStatusRange:RangeCheck()
 				self.core:SendStatusGained(unit.name, status_name,
 										   settings.priority, false,
 										   settings.color,
-										   settings.txt)
+										   settings.text)
 			else
 				self.core:SendStatusLost(unit.name, status_name)
 			end
