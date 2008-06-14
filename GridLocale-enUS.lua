@@ -290,6 +290,7 @@ local strings_enUS = {
 	["%d yards"] = true,
 	["Text"] = true,
 	["Text to display on text indicators"] = true,
+	["<range>"] = true,
 
 	--}}}
 	--{{{ GridStatusTarget

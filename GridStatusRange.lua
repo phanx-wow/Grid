@@ -183,6 +183,7 @@ function GridStatusRange:RegisterStatusForRange(range)
 				name = L["Text"],
 				desc = L["Text to display on text indicators"],
 				order = 113,
+				usage = L["<range>"],
 				get = function ()
 						  return GridStatusRange.db.profile[status_name].text
 					  end,
