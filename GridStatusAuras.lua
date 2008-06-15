@@ -145,12 +145,11 @@ local abolishMap = {
 }
 
 local function buildReverseAbolishMap()
-	--[[
-		we create and add the reverse map to abolishMap.
-		This is to speed up lookup in Unit_BuffGain and because it's not
-		possible to have a name collision between keys and values (well, as 
-		long as Blizzard does not start calling an Abolish buff "debuff_poison")
-	]]
+        -- we create and add the reverse map to abolishMap.
+        -- This is to speed up lookup in Unit_BuffGain and because it's not
+        -- possible to have a name collision between keys and values (well, as 
+        -- long as Blizzard does not start calling an Abolish buff
+        -- "debuff_poison")
 	local rev = {}
 	for k, v in pairs(abolishMap) do
 		rev[v] = k
@@ -234,8 +233,12 @@ end
 function GridStatusAuras:OnEnable()
 	self.debugging = self.db.profile.debug
 	self:RegisterEvent("SpecialEvents_UnitDebuffGained")
+	self:RegisterEvent("SpecialEvents_UnitDebuffCountChanged",
+			   "SpecialEvents_UnitDebuffGained")
 	self:RegisterEvent("SpecialEvents_UnitDebuffLost")
 	self:RegisterEvent("SpecialEvents_UnitBuffGained")
+	self:RegisterEvent("SpecialEvents_UnitBuffCountChanged",
+			   "SpecialEvents_UnitBuffGained")
 	self:RegisterEvent("SpecialEvents_UnitBuffLost")
 	self:RegisterEvent("Grid_UnitJoined")
 	-- self:RegisterEvent("Grid_UnitDeath", "ClearAuras")
