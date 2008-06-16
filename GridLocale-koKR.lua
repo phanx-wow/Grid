@@ -64,8 +64,8 @@ local strings_koKR = {
 	["Adjust the font size."] = "글꼴 크기를 조정합니다.",
 	["Orientation of Frame"] = "프레임의 방향",
 	["Set frame orientation."] = "프레임의 방향을 설정합니다.",
-	["Orientation of Text"] = "글꼴의 방향",
-	["Set frame text orientation."] = "프레임의 글꼴 방향을 설정합니다.",
+	["Orientation of Text"] = "문자의 방향",
+	["Set frame text orientation."] = "프레임 문자의 방향을 설정합니다.",
 	["VERTICAL"] = "세로",
 	["HORIZONTAL"] = "가로",
 	["Icon Size"] = "아이콘 크기",
@@ -288,6 +288,9 @@ local strings_koKR = {
 	["Seconds between range checks"] = "거리 체크의 시간(초)를 설정합니다.",
 	["More than %d yards away"] = "%d 미터 이상",
 	["%d yards"] = "%d 미터",
+	["Text"] = "문자",
+	["Text to display on text indicators"] = "문자 지시기 위에 표시할 문자",
+	["<range>"] = "<범위>",
 
 	--}}}
 	--{{{ GridStatusTarget
