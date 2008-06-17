@@ -22,6 +22,7 @@ local BS = {
 	["Lifebloom"] = GetSpellInfo(33763),
 	["Abolish Poison"] = GetSpellInfo(2893),
 	["Abolish Disease"] = GetSpellInfo(552),
+	["Ghost"] = GetSpellInfo(8326),
 }
 --}}}
 
@@ -79,9 +80,9 @@ GridStatusAuras.defaultDB = {
 		["color"] = { r = .6, g =  0, b =  1, a = 1 },
 		["order"] = 25,
 	},
-	[statusForSpell(L["Ghost"])] = {
-		["desc"] = string.format(L["Debuff: %s"], L["Ghost"]),
-		["text"] = L["Ghost"],
+	[statusForSpell(BS["Ghost"])] = {
+		["desc"] = string.format(L["Debuff: %s"], BS["Ghost"]),
+		["text"] = BS["Ghost"],
 		["enable"] = true,
 		["priority"] = 90,
 		["range"] = false,
