@@ -1,4 +1,4 @@
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
 --中文化 by TWoW 水晶之刺 Youngway
 local strings_zhTW = {
 	--{{{ GridCore
@@ -288,6 +288,9 @@ local strings_zhTW = {
 	["Seconds between range checks"] = "設定程式多少秒檢測一次距離",
 	["More than %d yards away"] = "距離超過%d碼",
 	["%d yards"] = "%d 碼",
+	["Text"] = "文字",
+	["Text to display on text indicators"] = "顯示文字於文字提示器上",
+	["<range>"] = "<距離>",
 
 	--}}}
 	--{{{ GridStatusTarget
