@@ -157,6 +157,10 @@ function GridStatusRange:RegisterStatusForRange(range)
 		if range == 28 and GridRange:GetRangeCheck(30) then
 			return
 		end
+		-- ditto for 38 yards if we have a 40 yard check
+		if range == 38 and GridRange:GetRangeCheck(40) then
+			return
+		end
 
 		-- override some of the default options
 		local options = {
