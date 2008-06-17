@@ -13,7 +13,7 @@ local strings_zhCN = {
 	--}}}
 	--{{{ GridFrame
 	["Frame"] = "框架",
-	["Options for GridFrame."] = "格子框架的选项。",
+	["Options for GridFrame."] = "Grid 框架的选项。",
 
 	["Show Tooltip"] = "显示提示信息",
 	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "显示单位框架的鼠标信息。选择“一直”，“不显示”或“非战斗”。",
@@ -80,11 +80,11 @@ local strings_zhCN = {
 	--}}}
 	--{{{ GridLayout
 	["Layout"] = "布局",
-	["Options for GridLayout."] = "格子布局的选项。",
+	["Options for GridLayout."] = "Grid 布局的选项。",
 
 	-- Layout options
 	["Show Frame"] = "显示框架",
-	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "选择什么时候显示格子：“一直”，“组队”或“团队”。",
+	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "选择什么时候显示Grid：“一直”，“组队”或“团队”。",
 	["Always"] = "一直",
 	["Grouped"] = "组队",
 	["Raid"] = "团队",
@@ -154,7 +154,7 @@ local strings_zhCN = {
 	["Advanced"] = "高级",
 	["Advanced options."] = "高级选项。",
 	["Layout Anchor"] = "布局锚点",
-	["Sets where Grid is anchored relative to the screen."] = "设置屏幕中格子的锚点。",
+	["Sets where Grid is anchored relative to the screen."] = "设置屏幕中 Grid 的锚点。",
 	["Group Anchor"] = "队伍锚点",
 	["Sets where groups are anchored relative to the layout frame."] = "设置布局中队伍的锚点。",
 	["Reset Position"] = "重置位置",
@@ -223,7 +223,7 @@ local strings_zhCN = {
 	["Adds a new debuff to the status module"] = "状态模组添加一个新的减益",
 	["<debuff name>"] = "<减益名称>",
 	["Delete (De)buff"] = "删除 增(减)益",
-	["Deletes an existing debuff from the status module"] = "删除状态模组内已有的一个增(减)益",
+	["Deletes an existing debuff from the status module"] = "删除状态模组内已有的一个增（减）益",
 	["Remove %s from the menu"] = "从列表中移除%s",
 	["Debuff: %s"] = "减益：%s",
 	["Buff: %s"] = "增益：%s",
@@ -288,6 +288,9 @@ local strings_zhCN = {
 	["Seconds between range checks"] = "多少秒检测一次距离",
 	["More than %d yards away"] = "距离超过%d码",
 	["%d yards"] = "%d码",
+	["Text"] = "文字",
+	["Text to display on text indicators"] = "在文字提示器上显示文字",
+	["<range>"] = "<距离>",
 
 	--}}}
 	--{{{ GridStatusTarget
