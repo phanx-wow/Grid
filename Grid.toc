@@ -35,6 +35,7 @@ GridLocale-zhCN.lua
 GridLocale-koKR.lua
 GridLocale-zhTW.lua
 GridLocale-esES.lua
+GridLocale-ruRU.lua
 
 # Grid
 GridCore.lua
