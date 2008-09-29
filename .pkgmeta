@@ -1,0 +1,28 @@
+package-as: Grid
+
+externals:
+    /LibBabble-Spell-3.0: http://svn.wowace.com/wowace/trunk/LibBabble-Spell-3.0/
+    /AceDebug-2.0: http://svn.wowace.com/wowace/trunk/Ace2/AceDebug-2.0/
+    /CallbackHandler-1.0: http://svn.wowace.com/wowace/trunk/Ace3/CallbackHandler-1.0/
+    /UTF8: http://grid.13th-floor.org/svn/trunk/UTF8/
+    /Waterfall-1.0: http://svn.wowace.com/wowace/trunk/Waterfall-1.0/Waterfall-1.0/
+    /SpecialEvents-Aura-2.0: http://svn.wowace.com/wowace/trunk/SpecialEventsEmbed/SpecialEvents-Aura-2.0/
+    /LibBanzai-2.0: http://svn.wowace.com/wowace/trunk/LibBanzai-2.0/
+    /AceAddon-2.0: http://svn.wowace.com/wowace/trunk/Ace2/AceAddon-2.0/
+    /AceEvent-2.0: http://svn.wowace.com/wowace/trunk/Ace2/AceEvent-2.0/
+    /AceOO-2.0: http://svn.wowace.com/wowace/trunk/Ace2/AceOO-2.0/
+    /LibSharedMedia-3.0: http://svn.wowace.com/wowace/trunk/LibSharedMedia-3.0/
+    /AceLocale-2.2: http://svn.wowace.com/wowace/trunk/Ace2/AceLocale-2.2/
+    /Roster-2.1: http://svn.wowace.com/wowace/trunk/RosterLib/Roster-2.1/
+    /Dewdrop-2.0: http://svn.wowace.com/wowace/trunk/DewdropLib/Dewdrop-2.0/
+    /AceLibrary: http://svn.wowace.com/wowace/trunk/Ace2/AceLibrary/
+    /AceConsole-2.0: http://svn.wowace.com/wowace/trunk/Ace2/AceConsole-2.0/
+    /LibGratuity-3.0: http://svn.wowace.com/wowace/trunk/LibGratuity-3.0/
+    /AceDB-2.0: http://svn.wowace.com/wowace/trunk/Ace2/AceDB-2.0/
+    /AceModuleCore-2.0: http://svn.wowace.com/wowace/trunk/Ace2/AceModuleCore-2.0/
+    /FuBarPlugin-2.0: http://svn.wowace.com/wowace/trunk/FuBarPlugin-2.0/FuBarPlugin-2.0/
+    /LibStub: http://svn.wowace.com/wowace/tags/LibStub/1.0/
+    /AceHook-2.1: http://svn.wowace.com/wowace/trunk/Ace2/AceHook-2.1/
+    /AceTab-2.0: http://svn.wowace.com/wowace/trunk/Ace2/AceTab-2.0/
+    /LibHealComm-3.0: http://svn.wowace.com/wowace/trunk/LibHealComm-3.0/
+    /LibBabble-Class-3.0: http://svn.wowace.com/wowace/trunk/LibBabble-Class-3.0/
