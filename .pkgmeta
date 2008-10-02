@@ -13,16 +13,16 @@ externals:
     libs/AceOO-2.0: svn://svn.wowace.com/wow/ace2/mainline/trunk/AceOO-2.0
     libs/AceTab-2.0: svn://svn.wowace.com/wow/ace2/mainline/trunk/AceTab-2.0
     libs/CallbackHandler-1.0: svn://svn.wowace.com/wow/ace3/mainline/trunk/CallbackHandler-1.0
-    libs/Dewdrop-2.0: svn://svn.wowace.com/wow/wowace-dewdrop-lib/mainline/trunk/Dewdrop-2.0
-    libs/FuBarPlugin-2.0: svn://svn.wowace.com/wow/fu-bar-plugin-2-0/mainline/trunk/FuBarPlugin-2.0
-    libs/LibBabble-Class-3.0: svn://svn.wowace.com/wow/lib-babble-class-3-0/mainline/trunk
-    libs/LibBabble-Spell-3.0: svn://svn.wowace.com/wow/lib-babble-spell-3-0/mainline/trunk
-    libs/LibBanzai-2.0: svn://svn.wowace.com/wow/lib-banzai-2-0/mainline/trunk
-    libs/LibGratuity-3.0: svn://svn.wowace.com/wow/lib-gratuity-3-0/mainline/trunk
-    libs/LibHealComm-3.0: svn://svn.wowace.com/wow/lib-heal-comm-3-0/mainline/trunk
-    libs/LibSharedMedia-3.0: svn://svn.wowace.com/wow/lib-shared-media-3-0/mainline/trunk
+    libs/Dewdrop-2.0: svn://svn.wowace.com/wow/dewdroplib/mainline/trunk/Dewdrop-2.0
+    libs/FuBarPlugin-2.0: svn://svn.wowace.com/wow/fubarplugin-2-0/mainline/trunk/FuBarPlugin-2.0
+    libs/LibBabble-Class-3.0: svn://svn.wowace.com/wow/libbabble-class-3-0/mainline/trunk
+    libs/LibBabble-Spell-3.0: svn://svn.wowace.com/wow/libbabble-spell-3-0/mainline/trunk
+    libs/LibBanzai-2.0: svn://svn.wowace.com/wow/libbanzai-2-0/mainline/trunk
+    libs/LibGratuity-3.0: svn://svn.wowace.com/wow/libgratuity-3-0/mainline/trunk
+    libs/LibHealComm-3.0: svn://svn.wowace.com/wow/libhealcomm-3-0/mainline/trunk
+    libs/LibSharedMedia-3.0: svn://svn.wowace.com/wow/libsharedmedia-3-0/mainline/trunk
     libs/LibStub: svn://svn.wowace.com/wow/libstub/mainline/tags/1.0
-    libs/Roster-2.1: svn://svn.wowace.com/wow/roster-lib/mainline/trunk/Roster-2.1
-    libs/SpecialEvents-Aura-2.0: svn://svn.wowace.com/wow/special-events-embed/mainline/trunk/SpecialEvents-Aura-2.0
+    libs/Roster-2.1: svn://svn.wowace.com/wow/rosterlib/mainline/trunk/Roster-2.1
+    libs/SpecialEvents-Aura-2.0: svn://svn.wowace.com/wow/specialeventsembed/mainline/trunk/SpecialEvents-Aura-2.0
     libs/UTF8: http://grid.13th-floor.org/svn/trunk/UTF8
     libs/Waterfall-1.0: svn://svn.wowace.com/wow/waterfall-1-0/mainline/trunk/Waterfall-1.0
