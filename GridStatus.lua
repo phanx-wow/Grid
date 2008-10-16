@@ -280,7 +280,7 @@ function GridStatus:FillColorOptions(options)
 	local colors = self.db.profile.colors
 	for _, class in ipairs{
 		"Warlock", "Warrior", "Hunter", "Mage",
-		"Priest", "Druid", "Paladin", "Shaman", "Rogue"
+		"Priest", "Druid", "Paladin", "Shaman", "Rogue", "Deathknight",
 	} do
 		local name = class:upper()
 		local l_class = BC[class]
