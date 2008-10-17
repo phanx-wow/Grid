@@ -369,8 +369,8 @@ function GridFrameClass.prototype:SetCornerSize(size)
 end
 
 function GridFrameClass.prototype:SetIconSize(size, borderSize)
-	if not size then size = GridFrame.db.profile.iconSize end
-	if not borderSize then borderSize = GridFrame.db.profile.iconBorderSize end
+	if size == nil then size = GridFrame.db.profile.iconSize end
+	if borderSize == nil then borderSize = GridFrame.db.profile.iconBorderSize end
 
 	local f = self.frame
 
@@ -611,7 +611,9 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 			end
 
 			if type(color) == "table" and not color.ignore then
-				self.frame.IconBG:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
+				if self.db.profile.iconBorderSize > 0 then
+					self.frame.IconBG:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
+				end
 				self.frame.Icon:SetAlpha(color.a)
 			else
 				self.frame.IconBG:SetBackdropBorderColor(0, 0, 0, 0)
@@ -960,7 +962,7 @@ GridFrame.options = {
 					set = function (v)
 						      GridFrame.db.profile.iconSize = v
 							  local iconBorderSize = GridFrame.db.profile.iconBorderSize
-						      GridFrame:WithAllFrames(function (f) f:SetIconSize(v, borderSize) end)
+						      GridFrame:WithAllFrames(function (f) f:SetIconSize(v, iconBorderSize) end)
 					      end,
 				},
 				["iconbordersize"] = {
