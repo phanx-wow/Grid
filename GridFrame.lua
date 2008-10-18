@@ -611,7 +611,7 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 			end
 
 			if type(color) == "table" and not color.ignore then
-				if self.db.profile.iconBorderSize > 0 then
+				if GridFrame.db.profile.iconBorderSize > 0 then
 					self.frame.IconBG:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
 				end
 				self.frame.Icon:SetAlpha(color.a)
