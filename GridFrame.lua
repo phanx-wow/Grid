@@ -385,7 +385,11 @@ function GridFrameClass.prototype:SetIconSize(size, borderSize)
 	local r, g, b, a = f.IconBG:GetBackdropBorderColor()
 
 	f.IconBG:SetBackdrop(backdrop)
-	f.IconBG:SetBackdropBorderColor(r, g, b, a)
+	if borderSize == 0 then
+	   f.IconBG:SetBackdropBorderColor(0, 0, 0, 0)
+	else
+	   f.IconBG:SetBackdropBorderColor(r, g, b, a)
+	end
 
 	f.IconBG:SetWidth(size + borderSize * 2)
 	f.IconBG:SetHeight(size + borderSize * 2)
