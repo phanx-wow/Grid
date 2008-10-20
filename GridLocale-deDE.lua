@@ -177,7 +177,7 @@ local strings_deDE = {
 	--}}}
 	--{{{ GridRange
 	-- used for getting spell range from tooltip
-	["(%d+) yd range"] = "(%d+) m Reichweite",
+	["(%d+) yd range"] = "(%d+) Meter Reichweite",
 
 	--}}}
 	--{{{ GridStatus
