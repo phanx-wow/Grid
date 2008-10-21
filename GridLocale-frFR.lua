@@ -181,7 +181,7 @@ local strings_frFR = {
 	--}}}
 	--{{{ GridRange
 	-- used for getting spell range from tooltip
-	["(%d+) yd range"] = "portée de (%d+) m.",
+	["(%d+) yd range"] = "(%d+) m de portée",
 
 	--}}}
 	--{{{ GridStatus
