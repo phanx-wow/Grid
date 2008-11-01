@@ -1,4 +1,5 @@
-﻿--{{{ Libraries
+-- -*- tab-width: 4; lua-indent-level: 4 -*-
+--{{{ Libraries
 
 local Aura = AceLibrary("SpecialEvents-Aura-2.0")
 local Dewdrop = AceLibrary("Dewdrop-2.0")
@@ -421,17 +422,19 @@ end
 function GridStatusAuras:ScanUnitAuras(unit)
 	self:Debug("ScanUnitAuras", unit)
 
-	for buff, index, apps, tex, rank in Aura:BuffIter(unit) do
-		self:SpecialEvents_UnitBuffGained(unit, buff, index, apps, tex, rank)
+	for buff, index, apps, tex, rank, duration, buff_index in Aura:BuffIter(unit) do
+		local _, _, _, _, _, duration, expires = UnitBuff(unit, buff_index)
+		self:SpecialEvents_UnitBuffGained(unit, buff, index, apps, tex, rank, duration, expires)
 	end
 
-	for debuff, apps, type, tex, rank, index in Aura:DebuffIter(unit) do
-		self:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type, tex, rank, index)
+	for debuff, apps, type, tex, rank, index, duration, debuff_index in Aura:DebuffIter(unit) do
+		local _, _, _, _, _, duration, expires = UnitDebuff(unit, debuff_index)
+		self:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type, tex, rank, debuff_index, duration, expires)
 	end
 end
 
 
-function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type, tex, rank, index)
+function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type, tex, rank, index, duration, expires)
 	-- check if this is a specific debuff or a debuff type
 	local debuffNameStatus = statusForSpell(debuff, false)
 	local debuffTypeStatus = type and "debuff_" .. strlower(type)
@@ -459,6 +462,7 @@ function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type
 
 	self:Debug(unit, "gained", status, debuffNameStatus, tex)
 
+	local start = expires and (expires - duration)
 	self.core:SendStatusGained(u.name,
 				   status,
 				   settings.priority,
@@ -468,8 +472,8 @@ function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type
 				   apps,
 				   nil,
 				   tex,
-				   nil,
-				   nil,
+				   start,
+				   duration,
 				   apps)
 end
 
@@ -494,15 +498,15 @@ function GridStatusAuras:SpecialEvents_UnitDebuffLost(unit, debuff, apps, type, 
 end
 
 
-function GridStatusAuras:SpecialEvents_UnitBuffGained(unit, buff, index, apps, tex, rank)
-	return self:UnitBuff(unit, true, buff, tex, apps)
+function GridStatusAuras:SpecialEvents_UnitBuffGained(unit, buff, index, apps, tex, rank, duration, expires, index)
+	return self:UnitBuff(unit, true, buff, tex, apps, duration, expires)
 end
 
 function GridStatusAuras:SpecialEvents_UnitBuffLost(unit, buff, apps, tex, rank)
 	return self:UnitBuff(unit, false, buff, tex, apps)
 end
 
-function GridStatusAuras:UnitBuff(unit, gained, buff, tex, apps)
+function GridStatusAuras:UnitBuff(unit, gained, buff, tex, apps, duration, expires)
 	local buffNameStatus = statusForSpell(buff, true)
 	local settings = self.db.profile[buffNameStatus]
 	if not (settings and settings.enable) then return end
@@ -521,6 +525,7 @@ function GridStatusAuras:UnitBuff(unit, gained, buff, tex, apps)
 			self.core:SendStatusLost(u.name, buffNameStatus)
 		else
 			self:Debug("sending gained", buffNameStatus)
+			local start = expires and (expires - duration)
 			self.core:SendStatusGained(u.name,
 						   buffNameStatus,
 						   settings.priority,
@@ -530,8 +535,8 @@ function GridStatusAuras:UnitBuff(unit, gained, buff, tex, apps)
 						   apps,
 						   nil,
 						   tex,
-						   nil,
-						   nil,
+						   start,
+						   duration,
 						   apps)
 			if self.db.profile.abolish then
 				local debuffTypeStatus = abolishMap[buff]
