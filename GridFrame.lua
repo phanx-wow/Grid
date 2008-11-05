@@ -144,6 +144,7 @@ function GridFrameClass.prototype:CreateFrames()
 	-- this is necessary as there's no other way to implement status bars that grow in the other direction than normal
 	f.BarBG = f:CreateTexture()
 	f.BarBG:SetTexture(texture)
+	f.BarBG:SetVertexColor(0, 0, 0, 1)
 	f.BarBG:SetPoint("CENTER", f, "CENTER")
 
 	-- create healing bar
