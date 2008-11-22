@@ -204,6 +204,9 @@ GridLayout:AddLayout(L["By Class"], {
 		[9] = {
 			groupFilter = "ROGUE",
 		},
+		[10] = {
+			groupFilter = "DEATHKNIGHT",
+		},
 	})
 
 GridLayout:AddLayout(L["By Class w/Pets"], {
