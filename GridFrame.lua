@@ -581,8 +581,8 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 	elseif indicator == "text" then
 		self:SetText(text, color)
 	elseif indicator == "text2" then
-		self:SetText2(text, color)
-	elseif indicator == "frameAlpha" then
+	   self:SetText2(text, color)
+	elseif indicator == "frameAlpha" and type(color) == "table" and type(color.a) == "number" then
 		for x = 1, 4 do
 			local corner = "corner"..x;
 			if self.frame[corner] then
