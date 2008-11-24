@@ -218,16 +218,8 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 		end
 	else
 		self:StatusDeath(unitid, false)
-		if UnitIsFeignDeath(unitid) then
-			self:StatusFeignDeath(unitid, true)
-		else
-			self:StatusFeignDeath(unitid, false)
-		end
-		if self:IsLowHealth(name, cur, max) then
-			self:StatusLowHealth(unitid, true)
-		else
-			self:StatusLowHealth(unitid, false)
-		end
+		self:StatusFeignDeath(unitid, UnitIsFeignDeath(unitid))
+		self:StatusLowHealth(unitid, self:IsLowHealth(name, cur, max))
 	end
 
 	self:StatusOffline(unitid, not UnitIsConnected(unitid))
