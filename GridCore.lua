@@ -250,7 +250,7 @@ end
 
 function Grid:OnInitialize()
 	self:RegisterDefaults('profile', Grid.defaults )
-	self:RegisterChatCommand({'/grid','/gr'}, self.options )
+	self:RegisterChatCommand({'/grid'}, self.options )
 
 	-- we need to save debugging state over sessions :(
 	self.debugging = self.db.profile.debug
