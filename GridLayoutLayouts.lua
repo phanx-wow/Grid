@@ -238,6 +238,9 @@ GridLayout:AddLayout(L["By Class w/Pets"], {
 			groupFilter = "ROGUE",
 		},
 		[10] = {
+			groupFilter = "DEATHKNIGHT",
+		},
+		[11] = {
 			isPetGroup = true,
 			groupFilter = "WARLOCK,HUNTER",
 			filterOnPet = true,
