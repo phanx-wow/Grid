@@ -181,7 +181,7 @@ local strings_ruRU = {
 	--}}}
 	--{{{ GridRange
 	-- used for getting spell range from tooltip
-	["(%d+) yd range"] = "Радиус действия: (%d+) м.",
+	["(%d+) yd range"] = "Радиус действия: (%d+) м",
 
 	--}}}
 	--{{{ GridStatus
