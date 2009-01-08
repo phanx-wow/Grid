@@ -5,7 +5,6 @@
 
 local AceOO = AceLibrary("AceOO-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
-local RL = AceLibrary("Roster-2.1")
 local media = LibStub("LibSharedMedia-3.0")
 
 
@@ -19,139 +18,6 @@ end
 
 --}}}
 
---{{{ Class for party header
-
-local GridLayoutPartyClass = AceOO.Class()
-
-function GridLayoutPartyClass.prototype:init()
-	GridLayoutPartyClass.super.prototype.init(self)
-	self:CreateFrames()
-	self:SetOrientation()
-end
-
-function GridLayoutPartyClass.prototype:CreateFrames()
-	self.frame = CreateFrame("Frame", "GridLayoutParty", GridLayoutFrame, nil)
-
-	self.partyFrame = CreateFrame("Frame", "GridLayoutPartyHeader", GridLayoutParty, "SecurePartyHeaderTemplate")
-	self.partyFrame:SetAttribute("showPlayer", true)
-	self.partyFrame:SetAttribute("showSolo", true)
-	self.partyFrame:SetAttribute("template", "SecureUnitButtonTemplate") 
-	self.partyFrame.initialConfigFunction = GridLayout_InitialConfigFunction
-	self.partyFrame:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 0, 0)
-	
-	self.partyPetFrame = CreateFrame("Frame", "GridLayoutPartyPetHeader", GridLayoutParty, "SecurePartyPetHeaderTemplate")
-	self.partyPetFrame:SetAttribute("filterOnPet", true)
-	self.partyPetFrame:SetAttribute("showPlayer", true)
-	self.partyPetFrame:SetAttribute("showSolo", true)
-	self.partyPetFrame:SetAttribute("template", "SecureUnitButtonTemplate") 
-	self.partyPetFrame.initialConfigFunction = GridLayout_InitialConfigFunction
-	self.partyPetFrame:SetPoint("TOPLEFT", self.partyFrame, "BOTTOMLEFT", 0, 0)
-	
-	self:UpdateSize()
-
-	self.frame:Show()
-	self.partyFrame:Show()
-	self.partyPetFrame:Show()
-end
-
-function GridLayoutPartyClass.prototype:Reset()
-	self.partyFrame:SetAttribute("sortMethod", "NAME")
-end
-
-function GridLayoutPartyClass.prototype:SetOrientation(horizontal)
-	local layoutSettings = GridLayout.db.profile
-	local groupAnchor = layoutSettings.groupAnchor
-	local padding = layoutSettings.Padding
-
-	local anchor, anchorf1, anchorf2, point, xOffset, yOffset
-
-	anchor = groupAnchor
-
-	if horizontal then
-		if groupAnchor == "TOPLEFT" or groupAnchor == "BOTTOMLEFT" then
-			-- place group members horizontal and growing right
-			anchorf1 = "TOPLEFT"
-			anchorf2 = "TOPRIGHT"
-			point = "LEFT"
-			xOffset = padding
-			yOffset = 0
-		else
-			-- place group members horizontal and growing left
-			anchorf1 = "TOPRIGHT"
-			anchorf2 = "TOPLEFT"
-			point = "RIGHT"
-			xOffset = 0-padding
-			yOffset = 0
-		end
-	else
-		if groupAnchor == "TOPLEFT" or groupAnchor == "TOPRIGHT" then
-			-- place group members vertical and growing down
-			anchorf1 = "TOPLEFT"
-			anchorf2 = "BOTTOMLEFT"
-			point = "TOP"
-			xOffset = 0
-			yOffset = 0-padding
-		else
-			-- place groups vertical and growing up
-			anchorf1 = "BOTTOMLEFT"
-			anchorf2 = "TOPLEFT"
-			point = "BOTTOM"
-			xOffset = 0
-			yOffset = padding
-		end
-	end
-
-	self.partyFrame:ClearAllPoints()
-	self.partyFrame:SetPoint(anchor, self.frame, anchor, 0, 0)
-	self.partyFrame:SetAttribute("xOffset", xOffset)
-	self.partyFrame:SetAttribute("yOffset", yOffset)
-	self.partyFrame:SetAttribute("point", point)
-
-	self.partyPetFrame:ClearAllPoints()
-	self.partyPetFrame:SetPoint(anchorf1, self.partyFrame, anchorf2, xOffset, yOffset)
-	self.partyPetFrame:SetAttribute("xOffset", xOffset)
-	self.partyPetFrame:SetAttribute("yOffset", yOffset)
-	self.partyPetFrame:SetAttribute("point", point)
-
-	-- self:UpdateSize() -- not needed because GridLayout:UpdateSize() will call it
-end
-
-function GridLayoutPartyClass.prototype:UpdateSize()
-	local layoutSettings = GridLayout.db.profile
-
-	local width  = self.partyFrame:GetWidth()
-	local height = self.partyFrame:GetHeight()
-	local padding = layoutSettings.Padding
-
-	if layoutSettings.horizontal then
-		local pwidth = self.partyPetFrame:GetWidth()
-		if self.partyPetFrame:IsVisible() and pwidth > 0 then
-			width = width + padding + pwidth
-		end
-	else
-		local pheight = self.partyPetFrame:GetHeight()
-		if self.partyPetFrame:IsVisible() and pheight > 0 then
-			height = height + padding + pheight
-		end
-	end
-
-	self.frame:SetWidth(width)
-	self.frame:SetHeight(height)
-end
-
-function GridLayoutPartyClass.prototype:GetFrameWidth()
-	return self.frame:GetWidth()
-end
-
-function GridLayoutPartyClass.prototype:GetFrameHeight()
-	return self.frame:GetHeight()
-end
-
-function GridLayoutPartyClass.prototype:IsFrameVisible()
-	return self.frame:IsVisible()
-end
-
---}}}
 --{{{ Class for group headers
 
 local GridLayoutHeaderClass = AceOO.Class()
@@ -165,6 +31,11 @@ function GridLayoutHeaderClass.prototype:init(isPetGroup)
 end
 
 function GridLayoutHeaderClass.prototype:Reset()
+	self.frame:SetAttribute("showPlayer", true)
+	self.frame:SetAttribute("showSolo", true)
+	self.frame:SetAttribute("showParty", true)
+	self.frame:SetAttribute("showRaid", true)
+
 	self.frame:SetAttribute("nameList", nil)
 	self.frame:SetAttribute("groupFilter", nil)
 	self.frame:SetAttribute("strictFiltering", nil)
@@ -182,9 +53,12 @@ end
 
 function GridLayoutHeaderClass.prototype:CreateFrames(isPetGroup)
 	NUM_HEADERS = NUM_HEADERS + 1
+	local template = isPetGroup and
+		"SecureGroupPetHeaderTemplate" or
+		"SecureGroupHeaderTemplate"
 
-	self.frame = CreateFrame("Frame", "GridLayoutHeader"..NUM_HEADERS, GridLayoutFrame, 
-		isPetGroup and "SecureRaidPetHeaderTemplate" or "SecureRaidGroupHeaderTemplate")
+	self.frame = CreateFrame("Frame", "GridLayoutHeader"..NUM_HEADERS,
+							 GridLayoutFrame, template)
 	self.frame:SetAttribute("template", "SecureUnitButtonTemplate") 
 	self.frame.initialConfigFunction = GridLayout_InitialConfigFunction
 end
@@ -265,14 +139,17 @@ GridLayout = Grid:NewModule("GridLayout")
 GridLayout.defaultDB = {
 	debug = false,
 
-	FrameDisplay = "Always",
-	layout = "By Group 40",
-	showParty = false,
-	showPartyPets = false,
+	layouts = {
+		solo = L["By Group 5"],
+		party = L["By Group 5"],
+		arena = L["By Group 5"],
+		raid = L["By Group 25"],
+		bg = L["By Group 40"],
+	},
+
 	horizontal = false,
 	clamp = true,
 	FrameLock = false,
-	ClickThrough = false,
 
 	Padding = 1,
 	Spacing = 10,
@@ -306,63 +183,82 @@ GridLayout.options = {
 	desc = L["Options for GridLayout."],
 	disabled = InCombatLockdown,
 	args = {
-		["display"] = {
+		-- layouts for SOLO, PARTY, RAID, BG, ARENA
+		["sololayout"] = {
 			type = "text",
-			name = L["Show Frame"],
-			desc = L["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."],
+			name = L["Solo Layout"],
+			desc = L["Select which layout to use when not in a party."],
 			order = ORDER_LAYOUT + 1,
-			get = function() return GridLayout.db.profile.FrameDisplay end,
-			set = function(v)
-				GridLayout.db.profile.FrameDisplay = v
-				GridLayout:CheckVisibility()
-			end,
-			validate={["Always"] = L["Always"], ["Grouped"] = L["Grouped"], ["Raid"] = L["Raid"]},
+			get = function ()
+					  return GridLayout.db.profile.layouts.solo
+				  end,
+			set = function (v)
+					  GridLayout.db.profile.layouts.solo = v
+					  GridLayout:ReloadLayout()
+				  end,
+			validate = {},
 		},
-		["layout"] = {
+		["partylayout"] = {
 			type = "text",
-			name = L["Raid Layout"],
-			desc = L["Select which raid layout to use."],
+			name = L["Party Layout"],
+			desc = L["Select which layout to use when in a party."],
 			order = ORDER_LAYOUT + 2,
 			get = function ()
-				      return GridLayout.db.profile.layout
+					  return GridLayout.db.profile.layouts.party
+				  end,
+			set = function (v)
+					  GridLayout.db.profile.layouts.party = v
+					  GridLayout:ReloadLayout()
+				  end,
+			validate = {},
+		},
+		["raidlayout"] = {
+			type = "text",
+			name = L["Raid Layout"],
+			desc = L["Select which layout to use when in a raid."],
+			order = ORDER_LAYOUT + 3,
+			get = function ()
+				      return GridLayout.db.profile.layouts.raid
 			      end,
 			set = function (v)
-				      GridLayout.db.profile.layout = v
-				      GridLayout:LoadLayout(v)
+				      GridLayout.db.profile.layouts.raid = v
+				      GridLayout:ReloadLayout()
 			      end,
 			validate = {},
 		},
-		["party"] = {
-			type = "toggle",
-			name = L["Show Party in Raid"],
-			desc = L["Show party/self as an extra group."],
-			order = ORDER_LAYOUT + 3,
+		["bglayout"] = {
+			type = "text",
+			name = L["Battleground Layout"],
+			desc = L["Select which layout to use when in a battleground."],
+			order = ORDER_LAYOUT + 4,
 			get = function ()
-				return GridLayout.db.profile.showParty
-			end,
+				      return GridLayout.db.profile.layouts.bg
+			      end,
 			set = function (v)
-				GridLayout.db.profile.showParty = v
-				GridLayout:ReloadLayout()
-			end,
+				      GridLayout.db.profile.layouts.bg = v
+				      GridLayout:ReloadLayout()
+			      end,
+			validate = {},
 		},
-		["partypets"] = {
-			type = "toggle",
-			name = L["Show Pets for Party"],
-			desc = L["Show the pets for the party below the party itself."],
-			order = ORDER_LAYOUT + 3,
+		["arenalayout"] = {
+			type = "text",
+			name = L["Arena Layout"],
+			desc = L["Select which layout to use when in an arena."],
+			order = ORDER_LAYOUT + 5,
 			get = function ()
-				return GridLayout.db.profile.showPartyPets
-			end,
+				      return GridLayout.db.profile.layouts.arena
+			      end,
 			set = function (v)
-				GridLayout.db.profile.showPartyPets = v
-				GridLayout:ReloadLayout()
-			end,
+				      GridLayout.db.profile.layouts.arena = v
+				      GridLayout:ReloadLayout()
+			      end,
+			validate = {},
 		},
 		["horizontal"] = {
 			type = "toggle",
 			name = L["Horizontal groups"],
 			desc = L["Switch between horzontal/vertical groups."],
-			order = ORDER_LAYOUT + 4,
+			order = ORDER_LAYOUT + 6,
 			get = function ()
 				      return GridLayout.db.profile.horizontal
 			      end,
@@ -375,7 +271,7 @@ GridLayout.options = {
 			type = "toggle",
 			name = L["Clamped to screen"],
 			desc = L["Toggle whether to permit movement out of screen."],
-			order = ORDER_LAYOUT + 5,
+			order = ORDER_LAYOUT + 7,
 			get = function ()
 				      return GridLayout.db.profile.clamp
 			      end,
@@ -388,23 +284,12 @@ GridLayout.options = {
 			type = "toggle",
 			name = L["Frame lock"],
 			desc = L["Locks/unlocks the grid for movement."],
-			order = ORDER_LAYOUT + 6,
+			order = ORDER_LAYOUT + 8,
 			get = function() return GridLayout.db.profile.FrameLock end,
 			set = function(v)
 				GridLayout.db.profile.FrameLock = v
+				GridLayout:UpdateTabVisibility()
 			end,
-		},
-		["clickthrough"] = {
-			type = "toggle",
-			name = L["Click through the Grid Frame"],
-			desc = L["Allows mouse click through the Grid Frame."],
-			order = ORDER_LAYOUT + 7,
-			get = function() return GridLayout.db.profile.ClickThrough end,
-			set = function(v)
-				GridLayout.db.profile.ClickThrough = v
-				GridLayout.frame:EnableMouse(not v)
-			end,
-			disabled = function () return not GridLayout.db.profile.FrameLock end,
 		},
 
 		["DisplayHeader"] = {
@@ -559,7 +444,6 @@ end
 --}}}
 
 GridLayout.layoutSettings = {}
-GridLayout.layoutPartyClass = GridLayoutPartyClass
 GridLayout.layoutHeaderClass = GridLayoutHeaderClass
 
 function GridLayout:OnInitialize()
@@ -573,6 +457,8 @@ function GridLayout:OnEnable()
 	if not self.frame then
 		self:CreateFrames()
 	end
+	
+	self:UpdateTabVisibility()
 
 	self.forceRaid = true
 	self:ScheduleEvent(self.CombatFix, 1, self)
@@ -583,16 +469,10 @@ function GridLayout:OnEnable()
 	self:Scale()
 
 	self:RegisterEvent("Grid_ReloadLayout", "PartyTypeChanged")
-	self:RegisterEvent("Grid_JoinedBattleground", "PartyTypeChanged")
-	self:RegisterEvent("Grid_JoinedRaid", "PartyTypeChanged")
-	self:RegisterEvent("Grid_JoinedParty", "PartyTypeChanged")
-	self:RegisterEvent("Grid_LeftParty", "PartyTypeChanged")
+	self:RegisterEvent("Grid_PartyTransition", "PartyTypeChanged")
 
 	self:RegisterBucketEvent("Grid_UpdateLayoutSize", 0.2, "PartyMembersChanged")
-	--self:RegisterEvent("Grid_UnitJoined", "PartyMembersChanged")
-	--self:RegisterEvent("Grid_UnitLeft", "PartyMembersChanged")
-	--self:RegisterEvent("Grid_UnitChanged", "PartyMembersChanged")
-	self:RegisterEvent("RosterLib_RosterUpdated", "PartyMembersChanged")
+	self:RegisterEvent("Grid_RosterUpdated", "PartyMembersChanged")
 
 	self:RegisterEvent("Grid_EnteringCombat", "EnteringOrLeavingCombat")
 	self:RegisterEvent("Grid_LeavingCombat", "EnteringOrLeavingCombat")
@@ -654,7 +534,7 @@ end
 --}}}
 
 function GridLayout:StartMoveFrame()
-	if not self.db.profile.FrameLock and arg1 == "LeftButton" then
+	if not self.db.profile.FrameLock then
 		self.frame:StartMoving()
 		self.frame.isMoving = true
 	end
@@ -671,17 +551,33 @@ function GridLayout:StopMoveFrame()
 	end
 end
 
+function GridLayout:UpdateTabVisibility()
+	if self.db.profile.FrameLock then
+		self.frame.tab:Hide()
+	else
+		self.frame.tab:Show()
+	end
+end
+
+local function GridLayout_OnMouseDown(frame, button)
+	if button == "LeftButton" then
+		GridLayout:StartMoveFrame()
+	end
+end
+
+local function GridLayout_OnMouseUp(frame)
+	GridLayout:StopMoveFrame()
+end
+
 function GridLayout:CreateFrames()
 	-- create main frame to hold all our gui elements
 	local f = CreateFrame("Frame", "GridLayoutFrame", UIParent)
-	f:EnableMouse(not (self.db.profile.FrameLock and self.db.profile.ClickThrough))
 	f:SetMovable(true)
 	f:SetClampedToScreen(self.db.profile.clamp)
 	f:SetPoint("CENTER", UIParent, "CENTER")
-	f:SetScript("OnMouseUp", function () self:StopMoveFrame() end)
-	f:SetScript("OnHide", function () self:StopMoveFrame() end)
-	f:SetScript("OnMouseDown", function () self:StartMoveFrame() end)
+	f:SetScript("OnHide", GridLayout__OnMouseUp)
 	f:SetFrameStrata("MEDIUM")
+
 	-- create background
 	f:SetFrameLevel(0)
 	f:SetBackdrop({
@@ -689,6 +585,7 @@ function GridLayout:CreateFrames()
 				 edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16,
 				 insets = {left = 4, right = 4, top = 4, bottom = 4},
 			 })
+
 	-- create bg texture
 	f.texture = f:CreateTexture(nil, "BORDER")
 	f.texture:SetTexture("Interface\\ChatFrame\\ChatFrameBackground")
@@ -697,9 +594,59 @@ function GridLayout:CreateFrames()
 	f.texture:SetBlendMode("ADD")
 	f.texture:SetGradientAlpha("VERTICAL", .1, .1, .1, 0, .2, .2, .2, 0.5)
 
-	self.frame = f
+	local tab_width = 33
+	local tab_side_width = 16
+	local tab_middle_width = tab_width - tab_side_width * 2
+	local tab_height = 18
+	local tab_alpha = 0.9
 
-	self.partyGroup = self.layoutPartyClass:new()
+	-- create drag handle
+	f.tab = CreateFrame("Frame", "GridLayoutFrameTab", f)
+	f.tab:SetWidth(tab_width)
+	f.tab:SetHeight(tab_height)
+	f.tab:EnableMouse(true)
+	f.tab:RegisterForDrag("LeftButton")
+	f.tab:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 1, -4)
+	f.tab:SetScript("OnMouseDown", GridLayout_OnMouseDown)
+	f.tab:SetScript("OnMouseUp", GridLayout_OnMouseUp)
+	f.tab:Hide()
+
+	-- Handle/Tab Background
+	f.tabBgLeft = f.tab:CreateTexture("GridLayoutFrameTabBgLeft",
+									  "BACKGROUND")
+	f.tabBgLeft:SetTexture("Interface\\ChatFrame\\ChatFrameTab")
+	f.tabBgLeft:SetTexCoord(0, 0.25, 0, 1)
+	f.tabBgLeft:SetAlpha(tab_alpha)
+	f.tabBgLeft:SetWidth(tab_side_width)
+	f.tabBgLeft:SetHeight(tab_height + 5)
+	f.tabBgLeft:SetPoint("BOTTOMLEFT", f.tab, "BOTTOMLEFT", 0, 0)
+
+	f.tabBgMiddle = f.tab:CreateTexture("GridLayoutFrameTabBgMiddle",
+										"BACKGROUND")
+	f.tabBgMiddle:SetTexture("Interface\\ChatFrame\\ChatFrameTab")
+	f.tabBgMiddle:SetTexCoord(0.25, 0.75, 0, 1)
+	f.tabBgMiddle:SetAlpha(tab_alpha)
+	f.tabBgMiddle:SetWidth(tab_middle_width)
+	f.tabBgMiddle:SetHeight(tab_height + 5)
+	f.tabBgMiddle:SetPoint("LEFT", f.tabBgLeft, "RIGHT", 0, 0)
+
+	f.tabBgRight = f.tab:CreateTexture("GridLayoutFrameTabBgRight",
+									   "BACKGROUND")
+	f.tabBgRight:SetTexture("Interface\\ChatFrame\\ChatFrameTab")
+	f.tabBgRight:SetTexCoord(0.75, 1, 0, 1)
+	f.tabBgRight:SetAlpha(tab_alpha)
+	f.tabBgRight:SetWidth(tab_side_width)
+	f.tabBgRight:SetHeight(tab_height + 5)
+	f.tabBgRight:SetPoint("LEFT", f.tabBgMiddle, "RIGHT", 0, 0)
+
+	-- Tab Label
+	f.tabText = f.tab:CreateFontString("GridLayoutFrameTabText",
+									   "BACKGROUND", "GameFontNormalSmall")
+	f.tabText:SetText("Grid")
+	f.tabText:SetPoint("TOP", f.tab, "TOP", 0, -5)
+
+
+	self.frame = f
 end
 
 local function getRelativePoint(point, horizontal)
@@ -764,21 +711,21 @@ end
 
 function GridLayout:AddLayout(layoutName, layout)
 	self.layoutSettings[layoutName] = layout
-	table.insert(self.options.args.layout.validate, layoutName)
+	for _, party_type in ipairs(GridRoster.party_states) do
+		local options = self.options.args[party_type .. "layout"]
+		--if options then
+		table.insert(self.options.args[party_type .. "layout"].validate, layoutName)
+		--end
+	end
 end
 
 function GridLayout:SetClamp()
 	self.frame:SetClampedToScreen(self.db.profile.clamp)
 end
 
-function GridLayout:ReloadLayout(forceRaid)
-	self:LoadLayout(self.db.profile.layout, forceRaid)
-end
-
-local function InRaidOrBG()
-	local inRaid = GetNumRaidMembers() > 0
-	local inBG = select(2, IsInInstance()) == "pvp"
-	return inRaid or inBG
+function GridLayout:ReloadLayout()
+	local party_type = GridRoster:GetPartyState()
+	self:LoadLayout(self.db.profile.layouts[party_type])
 end
 
 local function getColumnAnchorPoint(point, horizontal)
@@ -798,48 +745,12 @@ local function getColumnAnchorPoint(point, horizontal)
 	return point
 end
 
-function GridLayout:LoadLayout(layoutName, forceRaid)
+function GridLayout:LoadLayout(layoutName)
 	local p = self.db.profile
 	local horizontal = p.horizontal
 	local layout = self.layoutSettings[layoutName]
 
-	if self.forceRaid then
-		forceRaid = true
-	end
-
-	local inRaid = InRaidOrBG()
-
-	self:Debug("LoadLayout", layoutName, forceRaid, inRaid)
-
-	-- show party
-	local iPlaceOffset
-	if not inRaid or p.showParty then
-		iPlaceOffset = 1
-		self.partyGroup:SetOrientation(horizontal)
-		self:PlaceGroup(self.partyGroup, 1)
-		self.partyGroup.frame:Show()
-		if p.showPartyPets then
-			self.partyGroup.partyPetFrame:Show()
-		else
-			self.partyGroup.partyPetFrame:Hide()
-		end
-	else
-		self.partyGroup.frame:Hide()
-		iPlaceOffset = 0
-	end
-
-	if not inRaid or not layout or #layout < 1 then
-		for _, g in ipairs(self.layoutGroups) do
-			g:Reset()
-		end
-		for _, g in ipairs(self.layoutPetGroups) do
-			g:Reset()
-		end
-		if not forceRaid then
-			self:UpdateDisplay()
-			return
-		end
-	end
+	self:Debug("LoadLayout", layoutName)
 
 	-- layout not ready yet
 	if type(layout) ~= "table" or not next(layout) then
@@ -848,8 +759,8 @@ function GridLayout:LoadLayout(layoutName, forceRaid)
 		return
 	end
 
-	local groupsNeeded, groupsAvailable, petGroupsNeeded, petGroupsAvailable 
-		= 0, #self.layoutGroups, 0, #self.layoutPetGroups
+	local groupsNeeded, groupsAvailable, petGroupsNeeded, petGroupsAvailable =
+		0, #self.layoutGroups, 0, #self.layoutPetGroups
 
 	for _, l in ipairs(layout) do
 		if l.isPetGroup then
@@ -918,7 +829,7 @@ function GridLayout:LoadLayout(layoutName, forceRaid)
 
 		-- place groups
 		layoutGroup:SetOrientation(horizontal)
-		self:PlaceGroup(layoutGroup, i + iPlaceOffset)
+		self:PlaceGroup(layoutGroup, i)
 		layoutGroup.frame:Show()
 	end
 
@@ -927,8 +838,17 @@ end
 
 function GridLayout:UpdateDisplay()
 	self:UpdateColor()
-	self:CheckVisibility()
+	self:UpdateVisibility()
 	self:UpdateSize()
+end
+
+function GridLayout:UpdateVisibility()
+	local party_type = GridRoster:GetPartyState()
+	if self.db.profile.layouts[party_type] == L["None"] then
+		self.frame:Hide()
+	else
+		self.frame:Show()
+	end
 end
 
 function GridLayout:UpdateSize()
@@ -937,16 +857,7 @@ function GridLayout:UpdateSize()
 	local groupCount, curWidth, curHeight, maxWidth, maxHeight
 	local x, y
 
-	if not InRaidOrBG() or p.showParty then
-		local f = self.partyGroup
-		f:UpdateSize()
-		local width, height = f:GetFrameWidth(), f:GetFrameHeight()
-		groupCount, curWidth, curHeight = 0, width, height
-		maxWidth, maxHeight = width, height
-	else
-		groupCount, curWidth, curHeight, maxWidth, maxHeight = -1, 0, 0, 0, 0
-	end
-	
+	groupCount, curWidth, curHeight, maxWidth, maxHeight = -1, 0, 0, 0, 0
 
 	local Padding, Spacing = p.Padding, p.Spacing * 2
 
@@ -1036,20 +947,6 @@ function GridLayout:UpdateColor()
 					    .2, .2, .2, settings.BackgroundA/2 )
 end
 
-function GridLayout:CheckVisibility()
-	local frameDisplay = self.db.profile.FrameDisplay
-
-	if frameDisplay == "Always" then
-		self.frame:Show()
-	elseif frameDisplay == "Grouped" and
-		(GetNumPartyMembers() > 0 or InRaidOrBG()) then
-		self.frame:Show()
-	elseif frameDisplay == "Raid" and InRaidOrBG() then
-		self.frame:Show()
-	else
-		self.frame:Hide()
-	end
-end
 
 function GridLayout:SavePosition()
 	local f = self.frame

@@ -2,7 +2,6 @@
 
 --{{{ Libraries
 
-local RL = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 --}}}
@@ -164,6 +163,11 @@ GridStatus.defaultDB = {
 		[L["Beast"]] = { r = 0.93725490196078, g = 0.75686274509804, b = 0.27843137254902, a = 1 },
 		[L["Demon"]] = { r = 0.54509803921569, g = 0.25490196078431, b = 0.68627450980392, a = 1 },
 		[L["Humanoid"]] = { r = 0.91764705882353, g = 0.67450980392157, b = 0.84705882352941, a = 1 },
+		[L["Undead"]] = { r = 0.8, g = 0.2, b = 0, a = 1 },
+		[L["Dragonkin"]] = { r = 0.8, g = 0.8, b = 0.8, a = 1 },
+		[L["Elemental"]] = { r = 0.8, g = 1, b = 1, a = 1 },
+		-- I think this was flying carpets
+		[L["Not specified"]] = { r = 0.4, g = 0.4, b = 0.4, a = 1 },
 	},
 }
 
@@ -198,9 +202,7 @@ GridStatus.options = {
 							set = function (r, g, b, a)
 									  local c = GridStatus.db.profile.colors.UNKNOWN_UNIT
 									  c.r, c.g, c.b, c.a = r, g, b, a
-									  for unit in RL:IterateRoster(false) do
-										  GridStatus:TriggerEvent("Grid_UnitChanged", unit.name, unit.unitid)
-									  end
+									  GridStatus:TriggerEvent("Grid_ColorsChanged")
 								  end,
 							hasAlpha = false,
 						},
@@ -216,11 +218,7 @@ GridStatus.options = {
 							set = function (r, g, b, a)
 									  local c = GridStatus.db.profile.colors.UNKNOWN_PET
 									  c.r, c.g, c.b, c.a = r, g, b, a
-									  for unit in RL:IterateRoster(true) do
-										if unit.class == "PET" then
-										  GridStatus:TriggerEvent("Grid_UnitChanged", unit.name, unit.unitid)
-										end
-									  end
+									  GridStatus:TriggerEvent("Grid_ColorsChanged")
 								  end,
 							hasAlpha = false,
 						},
@@ -250,12 +248,7 @@ GridStatus.options = {
 						  end,
 					set = function (v)
 							  GridStatus.db.profile.colors.PetColorType = v
-							  for unit in RL:IterateRoster(true) do
-								if unit.class == "PET" then
-								  GridStatus:TriggerEvent("Grid_UnitChanged", unit.name, unit.unitid)
-								end
-							  end
-							  GridStatus:CheckPetColorNeedsUpdating()
+							  GridStatus:TriggerEvent("Grid_ColorsChanged")
 						  end,
 					validate = {["By Owner Class"] = L["By Owner Class"], ["By Creature Type"] = L["By Creature Type"], ["Using Fallback color"] = L["Using Fallback color"]},
 				},
@@ -298,15 +291,12 @@ function GridStatus:FillColorOptions(options)
 			set = function (r, g, b)
 				local c = colors[name]
 				c.r, c.g, c.b = r, g, b
-				for unit in RL:IterateRoster(false) do
-					if unit.class == name then
-						self:TriggerEvent("Grid_UnitChanged", unit.name, unit.unitid)
-					end
-				end
+				GridStatus:TriggerEvent("Grid_ColorsChanged")
 			end,
 		}
 	end
-	for _, class in ipairs{L["Beast"],L["Demon"],L["Humanoid"]} do
+	-- wtf, this is ugly... refactor!
+	for _, class in ipairs{L["Beast"],L["Demon"],L["Humanoid"],L["Undead"],L["Dragonkin"],L["Elemental"],L["Not specified"]} do
 		options.args.creaturetype.args[class] = {
 			type = "color",
 			name = class,
@@ -318,11 +308,7 @@ function GridStatus:FillColorOptions(options)
 			set = function (r, g, b)
 				local c = colors[class]
 				c.r, c.g, c.b = r, g, b
-				for unit in RL:IterateRoster(true) do
-					if unit.class == "PET" then
-						self:TriggerEvent("Grid_UnitChanged", unit.name, unit.unitid)
-					end
-				end
+				GridStatus:TriggerEvent("Grid_ColorsChanged")
 			end,
 		}
 	end
@@ -391,15 +377,9 @@ end
 --}}}
 --{{{ Caching status functions
 
-function GridStatus:SendStatusGained(name, status, priority, range, color, text,  value, maxValue, texture, start, duration, stack)
-	local u = RL:GetUnitObjectFromName(name)
+function GridStatus:SendStatusGained(guid, status, priority, range, color, text,  value, maxValue, texture, start, duration, stack)
 	local cache = self.cache
 	local cached
-
-	-- ignore unit if it is not in the roster
-	if not u then
-		return
-	end
 
 	if color and not type(color) == "table" then
 		self:Debug("color is not a table for", status)
@@ -413,16 +393,24 @@ function GridStatus:SendStatusGained(name, status, priority, range, color, text,
 		text = ""
 	end
 
+	-- convert names to guid for backwards compatability
+	if guid and #guid ~= 18 then
+		-- assume we've been given a name
+		guid = GridRoster:GetGUIDByName(guid)
+	end
+
+	if not guid then return end
+
 	-- create cache for unit if needed
-	if not cache[name] then
-		cache[name] = {}
+	if not cache[guid] then
+		cache[guid] = {}
 	end
 
-	if not cache[name][status] then
-		cache[name][status] = {}
+	if not cache[guid][status] then
+		cache[guid][status] = {}
 	end
 
-	cached = cache[name][status]
+	cached = cache[guid][status]
 
 	-- if no changes were made, return rather than triggering an event
 	if cached and
@@ -452,73 +440,80 @@ function GridStatus:SendStatusGained(name, status, priority, range, color, text,
 	cached.duration = duration
 	cached.stack = stack
 
-	self:TriggerEvent("Grid_StatusGained", name, status,
+	self:TriggerEvent("Grid_StatusGained", guid, status,
 			  priority, range, color, text, value, maxValue,
 			  texture, start, duration, stack)
 end
 
-function GridStatus:SendStatusLost(name, status)
+function GridStatus:SendStatusLost(guid, status)
+	-- convert names to guid for backwards compatability
+	if guid and #guid ~= 18 then
+		-- assume we've been given a name
+		guid = GridRoster:GetGUIDByName(guid)
+	end
+
+	if not guid then return end
 
 	-- if status isn't cached, don't send status lost event
-	if (not self.cache[name]) or (not self.cache[name][status]) then
+	if (not self.cache[guid]) or (not self.cache[guid][status]) then
 		return
 	end
 
-	self.cache[name][status] = nil
+	self.cache[guid][status] = nil
 
-	self:TriggerEvent("Grid_StatusLost", name, status)
+	self:TriggerEvent("Grid_StatusLost", guid, status)
 end
 
-function GridStatus:RemoveFromCache(name)
-	self.cache[name] = nil
+function GridStatus:RemoveFromCache(guid)
+	self.cache[guid] = nil
 end
 
-function GridStatus:GetCachedStatus(name, status)
+function GridStatus:GetCachedStatus(guid, status)
 	local cache = self.cache
-	return (cache[name] and cache[name][status])
+	return (cache[guid] and cache[guid][status])
 end
 
 function GridStatus:CachedStatusIterator(status)
 	local cache = self.cache
-	local name
+	local guid
 
 	if status then
 		-- iterator for a specific status
 		return function ()
-			name = next(cache, name)
+			guid = next(cache, guid)
 
 			-- we reached the end early?
-			if name == nil then
+			if guid == nil then
 				return nil
 			end
 			
-			while cache[name][status] == nil do
-				name = next(cache, name)
+			while cache[guid][status] == nil do
+				guid = next(cache, guid)
 				
-				if name == nil then
+				if guid == nil then
 					return nil
 				end
 			end
 			
-			return name, status, cache[name][status]
+			return guid, status, cache[guid][status]
 		end
 	else
 		-- iterator for all units, all statuses
 		return function ()
-			status = next(cache[name], status)
+			status = next(cache[guid], status)
 			
 			-- find the next unit with a status
 			while not status do
-				name = next(cache, name)
+				guid = next(cache, guid)
 				
-				if name then
-					status = next(cache[name], status)
+				if guid then
+					status = next(cache[guid], status)
 				else
 					return nil
 				end
 			end
 			
-			return name, status, cache[name][status]
+			return guid, status, cache[guid][status]
 		end
 	end
 end
@@ -526,57 +521,45 @@ end
 --}}}
 --{{{ Unit Colors
 
-local ownerFromPet = setmetatable({}, { __index = function (table, unit)
-		local result
-		if unit == "pet" then
-			result = "player"
-		elseif unit:find("^partypet") then
-			result = "party"..unit:sub(9)
-		elseif unit:find("^raidpet") then
-			result = "raid"..unit:sub(8)
-		end
-		rawset(table, unit, result)
-		return result
-	end
-})
-
-function GridStatus:UnitColor(u)
+function GridStatus:UnitColor(guid)
 	local colors = self.db.profile.colors
-	if not u then return colors.UNKNOWN_UNIT end
-	local class = u.class
-	if class == "PET" then
-		local type = colors.PetColorType
-		if type == "By Owner Class" then
-			local unitid = ownerFromPet[u.unitid]
-			if unitid then
-				u = RL:GetUnitObjectFromUnit(unitid)
-				local class = u and u.class or select(2, UnitClass(unitid))
-				return class and colors[class] or colors.UNKNOWN_PET
+
+	local unitid = GridRoster:GetUnitidByGUID(guid)
+
+	if not unitid then
+		-- bad news if we can't get a unitid
+		return
+	end
+
+	local owner = GridRoster:GetOwnerUnitidByUnitid(unitid)
+
+	if owner then
+		-- if it has an owner, then it's a pet
+		local color_type = colors.PetColorType
+		if color_type == "By Owner Class" then
+			local _, owner_class = UnitClass(owner)
+			if owner_class then
+				return colors[owner_class]
 			end
-		elseif type == "By Creature Type" then
-			local t = UnitCreatureType(u.unitid)
-			return t and colors[t] or colors.UNKNOWN_PET
+
+		elseif color_type == "By Creature Type" then
+			local creature_type = UnitCreatureType(unitid)
+
+			-- note that creature_type is nil for Shadowfiends
+			if creature_type and colors[creature_type] then
+				return colors[creature_type]
+			end
 		end
+
 		return colors.UNKNOWN_PET
-	else
-		return class and colors[class] or colors.UNKNOWN_UNIT
 	end
-end
 
-function GridStatus:CheckPetColorNeedsUpdating()
-	if self.db.profile.colors.PetColorType == "By Creature Type" then
-		if not self:IsEventRegistered("UNIT_PORTRAIT_UPDATE") then
-			self:RegisterEvent("UNIT_PORTRAIT_UPDATE", "UpdatePetColor")
-		end
-	elseif self:IsEventRegistered("UNIT_PORTRAIT_UPDATE") then
-		self:UnregisterEvent("UNIT_PORTRAIT_UPDATE")
+	local _, class = UnitClass(unitid)
+	if class then
+		return colors[class]
 	end
-end
 
-function GridStatus:UpdatePetColor(unit)
-	if unit:find("pet", 1, true) then
-		self:TriggerEvent("Grid_UnitChanged", UnitName(unit), unit)
-	end
+	return colors.UNKNOWN_UNIT
 end
 
 --}}}

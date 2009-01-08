@@ -1,4 +1,4 @@
-﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
 --中文化 by TWoW 水晶之刺 Youngway
 local strings_zhTW = {
 	--{{{ GridCore
@@ -301,6 +301,10 @@ local strings_zhTW = {
 	--{{{ GridStatusVoiceComm
 	["Voice Chat"] = "語音",
 	["Talking"] = "說話中",
+	
+	--}}}
+	--{{{ GridStatusReadyCheck
+	["Ready Check"] = "檢查就緒",
 
 	--}}}
 }

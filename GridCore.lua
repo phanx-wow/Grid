@@ -3,7 +3,6 @@
 
 --{{{ Libraries
 
-local RL = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local waterfall = AceLibrary:HasInstance("Waterfall-1.0") and AceLibrary("Waterfall-1.0")
 
@@ -19,16 +18,12 @@ do
 		"AceLocale-2.2",
 		"AceOO-2.0",
 		"Dewdrop-2.0",
-		"LibBanzai-2.0",
-		"Roster-2.1",
-		"SpecialEvents-Aura-2.0",
 		"Waterfall-1.0",
 		-- "DoesNotExist-Ace2",
 	}
 
 	local libstub_libs = {
 		"LibBabble-Class-3.0",
-		"LibBabble-Spell-3.0",
 		"LibGratuity-3.0",
 		"LibHealComm-3.0",
 		"LibSharedMedia-3.0",
@@ -361,13 +356,13 @@ function Grid:RosterLib_UnitChanged(unitid, name, class, subgroup, rank, oldname
 
 	if not name then
 		self:Debug("UnitLeft "..(oldname))
-		self:TriggerEvent("Grid_UnitLeft", oldname)
+		-- self:TriggerEvent("Grid_UnitLeft", oldname)
 	elseif not oldname then
 		self:Debug("UnitJoined "..(name))
-		self:TriggerEvent("Grid_UnitJoined", name, unitid)
+		-- self:TriggerEvent("Grid_UnitJoined", name, unitid)
 	else
 		self:Debug("UnitChanged "..(name))
-		self:TriggerEvent("Grid_UnitChanged", name, unitid)
+		-- self:TriggerEvent("Grid_UnitChanged", name, unitid)
 	end
 end
 

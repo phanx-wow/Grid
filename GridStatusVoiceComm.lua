@@ -37,7 +37,7 @@ function GridStatusVoiceComm:VOICE_START(unitid)
 	local settings = self.db.profile.alert_voice
 
 	self.core:SendStatusGained(
-		UnitName(unitid),
+		UnitGUID(unitid),
 		"alert_voice",
 		settings.priority,
 		(settings.range and 40),
@@ -50,5 +50,5 @@ function GridStatusVoiceComm:VOICE_START(unitid)
 end
 
 function GridStatusVoiceComm:VOICE_STOP(unitid)
-	self.core:SendStatusLost(UnitName(unitid), "alert_voice")
+	self.core:SendStatusLost(UnitGUID(unitid), "alert_voice")
 end

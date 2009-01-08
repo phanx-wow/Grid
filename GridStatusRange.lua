@@ -5,7 +5,6 @@
 -- Modified By: Pastamancer
 
 --{{{ Libraries
-local roster = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local GridRange = GridRange
 --}}}
@@ -102,8 +101,8 @@ function GridStatusRange:DisableRange(range)
 		return
 	end
 	
-	for unit in roster:IterateRoster(true) do
-		self.core:SendStatusLost(unit.name, status)
+	for guid, unitid in GridRoster:IterateRoster() do
+		self.core:SendStatusLost(guid, status)
 	end
 end
 
@@ -214,8 +213,7 @@ function GridStatusRange:SimpleRangeCheck()
 	local status_name = ranges_status[range]
 	local settings = self.db.profile[status_name]
 
-	for unit in roster:IterateRoster(true) do
-		local unitid = unit.unitid
+	for guid, unitid in GridRoster:IterateRoster() do
 		local unit_range
 
 		if check(unitid) then
@@ -231,12 +229,12 @@ function GridStatusRange:SimpleRangeCheck()
 
 
 		if unit_range > range then
-			self.core:SendStatusGained(unit.name, status_name,
+			self.core:SendStatusGained(guid, status_name,
 									   settings.priority, false,
 									   settings.color,
 									   settings.text)
 		else
-			self.core:SendStatusLost(unit.name, status_name)
+			self.core:SendStatusLost(guid, status_name)
 		end
 	end
 end
@@ -244,8 +242,7 @@ end
 
 -- this is used if multiple ranges are enabled
 function GridStatusRange:RangeCheck()
-	for unit in roster:IterateRoster(true) do
-		local unitid = unit.unitid
+	for guid, unitid in GridRoster:IterateRoster() do
 		local unit_range
 
 		for _, range in ipairs(ranges) do
@@ -266,12 +263,12 @@ function GridStatusRange:RangeCheck()
 			local settings = self.db.profile[status_name]
 			
 			if unit_range > range then
-				self.core:SendStatusGained(unit.name, status_name,
+				self.core:SendStatusGained(guid, status_name,
 										   settings.priority, false,
 										   settings.color,
 										   settings.text)
 			else
-				self.core:SendStatusLost(unit.name, status_name)
+				self.core:SendStatusLost(guid, status_name)
 			end
 		end
 	end

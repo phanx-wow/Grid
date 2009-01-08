@@ -301,6 +301,10 @@ local strings_zhCN = {
 	--{{{ GridStatusVoiceComm
 	["Voice Chat"] = "语音",
 	["Talking"] = "正在说话",
+	
+	--}}}
+	--{{{ GridStatusReadyCheck
+	["Ready Check"] = "检查就绪",
 
 	--}}}
 }

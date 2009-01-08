@@ -1,5 +1,4 @@
-﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
-local banzai = AceLibrary("LibBanzai-2.0")
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 GridStatusAggro = GridStatus:NewModule("GridStatusAggro")
 GridStatusAggro.menuName = L["Aggro"]
@@ -26,30 +25,42 @@ function GridStatusAggro:OnInitialize()
 	self:RegisterStatus("alert_aggro", L["Aggro alert"], nil, true)
 end
 
-local function callback(aggro, name, ...)
-	if aggro == 1 then
-		local settings = GridStatusAggro.db.profile.alert_aggro
-		GridStatusAggro.core:SendStatusGained(
-			name,
-			"alert_aggro",
-			settings.priority,
-			(settings.range and 40),
-			settings.color,
-			settings.text,
-			nil,
-			nil,
-			settings.icon
-		)
-	elseif aggro == 0 then
-		GridStatusAggro.core:SendStatusLost(name, "alert_aggro")
-	end
-end
-
 function GridStatusAggro:OnEnable()
-	banzai:RegisterCallback(callback)
+	self:RegisterEvent("UNIT_THREAT_SITUATION_UPDATE", "UpdateUnit")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
 end
 
 function GridStatusAggro:OnDisable()
-	banzai:UnregisterCallback(callback)
+	self:UnregisterAllEvents()
 end
 
+function GridStatusAggro:UpdateAllUnits()
+	for guid, unitid in GridRoster:IterateRoster() do
+		self:UpdateUnit(unitid)
+	end
+end
+
+function GridStatusAggro:UpdateUnit(unitid)
+	if not unitid then
+		-- because sometimes the unitid can be nil... wtf?
+		return
+	end
+
+	local guid = UnitGUID(unitid)
+	local status = UnitThreatSituation(unitid)
+
+	if status > 1 then
+		local settings = self.db.profile.alert_aggro
+
+		GridStatusAggro.core:SendStatusGained(guid, "alert_aggro",
+											  settings.priority,
+											  (settings.range and 40),
+											  settings.color,
+											  settings.text,
+											  nil,
+											  nil,
+											  settings.icon)
+	else
+		GridStatusAggro.core:SendStatusLost(guid, "alert_aggro")
+	end
+end

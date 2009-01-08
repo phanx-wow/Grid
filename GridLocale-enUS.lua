@@ -1,4 +1,4 @@
-﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local strings_enUS = {
 	--{{{ GridCore
@@ -84,16 +84,17 @@ local strings_enUS = {
 
 	-- Layout options
 	["Show Frame"] = true,
-	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = true,
-	["Always"] = true,
-	["Grouped"] = true,
-	["Raid"] = true,
+
+	["Solo Layout"] = true,
+	["Select which layout to use when not in a party."] = true,
+	["Party Layout"] = true,
+	["Select which layout to use when in a party."] = true,
 	["Raid Layout"] = true,
-	["Select which raid layout to use."] = true,
-	["Show Party in Raid"] = true,
-	["Show party/self as an extra group."] = true,
-	["Show Pets for Party"] = true,
-	["Show the pets for the party below the party itself."] = true,
+	["Select which layout to use when in a raid."] = true,
+	["Battleground Layout"] = true,
+	["Select which layout to use when in a battleground."] = true,
+	["Arena Layout"] = true,
+	["Select which layout to use when in an arena."] = true,
 	["Horizontal groups"] = true,
 	["Switch between horzontal/vertical groups."] = true,
 	["Clamped to screen"] = true,
@@ -136,6 +137,10 @@ local strings_enUS = {
 	["Beast"] = true,
 	["Demon"] = true,
 	["Humanoid"] = true,
+	["Undead"] = true,
+	["Dragonkin"] = true,
+	["Elemental"] = true,
+	["Not specified"] = true,
 	["Colors"] = true,
 	["Color options for class and pets."] = true,
 	["Fallback colors"] = true,
@@ -230,10 +235,14 @@ local strings_enUS = {
 	["Class Filter"] = true,
 	["Show status for the selected classes."] = true,
 	["Show on %s."] = true,
+	["Show if mine"] = true,	
+	["Display status only if the buff was cast by you."] = true,
 	["Show if missing"] = true,
 	["Display status only if the buff is not active."] = true,
 	["Filter Abolished units"] = true,
 	["Skip units that have an active Abolish buff."] = true,
+	["Show duration"] = true,
+	["Show the time remaining, for use with the center icon cooldown."] = true,
 
 	--}}}
 	--{{{ GridStatusName
@@ -302,6 +311,29 @@ local strings_enUS = {
 	["Voice Chat"] = true,
 	["Talking"] = true,
 
+	--}}}
+	--{{{ GridStatusVehicle
+	["In Vehicle"] = true,
+	["Driving"] = true,
+	
+	--}}}
+	--{{{ GridStatusReadyCheck
+	["Ready Check"] = true,
+	["Set the delay until ready check results are cleared."] = true,
+	["Delay"] = true,
+	["?"] = true,
+	["R"] = true,
+	["X"] = true,
+	["AFK"] = true,
+	["Waiting color"] = true,
+	["Color for Waiting."] = true,
+	["Ready color"] = true,
+	["Color for Ready."] = true,
+	["Not Ready color"] = true,
+	["Color for Not Ready."] = true,
+	["AFK color"] = true,
+	["Color for AFK."] = true,
+	
 	--}}}
 }
 

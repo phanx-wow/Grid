@@ -1,7 +1,5 @@
-﻿--{{{ Libraries
+--{{{ Libraries
 
-local RL = AceLibrary("Roster-2.1")
-local Aura = AceLibrary("SpecialEvents-Aura-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 --}}}
@@ -160,12 +158,16 @@ end
 
 function GridStatusHealth:OnEnable()
 	self:RegisterEvent("Grid_UnitJoined")
-	self:RegisterEvent("Grid_UnitChanged")
-	--self:RegisterBucketEvent("UNIT_HEALTH", 0.2)
+
 	self:RegisterEvent("UNIT_HEALTH", "UpdateUnit")
 	self:RegisterEvent("UNIT_MAXHEALTH", "UpdateUnit")
 	self:RegisterEvent("UNIT_AURA", "UpdateUnit")
+
+	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateAllUnits")
+	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateAllUnits")
+
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
+	self:RegisterEvent("Grid_ColorsChanged", "UpdateAllUnits")
 end
 
 function GridStatusHealth:Reset()
@@ -174,55 +176,45 @@ function GridStatusHealth:Reset()
 end
 
 function GridStatusHealth:UpdateAllUnits()
-	for u in RL:IterateRoster(true) do
-		self:Grid_UnitJoined(u.unitname, u.unitid)
+	for guid, unitid in GridRoster:IterateRoster() do
+		self:Grid_UnitJoined(guid, unitid)
 	end
 end
 
-function GridStatusHealth:UNIT_HEALTH(units)
-	local unitid
-
-	for unitid in pairs(units) do
-		self:UpdateUnit(unitid)
-	end
-end
-
-function GridStatusHealth:Grid_UnitJoined(name, unitid)
+function GridStatusHealth:Grid_UnitJoined(guid, unitid)
 	if unitid then
 		self:UpdateUnit(unitid, true)
 		self:UpdateUnit(unitid)
 	end
-
-end
-
-function GridStatusHealth:Grid_UnitChanged(name, unitid)
-	self:UpdateUnit(unitid)
 end
 
 function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 	local cur, max = UnitHealth(unitid), UnitHealthMax(unitid)
-	local name = UnitName(unitid)
+
+	local guid = UnitGUID(unitid)
 	local settings = self.db.profile.unit_health
 	local deficitSettings = self.db.profile.unit_healthDeficit
 	local healthText
 	local priority = settings.priority
 
-	if not name then return end
+	if not GridRoster:IsGUIDInRaid(guid) then
+		return
+	end
 
 	if UnitIsDeadOrGhost(unitid) then
-		self:StatusDeath(unitid, true)
-		self:StatusFeignDeath(unitid, false)
-		self:StatusLowHealth(unitid, false)
+		self:StatusDeath(guid, true)
+		self:StatusFeignDeath(guid, false)
+		self:StatusLowHealth(guid, false)
 		if settings.deadAsFullHealth then
 			cur = max
 		end
 	else
-		self:StatusDeath(unitid, false)
-		self:StatusFeignDeath(unitid, UnitIsFeignDeath(unitid))
-		self:StatusLowHealth(unitid, self:IsLowHealth(name, cur, max))
+		self:StatusDeath(guid, false)
+		self:StatusFeignDeath(guid, UnitIsFeignDeath(unitid))
+		self:StatusLowHealth(guid, self:IsLowHealth(cur, max))
 	end
 
-	self:StatusOffline(unitid, not UnitIsConnected(unitid))
+	self:StatusOffline(guid, not UnitIsConnected(unitid))
 
 	if cur < max then
 		healthText = self:FormatHealthText(cur,max)
@@ -231,24 +223,24 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 	end
 
 	if (cur / max * 100) <= deficitSettings.threshold then
-		self.core:SendStatusGained(name, "unit_healthDeficit",
+		self.core:SendStatusGained(guid, "unit_healthDeficit",
 					    deficitSettings.priority,
 					    (deficitSettings.range and 40),
 					    (deficitSettings.useClassColors and 
-						 self.core:UnitColor(RL:GetUnitObjectFromName(name)) or
+						 self.core:UnitColor(guid) or
 					     deficitSettings.color),
 					    healthText,
 					    cur, max,
 					    deficitSettings.icon)
 	else
-		self.core:SendStatusLost(name, "unit_healthDeficit")
+		self.core:SendStatusLost(guid, "unit_healthDeficit")
 	end
 
-	self.core:SendStatusGained(name, "unit_health",
+	self.core:SendStatusGained(guid, "unit_health",
 				    priority,
 				    (ignoreRange ~= true and settings.range and 40),
 				    (settings.useClassColors and 
-					 self.core:UnitColor(RL:GetUnitObjectFromName(name)) or
+					 self.core:UnitColor(guid) or
 				     settings.color),
 					healthText,
 					cur, max,
@@ -267,19 +259,18 @@ function GridStatusHealth:FormatHealthText(cur, max)
 	return healthText
 end
 
-function GridStatusHealth:IsLowHealth(name, cur, max)
+function GridStatusHealth:IsLowHealth(cur, max)
 	return (cur / max * 100) <= self.db.profile.alert_lowHealth.threshold
 end
 
-function GridStatusHealth:StatusLowHealth(unitid, gained)
-	local name = UnitName(unitid)
+function GridStatusHealth:StatusLowHealth(guid, gained)
 	local settings = self.db.profile.alert_lowHealth
 
 	-- return if this option isnt enabled
 	if not settings.enable then return end
 
 	if gained then
-		self.core:SendStatusGained(name, "alert_lowHealth",
+		self.core:SendStatusGained(guid, "alert_lowHealth",
 					    settings.priority,
 					    (settings.range and 40),
 					    settings.color,
@@ -288,23 +279,22 @@ function GridStatusHealth:StatusLowHealth(unitid, gained)
 					    nil,
 					    settings.icon)
 	else
-		self.core:SendStatusLost(name, "alert_lowHealth")
+		self.core:SendStatusLost(guid, "alert_lowHealth")
 	end
 end
 
-function GridStatusHealth:StatusDeath(unitid, gained)
-	local name = UnitName(unitid)
+function GridStatusHealth:StatusDeath(guid, gained)
 	local settings = self.db.profile.alert_death
 	
-	if not name then return end
+	if not guid then return end
 
 	-- return if this option isnt enabled
 	if not settings.enable then return end
 
 	if gained then
 		-- trigger death event for other modules as wow isnt firing a death event
-		self:TriggerEvent("Grid_UnitDeath", name)
-		self.core:SendStatusGained(name, "alert_death",
+		self:TriggerEvent("Grid_UnitDeath", guid)
+		self.core:SendStatusGained(guid, "alert_death",
 					    settings.priority,
 					    (settings.range and 40),
 					    settings.color,
@@ -313,12 +303,11 @@ function GridStatusHealth:StatusDeath(unitid, gained)
 					    100,
 					    settings.icon)
 	else
-		self.core:SendStatusLost(name, "alert_death")
+		self.core:SendStatusLost(guid, "alert_death")
 	end
 end
 
-function GridStatusHealth:StatusFeignDeath(unitid, gained)
-	local name = UnitName(unitid)
+function GridStatusHealth:StatusFeignDeath(guid, gained)
 	local settings = self.db.profile.alert_feignDeath
 	
 	if not name then return end
@@ -327,7 +316,7 @@ function GridStatusHealth:StatusFeignDeath(unitid, gained)
 	if not settings.enable then return end
 
 	if gained then
-		self.core:SendStatusGained(name, "alert_feignDeath",
+		self.core:SendStatusGained(guid, "alert_feignDeath",
 					    settings.priority,
 					    (settings.range and 40),
 					    settings.color,
@@ -336,20 +325,19 @@ function GridStatusHealth:StatusFeignDeath(unitid, gained)
 					    100,
 					    settings.icon)
 	else
-		self.core:SendStatusLost(name, "alert_feignDeath")
+		self.core:SendStatusLost(guid, "alert_feignDeath")
 	end
 end
 
-function GridStatusHealth:StatusOffline(unitid, gained)
-	local name = UnitName(unitid)
+function GridStatusHealth:StatusOffline(guid, gained)
 	local settings = self.db.profile.alert_offline
 
-	if not name then return end
+	if not guid then return end
 
 	if gained then
 		-- trigger offline event for other modules
-		self:TriggerEvent("Grid_UnitOffline", name)
-		self.core:SendStatusGained(name, "alert_offline",
+		self:TriggerEvent("Grid_UnitOffline", guid)
+		self.core:SendStatusGained(guid, "alert_offline",
 					    settings.priority,
 					    (settings.range and 40),
 					    settings.color,
@@ -358,6 +346,6 @@ function GridStatusHealth:StatusOffline(unitid, gained)
 					    nil,
 					    settings.icon)
 	else
-		self.core:SendStatusLost(name, "alert_offline")
+		self.core:SendStatusLost(guid, "alert_offline")
 	end
 end

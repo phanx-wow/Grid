@@ -20,42 +20,26 @@ local function GridFrame_OnShow(self)
 	GridFrame:TriggerEvent("Grid_UpdateLayoutSize")
 end
 
-local function GridFrame_OnEvent(self, event, unit)
-	if unit == self.unit then
-		local unitName = UnitName(unit)
-		if unitName ~= UNKNOWNOBJECT then
-			self:UnregisterEvent("UNIT_NAME_UPDATE")
-			self:SetScript("OnEvent", nil)
-			local frame = GridFrame.registeredFrames[self:GetName()]
-			frame.unitName = unitName
-			GridFrame:TriggerEvent("Grid_UnitChanged", unitName, unit)
-			self.unit = nil
-		end
-	end
-end
-
 local function GridFrame_OnAttributeChanged(self, name, value)
 	local frame = GridFrame.registeredFrames[self:GetName()]
 
-	if not frame then return end
+	if not frame then
+		return
+	end
 
 	if name == "unit" then
 		if value then
-			local unitName = UnitName(value)
 			frame.unit = value
-			if unitName == UNKNOWNOBJECT then
-				self.unit = value
-				self:SetScript("OnEvent", GridFrame_OnEvent)
-				self:RegisterEvent("UNIT_NAME_UPDATE")
-			else
-				frame.unitName = unitName
+
+			local unitGUID = UnitGUID(value)
+			if unitGUID ~= nil then
+				frame.unitGUID = unitGUID
 			end
-			GridFrame:Debug("updated", self:GetName(), name, value, unitName)
+
 			GridFrame:UpdateIndicators(frame)
 		else
 			-- unit is nil
-			-- move frame to unused pile
-			GridFrame:Debug("removed", self:GetName(), name, value, unitName)
+			frame.unitGUID = nil
 			frame.unitName = nil
 			frame.unit = value
 		end
@@ -80,7 +64,7 @@ GridFrameClass.prototype.indicators = {
 	{ type = "border",     order = 1,  name = L["Border"] },
 	{ type = "bar",        order = 2,  name = L["Health Bar"] },
 	{ type = "barcolor",   order = 3,  name = L["Health Bar Color"] },
-	{ type = "healingBar",   order = 4,  name = L["Healing Bar"] },
+	{ type = "healingBar", order = 4,  name = L["Healing Bar"] },
 	{ type = "text",       order = 5,  name = L["Center Text"] },
 	{ type = "text2",      order = 6,  name = L["Center Text 2"] },
 	{ type = "icon",       order = 7,  name = L["Center Icon"] },
@@ -113,8 +97,7 @@ function GridFrameClass.prototype:Reset()
 end
 
 function GridFrameClass.prototype:CreateFrames()
-	-- create frame
-	-- self.frame is created by using the xml template and is passed via the object's constructor
+	-- self.frame is created by the secure header and is passed via the object's constructor
 	local f = self.frame
 
 	-- set media based on shared media
@@ -218,12 +201,12 @@ function GridFrameClass.prototype:CreateFrames()
 	f.IconCD:SetAllPoints(f.Icon)
 	f.IconCD:SetScript("OnHide", function()
 		f.IconStackText:SetParent(f.IconBG)
-		f.IconStackText:SetPoint("BOTTOMRIGHT", f.IconBG, 0, 2)
+		f.IconStackText:SetPoint("BOTTOMRIGHT", f.IconBG, 2, -2)
 	end)
 
 	-- create icon stack text
 	f.IconStackText = f.IconBG:CreateFontString(nil, "OVERLAY")
-	f.IconStackText:SetPoint("BOTTOMRIGHT", f.IconBG, 0, 2)
+	f.IconStackText:SetPoint("BOTTOMRIGHT", f.IconBG, 2, -2)
 	f.IconStackText:SetFontObject(GameFontHighlightSmall)
 	f.IconStackText:SetFont(font, GridFrame.db.profile.fontSize, "OUTLINE")
 	f.IconStackText:SetJustifyH("RIGHT")
@@ -790,6 +773,7 @@ GridFrame.defaultDB = {
 			debuff_magic = true,
 			debuff_disease = true,
 			debuff_curse = true,
+			ready_check = true,
 		}
 	},
 }
@@ -1238,12 +1222,12 @@ function GridFrame:StatusForIndicator(unitid, indicator)
 	local topPriority = 0
 	local topStatus
 	local statusmap = self.db.profile.statusmap[indicator]
-	local name = UnitName(unitid)
+	local guid = UnitGUID(unitid)
 
 	-- self.statusmap[indicator][status]
 
 	for statusName,enabled in pairs(statusmap) do
-		status = (enabled and GridStatus:GetCachedStatus(name, statusName))
+		status = (enabled and GridStatus:GetCachedStatus(guid, statusName))
 		if status then
 			local valid = true
 
@@ -1291,23 +1275,23 @@ end
 
 --{{{ Event handlers
 
-function GridFrame:Grid_StatusGained(name, status, priority, range, color, text, value, maxValue, texture, start, duration, stack)
+function GridFrame:Grid_StatusGained(guid, status, priority, range, color, text, value, maxValue, texture, start, duration, stack)
 
 	local frameName, frame
 
 	for frameName,frame in pairs(self.registeredFrames) do
-		if frame.unitName == name then
+		if frame.unitGUID == guid then
 			self:UpdateIndicators(frame)
 		end
 	end
 end
 
-function GridFrame:Grid_StatusLost(name, status)
+function GridFrame:Grid_StatusLost(guid, status)
 	-- self:Debug("StatusLost", status, "on", name)
 	local frameName, frame
 
 	for frameName,frame in pairs(self.registeredFrames) do
-		if frame.unitName == name then
+		if frame.unitGUID == guid then
 			self:UpdateIndicators(frame)
 		end
 	end
@@ -1434,7 +1418,7 @@ function GridFrame:ListRegisteredFrames()
 			frame.unit == frame.frame:GetAttribute("unit") and
 					"|cff00ff00"..(frame.unit or "nil").."|r" or
 					"|cffff0000"..(frame.unit or "nil").."|r",
-			frame.unit and frame.unitName == UnitName(frame.unit) and
+			frame.unit and frame.unitGUID == UnitGUID(frame.unit) and
 				"|cff00ff00"..(frame.unitName or "nil").."|r" or
 				"|cffff0000"..(frame.unitName or "nil").."|r",
 			frame.frame:GetAttribute("type1"),

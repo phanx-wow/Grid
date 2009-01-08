@@ -84,16 +84,17 @@ local strings_koKR = {
 
 	-- Layout options
 	["Show Frame"] = "창 표시",
-	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "Grid 표시 설정: '항상', '파티' 또는 '공격대'를 선택합니다.",
-	["Always"] = "항상",
-	["Grouped"] = "파티",
-	["Raid"] = "공격대",
+
+	["Solo Layout"] = "솔로잉 배치",
+	["Select which layout to use when not in a party."] = "솔로잉시 사용할 배치를 선택합니다.",
+	["Party Layout"] = "파티 배치",
+	["Select which layout to use when in a party."] = "파티시 사용할 배치를 선택합니다.",
 	["Raid Layout"] = "공격대 배치",
-	["Select which raid layout to use."] = "사용할 공격대 배치를 선택합니다.",
-	["Show Party in Raid"] = "공격대시 파티원 표시",
-	["Show party/self as an extra group."] = "공격대시 자신과 파티원을 추가로 표시합니다.",
-	["Show Pets for Party"] = "파티시 소환수 표시",
-	["Show the pets for the party below the party itself."] = "파티시 소환수를 표시합니다.",
+	["Select which layout to use when in a raid."] = "공격대시 사용할 배치를 선택합니다.",
+	["Battleground Layout"] = "전장 배치",
+	["Select which layout to use when in a battleground."] = "전장에서 사용할 배치를 선택합니다.",
+	["Arena Layout"] = "투기장 배치",
+	["Select which layout to use when in an arena."] = "투기장에서 사용할 배치를 선택합니다.",
 	["Horizontal groups"] = "그룹 정렬",
 	["Switch between horzontal/vertical groups."] = "그룹 표시 방법을 가로/세로로 변경합니다.",
 	["Clamped to screen"] = "화면에 고정",
@@ -136,6 +137,10 @@ local strings_koKR = {
 	["Beast"] = "야수형",
 	["Demon"] = "악마형",
 	["Humanoid"] = "인간형",
+	["Undead"] = "언데드",
+	["Dragonkin"] = "용족",
+	["Elemental"] = "정령",
+	["Not specified"] = "알 수 없음",
 	["Colors"] = "색상",
 	["Color options for class and pets."] = "직업과 소환수의 색상 옵션을 설정합니다.",
 	["Fallback colors"] = "대체 색상",
@@ -230,10 +235,14 @@ local strings_koKR = {
 	["Class Filter"] = "직업 필터",
 	["Show status for the selected classes."] = "선택된 직업을 위해 상태에 표시합니다.",
 	["Show on %s."] = "%s 표시",
+	["Show if mine"] = "내것 표시",
+	["Display status only if the buff was cast by you."] = "당신이 버프를 시전했을 경우에만 상태에 표시합니다.",
 	["Show if missing"] = "사라짐 표시",
-	["Display status only if the buff is not active."] = "버프가 사라졌을 경우에만 상태를 표시합니다.",
+	["Display status only if the buff is not active."] = "버프가 사라졌을 경우에만 상태에 표시합니다.",
 	["Filter Abolished units"] = "해제 유닛 필터",
 	["Skip units that have an active Abolish buff."] = "버프를 해제할 수 있는 유닛을 무시합니다.",
+	["Show duration"] = "지속시간 표시",
+	["Show the time remaining, for use with the center icon cooldown."] = "중앙 아이콘에 남은 시간의 재사용 대기시간을 표시합니다.",
 
 	--}}}
 	--{{{ GridStatusName
@@ -301,6 +310,21 @@ local strings_koKR = {
 	--{{{ GridStatusVoiceComm
 	["Voice Chat"] = "음성 대화",
 	["Talking"] = "대화중",
+
+	--}}}
+	--{{{ GridStatusVehicle
+	["In Vehicle"] = "탈것",
+	["Driving"] = "운전",
+
+	--}}}
+	--{{{ GridStatusReadyCheck
+	["Ready Check"] = "전투 준비",
+	["Set the delay until ready check results are cleared."] = "전투 준비 체크 결과를 표시합니다.",
+	["Delay"] = "지연",
+	["?"] = "?",
+	["R"] = "R",
+	["X"] = "X",
+	["AFK"] = "자리비움",
 
 	--}}}
 }

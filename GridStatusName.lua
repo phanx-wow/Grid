@@ -1,5 +1,4 @@
-﻿--{{{ Libraries
-local RL = AceLibrary("Roster-2.1")
+--{{{ Libraries
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 --}}}
 
@@ -43,9 +42,16 @@ function GridStatusName:OnInitialize()
 end
 
 function GridStatusName:OnEnable()
-	self:RegisterEvent("Grid_UnitChanged", "UpdateUnit")
-	self:RegisterEvent("Grid_UnitJoined", "UpdateUnit")
-	self:RegisterEvent("Grid_UnitLeft", "UpdateUnit")
+	self:RegisterEvent("UNIT_NAME_UPDATE", "UpdateUnit")
+	self:RegisterEvent("UNIT_PORTRAIT_UPDATE", "UpdateUnit")
+	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateVehicle")
+	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateVehicle")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
+	self:RegisterEvent("Grid_UnitJoined", "UpdateGUID")
+	self:RegisterEvent("Grid_UnitChanged", "UpdateGUID")
+	self:RegisterEvent("Grid_UnitLeft", "UpdateGUID")
+	
+	self:RegisterEvent("Grid_ColorsChanged", "UpdateAllUnits")
 	self:UpdateAllUnits()
 end
 
@@ -54,22 +60,52 @@ function GridStatusName:Reset()
 	self:UpdateAllUnits()
 end
 
-function GridStatusName:UpdateUnit(name, unitid)
-	local settings = self.db.profile.unit_name
-	local u = RL:GetUnitObjectFromName(name)
+function GridStatusName:UpdateVehicle(unitid)
+	self:UpdateUnit(unitid)
+	local pet_unit = unitid .. "pet"
+	if UnitExists(pet_unit) then
+		self:UpdateUnit(pet_unit)
+	end
+end
 
-	if not u then
-		self.core:SendStatusLost(name, "unit_name")
+function GridStatusName:UpdateUnit(unitid)
+	local guid = UnitGUID(unitid)
+	self:UpdateGUID(guid)
+end
+
+function GridStatusName:UpdateGUID(guid)
+	local settings = self.db.profile.unit_name
+
+	local name = GridRoster:GetNameByGUID(guid)
+
+	if not name then
 		return
 	end
-	
+
+
 	-- set text
 	local text = name
+
+	local show_owner_name = true
+
+	if show_owner_name then
+		local unitid = GridRoster:GetUnitidByGUID(guid)
+		local owner_unitid = GridRoster:GetOwnerUnitidByUnitid(unitid)
+
+		-- does this unit have an owner?
+		-- is the owner driving a vehicle?
+		if owner_unitid and UnitHasVehicleUI(owner_unitid) then
+			local owner_guid = UnitGUID(owner_unitid)
+			local owner_name = GridRoster:GetNameByGUID(owner_guid)
+
+			text = owner_name
+		end
+	end
 	
 	-- set color
-	local color = settings.class and self.core:UnitColor(u) or settings.color
+	local color = settings.class and self.core:UnitColor(guid) or settings.color
 
-	self.core:SendStatusGained(name, "unit_name",
+	self.core:SendStatusGained(guid, "unit_name",
 				    settings.priority,
 				    nil,
 				    color,
@@ -77,9 +113,7 @@ function GridStatusName:UpdateUnit(name, unitid)
 end
 
 function GridStatusName:UpdateAllUnits()
-	local name, status, statusTbl
-
-	for name, status, statusTbl in self.core:CachedStatusIterator("unit_name") do
-		self:UpdateUnit(name)
+	for guid, unitid in GridRoster:IterateRoster() do
+		self:UpdateGUID(guid)
 	end
 end

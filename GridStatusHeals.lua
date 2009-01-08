@@ -2,7 +2,6 @@
 local HealComm = LibStub:GetLibrary("LibHealComm-3.0", true)
 if not HealComm then return end
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
-local Roster = AceLibrary("Roster-2.1")
 --}}}
 
 GridStatusHeals = GridStatus:NewModule("GridStatusHeals")
@@ -84,11 +83,9 @@ end
 --{{{ Event/Callback handling
 
 --[[free the leaving units entry in own-heals-table]]
-function GridStatusHeals:Grid_UnitLeft(gridName)
-	--this doesn't work in battlegrounds because I currently can't find
-	--an easy way of getting the realm of the leaving unit because it isn't
-	--in the raid anymore
-	ownHeals[gridName] = nil
+function GridStatusHeals:Grid_UnitLeft(guid)
+	local fullName = GridRoster:GetFullNameByGUID(guid)
+	ownHeals[fullName] = nil
 end
 
 --[[wipe own-heals-table clean]]
@@ -165,17 +162,17 @@ function GridStatusHeals:UpdateIncomingHeals(fullName, isOwnHeal)
 		incoming = incoming + (ownHeals[fullName] or 0)
 	end
 
-	local gridName = self:GetGridName(fullName)
-	if incoming > 0 then
+	local guid = GridRoster:GetGUIDByFullName(fullName)
+	if incoming > 0 and not UnitIsDeadOrGhost(fullName) then
 		local effectiveIncoming = incoming * HealComm:UnitHealModifierGet(fullName)
 		self:SendIncomingHealsStatus(
-			gridName,
+			guid,
 			effectiveIncoming,
 			UnitHealth(fullName) + effectiveIncoming,
 			UnitHealthMax(fullName)
 		)
 	else
-		self.core:SendStatusLost(gridName, "alert_heals")
+		self.core:SendStatusLost(guid, "alert_heals")
 	end
 end
 
@@ -194,31 +191,6 @@ function GridStatusHeals:SendIncomingHealsStatus(gridName, incoming, estimatedHe
 		estimatedHealth, maxHealth,
 		settings.icon
 	)
-end
-
---[[Converts the full name (which is the name of the unit together with 
-    its realm) to the grid name (which is the name of the unit)]]
-function GridStatusHeals:GetGridName(fullName)
-	return fullName:match("(.+)%-") or fullName
-end
-
---[[Converts a grid name (which is the name of the unit) to the full 
-    name (which is the name of the unit together with its realm)]]
-function GridStatusHeals:GetFullName(gridName)
-	--this won't work if there are actually two players with the same
-	--name in the battleground but by now grid doesn't care 
-	local unit = Roster:GetUnitIDFromName(gridName)
-
-	if not unit or unit == "" then
-		return gridName
-	end
-
-	local name, realm = UnitName(gridName)
-	if realm and realm ~= "" then
-		return name .. "-" .. realm
-	else
-		return name
-	end
 end
 
 function GridStatusHeals:FormatIncomingText(incoming)

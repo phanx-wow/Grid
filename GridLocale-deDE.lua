@@ -13,13 +13,13 @@ local strings_deDE = {
 	--}}}
 	--{{{ GridFrame
 	["Frame"] = "Rahmen",
-	["Options for GridFrame."] = "Einstellungen für den Grid Rahmen.",
+	["Options for GridFrame."] = "Optionen für den Grid Rahmen.",
 
 	["Show Tooltip"] = "Zeige Tooltip",
-	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "Anzeige des Tooltips. Wähle 'Immer', 'Nie' oder 'außerhalb des Kampfes'.",
+	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "Anzeige des Tooltips. Wähle 'Immer', 'Nie' oder 'Außerhalb des Kampfes'.",
 	["Always"] = "Immer",
 	["Never"] = "Nie",
-	["OOC"] = "außerhalb des Kampfes",
+	["OOC"] = "Außerhalb des Kampfes",
 	["Center Text Length"] = "Länge des mittleren Textes",
 	["Number of characters to show on Center Text indicator."] = "Anzahl der Buchstaben die im mittleren Text angezeigt werden.",
 	["Invert Bar Color"] = "Invertiere die Leistenfarbe",
@@ -43,13 +43,13 @@ local strings_deDE = {
 
 	["Options for %s indicator."] = "Optionen für den %s Indikator.",
 	["Statuses"] = "Zustände",
-	["Toggle status display."] = "Aktiviere die Anzeige des Zustands.",
+	["Toggle status display."] = "Aktiviert die Anzeige des Zustands.",
 
 	-- Advanced options
 	["Advanced"] = "Erweitert",
 	["Advanced options."] = "Erweiterte Einstellungen.",
 	["Enable %s indicator"] = "Indikator für %s ",
-	["Toggle the %s indicator."] = "Aktiviere den %s Indikator.",
+	["Toggle the %s indicator."] = "Aktiviert den %s Indikator.",
 	["Frame Width"] = "Rahmenbreite",
 	["Adjust the width of each unit's frame."] = "Die Breite von jedem Einheitenfenster anpassen.",
 	["Frame Height"] = "Rahmenhöhe",	
@@ -72,24 +72,29 @@ local strings_deDE = {
 	["Adjust the size of the center icon."] = "Die Größe des Symbols im Zentrum anpassen.",
 	["Icon Border Size"] = "Symbolrandbreite",
 	["Adjust the size of the center icon's border."] = "Die Randbreite des Symbols im Zentrum anpassen.",
+	["Icon Stack Text"] = "Symbol Stack-Text",
+	["Toggle center icon's stack count text."] = "Stack-Text für Symbol im Zentrum ein-/ausblenden.",
+	["Icon Cooldown Frame"] = "Symbol Cooldown-Rahmen",
+	["Toggle center icon's cooldown frame."] = "Cooldown-Rahmen für Symbol im Zentrum ein-/ausblenden.",
 
 	--}}}
 	--{{{ GridLayout
-	["Layout"] = "Anordnung",
-	["Options for GridLayout."] = "Optionen für die Anordnung von Grid.",
+	["Layout"] = "Layout",
+	["Options for GridLayout."] = "Optionen für das Layout von Grid.",
 
 	-- Layout options
-	["Show Frame"] = "Zeige den Rahmen",
-	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "Setzt die Sichtbarkeit von Grid: Wähle 'immer', 'in Gruppe' oder 'in Schlachtzug'.",
-	["Always"] = "immer",
-	["Grouped"] = "in Gruppe",
-	["Raid"] = "in Schlachtzug",
-	["Raid Layout"] = "Schlachtzug-Anordnung",
-	["Select which raid layout to use."] = "Wähle welche Schlachtzug-Anordnung benutzt werden soll.",
-	["Show Party in Raid"] = "Zeige Gruppe im Schlachtzug",
-	["Show party/self as an extra group."] = "Zeigt Gruppe/sich selbst als extra Gruppe an.",
-	["Show Pets for Party"] = "Zeige Begleiter in der Gruppe",
-	["Show the pets for the party below the party itself."] = "Zeigt die Begleiter der Gruppe unterhalb der Gruppe.",
+	["Show Frame"] = "Zeige Rahmen",
+
+	["Solo Layout"] = "Solo Layout",
+	["Select which layout to use when not in a party."] = "Wähle welches Layout benutzt werden soll, wenn Du in keiner Gruppe bist.",
+	["Party Layout"] = "Gruppen Layout",
+	["Select which layout to use when in a party."] = "Wähle welches Gruppen Layout benutzt werden soll.",
+	["Raid Layout"] = "Schlachtzug Layout",
+	["Select which layout to use when in a raid."] = "Wähle welches Schlachtzug Layout benutzt werden soll.",
+	["Battleground Layout"] = "Schlachtfeld Layout",
+	["Select which layout to use when in a battleground."] = "Wähle welches Schlachtfeld Layout benutzt werden soll.",
+	["Arena Layout"] = "Arena Layout",
+	["Select which layout to use when in an arena."] = "Wähle welches Arena Layout benutzt werden soll.",
 	["Horizontal groups"] = "Horizontal gruppieren",
 	["Switch between horzontal/vertical groups."] = "Wechselt zwischen horizontaler/vertikaler Gruppierung.",
 	["Clamped to screen"] = "Im Bildschirm lassen",
@@ -132,6 +137,10 @@ local strings_deDE = {
 	["Beast"] = "Tier",
 	["Demon"] = "Dämon",
 	["Humanoid"] = "Humanoid",
+	["Undead"] = "Untot",
+	["Dragonkin"] = "Drachkin",
+	["Elemental"] = "Elementar",
+	["Not specified"] = "Nicht spezifiziert",
 	["Colors"] = "Farben",
 	["Color options for class and pets."] = "Legt fest, wie Klassen und Begleiter eingefärbt werden.",
 	["Fallback colors"] = "Standardfarben",
@@ -158,7 +167,7 @@ local strings_deDE = {
 
 	--}}}
 	--{{{ GridLayoutLayouts
-	["None"] = "Keine",
+	["None"] = "Ausblenden",
 	["By Group 40"] = "40er Gruppe",
 	["By Group 25"] = "25er Gruppe",
 	["By Group 25 w/Pets"] = "25er Gruppe mit Begleitern",
@@ -193,7 +202,7 @@ local strings_deDE = {
 	["Range filter"] = "Entfernungsfilter",
 	["Range filter for %s"] = "Entfernungsfilter für %s",
 	["Enable"] = "Aktivieren",
-	["Enable %s"] = "Aktiviere %s",
+	["Enable %s"] = "Aktiviert %s",
 
 	--}}}
 	--{{{ GridStatusAggro
@@ -224,12 +233,16 @@ local strings_deDE = {
 	["Debuff: %s"] = "Schwächungszauber: %s",
 	["Buff: %s"] = "Stärkungszauber: %s",
 	["Class Filter"] = "Klassenfilter",
-	["Show status for the selected classes."] = "Zeige den Status für die ausgwählte Klasse.",
+	["Show status for the selected classes."] = "Zeigt den Status für die ausgwählte Klasse.",
 	["Show on %s."] = "Zeige %s.",
-	["Show if missing"] = "Zeige wenn es fehlt",
-	["Display status only if the buff is not active."] = "Zeige nur den Status wenn der Stärkungszauber nicht aktiv ist.",
+	["Show if mine"] = "Zeigen wenn es meiner ist",
+	["Display status only if the buff was cast by you."] = "Zeigt den Status nur an, wenn Du ihn gezaubert hast.",
+	["Show if missing"] = "Zeigen wenn es fehlt",
+	["Display status only if the buff is not active."] = "Zeigt den Status nur an, wenn der Stärkungszauber nicht aktiv ist.",
 	["Filter Abolished units"] = "Bereinigte Einheiten filtern",
 	["Skip units that have an active Abolish buff."] = "Einheiten verwerfen, die einen aktiven bereinigenden Stärkungszauber haben (Krankheit/Vergiftung aufheben).",
+	["Show duration"] = "Dauer anzeigen",
+	["Show the time remaining, for use with the center icon cooldown."] = "Zeigt die Dauer im Cooldown-Rahmen (Symbol im Zentrum).",
 
 	--}}}
 	--{{{ GridStatusName
@@ -249,9 +262,9 @@ local strings_deDE = {
 	["Heals"] = "Heilungen",
 	["Incoming heals"] = "Eingehende Heilung",
 	["Ignore Self"] = "Sich selbst ignorieren",
-	["Ignore heals cast by you."] = "Ignoriere Heilungen die von dir gezaubert werden.",
+	["Ignore heals cast by you."] = "Ignoriert Heilungen die von Dir gezaubert werden.",
 	["Show HealComm Users"] = "Zeige HealComm Benutzer",
-	["Displays HealComm users and versions."] = "Zeigt HealComm Benutzer und Versionen.",
+	["Displays HealComm users and versions."] = "Zeigt HealComm Benutzer und deren Version an.",
 	["HealComm Users"] = "HealComm Benutzer",
 
 	--}}}
@@ -270,10 +283,10 @@ local strings_deDE = {
 	["Show dead as full health"] = "Zeige Tote mit voller Gesundheit an",
 	["Treat dead units as being full health."] = "Behandle Tote als hätten sie volle Gesundheit.",
 	["Use class color"] = "Benutze Klassenfarbe",
-	["Color health based on class."] = "Färbe den Gesundheitsbalken in Klassenfarbe.",
+	["Color health based on class."] = "Färbt den Gesundheitsbalken in Klassenfarbe.",
 	["Health threshold"] = "Gesundheitsgrenzwert",
-	["Only show deficit above % damage."] = "Zeige Defizit bei mehr als % Schaden.",
-	["Color deficit based on class."] = "Färbe das Defizit nach Klassenfarbe.",
+	["Only show deficit above % damage."] = "Zeigt Defizit bei mehr als % Schaden.",
+	["Color deficit based on class."] = "Färbt das Defizit nach Klassenfarbe.",
 	["Low HP threshold"] = "Wenig HP Grenzwert",
 	["Set the HP % for the low HP warning."] = "Setzt den % Grenzwert für die Wenig HP Warnung.",
 
@@ -284,6 +297,9 @@ local strings_deDE = {
 	["Seconds between range checks"] = "Sekunden zwischen den Reichweitenmessungen",
 	["More than %d yards away"] = "Mehr als %d meter entfernt",
 	["%d yards"] = "%d meter",
+	["Text"] = "Text",
+	["Text to display on text indicators"] = "Text, der in einem Textindikator angezeigt wird",
+	["<range>"] = "<entfernung>",
 
 	--}}}
 	--{{{ GridStatusTarget
@@ -292,9 +308,32 @@ local strings_deDE = {
 
 	--}}}
 	--{{{ GridStatusVoiceComm
-	["Voice Chat"] = "Voice Chat",
+	["Voice Chat"] = "Sprachchat",
 	["Talking"] = "Redet",
 
+	--}}}
+	--{{{ GridStatusVehicle
+	["In Vehicle"] = "In Fahrzeug",
+	["Driving"] = "Fährt",
+	
+	--}}}
+	--{{{ GridStatusReadyCheck
+	["Ready Check"] = "Bereitschaftscheck",
+	["Set the delay until ready check results are cleared."] = "Zeit, bis die Bereitschaftscheck-Ergebnisse gelöscht werden.",
+	["Delay"] = "Verzögerung",
+	["?"] = "?",
+	["R"] = "OK",
+	["X"] = "X",
+	["AFK"] = "AFK",
+	["Waiting color"] = "Warten Farbe",
+	["Color for Waiting."] = "Farbe für 'Warten'.",
+	["Ready color"] = "Bereit Farbe",
+	["Color for Ready."] = "Farbe für 'Bereit'.",
+	["Not Ready color"] = "Nicht bereit Farbe",
+	["Color for Not Ready."] = "Farbe für 'Nicht bereit'.",
+	["AFK color"] = "AFK Farbe",
+	["Color for AFK."] = "Farbe für 'AFK'.",
+	
 	--}}}
 }
 

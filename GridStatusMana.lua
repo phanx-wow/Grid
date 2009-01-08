@@ -1,5 +1,4 @@
-﻿--{{{ Libraries
-local RL = AceLibrary("Roster-2.1")
+--{{{ Libraries
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 --}}}
 
@@ -48,68 +47,51 @@ end
 
 function GridStatusMana:OnEnable()
 	self:RegisterEvent("Grid_UnitJoined")
-	self:RegisterBucketEvent("UNIT_MANA", 0.2)
+	self:RegisterEvent("UNIT_MANA", "UpdateUnit")
 end
 
 
-function GridStatusMana:UNIT_MANA(units)
-	for unitid in pairs(units) do
-		self:UpdateUnit(unitid)
-	end
-end
-
-
-function GridStatusMana:Grid_UnitJoined(name)
-	local unitid = RL:GetUnitIDFromName(name)
+function GridStatusMana:Grid_UnitJoined(guid, unitid)
 	if unitid then
 		self:UpdateUnit(unitid)
 	end
-
 end
 
 
 function GridStatusMana:UpdateAllUnits()
-	local name, status, statusTbl
-
-	for name, status, statusTbl in GridStatus:CachedStatusIterator("alert_lowMana") do
-		self:Grid_UnitJoined(name)
+	for guid, unitid in GridRoster:IterateRoster() do
+		self:UpdateUnit(unitid)
 	end
 end
 
 
 function GridStatusMana:UpdateUnit(unitid)
-	local name = UnitName(unitid)
-	if not name then return end
+	local guid = UnitGUID(unitid)
+	if not GridRoster:IsGUIDInRaid(guid) then return end
+	local powerType, powerTypeName = UnitPowerType(unitid)
 	
-	local cur, max = UnitMana(unitid), UnitManaMax(unitid)
-	if self:IsLowMana(unitid, cur, max) and
-		not UnitIsDeadOrGhost(unitid) then
-		self:StatusLowMana(unitid, true)
+	-- mana user and is alive
+	if powerType == 0 and not UnitIsDeadOrGhost(unitid) then
+		local cur, max = UnitMana(unitid), UnitManaMax(unitid)
+
+		local mana_percent = (cur / max * 100)
+		local threshold = self.db.profile.alert_lowMana.threshold
+		
+		self:StatusLowMana(guid, mana_percent <= threshold)
 	else
-		self:StatusLowMana(unitid, false)
+		self:StatusLowMana(guid, false)
 	end
 end
 
 
-function GridStatusMana:IsLowMana(unitid, cur, max)
-	if UnitPowerType(unitid) == 0 then 
-		return (cur / max * 100) <= self.db.profile.alert_lowMana.threshold
-	else
-		return false
-	end
-end
-
-
--- all of these status functions should be turned into one generic CachedStatus function
-function GridStatusMana:StatusLowMana(unitid, gained)
-	local name = UnitName(unitid)
+function GridStatusMana:StatusLowMana(guid, gained)
 	local settings = self.db.profile.alert_lowMana
 
 	-- return if this option isnt enabled
 	if not settings.enable then return end
 
 	if gained then
-		GridStatus:SendStatusGained(name, "alert_lowMana",
+		GridStatus:SendStatusGained(guid, "alert_lowMana",
 				  settings.priority,
 				  (settings.range and 40),
 				  settings.color,
@@ -119,7 +101,7 @@ function GridStatusMana:StatusLowMana(unitid, gained)
 				  settings.icon)
 
 	else
-		GridStatus:SendStatusLost(name, "alert_lowMana")
+		GridStatus:SendStatusLost(guid, "alert_lowMana")
 	end
 
 end

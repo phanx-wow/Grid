@@ -1,4 +1,4 @@
-﻿-- GridStatusTarget.lua
+-- GridStatusTarget.lua
 --
 -- Created By : noha
 -- Modified By: Pastamancer
@@ -10,7 +10,7 @@ local L = AceLibrary("AceLocale-2.2"):new("Grid")
 GridStatusTarget = GridStatus:NewModule("GridStatusTarget")
 GridStatusTarget.menuName = L["Target"]
 
--- save the name of our target here so we can send a StatusLost
+-- save the guid of our target here so we can send a StatusLost
 local cur_target
 
 --{{{ AceDB defaults
@@ -50,7 +50,7 @@ function GridStatusTarget:PLAYER_TARGET_CHANGED()
 	end
 
 	if UnitExists("target") and settings.enable then
-		cur_target = UnitName("target")
+		cur_target = UnitGUID("target")
 		self.core:SendStatusGained(cur_target, "player_target",
 				    settings.priority,
 				    (settings.range and 40),

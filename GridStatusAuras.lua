@@ -1,12 +1,7 @@
--- -*- tab-width: 4; lua-indent-level: 4 -*-
 --{{{ Libraries
 
-local Aura = AceLibrary("SpecialEvents-Aura-2.0")
 local Dewdrop = AceLibrary("Dewdrop-2.0")
-local RL = AceLibrary("Roster-2.1")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
-local BabbleSpell = LibStub:GetLibrary("LibBabble-Spell-3.0")
--- local BS = BabbleSpell:GetLookupTable()
 local BabbleClass = LibStub:GetLibrary("LibBabble-Class-3.0")
 local BC = BabbleClass:GetLookupTable()
 
@@ -29,6 +24,22 @@ local BS = {
 
 GridStatusAuras = GridStatus:NewModule("GridStatusAuras")
 GridStatusAuras.menuName = L["Auras"]
+
+
+-- data used by aura scanning
+local buff_names = {}
+local player_buff_names = {}
+local debuff_names = {}
+local debuff_types = {
+	["Poison"] = true,
+	["Disease"] = true,
+	["Magic"] = true,
+	["Curse"] = true,
+}
+local abolish_types = {
+	[BS["Abolish Poison"]] = "Poison",
+	[BS["Abolish Disease"]] = "Disease",
+}
 
 
 local function statusForSpell(spell, isBuff)
@@ -141,59 +152,29 @@ GridStatusAuras.defaultDB = {
 	},
 }
 
-local abolishMap = {
-	debuff_poison = BS["Abolish Poison"],
-	debuff_disease = BS["Abolish Disease"],
-}
 
-local function buildReverseAbolishMap()
-        -- we create and add the reverse map to abolishMap.
-        -- This is to speed up lookup in Unit_BuffGain and because it's not
-        -- possible to have a name collision between keys and values (well, as 
-        -- long as Blizzard does not start calling an Abolish buff
-        -- "debuff_poison")
-	local rev = {}
-	for k, v in pairs(abolishMap) do
-		rev[v] = k
-	end
-	for k, v in pairs(rev) do
-		abolishMap[k] = v
-	end
-end
-
-function GridStatusAuras:OnInitialize()
-	self.super.OnInitialize(self)
-
-	self:RegisterStatuses()
-	
-	self.options.args.header_buffs = {
+GridStatusAuras.extraOptions = {
+	header_buffs = {
 		type = "header",
 		name = L["Buffs"],
 		order = 10,
-	}
-	self.options.args.header_debufftypes_gap = {
+	},
+
+	header_debufftypes_gap = {
 		type = "header",
 		order = 19,
-	}
-	self.options.args.header_debufftypes = {
+	},
+	header_debufftypes = {
 		type = "header",
 		name = L["Debuff Types"],
 		order = 20,
-	}
-	self.options.args.header_debuffs_gap = {
+	},
+
+	header_abolish_gap = {
 		type = "header",
-		order = 29,
-	}
-	self.options.args.header_debuffs = {
-		type = "header",
-		name = L["Debuffs"],
-		order = 30,
-	}
-	self.options.args.header_gap_abolish = {
-		type = "header",
-		order = 179,
-	}
-	self.options.args.abolish = {
+		order = 27,
+	},
+	abolish = {
 		type = "toggle",
 		name = L["Filter Abolished units"],
 		desc = L["Skip units that have an active Abolish buff."],
@@ -202,18 +183,59 @@ function GridStatusAuras:OnInitialize()
 			GridStatusAuras.db.profile.abolish = 
 				not GridStatusAuras.db.profile.abolish
 		end,
-		order = 180
-	}
-	buildReverseAbolishMap()
+		order = 28
+	},
+
+	header_debuffs_gap = {
+		type = "header",
+		order = 29,
+	},
+	header_debuffs = {
+		type = "header",
+		name = L["Debuffs"],
+		order = 30,
+	},
+}
+
+
+function GridStatusAuras:OnInitialize()
+	self.super.OnInitialize(self)
+
+	self:RegisterStatuses()
+end
+
+
+function GridStatusAuras:OnEnable()
+	self.debugging = self.db.profile.debug
+	self:Debug("OnEnable")
+
+	self:RegisterEvent("Grid_UnitJoined")
+	self:RegisterEvent("UNIT_AURA", "ScanUnitAuras")
+
+	self:CreateAddRemoveOptions()
+	self:UpdateAuraScanList()
+	self:UpdateAllUnitAuras()
+end
+
+
+function GridStatusAuras:Reset()
+	self.super.Reset(self)
+
+	self:UnregisterStatuses()
+	self:RegisterStatuses()
+	self:CreateAddRemoveOptions()
+	self:UpdateAuraScanList()
 end
 
 
 function GridStatusAuras:RegisterStatuses()
 	for status, statusTbl in pairs(self.db.profile) do
 		if type(statusTbl) == "table" and statusTbl.text then
-			local desc = statusTbl.desc or statusTbl.text
-			local isBuff = statusForSpell(statusTbl.text, true) == status
+			local name = statusTbl.text
+			local desc = statusTbl.desc or name
+			local isBuff = statusForSpell(name, true) == status
 			local order = statusTbl.order or (isBuff and 15 or 35)
+
 			self:Debug("registering", status, desc)
 			self:RegisterStatus(status, desc,
 					    self:OptionsForStatus(status, isBuff), false, order)
@@ -229,33 +251,6 @@ function GridStatusAuras:UnregisterStatuses()
 			self.options.args[status] = nil
 		end
 	end
-end
-
-
-function GridStatusAuras:OnEnable()
-	self.debugging = self.db.profile.debug
-	self:RegisterEvent("SpecialEvents_UnitDebuffGained")
-	self:RegisterEvent("SpecialEvents_UnitDebuffCountChanged",
-			   "SpecialEvents_UnitDebuffGained")
-	self:RegisterEvent("SpecialEvents_UnitDebuffLost")
-	self:RegisterEvent("SpecialEvents_UnitBuffGained")
-	self:RegisterEvent("SpecialEvents_UnitBuffCountChanged",
-			   "SpecialEvents_UnitBuffGained")
-	self:RegisterEvent("SpecialEvents_UnitBuffLost")
-	self:RegisterEvent("Grid_UnitJoined")
-	-- self:RegisterEvent("Grid_UnitDeath", "ClearAuras")
-	self:Debug("OnEnable")
-	self:CreateAddRemoveOptions()
-	self:UpdateAllUnitAuras()
-end
-
-
-function GridStatusAuras:Reset()
-	self.super.Reset(self)
-
-	self:UnregisterStatuses()
-	self:RegisterStatuses()
-	self:CreateAddRemoveOptions()
 end
 
 
@@ -280,6 +275,7 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 		warlock = BC["Warlock"],
 		hunter = BC["Hunter"],
 		rogue = BC["Rogue"],
+		deathknight = BC["Deathknight"],
 	}
 
 	for class,name in pairs(classes) do
@@ -299,6 +295,20 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 	end
 
 	if isBuff then
+		auraOptions.mine = {
+			type = "toggle",
+			name = L["Show if mine"],
+			desc = L["Display status only if the buff was cast by you."],
+			order = 110,
+			get = function ()
+					  return GridStatusAuras.db.profile[status].mine
+				  end,
+			set = function (v)
+					  GridStatusAuras.db.profile[status].mine = v
+					  GridStatusAuras:UpdateAuraScanList()
+					  GridStatusAuras:UpdateAllUnitAuras()
+				  end,
+		}
 		auraOptions.missing = {
 			type = "toggle",
 			name = L["Show if missing"],
@@ -314,6 +324,19 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 		}
 	end
 
+	auraOptions.duration = {
+		type = "toggle",
+		name = L["Show duration"],
+		desc = L["Show the time remaining, for use with the center icon cooldown."],
+		order = 111,
+		get = function ()
+				  return GridStatusAuras.db.profile[status].duration
+			  end,
+		set = function (v)
+				  GridStatusAuras.db.profile[status].duration = v
+				  GridStatusAuras:UpdateAllUnitAuras()
+			  end,
+	}
 
 	return auraOptions
 end
@@ -331,7 +354,7 @@ function GridStatusAuras:CreateAddRemoveOptions()
 		get = false,
 		usage = L["<buff name>"],
 		set = function(v) self:AddAura(v, true) end,
-		order = -3
+		order = 11
 	}
 	self.options.args["add_debuff"] = {
 		type = "text",
@@ -340,7 +363,7 @@ function GridStatusAuras:CreateAddRemoveOptions()
 		get = false,
 		usage = L["<debuff name>"],
 		set = function(v) self:AddAura(v, false) end,
-		order = -2
+		order = 31
 	}
 	self.options.args["delete_debuff"] = {
 		type = "group",
@@ -388,12 +411,16 @@ function GridStatusAuras:AddAura(name, isBuff)
 		["priority"] = 90,
 		["range"] = false,
 		["missing"] = false,
+		["duration"] = false,
 		["color"] = { r = .5, g = .5, b = .5, a = 1 },
 	}
 
 	local order = isBuff and 15 or 35
+
 	self:RegisterStatus(status, desc, self:OptionsForStatus(status, isBuff), false, order)
 	self:CreateAddRemoveOptions()
+	self:UpdateAuraScanList()
+	self:UpdateAllUnitAuras()
 end
 
 
@@ -402,220 +429,370 @@ function GridStatusAuras:DeleteAura(status)
 	self.options.args[status] = nil
 	self.options.args["delete_debuff"].args[status] = nil
 	self.db.profile[status] = nil
+	self:UpdateAuraScanList()
 end
 
 
 function GridStatusAuras:UpdateAllUnitAuras()
-	for u in RL:IterateRoster(true) do
-		self:ClearAuras(u.unitname)
-		self:ScanUnitAuras(u.unitid)
+	for guid, unitid in GridRoster:IterateRoster() do
+		self:ScanUnitAuras(unitid)
 	end
 end
 
 
-function GridStatusAuras:Grid_UnitJoined(name, unit)
-	self:ClearAuras(name)
-	self:ScanUnitAuras(unit)
+function GridStatusAuras:Grid_UnitJoined(guid, unitid)
+	self:ScanUnitAuras(unitid)
 end
 
 
-function GridStatusAuras:ScanUnitAuras(unit)
-	self:Debug("ScanUnitAuras", unit)
+-- Unit Aura Driver
+--
+-- Primary Requirements:
+-- * Identify the presence of known buffs by name.
+-- * Identify the presence of known buffs by name that are cast by the player.
+-- * Identify the presence of known debuffs by name.
+-- * Identify the presence of unknown debuffs by dispel type.
+--
+-- * The ability to filter all of the above by class.
+--
+-- Optional/Secondary Requirements:
+-- * Identify the absence of known buffs by name.
+-- * Identify the absence of known buffs by name that are cast by the player.
 
-	for buff, index, apps, tex, rank, duration, buff_index in Aura:BuffIter(unit) do
-		local _, _, _, _, _, duration, expires = UnitBuff(unit, buff_index)
-		self:SpecialEvents_UnitBuffGained(unit, buff, index, apps, tex, rank, duration, expires)
-	end
+-- Proposal:
+-- * Iterate over known buff names and call UnitAura(unit, name, "HELPFUL") for
+--   each one.  It is likely that the list of buff names is shorter than the
+--   number of buffs on the unit.
+-- * Iterate over known buff names that are cast by the player and call
+--   UnitAura(unit, name, "HELPFUL|PLAYER") for each one.  It is likely that the
+--   combined list of buff names and buff names that are cast by the player is
+--   shorter than the number of buffs on the unit.
+-- * Iterate over all debuffs on the unit by calling
+--   UnitAura(unit, index, "HARMFUL").  It is likely that the list of debuffs is
+--   longer than the number of debuffs on the unit.  While scanning the debuffs
+--   keep track of each debuff type seen and information about the last debuff
+--   of that type seen.
 
-	for debuff, apps, type, tex, rank, index, duration, debuff_index in Aura:DebuffIter(unit) do
-		local _, _, _, _, _, duration, expires = UnitDebuff(unit, debuff_index)
-		self:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type, tex, rank, debuff_index, duration, expires)
-	end
-end
+function GridStatusAuras:UnitGainedBuff(guid, class, name, rank, icon, count,
+										debuffType, duration, expirationTime,
+										isMine, isStealable)
+	self:Debug("UnitGainedBuff", guid, class, name)
 
+	local status = statusForSpell(name, true)
+	local settings = self.db.profile[status]
+	if not settings then return end
 
-function GridStatusAuras:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type, tex, rank, index, duration, expires)
-	-- check if this is a specific debuff or a debuff type
-	local debuffNameStatus = statusForSpell(debuff, false)
-	local debuffTypeStatus = type and "debuff_" .. strlower(type)
-	local settings, status
-
-	if self.db.profile[debuffNameStatus] then
-		settings = self.db.profile[debuffNameStatus]
-		status = debuffNameStatus
-	elseif debuffTypeStatus then
-		settings = self.db.profile[debuffTypeStatus]
-		status = debuffTypeStatus
-	end
-
-	if not (settings and settings.enable) then return end
-
-	local u = RL:GetUnitObjectFromUnit(unit)
-
-	-- ignore the event if we're skipping this class or if we don't have a valid
-	-- unit object
-	if not u or settings[strlower(u.class)] == false then return end
-	
-	local abolish = self.db.profile.abolish and abolishMap[debuffTypeStatus]
-	
-	if abolish and Aura:UnitHasBuff(unit, abolish) then return end
-
-	self:Debug(unit, "gained", status, debuffNameStatus, tex)
-
-	local start = expires and (expires - duration)
-	self.core:SendStatusGained(u.name,
-				   status,
-				   settings.priority,
-				   (settings.range and 30),
-				   settings.color,
-				   settings.text,
-				   apps,
-				   nil,
-				   tex,
-				   start,
-				   duration,
-				   apps)
-end
-
-
-function GridStatusAuras:SpecialEvents_UnitDebuffLost(unit, debuff, apps, type, tex, rank)
-	local debuffNameStatus = statusForSpell(debuff, false)
-	local debuffTypeStatus = type and "debuff_" .. strlower(type)
-
-	local name = UnitName(unit)
-
-	if self.db.profile[debuffNameStatus] then
-		if not Aura:UnitHasDebuff(unit, debuff) then
-			self:Debug(unit, "lost", debuffNameStatus)
-			self.core:SendStatusLost(name, debuffNameStatus)
-		end
-	end
-
-	if type and not Aura:UnitHasDebuffType(unit, type) then
-		self:Debug(unit, "lost", debuffTypeStatus, debuffNameStatus)
-		self.core:SendStatusLost(name, debuffTypeStatus)
-	end
-end
-
-
-function GridStatusAuras:SpecialEvents_UnitBuffGained(unit, buff, index, apps, tex, rank, duration, expires, index)
-	return self:UnitBuff(unit, true, buff, tex, apps, duration, expires)
-end
-
-function GridStatusAuras:SpecialEvents_UnitBuffLost(unit, buff, apps, tex, rank)
-	return self:UnitBuff(unit, false, buff, tex, apps)
-end
-
-function GridStatusAuras:UnitBuff(unit, gained, buff, tex, apps, duration, expires)
-	local buffNameStatus = statusForSpell(buff, true)
-	local settings = self.db.profile[buffNameStatus]
-	if not (settings and settings.enable) then return end
-
-	local u = RL:GetUnitObjectFromUnit(unit)
-
-	-- ignore the event if we're skipping this class or if we don't have a valid
-	-- unit object
-	if not u or settings[strlower(u.class)] == false then return end
-
-	if gained then
-		self:Debug("gained", buffNameStatus, tex)
-
-		if settings.missing then
-			self:Debug("sending lost", buffNameStatus)
-			self.core:SendStatusLost(u.name, buffNameStatus)
-		else
-			self:Debug("sending gained", buffNameStatus)
-			local start = expires and (expires - duration)
-			self.core:SendStatusGained(u.name,
-						   buffNameStatus,
-						   settings.priority,
-						   (settings.range and 40),
-						   settings.color,
-						   settings.text,
-						   apps,
-						   nil,
-						   tex,
-						   start,
-						   duration,
-						   apps)
-			if self.db.profile.abolish then
-				local debuffTypeStatus = abolishMap[buff]
-		
-				if debuffTypeStatus and
-						self.db.profile[debuffTypeStatus] and 
-						Aura:UnitHasDebuffType(unit, string.sub(debuffTypeStatus, 8)) then
-					self.core:SendStatusLost(u.name, debuffTypeStatus)
-				end
-			end
-		end
+	if settings.enable and not settings.missing and settings[class] ~= false then
+		local start = settings.duration and expirationTime and (expirationTime - duration)
+		self.core:SendStatusGained(guid,
+								   status,
+								   settings.priority,
+								   (settings.range and 40),
+								   settings.color,
+								   settings.text,
+								   count,
+								   nil,
+								   icon,
+								   start,
+								   duration,
+								   count)
 	else
-		self:Debug("lost", buffNameStatus, tex)
-		if not Aura:UnitHasBuff(unit, buff) then
-			if settings.missing then
-				self:Debug("sending gained", buffNameStatus)
-				self.core:SendStatusGained(u.name,
-							   buffNameStatus,
-							   settings.priority,
-							   (settings.range and 40),
-							   settings.color,
-							   settings.text,
-							   apps,
-							   nil,
-							   tex)
-			else
-				self:Debug("sending lost", buffNameStatus)
-				self.core:SendStatusLost(UnitName(unit), buffNameStatus)
+		self.core:SendStatusLost(guid, status)
+	end
+end
 
-				if self.db.profile.abolish then
-					local debuffTypeStatus = abolishMap[buff]
-					
-			
-					if debuffTypeStatus then
-						local settings = self.db.profile[debuffTypeStatus]
-						if not (settings and settings.enable) then return end
-						local index = Aura:UnitHasDebuffType(unit, string.sub(debuffTypeStatus, 8))
-						if index then
-							local name, _, tex = UnitDebuff("unit", index)
-							
-							self.core:SendStatusGained(name,
-								debuffTypeStatus, settings.priority,
-								(settings.range and 40),			
-								settings.color,
-								settings.text,
-								apps,
-								nil,
-								tex)
-						end
+function GridStatusAuras:UnitLostBuff(guid, class, name)
+	self:Debug("UnitLostBuff", guid, class, name)
+
+	local status = statusForSpell(name, true)
+	local settings = self.db.profile[status]
+	if not settings then return end
+
+	if settings.enable and settings.missing and settings[class] ~= false then
+		self.core:SendStatusGained(guid,
+								   status,
+								   settings.priority,
+								   (settings.range and 40),
+								   settings.color,
+								   settings.text)
+	else
+		self.core:SendStatusLost(guid, status)
+	end
+end
+
+function GridStatusAuras:UnitGainedPlayerBuff(guid, class, name, rank, icon, count,
+											  debuffType, duration,
+											  expirationTime, isMine,
+											  isStealable)
+	self:Debug("UnitGainedPlayerBuff", guid, name)
+
+	local status = statusForSpell(name, true)
+	local settings = self.db.profile[status]
+	if not settings then return end
+
+	if settings.enable and not settings.missing and settings[class] ~= false then
+		local start = settings.duration and expirationTime and (expirationTime - duration)
+		self.core:SendStatusGained(guid,
+								   status,
+								   settings.priority,
+								   (settings.range and 40),
+								   settings.color,
+								   settings.text,
+								   count,
+								   nil,
+								   icon,
+								   start,
+								   duration,
+								   count)
+	else
+		self.core:SendStatusLost(guid, status)
+	end
+end
+
+function GridStatusAuras:UnitLostPlayerBuff(guid, class, name)
+	self:Debug("UnitLostPlayerBuff", guid, name)
+
+	local status = statusForSpell(name, true)
+	local settings = self.db.profile[status]
+	if not settings then return end
+
+	if settings.enable and settings.missing and settings[class] ~= false then
+		self.core:SendStatusGained(guid,
+								   status,
+								   settings.priority,
+								   (settings.range and 40),
+								   settings.color,
+								   settings.text)
+	else
+		self.core:SendStatusLost(guid, status)
+	end
+end
+
+function GridStatusAuras:UnitGainedDebuff(guid, class, name, rank, icon, count,
+										  debuffType, duration, expirationTime,
+										  isMine, isStealable)
+	self:Debug("UnitGainedDebuff", guid, class, name)
+
+	local status = statusForSpell(name, false)
+	local settings = self.db.profile[status]
+	if not settings then return end
+
+	if settings.enable and settings[class] ~= false then
+		local start = settings.duration and expirationTime and (expirationTime - duration)
+		self.core:SendStatusGained(guid,
+								   status,
+								   settings.priority,
+								   (settings.range and 40),
+								   settings.color,
+								   settings.text,
+								   count,
+								   nil,
+								   icon,
+								   start,
+								   duration,
+								   count)
+	else
+		self.core:SendStatusLost(guid, status)
+	end
+end
+
+function GridStatusAuras:UnitLostDebuff(guid, class, name)
+	self:Debug("UnitLostDebuff", guid, class, name)
+	local status = statusForSpell(name, false)
+	local settings = self.db.profile[status]
+	if not settings then return end
+
+	self.core:SendStatusLost(guid, status)
+end
+
+function GridStatusAuras:UnitGainedDebuffType(guid, class, name, rank, icon, count,
+											  debuffType, duration,
+											  expirationTime, isMine,
+											  isStealable)
+	self:Debug("UnitGainedDebuffType", guid, class, debuffType)
+
+	local status = debuffType and "debuff_" .. strlower(debuffType)
+	local settings = self.db.profile[status]
+	if not settings then return end
+
+	if settings.enable and settings[class] ~= false then
+		local start = settings.duration and expirationTime and (expirationTime - duration)
+		self.core:SendStatusGained(guid,
+								   status,
+								   settings.priority,
+								   (settings.range and 40),
+								   settings.color,
+								   settings.text,
+								   count,
+								   nil,
+								   icon,
+								   start,
+								   duration,
+								   count)
+	else
+		self.core:SendStatusLost(guid, status)
+	end
+end
+
+function GridStatusAuras:UnitLostDebuffType(guid, class, debuffType)
+	self:Debug("UnitLostDebuffType", guid, class, debuffType)
+
+	local status = debuffType and "debuff_" .. strlower(debuffType)
+	local settings = self.db.profile[status]
+	if not settings then return end
+
+	self.core:SendStatusLost(guid, status)
+end
+
+function GridStatusAuras:UpdateAuraScanList()
+	for name in pairs(buff_names) do
+		buff_names[name] = nil
+	end
+
+	for name in pairs(player_buff_names) do
+		player_buff_names[name] = nil
+	end
+
+	for name in pairs(debuff_names) do
+		debuff_names[name] = nil
+	end
+
+	for status, statusTbl in pairs(self.db.profile) do
+		if type(statusTbl) == "table" then
+			local name = statusTbl.text
+
+			if name then
+				local isBuff = statusForSpell(name, true) == status
+
+				if isBuff then
+					if statusTbl.mine then
+						player_buff_names[name] = true
+					else
+						buff_names[name] = true
 					end
+				else
+					debuff_names[name] = true
 				end
 			end
 		end
 	end
 end
 
+-- temp tables
+local buff_names_seen = {}
+local player_buff_names_seen = {}
+local debuff_names_seen = {}
+local debuff_types_seen = {}
+local abolish_types_seen = {}
+function GridStatusAuras:ScanUnitAuras(unit)
+	local name, rank, icon, count, debuffType, duration, expirationTime, isMine, isStealable
 
-function GridStatusAuras:ClearAuras(unitname)
-	self:Debug("ClearAuras", unitname)
-	local u = RL:GetUnitObjectFromName(unitname)
+	local guid = UnitGUID(unit)
+	if not GridRoster:IsGUIDInRaid(guid) then
+		return
+	end
 
-	for status, moduleName, desc in self.core:RegisteredStatusIterator() do
-		if moduleName == self.name then
-			local settings = self.db.profile[status]
-			self:Debug("clearing", status, settings.missing)
+	local _, class = UnitClass(unit)
+	if class then
+		class = strlower(class)
+	end
 
-			if settings.enable and settings.missing and u and settings[strlower(u.class)] then
-				self.core:SendStatusGained(unitname,
-							   status,
-							   settings.priority,
-							   (settings.range and 40),
-							   settings.color,
-							   settings.text,
-							   nil,
-							   nil,
-							   BabbleSpell:GetSpellIcon(settings.text))
-			else
-				self.core:SendStatusLost(unitname, status)
+	self:Debug("UNIT_AURA", unit, guid)
+
+	-- scan for buffs
+	for buff_name in pairs(buff_names) do
+		name, rank, icon, count, debuffType, duration, expirationTime, isMine, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL")
+
+		if name then
+			buff_names_seen[name] = true
+			self:UnitGainedBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, isMine, isStealable)
+		end
+	end
+
+	for buff_name in pairs(player_buff_names) do
+		name, rank, icon, count, debuffType, duration, expirationTime, isMine, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL|PLAYER")
+
+		if name then
+			player_buff_names_seen[name] = true
+			self:UnitGainedPlayerBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, isMine, isStealable)
+		end
+	end
+
+	-- scan for abolish buffs so we can hide debuffs that are of the same type that is being abolished
+	if self.db.profile.abolish then
+		for buff_name, debuffType in pairs(abolish_types) do
+			name, rank, icon, count, debuffType, duration, expirationTime, isMine, isStealable = UnitAura(unit, buff_name, "HELPFUL")
+
+			if name then
+				abolish_types_seen[debuffType] = true
 			end
+		end
+	end
+
+	-- scan for debuffs
+	local index = 1
+	while true do
+		name, rank, icon, count, debuffType, duration, expirationTime, isMine, isStealable = UnitAura(unit, index, "HARMFUL")
+
+		if not name then
+			break
+		end
+
+		if not abolish_types_seen[debuffType] then
+			if debuff_names[name] then
+				debuff_names_seen[name] = true
+				self:UnitGainedDebuff(guid, class, name, rank, icon, count,
+									  debuffType, duration, expirationTime,
+									  isMine, isStealable)
+			end
+
+			if debuff_types[debuffType] then
+				debuff_types_seen[debuffType] = true
+				self:UnitGainedDebuffType(guid, class, name, rank, icon, count,
+										  debuffType, duration, expirationTime,
+										  isMine, isStealable)
+			end
+		end
+
+		index = index + 1
+	end
+
+	-- handle lost buffs
+	for name in pairs(buff_names) do
+		if not buff_names_seen[name] then
+			self:UnitLostBuff(guid, class, name)
+		else
+			buff_names_seen[name] = nil
+		end
+	end
+
+	for name in pairs(player_buff_names) do
+		if not player_buff_names_seen[name] then
+			self:UnitLostPlayerBuff(guid, class, name)
+		else
+			player_buff_names_seen[name] = nil
+		end
+	end
+
+	-- cleanup abolish types
+	for debuffType in pairs(abolish_types_seen) do
+		abolish_types_seen[debuffType] = nil
+	end
+
+	-- handle lost debuffs
+	for name in pairs(debuff_names) do
+		if not debuff_names_seen[name] then
+			self:UnitLostDebuff(guid, class, name)
+		else
+			debuff_names_seen[name] = nil
+		end
+	end
+
+	for debuffType in pairs(debuff_types) do
+		if not debuff_types_seen[debuffType] then
+			self:UnitLostDebuffType(guid, class, debuffType)
+		else
+			debuff_types_seen[debuffType] = nil
 		end
 	end
 end

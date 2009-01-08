@@ -78,26 +78,10 @@ GridLayout:AddLayout(L["By Group 25 w/Pets"], {
 			groupFilter = "5",
 		},
 		[6] = {
+			groupFilter = "1,2,3,4,5",
 			isPetGroup = true,
-			groupFilter = "WARLOCK,HUNTER",
 			unitsPerColumn = 5,
 			maxColumns = 5,
-			filterOnPet = true,
-		},
-	})
-
-GridLayout:AddLayout(L["By Group 20"], {
-		[1] = {
-			groupFilter = "1",
-		},
-		[2] = {
-			groupFilter = "2",
-		},
-		[3] = {
-			groupFilter = "3",
-		},
-		[4] = {
-			groupFilter = "4",
 		},
 	})
 
@@ -124,11 +108,10 @@ GridLayout:AddLayout(L["By Group 15 w/Pets"], {
 				     groupFilter = "3",
 			     },
 			     [4] = {
+					 groupFilter = "1,2,3",
 				     isPetGroup = true,
-				     groupFilter = "WARLOCK,HUNTER",
 				     unitsPerColumn = 5,
 				     maxColumns = 5,
-				     filterOnPet = true,
 			     },
 		     })
 
@@ -149,11 +132,10 @@ GridLayout:AddLayout(L["By Group 10 w/Pets"], {
 			groupFilter = "2",
 		},
 		[3] = {
+			groupFilter = "1,2",
 			isPetGroup = true,
-			groupFilter = "WARLOCK,HUNTER",
 			unitsPerColumn = 5,
 			maxColumns = 5,
-			filterOnPet = true,
 		},
 	})
 
@@ -168,11 +150,10 @@ GridLayout:AddLayout(L["By Group 5 w/Pets"], {
 				     groupFilter = "1",
 			     },
 			     [2] = {
+					 groupFilter = "1",
 				     isPetGroup = true,
-				     groupFilter = "WARLOCK,HUNTER",
 				     unitsPerColumn = 5,
 				     maxColumns = 5,
-				     filterOnPet = true,
 			     },
 		     })
 
@@ -242,38 +223,6 @@ GridLayout:AddLayout(L["By Class w/Pets"], {
 		},
 		[11] = {
 			isPetGroup = true,
-			groupFilter = "WARLOCK,HUNTER",
-			filterOnPet = true,
-		},
-	})
-
-GridLayout:AddLayout(L["Onyxia"], {
-		[1] = {
-			groupFilter = "1",
-		},
-		[2] = {
-			groupFilter = "3",
-		},
-		[3] = {
-			groupFilter = "5",
-		},
-		[4] = {
-			groupFilter = "7",
-		},
-		[5] = {
-			groupFilter = "",
-		},
-		[6] = {
-			groupFilter = "2",
-		},
-		[7] = {
-			groupFilter = "4",
-		},
-		[8] = {
-			groupFilter = "6",
-		},
-		[9] = {
-			groupFilter = "8",
 		},
 	})
 
