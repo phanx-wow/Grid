@@ -26,9 +26,18 @@ function GridStatusVehicle:OnInitialize()
 end
 
 function GridStatusVehicle:OnEnable()
+	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
 	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateUnit")
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateUnit")
 end
+
+
+function GridStatusVehicle:UpdateAllUnits()
+	for guid, unitid in GridRoster:IterateRoster() do
+		self:UpdateUnit(unitid)
+	end
+end
+
 
 function GridStatusVehicle:UpdateUnit(unitid)
 	local guid = UnitGUID(unitid)
