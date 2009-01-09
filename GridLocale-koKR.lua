@@ -325,6 +325,14 @@ local strings_koKR = {
 	["R"] = "R",
 	["X"] = "X",
 	["AFK"] = "자리비움",
+	["Waiting color"] = "대기 색상",
+	["Color for Waiting."] = "대기 상태일 때 색상",
+	["Ready color"] = "준비됨 색상",
+	["Color for Ready."] = "전투 준비가 되었을 때 색상",
+	["Not Ready color"] = "준비되지 않음 색상",
+	["Color for Not Ready."] = "전투 준비가 되지 않았을 때 색상",
+	["AFK color"] = "자리비움 색상",
+	["Color for AFK."] = "자리비움 상태일 때 색상",
 
 	--}}}
 }
