@@ -8,15 +8,15 @@ local strings_frFR = {
 	["Toggle debugging for %s."] = "Active ou non le débogage pour %s.",
 	["Configure"] = "Configurer",
 	["Configure Grid"] = "Configure Grid.",
-	["Hide minimap icon"] = "Cacher l'icone sur la minimap",
+	["Hide minimap icon"] = "Cacher icône minicarte",
 
 	--}}}
 	--{{{ GridFrame
 	["Frame"] = "Cellules",
 	["Options for GridFrame."] = "Options concernant GridFrame.",
 
-	["Show Tooltip"] = "Afficher les infobulles",
-	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "Affiche l'infobulle des unités. Choississez 'Toujours', 'Jamais' ou 'Hors combat'.",
+	["Show Tooltip"] = "Afficher les bulles d'aide",
+	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "Affiche les bulles d'aide des unités. Choississez 'Toujours', 'Jamais' ou 'Hors combat'.",
 	["Always"] = "Toujours",
 	["Never"] = "Jamais",
 	["OOC"] = "Hors combat",
@@ -72,10 +72,10 @@ local strings_frFR = {
 	["Adjust the size of the center icon."] = "Modifie la taille de l'icône centrale.",
 	["Icon Border Size"] = "Taille de la bordure de l'icône centrale",
 	["Adjust the size of the center icon's border."] = "Modifie la taille de la bordure de l'icône centrale.",
-	["Icon Stack Text"] = "Compteur de pile",
-	["Toggle center icon's stack count text."] = "Active ou non le compteur de pile dans l'icône centrale.",
-	["Icon Cooldown Frame"] = "Décompte",
-	["Toggle center icon's cooldown frame."] = "Active ou non le décompte dans l'icône centrale.",	
+	["Icon Stack Text"] = "Texte du cumul sur l'icône",
+	["Toggle center icon's stack count text."] = "Active ou non le texte indiquant le cumul sur l'icône centrale.",
+	["Icon Cooldown Frame"] = "Texte du temps de recharge sur l'icône",
+	["Toggle center icon's cooldown frame."] = "Active ou non le texte indiquant le temps de recharge sur l'icône centrale.",
 
 	--}}}
 	--{{{ GridLayout
@@ -84,24 +84,25 @@ local strings_frFR = {
 
 	-- Layout options
 	["Show Frame"] = "Afficher la grille",
-	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "Détermine quand Grid doit être visible : Choississez 'Toujours', 'Groupé' ou 'Raid'.",
-	["Always"] = "Toujours",
-	["Grouped"] = "En groupe",
-	["Raid"] = "En raid",
-	["Raid Layout"] = "Disposition de raid",
-	["Select which raid layout to use."] = "Choisir la disposition de raid \195\160 utiliser",
-	["Show Party in Raid"] = "Voir le groupe en raid",
-	["Show party/self as an extra group."] = "Voir le groupe en plus du raid",
-	["Show Pets for Party"] = "Voir les familiers",
-	["Show the pets for the party below the party itself."] = "Affiche les familiers du groupe sous le groupe lui-même.",
+
+	["Solo Layout"] = "Disposition quand seul",
+	["Select which layout to use when not in a party."] = "Sélectionnez la disposition à utiliser quand vous êtes tout seul.",
+	["Party Layout"] = "Disposition en groupe",
+	["Select which layout to use when in a party."] = "Sélectionnez la disposition à utiliser quand vous êtes dans un groupe.",
+	["Raid Layout"] = "Disposition en raid",
+	["Select which layout to use when in a raid."] = "Sélectionnez la disposition à utiliser quand vous êtes dans un raid.",
+	["Battleground Layout"] = "Disposition en CdB",
+	["Select which layout to use when in a battleground."] = "Sélectionnez la disposition à utiliser quand vous êtes dans un champ de bataille.",
+	["Arena Layout"] = "Disposition en arène",
+	["Select which layout to use when in an arena."] = "Sélectionnez la disposition à utiliser quand vous êtes dans dans une arène.",
 	["Horizontal groups"] = "Disposition horizontale",
-	["Switch between horzontal/vertical groups."] = "Disposer les groupes horizontalement",
+	["Switch between horzontal/vertical groups."] = "Dispose les groupes horizontalement si coché.",
 	["Clamped to screen"] = "Garder à l'écran",
 	["Toggle whether to permit movement out of screen."] = "Permet ou non de déplacer la grille hors de l'écran.",
 	["Frame lock"] = "Verrouiller",
-	["Locks/unlocks the grid for movement."] = "Verrouiller l'emplacement de la grille",
-	["Click through the Grid Frame"] = "Cliquer à travers la frame de Grid",
-	["Allows mouse click through the Grid Frame."] = "Permet les clicks à travers la frame de Grid",
+	["Locks/unlocks the grid for movement."] = "(Dé)verrouille la grille afin qu'elle puisse être déplacée.",
+	["Click through the Grid Frame"] = "Cliquer à travers Grid",
+	["Allows mouse click through the Grid Frame."] = "Permet les clics à travers le cadre de Grid.",
 
 	["CENTER"] = "CENTRE",
 	["TOP"] = "HAUT",
@@ -130,12 +131,16 @@ local strings_frFR = {
 	["Set the color of pet units."] = "Ajuster la couleur des familiers",
 	["Pet coloring"] = "Coloration des familiers",
 	["Set the coloring strategy of pet units."] = "Définir la stratégie de coloration des familiers",
-	["By Owner Class"] = "Selon la Classe du maître",
-	["By Creature Type"] = "Selon le Type de créature",
+	["By Owner Class"] = "Selon la classe du maître",
+	["By Creature Type"] = "Selon le type de créature",
 	["Using Fallback color"] = "En utilisant la couleur par défaut",
 	["Beast"] = "Bête",
 	["Demon"] = "Démon",
 	["Humanoid"] = "Humanoïde",
+	["Undead"] = "Mort-vivant",
+	["Dragonkin"] = "Draconien",
+	["Elemental"] = "Elémentaire",
+	["Not specified"] = "Non spécifié",
 	["Colors"] = "Couleurs",
 	["Color options for class and pets."] = "Options de couleurs des classes et des familiers.",
 	["Fallback colors"] = "Couleurs par défaut",
@@ -230,10 +235,14 @@ local strings_frFR = {
 	["Class Filter"] = "Filtrer les classes",
 	["Show status for the selected classes."] = "Affiche le statut pour les classes sélectionnées.",
 	["Show on %s."] = "Affiche le statut pour la classe %s.",
+	["Show if mine"] = "Afficher si le mien",
+	["Display status only if the buff was cast by you."] = "Affiche le statut uniquement si le buff est le vôtre.",
 	["Show if missing"] = "Afficher si manquant",
 	["Display status only if the buff is not active."] = "Affiche le statut uniquement si le buff n'est pas actif.",
-	["Filter Abolished units"] = "Filtre les unités abolies",
-	["Skip units that have an active Abolish buff."] = "Passer les unités qui ont un buff Abolition actif",
+	["Filter Abolished units"] = "Filtrer les unités abolies",
+	["Skip units that have an active Abolish buff."] = "Ignore les unités qui ont un buff Abolition actif.",
+	["Show duration"] = "Afficher la durée",
+	["Show the time remaining, for use with the center icon cooldown."] = "Affiche le temps restant. À utiliser avec le temps de recharge de l'icône centrale.",
 
 	--}}}
 	--{{{ GridStatusName
@@ -246,7 +255,7 @@ local strings_frFR = {
 	["Low Mana"] = "Mana faible",
 	["Mana threshold"] = "Seuil du mana",
 	["Set the percentage for the low mana warning."] = "Détermine le pourcentage de mana à partir duquel s'enclenche l'avertissement Mana faible.",
-	["Low Mana warning"] = "Avertissement Mana faible",
+	["Low Mana warning"] = "Alerte Mana faible",
 
 	--}}}
 	--{{{ GridStatusHeals
@@ -255,9 +264,9 @@ local strings_frFR = {
 	["Ignore Self"] = "Vous ignorer",
 	["Ignore heals cast by you."] = "Ignore les soins que vous incantez.",
 	["Show HealComm Users"] = "Utilisateurs HealComm",
-	["Displays HealComm users and versions."] = "Affiche les utilisateurs de HealComm et leur version",
+	["Displays HealComm users and versions."] = "Affiche les utilisateurs de HealComm et leurs versions.",
 	["HealComm Users"] = "Utilisateurs de HealComm",
-	
+
 	--}}}
 	--{{{ GridStatusHealth
 	["Low HP"] = "Vie f.",
@@ -266,10 +275,10 @@ local strings_frFR = {
 	["Offline"] = "Déco.",
 	["Unit health"] = "Vie de l'unité",
 	["Health deficit"] = "Déficit en vie",
-	["Low HP warning"] = "Avertissement Vie faible",
-	["Feign Death warning"] = "Avertissement Feindre la mort",
-	["Death warning"] = "Avertissement Mort",
-	["Offline warning"] = "Avertissement Hors-ligne",
+	["Low HP warning"] = "Alerte Vie faible",
+	["Feign Death warning"] = "Alerte Feindre la mort",
+	["Death warning"] = "Alerte Mort",
+	["Offline warning"] = "Alerte Hors-ligne",
 	["Health"] = "Vie",
 	["Show dead as full health"] = "Afficher les morts avec vie pleine",
 	["Treat dead units as being full health."] = "Considère les unités décédées comme ayant toute leur vie.",
@@ -284,10 +293,13 @@ local strings_frFR = {
 	--}}}
 	--{{{ GridStatusRange
 	["Range"] = "Portée",
-	["Range check frequency"] = "Fréquence des vérifications de portée",
+	["Range check frequency"] = "Fréquence des vérifications",
 	["Seconds between range checks"] = "Détermine le nombre de secondes entre chaque vérification de portée.",
-	["More than %d yards away"] = "A plus de %d mètres",
+	["More than %d yards away"] = "À plus de %d mètres",
 	["%d yards"] = "%d mètres",
+	["Text"] = "Texte",
+	["Text to display on text indicators"] = "Le texte à afficher sur les indicateurs textuels.",
+	["<range>"] = "<portée>",
 
 	--}}}
 	--{{{ GridStatusTarget
@@ -298,6 +310,29 @@ local strings_frFR = {
 	--{{{ GridStatusVoiceComm
 	["Voice Chat"] = "Discussion vocale",
 	["Talking"] = "Parle",
+
+	--}}}
+	--{{{ GridStatusVehicle
+	["In Vehicle"] = "Dans un véhicule",
+	["Driving"] = "Conduit",
+
+	--}}}
+	--{{{ GridStatusReadyCheck
+	["Ready Check"] = "Appel",
+	["Set the delay until ready check results are cleared."] = "Définit le délai avant que les résultats de l'appel ne soient effacés.",
+	["Delay"] = "Délai",
+	["?"] = "?",
+	["R"] = "V",
+	["X"] = "X",
+	["AFK"] = "ABS",
+	["Waiting color"] = "Couleur En attente",
+	["Color for Waiting."] = "La couleur de ceux qui n'ont pas encore répondu.",
+	["Ready color"] = "Couleur Prêt",
+	["Color for Ready."] = "La couleur de ceux qui sont prêts.",
+	["Not Ready color"] = "Couleur Pas prêt",
+	["Color for Not Ready."] = "La couleur de ceux qui ne sont pas prêts.",
+	["AFK color"] = "Couleur ABS",
+	["Color for AFK."] = "La couleur des absents.",
 
 	--}}}
 }
