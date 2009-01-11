@@ -56,6 +56,18 @@ function GridStatusRange:OnInitialize()
     self.super.OnInitialize(self)
 end
 
+function GridStatusRange:EnabledStatusCount()
+	local enable_count = 0
+
+	for status, settings in pairs(self.db.profile) do
+		if type(settings) == "table" and settings.enable then
+			enable_count = enable_count + 1
+		end
+	end
+
+	return enable_count
+end
+
 function GridStatusRange:OnEnable()
     self:Grid_RangesUpdated()
     self:RegisterEvent("Grid_RangesUpdated")
@@ -63,7 +75,7 @@ function GridStatusRange:OnEnable()
 end
 
 function GridStatusRange:OnDisable()
-    self:CancelScheduledEvent("GridStatusRange_RangeCheck")
+	self:CancelScheduledEvent("GridStatusRange_RangeCheck")
 end
 
 function GridStatusRange:Reset()
@@ -101,9 +113,7 @@ function GridStatusRange:DisableRange(range)
 		return
 	end
 	
-	for guid, unitid in GridRoster:IterateRoster() do
-		self.core:SendStatusLost(guid, status)
-	end
+	self.core:SendStatusLostAllUnits(status)
 end
 
 function GridStatusRange:Grid_RangesUpdated()

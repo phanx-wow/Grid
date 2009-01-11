@@ -45,9 +45,21 @@ function GridStatusMana:OnInitialize()
 	self:RegisterStatus("alert_lowMana", L["Low Mana warning"], low_manaOptions, true)
 end
 
-function GridStatusMana:OnEnable()
-	self:RegisterEvent("Grid_UnitJoined")
-	self:RegisterEvent("UNIT_MANA", "UpdateUnit")
+function GridStatusMana:OnStatusEnable(status)
+	if status == "alert_lowMana" then
+		self:RegisterEvent("Grid_UnitJoined")
+		self:RegisterEvent("UNIT_MANA", "UpdateUnit")
+		self:UpdateAllUnits()
+	end
+end
+
+
+function GridStatusMana:OnStatusDisable(status)
+	if status == "alert_lowMana" then
+		self:UnregisterEvent("Grid_UnitJoined")
+		self:UnregisterEvent("UNIT_MANA")
+		self.core:SendStatusLostAllUnits("alert_lowMana")
+	end
 end
 
 

@@ -25,13 +25,20 @@ function GridStatusAggro:OnInitialize()
 	self:RegisterStatus("alert_aggro", L["Aggro alert"], nil, true)
 end
 
-function GridStatusAggro:OnEnable()
-	self:RegisterEvent("UNIT_THREAT_SITUATION_UPDATE", "UpdateUnit")
-	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
+function GridStatusAggro:OnStatusEnable(status)
+	if status == "alert_aggro" then
+		self:RegisterEvent("UNIT_THREAT_SITUATION_UPDATE", "UpdateUnit")
+		self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
+		self:UpdateAllUnits()
+	end
 end
 
-function GridStatusAggro:OnDisable()
-	self:UnregisterAllEvents()
+function GridStatusAggro:OnStatusDisable(status)
+	if status == "alert_aggro" then
+		self:UnregisterEvent("UNIT_THREAT_SITUATION_UPDATE")
+		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+		self.core:SendStatusLostAllUnits("alert_aggro")
+	end
 end
 
 function GridStatusAggro:UpdateAllUnits()

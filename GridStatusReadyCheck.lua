@@ -127,18 +127,30 @@ function GridStatusReadyCheck:OnInitialize()
     self:RegisterStatus("ready_check", L["Ready Check"], readyCheckOptions, true)
 end
 
-function GridStatusReadyCheck:OnEnable()
-    self:RegisterEvent("READY_CHECK")
-    self:RegisterEvent("READY_CHECK_CONFIRM")
-    self:RegisterEvent("READY_CHECK_FINISHED")
-    self:RegisterEvent("PARTY_LEADER_CHANGED")
-    self:RegisterEvent("RAID_ROSTER_UPDATE")
-	self:RegisterEvent("Grid_PartyTransition")
+function GridStatusReadyCheck:OnStatusEnable(status)
+	if status == "ready_check" then
+		self:RegisterEvent("READY_CHECK")
+		self:RegisterEvent("READY_CHECK_CONFIRM")
+		self:RegisterEvent("READY_CHECK_FINISHED")
+		self:RegisterEvent("PARTY_LEADER_CHANGED")
+		self:RegisterEvent("RAID_ROSTER_UPDATE")
+		self:RegisterEvent("Grid_PartyTransition")
+	end
 end
 
-function GridStatusReadyCheck:OnDisable()
-    self:CancelScheduledEvent("GridStatusReadyCheck_Clear")
-    self:ClearStatus()
+function GridStatusReadyCheck:OnStatusDisable(status)
+	if status == "ready_check" then
+		self:UnregisterEvent("READY_CHECK")
+		self:UnregisterEvent("READY_CHECK_CONFIRM")
+		self:UnregisterEvent("READY_CHECK_FINISHED")
+		self:UnregisterEvent("PARTY_LEADER_CHANGED")
+		self:UnregisterEvent("RAID_ROSTER_UPDATE")
+		self:UnregisterEvent("Grid_PartyTransition")
+
+		self:CancelScheduledEvent("GridStatusReadyCheck_Clear")
+
+		self:ClearStatus()
+	end
 end
 
 function GridStatusReadyCheck:GainStatus(guid, key, settings)
@@ -233,7 +245,5 @@ end
 
 function GridStatusReadyCheck:ClearStatus()
     self.readyChecking = nil
-    for guid in self.core:CachedStatusIterator("ready_check") do
-        self.core:SendStatusLost(guid, "ready_check")
-    end
+	self.core:SendStatusLostAllUnits("ready_check")
 end

@@ -206,15 +206,9 @@ end
 
 
 function GridStatusAuras:OnEnable()
-	self.debugging = self.db.profile.debug
-	self:Debug("OnEnable")
-
-	self:RegisterEvent("Grid_UnitJoined")
-	self:RegisterEvent("UNIT_AURA", "ScanUnitAuras")
-
 	self:CreateAddRemoveOptions()
-	self:UpdateAuraScanList()
-	self:UpdateAllUnitAuras()
+
+	self.super.OnEnable(self)
 end
 
 
@@ -225,6 +219,39 @@ function GridStatusAuras:Reset()
 	self:RegisterStatuses()
 	self:CreateAddRemoveOptions()
 	self:UpdateAuraScanList()
+end
+
+
+function GridStatusAuras:EnabledStatusCount()
+	local enable_count = 0
+
+	for status, settings in pairs(self.db.profile) do
+		if type(settings) == "table" and settings.enable then
+			enable_count = enable_count + 1
+		end
+	end
+
+	return enable_count
+end
+
+
+function GridStatusAuras:OnStatusEnable(status)
+	self:RegisterEvent("Grid_UnitJoined")
+	self:RegisterEvent("UNIT_AURA", "ScanUnitAuras")
+
+	self:UpdateAuraScanList()
+	self:UpdateAllUnitAuras()
+end
+
+
+function GridStatusAuras:OnStatusDisable(status)
+	self.core:SendStatusLostAllUnits(status)
+	self:UpdateAuraScanList()
+
+	if self:EnabledStatusCount() == 0 then
+		self:UnregisterEvent("Grid_UnitJoined")
+		self:UnregisterEvent("UNIT_AURA")
+	end
 end
 
 
@@ -419,8 +446,7 @@ function GridStatusAuras:AddAura(name, isBuff)
 
 	self:RegisterStatus(status, desc, self:OptionsForStatus(status, isBuff), false, order)
 	self:CreateAddRemoveOptions()
-	self:UpdateAuraScanList()
-	self:UpdateAllUnitAuras()
+	self:OnStatusEnable(status)
 end
 
 
@@ -657,15 +683,15 @@ function GridStatusAuras:UpdateAuraScanList()
 		debuff_names[name] = nil
 	end
 
-	for status, statusTbl in pairs(self.db.profile) do
-		if type(statusTbl) == "table" then
-			local name = statusTbl.text
+	for status, settings in pairs(self.db.profile) do
+		if type(settings) == "table" and settings.enable then
+			local name = settings.text
 
 			if name then
 				local isBuff = statusForSpell(name, true) == status
 
 				if isBuff then
-					if statusTbl.mine then
+					if settings.mine then
 						player_buff_names[name] = true
 					else
 						buff_names[name] = true

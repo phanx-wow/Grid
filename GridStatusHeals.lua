@@ -58,25 +58,36 @@ function GridStatusHeals:OnInitialize()
 	self:RegisterStatus("alert_heals", L["Incoming heals"], healsOptions, true)
 end
 
-function GridStatusHeals:OnEnable()
-	-- register events
-	self:RegisterEvent("Grid_UnitLeft")
-	self:RegisterEvent("Grid_LeftParty")
-	self:RegisterEvent("UNIT_HEALTH", "UpdateHealsForUnit")
-	self:RegisterEvent("UNIT_HEALTH_MAX", "UpdateHealsForUnit")
+function GridStatusHeals:OnStatusEnable(status)
+	if status == "alert_heals" then
+		-- register events
+		self:RegisterEvent("Grid_UnitLeft")
+		self:RegisterEvent("Grid_LeftParty")
+		self:RegisterEvent("UNIT_HEALTH", "UpdateHealsForUnit")
+		self:RegisterEvent("UNIT_HEALTH_MAX", "UpdateHealsForUnit")
 
-	-- register callbacks
-	HealComm.RegisterCallback(self, "HealComm_DirectHealStart")
-	HealComm.RegisterCallback(self, "HealComm_DirectHealStop")
-	HealComm.RegisterCallback(self, "HealComm_DirectHealDelayed")
-	HealComm.RegisterCallback(self, "HealComm_HealModifierUpdate")
+		-- register callbacks
+		HealComm.RegisterCallback(self, "HealComm_DirectHealStart")
+		HealComm.RegisterCallback(self, "HealComm_DirectHealStop")
+		HealComm.RegisterCallback(self, "HealComm_DirectHealDelayed")
+		HealComm.RegisterCallback(self, "HealComm_HealModifierUpdate")
+	end
 end
 
-function GridStatusHeals:OnDisable()
-	HealComm.UnregisterCallback(self, "HealComm_DirectHealStart")
-	HealComm.UnregisterCallback(self, "HealComm_DirectHealStop")
-	HealComm.UnregisterCallback(self, "HealComm_DirectHealDelayed")
-	HealComm.UnregisterCallback(self, "HealComm_HealModifierUpdate")
+function GridStatusHeals:OnStatusDisable(status)
+	if status == "alert_heals" then
+		self:UnregisterEvent("Grid_UnitLeft")
+		self:UnregisterEvent("Grid_LeftParty")
+		self:UnregisterEvent("UNIT_HEALTH")
+		self:UnregisterEvent("UNIT_HEALTH_MAX")
+
+		HealComm.UnregisterCallback(self, "HealComm_DirectHealStart")
+		HealComm.UnregisterCallback(self, "HealComm_DirectHealStop")
+		HealComm.UnregisterCallback(self, "HealComm_DirectHealDelayed")
+		HealComm.UnregisterCallback(self, "HealComm_HealModifierUpdate")
+
+		self.core:SendStatusLostAllUnits("alert_heals")
+	end
 end
 --}}}
 

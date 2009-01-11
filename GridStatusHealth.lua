@@ -83,6 +83,7 @@ GridStatusHealth.extraOptions = {
 --}}}
 
 local healthOptions = {
+	["enable"] = false, -- you can't disable this
 	["useClassColors"] = {
 		type = "toggle",
 		name = L["Use class color"],
@@ -156,6 +157,7 @@ function GridStatusHealth:OnInitialize()
 	self:RegisterStatus("alert_offline", L["Offline warning"], nil, true)
 end
 
+-- you can't disable the unit_health status, so no need to ever unregister
 function GridStatusHealth:OnEnable()
 	self:RegisterEvent("Grid_UnitJoined")
 
@@ -168,6 +170,14 @@ function GridStatusHealth:OnEnable()
 
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
 	self:RegisterEvent("Grid_ColorsChanged", "UpdateAllUnits")
+end
+
+function GridStatusHealth:OnStatusEnable(status)
+	self:UpdateAllUnits()
+end
+
+function GridStatusHealth:OnStatusDisable(status)
+	self.core:SendStatusLostAllUnits(status)
 end
 
 function GridStatusHealth:Reset()

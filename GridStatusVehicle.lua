@@ -25,10 +25,26 @@ function GridStatusVehicle:OnInitialize()
 	self:RegisterStatus("alert_vehicleui", L["In Vehicle"], nil, true)
 end
 
-function GridStatusVehicle:OnEnable()
-	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
-	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateUnit")
-	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateUnit")
+
+function GridStatusVehicle:OnStatusEnable(status)
+	if status == "alert_vehicleui" then
+		self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
+		self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateUnit")
+		self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateUnit")
+
+		self:UpdateAllUnits()
+	end
+end
+
+
+function GridStatusVehicle:OnStatusDisable(status)
+	if status == "alert_vehicleui" then
+		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+		self:UnregisterEvent("UNIT_ENTERED_VEHICLE")
+		self:UnregisterEvent("UNIT_EXITED_VEHICLE")
+
+		self.core:SendStatusLostAllUnits("alert_vehicleui")
+	end
 end
 
 

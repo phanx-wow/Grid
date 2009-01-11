@@ -41,18 +41,36 @@ function GridStatusName:OnInitialize()
 	self:RegisterStatus("unit_name", L["Unit Name"], nameOptions, true)
 end
 
-function GridStatusName:OnEnable()
-	self:RegisterEvent("UNIT_NAME_UPDATE", "UpdateUnit")
-	self:RegisterEvent("UNIT_PORTRAIT_UPDATE", "UpdateUnit")
-	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateVehicle")
-	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateVehicle")
-	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
-	self:RegisterEvent("Grid_UnitJoined", "UpdateGUID")
-	self:RegisterEvent("Grid_UnitChanged", "UpdateGUID")
-	self:RegisterEvent("Grid_UnitLeft", "UpdateGUID")
-	
-	self:RegisterEvent("Grid_ColorsChanged", "UpdateAllUnits")
-	self:UpdateAllUnits()
+function GridStatusName:OnStatusEnable(status)
+	if status == "unit_name" then
+		self:RegisterEvent("UNIT_NAME_UPDATE", "UpdateUnit")
+		self:RegisterEvent("UNIT_PORTRAIT_UPDATE", "UpdateUnit")
+		self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateVehicle")
+		self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateVehicle")
+		self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
+		self:RegisterEvent("Grid_UnitJoined", "UpdateGUID")
+		self:RegisterEvent("Grid_UnitChanged", "UpdateGUID")
+		self:RegisterEvent("Grid_UnitLeft", "UpdateGUID")
+		
+		self:RegisterEvent("Grid_ColorsChanged", "UpdateAllUnits")
+		self:UpdateAllUnits()
+	end
+end
+
+function GridStatusName:OnStatusDisable(status)
+	if status == "unit_name" then
+		self:UnregisterEvent("UNIT_NAME_UPDATE")
+		self:UnregisterEvent("UNIT_PORTRAIT_UPDATE")
+		self:UnregisterEvent("UNIT_ENTERED_VEHICLE")
+		self:UnregisterEvent("UNIT_EXITED_VEHICLE")
+		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+		self:UnregisterEvent("Grid_UnitJoined")
+		self:UnregisterEvent("Grid_UnitChanged")
+		self:UnregisterEvent("Grid_UnitLeft")
+		self:UnregisterEvent("Grid_ColorsChanged")
+
+		self.core:SendStatusLostAllUnits("unit_name")
+	end
 end
 
 function GridStatusName:Reset()

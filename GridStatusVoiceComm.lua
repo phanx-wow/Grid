@@ -28,9 +28,19 @@ function GridStatusVoiceComm:OnInitialize()
 	self:RegisterStatus("alert_voice", L["Voice Chat"], nil, true)
 end
 
-function GridStatusVoiceComm:OnEnable()
-	self:RegisterEvent("VOICE_START")
-	self:RegisterEvent("VOICE_STOP")
+function GridStatusVoiceComm:OnStatusEnable(status)
+	if status == "alert_voice" then
+		self:RegisterEvent("VOICE_START")
+		self:RegisterEvent("VOICE_STOP")
+	end
+end
+
+function GridStatusVoiceComm:OnStatusDisable(status)
+	if stats == "alert_voice" then
+		self:UnregisterEvent("VOICE_START")
+		self:UnregisterEvent("VOICE_STOP")
+		self.core:SendStatusLostAllUnits("alert_voice")
+	end
 end
 
 function GridStatusVoiceComm:VOICE_START(unitid)

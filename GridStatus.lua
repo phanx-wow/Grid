@@ -23,6 +23,26 @@ function GridStatus.modulePrototype:OnInitialize()
 	self.debugFrame = GridStatus.debugFrame
 end
 
+function GridStatus.modulePrototype:OnEnable()
+	for status, module in GridStatus:RegisteredStatusIterator() do
+		if module == self.name and self.db.profile[status] then
+			if self.db.profile[status].enable and self['OnStatusEnable'] then
+				self:OnStatusEnable(status)
+			end
+		end
+	end
+end
+
+function GridStatus.modulePrototype:OnDisable()
+	for status, module in GridStatus:RegisteredStatusIterator() do
+		if module == self.name and self.db.profile[status] then
+			if self.db.profile[status].enable and self['OnStatusDisable'] then
+				self:OnStatusDisable(status)
+			end
+		end
+	end
+end
+
 function GridStatus.modulePrototype:Reset()
 	self.debugging = self.db.profile.debug
 	self:Debug("Reset")
@@ -128,6 +148,15 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 					      end,
 					set = function (v)
 						      module.db.profile[status].enable = v
+							  if v then
+								  if module['OnStatusEnable'] then
+									  module:OnStatusEnable(status)
+								  end
+							  else
+								  if module['OnStatusDisable'] then
+									  module:OnStatusDisable(status)
+								  end
+							  end
 					      end,
 				},
 			},
@@ -347,8 +376,8 @@ function GridStatus:UnregisterStatus(status, moduleName)
 	if self:IsStatusRegistered(status) then
 		self:Debug("Unregistered", status, "for", moduleName)
 		-- need to remove from cache
-		for name in pairs(self.cache) do
-			self:SendStatusLost(name, status)
+		for guid in pairs(self.cache) do
+			self:SendStatusLost(guid, status)
 		end
 
 		-- now we can remove from registry
@@ -464,6 +493,12 @@ function GridStatus:SendStatusLost(guid, status)
 	self:TriggerEvent("Grid_StatusLost", guid, status)
 end
 
+function GridStatus:SendStatusLostAllUnits(status)
+	for guid in pairs(self.cache) do
+		self:SendStatusLost(guid, status)
+	end
+end
+
 function GridStatus:RemoveFromCache(guid)
 	self.cache[guid] = nil
 end
@@ -523,6 +558,12 @@ end
 
 function GridStatus:UnitColor(guid)
 	local colors = self.db.profile.colors
+
+	-- convert names to guid for backwards compatability
+	if guid and #guid ~= 18 then
+		-- assume we've been given a name
+		guid = GridRoster:GetGUIDByName(guid)
+	end
 
 	local unitid = GridRoster:GetUnitidByGUID(guid)
 

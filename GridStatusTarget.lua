@@ -33,13 +33,18 @@ function GridStatusTarget:OnInitialize()
     self:RegisterStatus('player_target', L["Your Target"], nil, true)
 end
 
-function GridStatusTarget:OnEnable()
-	self:RegisterEvent("PLAYER_TARGET_CHANGED")
+function GridStatusTarget:OnStatusEnable(status)
+	if status == "player_target" then
+		self:RegisterEvent("PLAYER_TARGET_CHANGED")
+		self:PLAYER_TARGET_CHANGED()
+	end
 end
 
-function GridStatusTarget:Reset()
-	self.super.Reset(self)
-	self:PLAYER_TARGET_CHANGED()
+function GridStatusTarget:OnStatusDisable(status)
+	if status == "player_target" then
+		self:UnregisterEvent("PLAYER_TARGET_CHANGED")
+		self.core:SendStatusLostAllUnits("player_target")
+	end
 end
 
 function GridStatusTarget:PLAYER_TARGET_CHANGED()
