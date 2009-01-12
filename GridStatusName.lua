@@ -96,7 +96,7 @@ function GridStatusName:UpdateGUID(guid)
 
 	local name = GridRoster:GetNameByGUID(guid)
 
-	if not name then
+	if not name or not settings.enable then
 		return
 	end
 
