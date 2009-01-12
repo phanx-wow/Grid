@@ -345,6 +345,17 @@ local strings_enUS = {
 	["Color for AFK."] = true,
 	
 	--}}}
+	--{{{ Unused translations: translators, please remove these
+	["Show Pets for Party"] = true,
+	["Grouped"] = true,
+	["Show party/self as an extra group."] = true,
+	["Select which raid layout to use."] = true,
+	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = true,
+	["Raid"] = true,
+	["Show the pets for the party below the party itself."] = true,
+	["Show Party in Raid"] = true,
+
+	--}}}
 }
 
 L:RegisterTranslations("enUS", function() return strings_enUS end)
