@@ -208,6 +208,16 @@ local strings_enUS = {
 	--{{{ GridStatusAggro
 	["Aggro"] = true,
 	["Aggro alert"] = true,
+	["High Threat color"] = true,
+	["Color for High Threat."] = true,
+	["Aggro color"] = true,
+	["Color for Aggro."] = true,
+	["Tanking color"] = true,
+	["Color for Tanking."] = true,
+	["Threat"] = true,
+	["Show more detailed threat levels."] = true,
+	["High"] = true,
+	["Tank"] = true,
 
 	--}}}
 	--{{{ GridStatusAuras
