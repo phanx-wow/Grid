@@ -208,6 +208,16 @@ local strings_koKR = {
 	--{{{ GridStatusAggro
 	["Aggro"] = "어그로",
 	["Aggro alert"] = "어그로 경고",
+	["High Threat color"] = "위협 수준 높음 색상",
+	["Color for High Threat."] = "위협 수준 높을 때 색상",
+	["Aggro color"] = "어그로 색상",
+	["Color for Aggro."] = "어그로일 때 색상",
+	["Tanking color"] = "방어전담 색상",
+	["Color for Tanking."] = "방어전담일 때 색상",
+	["Threat"] = "위협 수준",
+	["Show more detailed threat levels."] = "상세한 위협 수준을 표시합니다.",
+	["High"] = "높음",
+	["Tank"] = "방전",
 
 	--}}}
 	--{{{ GridStatusAuras
@@ -333,6 +343,17 @@ local strings_koKR = {
 	["Color for Not Ready."] = "전투 준비가 되지 않았을 때 색상",
 	["AFK color"] = "자리비움 색상",
 	["Color for AFK."] = "자리비움 상태일 때 색상",
+
+	--}}}
+	--{{{ Unused translations: translators, please remove these
+	["Show Pets for Party"] = "파티시 소환수 표시",
+	["Grouped"] = "파티",
+	["Show party/self as an extra group."] = "공격대시 자신과 파티원을 추가로 표시합니다.",
+	["Select which raid layout to use."] = "사용할 공격대 배치를 선택합니다.",
+	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "Grid 표시 설정: '항상', '파티' 또는 '공격대'를 선택합니다.",
+	["Raid"] = "공격대",
+	["Show the pets for the party below the party itself."] = "파티시 파티원의 소환수를 표시합니다.",
+	["Show Party in Raid"] = "공격대시 파티원 표시",
 
 	--}}}
 }
