@@ -208,6 +208,16 @@ local strings_deDE = {
 	--{{{ GridStatusAggro
 	["Aggro"] = "Aggro",
 	["Aggro alert"] = "Aggro-Alarm",
+	["High Threat color"] = "Hohe Bedrohung Farbe",
+	["Color for High Threat."] = "Farbe für 'Hohe Bedrohung'.",
+	["Aggro color"] = "Aggro Farbe",
+	["Color for Aggro."] = "Farbe für 'Aggro'.",
+	["Tanking color"] = "Tanken Farbe",
+	["Color for Tanking."] = "Farbe für 'Tanken'.",
+	["Threat"] = "Bedrohung",
+	["Show more detailed threat levels."] = "Zeigt mehrere Bedrohungsstufen.",
+	["High"] = "Hoch",
+	["Tank"] = "Tank",
 
 	--}}}
 	--{{{ GridStatusAuras
@@ -334,7 +344,6 @@ local strings_deDE = {
 	["AFK color"] = "AFK Farbe",
 	["Color for AFK."] = "Farbe für 'AFK'.",
 	
-	--}}}
 }
 
 L:RegisterTranslations("deDE", function() return strings_deDE end)
