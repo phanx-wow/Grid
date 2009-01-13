@@ -42,7 +42,7 @@ local abolish_types = {
 }
 
 
-local function statusForSpell(spell, isBuff)
+function GridStatusAuras.StatusForSpell(spell, isBuff)
 	local prefix = "debuff_"
 
 	if isBuff then
@@ -92,7 +92,7 @@ GridStatusAuras.defaultDB = {
 		["color"] = { r = .6, g =  0, b =  1, a = 1 },
 		["order"] = 25,
 	},
-	[statusForSpell(BS["Ghost"])] = {
+	[GridStatusAuras.StatusForSpell(BS["Ghost"])] = {
 		["desc"] = string.format(L["Debuff: %s"], BS["Ghost"]),
 		["text"] = BS["Ghost"],
 		["enable"] = true,
@@ -101,7 +101,7 @@ GridStatusAuras.defaultDB = {
 		["color"] = { r = .5, g = .5, b = .5, a = 1 },
 
 	},
-	[statusForSpell(BS["Weakened Soul"])] = {
+	[GridStatusAuras.StatusForSpell(BS["Weakened Soul"])] = {
 		["desc"] = string.format(L["Debuff: %s"], BS["Weakened Soul"]),
 		["text"] = BS["Weakened Soul"],
 		["enable"] = true,
@@ -110,7 +110,7 @@ GridStatusAuras.defaultDB = {
 		["color"] = { r = .5, g = .5, b = .5, a = 1 },
 
 	},
-	[statusForSpell(BS["Mortal Strike"])] = {
+	[GridStatusAuras.StatusForSpell(BS["Mortal Strike"])] = {
 		["desc"] = string.format(L["Debuff: %s"], BS["Mortal Strike"]),
 		["text"] = BS["Mortal Strike"],
 		["enable"] = true,
@@ -118,7 +118,7 @@ GridStatusAuras.defaultDB = {
 		["range"] = false,
 		["color"] = { r = .8, g = .2, b = .2, a = 1 },
 	},
-	[statusForSpell(BS["Renew"], true)] = {
+	[GridStatusAuras.StatusForSpell(BS["Renew"], true)] = {
 		["desc"] = string.format(L["Buff: %s"], BS["Renew"]),
 		["text"] = BS["Renew"],
 		["enable"] = true,
@@ -126,7 +126,7 @@ GridStatusAuras.defaultDB = {
 		["range"] = false,
 		["color"] = { r =  0, g = .7, b = .3, a = 1 },
 	},
-	[statusForSpell(BS["Regrowth"], true)] = {
+	[GridStatusAuras.StatusForSpell(BS["Regrowth"], true)] = {
 		["desc"] = string.format(L["Buff: %s"], BS["Regrowth"]),
 		["text"] = BS["Regrowth"],
 		["enable"] = true,
@@ -134,7 +134,7 @@ GridStatusAuras.defaultDB = {
 		["range"] = false,
 		["color"] = { r =  1, g = .7, b = .1, a = 1 },
 	},
-	[statusForSpell(BS["Rejuvenation"], true)] = {
+	[GridStatusAuras.StatusForSpell(BS["Rejuvenation"], true)] = {
 		["desc"] = string.format(L["Buff: %s"], BS["Rejuvenation"]),
 		["text"] = BS["Rejuvenation"],
 		["enable"] = true,
@@ -142,7 +142,7 @@ GridStatusAuras.defaultDB = {
 		["range"] = false,
 		["color"] = { r =  0, g = .3, b = .7, a = 1 },
 	},
-	[statusForSpell(BS["Power Word: Shield"], true)] = {
+	[GridStatusAuras.StatusForSpell(BS["Power Word: Shield"], true)] = {
 		["desc"] = string.format(L["Buff: %s"], BS["Power Word: Shield"]),
 		["text"] = BS["Power Word: Shield"],
 		["enable"] = true,
@@ -260,7 +260,7 @@ function GridStatusAuras:RegisterStatuses()
 		if type(statusTbl) == "table" and statusTbl.text then
 			local name = statusTbl.text
 			local desc = statusTbl.desc or name
-			local isBuff = statusForSpell(name, true) == status
+			local isBuff = GridStatusAuras.StatusForSpell(name, true) == status
 			local order = statusTbl.order or (isBuff and 15 or 35)
 
 			self:Debug("registering", status, desc)
@@ -416,7 +416,7 @@ end
 
 
 function GridStatusAuras:AddAura(name, isBuff)
-	local status = statusForSpell(name, isBuff)
+	local status = GridStatusAuras.StatusForSpell(name, isBuff)
 	local desc
 
 	-- status already exists
@@ -504,7 +504,7 @@ function GridStatusAuras:UnitGainedBuff(guid, class, name, rank, icon, count,
 										isMine, isStealable)
 	self:Debug("UnitGainedBuff", guid, class, name)
 
-	local status = statusForSpell(name, true)
+	local status = GridStatusAuras.StatusForSpell(name, true)
 	local settings = self.db.profile[status]
 	if not settings then return end
 
@@ -530,7 +530,7 @@ end
 function GridStatusAuras:UnitLostBuff(guid, class, name)
 	self:Debug("UnitLostBuff", guid, class, name)
 
-	local status = statusForSpell(name, true)
+	local status = GridStatusAuras.StatusForSpell(name, true)
 	local settings = self.db.profile[status]
 	if not settings then return end
 
@@ -552,7 +552,7 @@ function GridStatusAuras:UnitGainedPlayerBuff(guid, class, name, rank, icon, cou
 											  isStealable)
 	self:Debug("UnitGainedPlayerBuff", guid, name)
 
-	local status = statusForSpell(name, true)
+	local status = GridStatusAuras.StatusForSpell(name, true)
 	local settings = self.db.profile[status]
 	if not settings then return end
 
@@ -578,7 +578,7 @@ end
 function GridStatusAuras:UnitLostPlayerBuff(guid, class, name)
 	self:Debug("UnitLostPlayerBuff", guid, name)
 
-	local status = statusForSpell(name, true)
+	local status = GridStatusAuras.StatusForSpell(name, true)
 	local settings = self.db.profile[status]
 	if not settings then return end
 
@@ -599,7 +599,7 @@ function GridStatusAuras:UnitGainedDebuff(guid, class, name, rank, icon, count,
 										  isMine, isStealable)
 	self:Debug("UnitGainedDebuff", guid, class, name)
 
-	local status = statusForSpell(name, false)
+	local status = GridStatusAuras.StatusForSpell(name, false)
 	local settings = self.db.profile[status]
 	if not settings then return end
 
@@ -624,7 +624,7 @@ end
 
 function GridStatusAuras:UnitLostDebuff(guid, class, name)
 	self:Debug("UnitLostDebuff", guid, class, name)
-	local status = statusForSpell(name, false)
+	local status = GridStatusAuras.StatusForSpell(name, false)
 	local settings = self.db.profile[status]
 	if not settings then return end
 
@@ -688,7 +688,7 @@ function GridStatusAuras:UpdateAuraScanList()
 			local name = settings.text
 
 			if name then
-				local isBuff = statusForSpell(name, true) == status
+				local isBuff = GridStatusAuras.StatusForSpell(name, true) == status
 
 				if isBuff then
 					if settings.mine then
