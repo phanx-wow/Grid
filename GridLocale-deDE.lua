@@ -9,6 +9,7 @@ local strings_deDE = {
 	["Configure"] = "Konfigurieren",
 	["Configure Grid"] = "Grid konfigurieren",
 	["Hide minimap icon"] = "Minikarten Button verstecken",
+	["Grid is disabled: use '/grid standby' to enable."] = "Grid ist ausgeschaltet: Tippe '/grid standby' zum einschalten.",
 
 	--}}}
 	--{{{ GridFrame
