@@ -9,13 +9,14 @@ local strings_ruRU = {
 	["Configure"] =  "Настройка",
 	["Configure Grid"] = "Настройка Grid",
 	["Hide minimap icon"] = "Скрыть иконку на миникарте",
+	["Grid is disabled: use '/grid standby' to enable."] = "Grid отключен: для включения введите '/grid standby'",
 
 	--}}}
 	--{{{ GridFrame
 	["Frame"] = "Фреймы",
 	["Options for GridFrame."] = "Опции фреймов Grid",
 
-        ["Show Tooltip"] = "Показывать подсказки",
+    ["Show Tooltip"] = "Показывать подсказки",
 	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "Показывать подсказку еденицы.  Выберите 'Всегда', 'Никогда', или 'Вне боя'.",
 	["Always"] = "Всегда",
 	["Never"] = "Никогда",
@@ -27,7 +28,7 @@ local strings_ruRU = {
 	["Healing Bar Opacity"] = "Прозрачность полосы лечения",
 	["Sets the opacity of the healing bar."] = "Установить прозрачность полосы лечения.",
 
-        ["Indicators"] = "Индикаторы",
+    ["Indicators"] = "Индикаторы",
 	["Border"] = "Граница",
 	["Health Bar"] = "Полоса здоровья",
 	["Health Bar Color"] = "Цвет полосы здоровья",
@@ -41,7 +42,7 @@ local strings_ruRU = {
 	["Bottom Right Corner"] = "Нижний правый угол",
 	["Frame Alpha"] = "Прозрачность фреймов",
 
-        ["Options for %s indicator."] = "Опции для %s индикаторов.",
+    ["Options for %s indicator."] = "Опции для %s индикаторов.",
 	["Statuses"] = "Статусы",
 	["Toggle status display."] = "Переключить статус на дисплее.",
 
@@ -72,29 +73,31 @@ local strings_ruRU = {
 	["Adjust the size of the center icon."] = "Настройка размера значка в центре",
 	["Icon Border Size"] = "Размер границы значка",
 	["Adjust the size of the center icon's border."] = "Настраивает размер границы значка в центре.",
-        ["Icon Stack Text"] = "Текст множества значков",
+    ["Icon Stack Text"] = "Текст множества значков",
 	["Toggle center icon's stack count text."] = "Показывать количество значков в множестве",
 	["Icon Cooldown Frame"] = "Фрейм перерыва (cooldown) значка",
 	["Toggle center icon's cooldown frame."] = "Показывать фрейм перерыва значка в центре",
 
 	--}}}
 	--{{{ GridLayout
-  ["Layout"] = "Расположение",
+    ["Layout"] = "Расположение",
 	["Options for GridLayout."] = "Опции для GridLayout",
 
 	-- Layout options
 	["Show Frame"] = "Показать фреймы",
-	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "Показывает когда Grid виден: Выберите 'Всегда', 'Группа', или 'Рейд'.",
+    
 	["Always"] = "Всегда",
-	["Grouped"] = "Группа",
-	["Raid"] = "Рейд",
-	["Raid Layout"] = "Расположение для рейда",
-	["Select which raid layout to use."] = "Выбрать расположение для рейда.",
-	["Show Party in Raid"] = "Показывать группу в рейде",
-	["Show party/self as an extra group."] = "Показать группу/себя как отдельную группу",
-	["Show Pets for Party"] = "Показывать пэтов в группе",
-	["Show the pets for the party below the party itself."] = "Показывает питомцев группы непоредсвенно ниже группы.",
-        ["Horizontal groups"] = "Группы горизонтально",
+	["Solo Layout"] = "Расположение в соло",
+	["Select which layout to use when not in a party."] = "Выбрать какое расположение использовать не находясь в группе.",
+	["Party Layout"] = "Расположение группы",
+	["Select which layout to use when in a party."] = "Выбрать какое расположение использовать в группе.",
+	["Raid Layout"] = "Расположение рейда",
+	["Select which layout to use when in a raid."] = "Выбрать какое расположение использовать в рейде.",
+	["Battleground Layout"] = "Расположение на ПС",
+	["Select which layout to use when in a battleground."] = "Выбрать какое расположение использовать на полях сражений.",
+	["Arena Layout"] = "Расположение на арене",
+	["Select which layout to use when in an arena."] = "Выбрать какое расположение использовать на арене.",
+    ["Horizontal groups"] = "Группы горизонтально",
 	["Switch between horzontal/vertical groups."] = "Переключить между группы вертикально/горизонтально.",
 	["Clamped to screen"] = "В пределах экрана",
 	["Toggle whether to permit movement out of screen."] = "Не позволять перемещать окно за пределы экрана",
@@ -114,7 +117,7 @@ local strings_ruRU = {
 	["BOTTOMRIGHT"] = "ВНИЗУ СПРАВА",
 
 	-- Display options
-  ["Padding"] = "Заполнение",
+    ["Padding"] = "Заполнение",
 	["Adjust frame padding."] = "Настроить заполнение фреймов",
 	["Spacing"] = "Интервалы",
 	["Adjust frame spacing."] = "Настроить интервалы между фреймами",
@@ -136,6 +139,10 @@ local strings_ruRU = {
 	["Beast"] = "Животное",
 	["Demon"] = "Демон",
 	["Humanoid"] = "Гуманоид",
+	["Undead"] = "Нежить",
+	["Dragonkin"] = "Дракон",
+	["Elemental"] = "Элементаль",
+	["Not specified"] = "Не указано",
 	["Colors"] = "Цвета",
 	["Color options for class and pets."] = "Опции окраски для классов и питомцев",
 	["Fallback colors"] = "Цвета неизветсных",
@@ -162,7 +169,7 @@ local strings_ruRU = {
 
 	--}}}
 	--{{{ GridLayoutLayouts
-  ["None"] = "Нет",
+    ["None"] = "Нет",
 	["By Group 40"] = "Для Группы из 40 чел.",
 	["By Group 25"] = "Для Группы из 25 чел.",
 	["By Group 25 w/Pets"] = "Для Группы из 25 чел. с питомцами",
@@ -203,6 +210,16 @@ local strings_ruRU = {
 	--{{{ GridStatusAggro
 	["Aggro"] = "Агро",
 	["Aggro alert"] = "Сигнал Агро",
+	["High Threat color"] = "Цвет наивысшей угрозы",
+	["Color for High Threat."] = "Окраска наивысшей угрозы.",
+	["Aggro color"] = "Цвет агро",
+	["Color for Aggro."] = "Окраска агро",
+	["Tanking color"] = "Цвет танкования",
+	["Color for Tanking."] = "Окраска танкования",
+	["Threat"] = "Угроза",
+	["Show more detailed threat levels."] = "Отображение более подробного уровеня угрозы.",
+	["High"] = "Наивысшая",
+	["Tank"] = "Танк",
 
 	--}}}
 	--{{{ GridStatusAuras
@@ -230,14 +247,18 @@ local strings_ruRU = {
 	["Class Filter"] = "Фильтр классов",
 	["Show status for the selected classes."] = "Показывает статус для выбранных классов.",
 	["Show on %s."] = "Показать на %s.",
+	["Show if mine"] = "Показать если моё",
+	["Display status only if the buff was cast by you."] = "Показывать статус только если баффы применяются на вас",
 	["Show if missing"] = "Показывать если пропущен",
 	["Display status only if the buff is not active."] = "Показывать статус только если баффы не активны",
 	["Filter Abolished units"] = "Фильтр персонажей находящихся под исцелением",
 	["Skip units that have an active Abolish buff."] = "Пропускает персонажей на которых есть активные баффы исцеления.",
+	["Show duration"] = "Длительность",
+	["Show the time remaining, for use with the center icon cooldown."] = "Показывать в центре иконки остаток времени.",
 
 	--}}}
 	--{{{ GridStatusName
-  ["Unit Name"] = "Имя еденицы",
+    ["Unit Name"] = "Имя еденицы",
 	["Color by class"] = "Цвет по классу",
 
 	--}}}
@@ -260,7 +281,7 @@ local strings_ruRU = {
 
 	--}}}
 	--{{{ GridStatusHealth
-		["Low HP"] = "Мало HP",
+	["Low HP"] = "Мало HP",
 	["DEAD"] = "ТРУП",
 	["FD"] = "СС",
 	["Offline"] = "Оффлайн",
@@ -288,6 +309,9 @@ local strings_ruRU = {
 	["Seconds between range checks"] = "Частота проверки в секундах",
 	["More than %d yards away"] = "Дальше чем %d м.",
 	["%d yards"] = "%d м.",
+	["Text"] = "Текст",
+	["Text to display on text indicators"] = "Отображаемый текст в индикаторе",
+	["<range>"] = "<range>",
 
 	--}}}
 	--{{{ GridStatusTarget
@@ -296,8 +320,31 @@ local strings_ruRU = {
 
 	--}}}
 	--{{{ GridStatusVoiceComm
-	["Voice Chat"] = "Голосовой  чат",
+	["Voice Chat"] = "Голосовой чат",
 	["Talking"] = "Говорит",
+	
+		--}}}
+	--{{{ GridStatusVehicle
+	["In Vehicle"] = "На транспорте",
+	["Driving"] = "Управляет",
+	
+	--}}}
+	--{{{ GridStatusReadyCheck
+	["Ready Check"] = "Проверка готовности",
+	["Set the delay until ready check results are cleared."] = "Установите задержку,временной простой перед очисткой результатов проверки готовности.",
+	["Delay"] = "Задержка",
+	["?"] = "?",
+	["R"] = "R",
+	["X"] = "X",
+	["AFK"] = "Отсутствует",
+	["Waiting color"] = "Ожидиние",
+	["Color for Waiting."] = "Окраска ожидающих",
+	["Ready color"] = "Готовности",
+	["Color for Ready."] = "Окраска готовых",
+	["Not Ready color"] = "НеЕ готов",
+	["Color for Not Ready."] = "Окраска не готовых",
+	["AFK color"] = "Отсутствие",
+	["Color for AFK."] = "Окраска отсутствующих",
 	
 	--}}} 
 } 
