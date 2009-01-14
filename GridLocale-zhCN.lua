@@ -9,7 +9,8 @@ local strings_zhCN = {
 	["Configure"] = "设置",
 	["Configure Grid"] = "设置 Grid",
 	["Hide minimap icon"] = "隐藏迷你地图按钮",
-	
+	["Grid is disabled: use '/grid standby' to enable."] = "Gird 已被禁用：使用“/grid standby”命令启用。",
+
 	--}}}
 	--{{{ GridFrame
 	["Frame"] = "框架",
@@ -84,16 +85,17 @@ local strings_zhCN = {
 
 	-- Layout options
 	["Show Frame"] = "显示框架",
-	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "选择什么时候显示Grid：“一直”，“组队”或“团队”。",
-	["Always"] = "一直",
-	["Grouped"] = "组队",
-	["Raid"] = "团队",
+
+	["Solo Layout"] = "单人布局",
+	["Select which layout to use when not in a party."] = "没有小队时所选择使用的布局。",
+	["Party Layout"] = "小队布局",
+	["Select which layout to use when in a party."] = "在小队时所选择使用的布局。",
 	["Raid Layout"] = "团队布局",
-	["Select which raid layout to use."] = "选择使用哪个团队布局。",
-	["Show Party in Raid"] = "在团队中显示小队",
-	["Show party/self as an extra group."] = "把自己/小队单独显示出来。",
-	["Show Pets for Party"] = "小队中显示宠物",
-	["Show the pets for the party below the party itself."] = "小队中在下方显示宠物。",
+	["Select which layout to use when in a raid."] = "在团队时所选择使用的布局。",
+	["Battleground Layout"] = "战场布局",
+	["Select which layout to use when in a battleground."] = "在战场时所选择使用的布局。",
+	["Arena Layout"] = "竞技场布局",
+	["Select which layout to use when in an arena."] = "在竞技场时所选择使用的布局。",
 	["Horizontal groups"] = "横向排列队伍",
 	["Switch between horzontal/vertical groups."] = "选择横向/竖向显示队伍。",
 	["Clamped to screen"] = "保持在屏幕上",
@@ -136,6 +138,10 @@ local strings_zhCN = {
 	["Beast"] = "野兽",
 	["Demon"] = "恶魔",
 	["Humanoid"] = "人型",
+	["Undead"] = "亡灵",
+	["Dragonkin"] = "龙类",
+	["Elemental"] = "元素",
+	["Not specified"] = "未分类",
 	["Colors"] = "颜色",
 	["Color options for class and pets."] = "玩家和宠物的颜色选项。",
 	["Fallback colors"] = "已知颜色",
@@ -158,7 +164,7 @@ local strings_zhCN = {
 	["Group Anchor"] = "队伍锚点",
 	["Sets where groups are anchored relative to the layout frame."] = "设置布局中队伍的锚点。",
 	["Reset Position"] = "重置位置",
-	["Resets the layout frame's position and anchor."] = "重置布局框架的位置和锚。",
+	["Resets the layout frame's position and anchor."] = "重置布局框架的位置和锚点。",
 
 	--}}}
 	--{{{ GridLayoutLayouts
@@ -177,7 +183,7 @@ local strings_zhCN = {
 	["By Class w/Pets"] = "职业以及宠物",
 	["Onyxia"] = "单数双数队伍排列",
 	["By Group 25 w/tanks"] = "25人团队及 MT",
-	
+
 	--}}}
 	--{{{ GridRange
 	-- used for getting spell range from tooltip
@@ -198,12 +204,22 @@ local strings_zhCN = {
 	["Range filter for %s"] = "%s的距离过滤",
 	["Enable"] = "激活",
 	["Enable %s"] = "激活%s",
-	
+
 	--}}}
 	--{{{ GridStatusAggro
 	["Aggro"] = "仇恨",
 	["Aggro alert"] = "仇恨警报",
-	
+	["High Threat color"] = "高威胁颜色",
+	["Color for High Threat."] = "高威胁时的颜色。",
+	["Aggro color"] = "仇恨颜色",
+	["Color for Aggro."] = "获得仇恨时的颜色。",
+	["Tanking color"] = "坦克颜色",
+	["Color for Tanking."] = "坦克时的颜色。",
+	["Threat"] = "威胁",
+	["Show more detailed threat levels."] = "显示更多威胁分级。",
+	["High"] = "高",
+	["Tank"] = "坦克",
+
 	--}}}
 	--{{{ GridStatusAuras
 	["Auras"] = "光环",
@@ -230,16 +246,20 @@ local strings_zhCN = {
 	["Class Filter"] = "职业过滤",
 	["Show status for the selected classes."] = "显示选定职业的状态。",
 	["Show on %s."] = "在%s上显示。",
+	["Show if mine"] = "显示自身",	
+	["Display status only if the buff was cast by you."] = "显示你施放增益时的状态。",
 	["Show if missing"] = "缺少时显示",
 	["Display status only if the buff is not active."] = "仅在增益缺少时才显示状态。",
-	["Filter Abolished units"] = "过滤无效单位",--try
-	["Skip units that have an active Abolish buff."] = "忽略单位上存在无效效果。",--try...
+	["Filter Abolished units"] = "过滤无效单位",
+	["Skip units that have an active Abolish buff."] = "忽略单位上存在无效效果。",
+	["Show duration"] = "显示持续效果",
+	["Show the time remaining, for use with the center icon cooldown."] = "显示的剩余时间，用于中心的图标冷却。",
 
 	--}}}
 	--{{{ GridStatusName
 	["Unit Name"] = "名字",
 	["Color by class"] = "使用职业颜色",
-	
+
 	--}}}
 	--{{{ GridStatusMana
 	["Mana"] = "法力",
@@ -247,7 +267,7 @@ local strings_zhCN = {
 	["Mana threshold"] = "法力临界点",
 	["Set the percentage for the low mana warning."] = "设置低法力警告的临界点。",
 	["Low Mana warning"] = "低法力警报",
-		
+
 	--}}}
 	--{{{ GridStatusHeals
 	["Heals"] = "治疗",
@@ -257,7 +277,7 @@ local strings_zhCN = {
 	["Show HealComm Users"] = "显示 HealComm 库使用者",
 	["Displays HealComm users and versions."] = "显示 HealComm 库使用者及其版本。",
 	["HealComm Users"] = "HealComm 使用者名单",
-	
+
 	--}}}
 	--{{{ GridStatusHealth
 	["Low HP"] = "低",
@@ -301,10 +321,40 @@ local strings_zhCN = {
 	--{{{ GridStatusVoiceComm
 	["Voice Chat"] = "语音",
 	["Talking"] = "正在说话",
+
+	--}}}
+	--{{{ GridStatusVehicle
+	["In Vehicle"] = "使用载具",
+	["Driving"] = "驾驶中",
 	
 	--}}}
 	--{{{ GridStatusReadyCheck
 	["Ready Check"] = "检查就绪",
+	["Set the delay until ready check results are cleared."] = "设置准备就绪检查结果清除的延迟。",
+	["Delay"] = "延迟",
+	["?"] = "？",
+	["R"] = "是",
+	["X"] = "否",
+	["AFK"] = "暂离",
+	["Waiting color"] = "等待颜色",
+	["Color for Waiting."] = "等待时的颜色。",
+	["Ready color"] = "就绪颜色",
+	["Color for Ready."] = "已就绪时的颜色。",
+	["Not Ready color"] = "未准备好颜色",
+	["Color for Not Ready."] = "未准备好时的颜色。",
+	["AFK color"] = "暂离颜色",
+	["Color for AFK."] = "暂离时的颜色。",
+	
+	--}}}
+	--{{{ Unused translations: translators, please remove these
+	["Show Pets for Party"] = "小队中显示宠物",
+	["Grouped"] = "组队",
+	["Show party/self as an extra group."] = "把自己/小队单独显示出来。",
+	["Select which raid layout to use."] = "选择使用何种团队布局。",
+	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "设置何时显示 Grid：选择“一直”，“组队”或“团队”。",
+	["Raid"] = "团队",
+	["Show the pets for the party below the party itself."] = "小队中在下方显示宠物。",
+	["Show Party in Raid"] = "在团队中显示小队",
 
 	--}}}
 }
