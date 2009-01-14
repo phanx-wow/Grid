@@ -958,6 +958,11 @@ function GridLayout:SavePosition()
 
 	relativePoint = anchor
 
+	if f:GetLeft() == nil then
+		self:Debug("WTF, GetLeft is nil")
+		return
+	end
+
 	if anchor == "CENTER" then
 		x = (f:GetLeft() + f:GetWidth() / 2) * s - UIParent:GetWidth() / 2 * uiScale
 		y = (f:GetTop() - f:GetHeight() / 2) * s - UIParent:GetHeight() / 2 * uiScale
