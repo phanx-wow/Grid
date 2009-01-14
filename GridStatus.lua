@@ -21,6 +21,10 @@ function GridStatus.modulePrototype:OnInitialize()
 	end
 	self.debugging = self.db.profile.debug
 	self.debugFrame = GridStatus.debugFrame
+
+	-- replace UnregisterEvent with our own
+	self.__UnregisterEvent = self.UnregisterEvent
+	self.UnregisterEvent = self._UnregisterEvent
 end
 
 function GridStatus.modulePrototype:OnEnable()
@@ -42,6 +46,14 @@ function GridStatus.modulePrototype:OnDisable()
 		end
 	end
 end
+
+function GridStatus.modulePrototype:_UnregisterEvent(event)
+	if self:IsEventRegistered(event) then
+		self:__UnregisterEvent(event)
+	end
+end
+
+
 
 function GridStatus.modulePrototype:Reset()
 	self.debugging = self.db.profile.debug

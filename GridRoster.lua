@@ -64,6 +64,8 @@ function GridRoster:OnEnable()
 
 	self:RegisterEvent("UNIT_NAME_UPDATE", "UpdateRoster")
 	self:RegisterEvent("UNIT_PORTRAIT_UPDATE", "UpdateRoster")
+
+	self:UpdateRoster()
 end
 
 function GridRoster:GetGUIDByName(name, realm)

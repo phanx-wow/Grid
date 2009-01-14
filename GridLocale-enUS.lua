@@ -9,6 +9,7 @@ local strings_enUS = {
 	["Configure"] = true,
 	["Configure Grid"] = true,
 	["Hide minimap icon"] = true,
+	["Grid is disabled: use '/grid standby' to enable."] = true,
 
 	--}}}
 	--{{{ GridFrame

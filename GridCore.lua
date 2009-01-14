@@ -278,8 +278,17 @@ function Grid:OnEnable()
 	self:TriggerEvent("Grid_Enabled")
 end
 
+StaticPopupDialogs["GRID_DISABLED"] = {
+	text = L["Grid is disabled: use '/grid standby' to enable."],
+	button1 = "Okay",
+	timeout = 0,
+	whileDead = 1,
+}
+
 function Grid:OnDisable()
 	self:Debug("OnDisable")
+	StaticPopup_Show("GRID_DISABLED")
+	self:Print(L["Grid is disabled: use '/grid standby' to enable."])
 	self:TriggerEvent("Grid_Disabled")
 	self:DisableModules()
 end
