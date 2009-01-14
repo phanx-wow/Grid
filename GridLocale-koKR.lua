@@ -9,6 +9,7 @@ local strings_koKR = {
 	["Configure"] = "설정",
 	["Configure Grid"] = "Grid 옵션을 설정합니다.",
 	["Hide minimap icon"] = "미니맵 아이콘 숨김",
+	["Grid is disabled: use '/grid standby' to enable."] = "Grid가 비활성화 되었을시: '/grid standby'를 입력하면 활성화 됩니다.",
 
 	--}}}
 	--{{{ GridFrame
