@@ -1,5 +1,5 @@
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
---中文化 by TWoW 水晶之刺 Youngway
+
 local strings_zhTW = {
 	--{{{ GridCore
 	["Debugging"] = "除錯",
@@ -9,6 +9,7 @@ local strings_zhTW = {
 	["Configure"] = "設定",
 	["Configure Grid"] = "設定 Grid",
 	["Hide minimap icon"] = "隱藏小地圖按鈕",
+	["Grid is disabled: use '/grid standby' to enable."] = "Gird 已被禁用：輸入'/grid standby'的指令啟用。",
 
 	--}}}
 	--{{{ GridFrame
@@ -80,20 +81,21 @@ local strings_zhTW = {
 	--}}}
 	--{{{ GridLayout
 	["Layout"] = "版面編排",
-	["Options for GridLayout."] = "GridLayout 設定選項。",
+	["Options for GridLayout."] = "Grid版面設定選項。",
 
 	-- Layout options
 	["Show Frame"] = "顯示框架",
-	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "選擇於什麼狀態下會顯示 Grid: 「總是」，「隊伍」或「團隊」。",
-	["Always"] = "總是",
-	["Grouped"] = "隊伍",
-	["Raid"] = "團隊",
+
+	["Solo Layout"] = "單人版面編排",
+	["Select which layout to use when not in a party."] = "選擇單人版面編排方式。",
+	["Party Layout"] = "隊伍版面編排",
+	["Select which layout to use when in a party."] = "選擇隊伍版面編排方式。",
 	["Raid Layout"] = "團隊版面編排",
-	["Select which raid layout to use."] = "選擇團隊版面編排方式。",
-	["Show Party in Raid"] = "在團隊中顯示小隊",
-	["Show party/self as an extra group."] = "把自己/小隊顯示為額外小組。",
-	["Show Pets for Party"] = "在隊伍中顯示寵物",
-	["Show the pets for the party below the party itself."] = "在隊伍中顯示該隊伍中的寵物",
+	["Select which layout to use when in a raid."] = "選擇團隊版面編排方式。",
+	["Battleground Layout"] = "戰場版面編排",
+	["Select which layout to use when in a battleground."] = "選擇戰場版面編排方式。",
+	["Arena Layout"] = "競技場版面編排",
+	["Select which layout to use when in an arena."] = "選擇競技場版面編排方式。",
 	["Horizontal groups"] = "橫向顯示小組",
 	["Switch between horzontal/vertical groups."] = "轉換橫向/垂直顯示小組。",
 	["Clamped to screen"] = "限制框架於視窗內",
@@ -136,6 +138,10 @@ local strings_zhTW = {
 	["Beast"] = "野獸",
 	["Demon"] = "惡魔",
 	["Humanoid"] = "人形生物",
+	["Undead"] = "不死生物",
+	["Dragonkin"] = "龍類",
+	["Elemental"] = "元素生物",
+	["Not specified"] = "未指定",
 	["Colors"] = "顏色",
 	["Color options for class and pets."] = "職業與寵物的顏色選項。",
 	["Fallback colors"] = "備用顏色",
@@ -203,6 +209,16 @@ local strings_zhTW = {
 	--{{{ GridStatusAggro
 	["Aggro"] = "仇恨",
 	["Aggro alert"] = "仇恨警告",
+	["High Threat color"] = "高仇恨的顏色",
+	["Color for High Threat."] = "高仇恨時的顏色。",
+	["Aggro color"] = "仇恨的顏色",
+	["Color for Aggro."] = "獲得仇恨時的顏色",
+	["Tanking color"] = "坦克的顏色",
+	["Color for Tanking."] = "坦克時的顏色。",
+	["Threat"] = "仇恨",
+	["Show more detailed threat levels."] = "顯示更詳細的仇恨值",
+	["High"] = "高",
+	["Tank"] = "坦克",
 
 	--}}}
 	--{{{ GridStatusAuras
@@ -230,10 +246,14 @@ local strings_zhTW = {
 	["Class Filter"] = "職業過濾",
 	["Show status for the selected classes."] = "顯示選定職業的狀態。",
 	["Show on %s."] = "在%s上顯示。",
+	["Show if mine"] = "顯示我的",	
+	["Display status only if the buff was cast by you."] = "顯示只有你所施放的增益。",
 	["Show if missing"] = "顯示缺少",
 	["Display status only if the buff is not active."] = "當缺少增益時提示。",
-	["Filter Abolished units"] = "過濾驅散單位", -- need check
-	["Skip units that have an active Abolish buff."] = "略過身上有驅散增益的單位。", -- need check
+	["Filter Abolished units"] = "過濾驅散單位",
+	["Skip units that have an active Abolish buff."] = "略過身上有驅散增益的單位。",
+	["Show duration"] = "顯示持續時間",
+	["Show the time remaining, for use with the center icon cooldown."] = "在圖示中顯示持續時間。",
 
 	--}}}
 	--{{{ GridStatusName
@@ -301,10 +321,40 @@ local strings_zhTW = {
 	--{{{ GridStatusVoiceComm
 	["Voice Chat"] = "語音",
 	["Talking"] = "說話中",
+
+	--}}}
+	--{{{ GridStatusVehicle
+	["In Vehicle"] = "載具上",
+	["Driving"] = "操作",
 	
 	--}}}
 	--{{{ GridStatusReadyCheck
 	["Ready Check"] = "檢查就緒",
+	["Set the delay until ready check results are cleared."] = "設定檢查就續結果清除的延遲。",
+	["Delay"] = "延遲",
+	["?"] = "？",
+	["R"] = "是",
+	["X"] = "否",
+	["AFK"] = "暫離",
+	["Waiting color"] = "等待中的顏色",
+	["Color for Waiting."] = "等待中的顏色",
+	["Ready color"] = "就緒的顏色",
+	["Color for Ready."] = "就緒的顏色",
+	["Not Ready color"] = "尚未就緒的顏色",
+	["Color for Not Ready."] = "尚未就緒的顏色",
+	["AFK color"] = "暫離的顏色",
+	["Color for AFK."] = "暫離的顏色",
+	
+	--}}}
+	--{{{ Unused translations: translators, please remove these
+	["Show Pets for Party"] = "隊伍中顯示寵物",
+	["Grouped"] = "隊伍",
+	["Show party/self as an extra group."] = "將自己/小隊額外顯示出來。",
+	["Select which raid layout to use."] = "選擇使用何種團隊版面",
+	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "設定何時顯示Grid：可選'總是'，'隊伍'或'團隊'。",
+	["Raid"] = "團隊",
+	["Show the pets for the party below the party itself."] = "在小隊下方顯示該隊員的寵物。",
+	["Show Party in Raid"] = "在團隊中顯示小隊",
 
 	--}}}
 }
