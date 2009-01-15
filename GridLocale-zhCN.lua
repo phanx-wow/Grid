@@ -187,7 +187,7 @@ local strings_zhCN = {
 	--}}}
 	--{{{ GridRange
 	-- used for getting spell range from tooltip
-	["(%d+) yd range"] = "(%d+)码距离",
+	["(%d+) yd range"] = "(%d+)码射程",
 
 	--}}}
 	--{{{ GridStatus
