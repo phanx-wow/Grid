@@ -166,6 +166,7 @@ GridLayout.defaultDB = {
 
 	anchor = "TOPLEFT",
 	groupAnchor = "TOPLEFT",
+	hideTab = false,
 
 	PosX = 500,
 	PosY = -400,
@@ -383,6 +384,16 @@ GridLayout.options = {
 			desc = L["Advanced options."],
 			order = -1,
 			args = {
+				["hidetab"] = {
+					type = "toggle",
+					name = L["Hide tab"],
+					desc = L["Do not show the tab when Grid is unlocked."],
+					get = function () return GridLayout.db.profile.hideTab end,
+					set = function (v)
+							  GridLayout.db.profile.hideTab = v
+							  GridLayout:UpdateTabVisibility()
+						  end,
+				},
 				["layoutanchor"] = {
 					type = "text",
 					name = L["Layout Anchor"],
@@ -552,7 +563,10 @@ function GridLayout:StopMoveFrame()
 end
 
 function GridLayout:UpdateTabVisibility()
-	if self.db.profile.FrameLock then
+	local settings = self.db.profile
+	self.frame:EnableMouse(settings.hideTab)
+
+	if settings.FrameLock or settings.hideTab then
 		self.frame.tab:Hide()
 	else
 		self.frame.tab:Show()
@@ -560,7 +574,11 @@ function GridLayout:UpdateTabVisibility()
 end
 
 local function GridLayout_OnMouseDown(frame, button)
-	if button == "LeftButton" then
+	if button == "LeftButton" and IsAltKeyDown() then
+		GridLayout.db.profile.hideTab = true
+		GridLayout:UpdateTabVisibility()
+	end
+	if button == "LeftButton" and not IsModifierKeyDown() then
 		GridLayout:StartMoveFrame()
 	end
 end
@@ -569,13 +587,29 @@ local function GridLayout_OnMouseUp(frame)
 	GridLayout:StopMoveFrame()
 end
 
+local function GridLayout_OnEnter(frame)
+	local tip = GameTooltip
+	tip:SetOwner(frame, "ANCHOR_LEFT")
+	tip:SetText(L["Drag this tab to move Grid."])
+	tip:AddLine(L["Lock Grid to hide this tab."])
+	tip:AddLine(L["Alt-Click to permanantly hide this tab."])
+	tip:Show()
+end
+
+local function GridLayout_OnLeave(frame)
+	local tip = GameTooltip
+	tip:Hide()
+end
+
 function GridLayout:CreateFrames()
 	-- create main frame to hold all our gui elements
 	local f = CreateFrame("Frame", "GridLayoutFrame", UIParent)
 	f:SetMovable(true)
 	f:SetClampedToScreen(self.db.profile.clamp)
 	f:SetPoint("CENTER", UIParent, "CENTER")
-	f:SetScript("OnHide", GridLayout__OnMouseUp)
+	f:SetScript("OnMouseDown", GridLayout_OnMouseDown)
+	f:SetScript("OnMouseUp", GridLayout_OnMouseUp)
+	f:SetScript("OnHide", GridLayout_OnMouseUp)
 	f:SetFrameStrata("MEDIUM")
 
 	-- create background
@@ -609,6 +643,8 @@ function GridLayout:CreateFrames()
 	f.tab:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 1, -4)
 	f.tab:SetScript("OnMouseDown", GridLayout_OnMouseDown)
 	f.tab:SetScript("OnMouseUp", GridLayout_OnMouseUp)
+	f.tab:SetScript("OnEnter", GridLayout_OnEnter)
+	f.tab:SetScript("OnLeave", GridLayout_OnLeave)
 	f.tab:Hide()
 
 	-- Handle/Tab Background
@@ -644,7 +680,6 @@ function GridLayout:CreateFrames()
 									   "BACKGROUND", "GameFontNormalSmall")
 	f.tabText:SetText("Grid")
 	f.tabText:SetPoint("TOP", f.tab, "TOP", 0, -5)
-
 
 	self.frame = f
 end

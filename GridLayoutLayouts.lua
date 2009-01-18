@@ -141,16 +141,23 @@ GridLayout:AddLayout(L["By Group 10 w/Pets"], {
 
 GridLayout:AddLayout(L["By Group 5"], {
 			     [1] = {
-				     groupFilter = "1",
+					 showParty = true,
+					 showRaid = false,
+					 sortMethod = "INDEX",
 			     },
 		     })
 
 GridLayout:AddLayout(L["By Group 5 w/Pets"], {
 			     [1] = {
-				     groupFilter = "1",
+					 showParty = true,
+					 showRaid = false,
+					 sortMethod = "INDEX",
 			     },
 			     [2] = {
-					 groupFilter = "1",
+					 showParty = true,
+					 showRaid = false,
+					 sortMethod = "INDEX",
+
 				     isPetGroup = true,
 				     unitsPerColumn = 5,
 				     maxColumns = 5,

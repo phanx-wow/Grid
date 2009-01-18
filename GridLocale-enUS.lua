@@ -83,6 +83,10 @@ local strings_enUS = {
 	["Layout"] = true,
 	["Options for GridLayout."] = true,
 
+	["Drag this tab to move Grid."] = true,
+	["Lock Grid to hide this tab."] = true,
+	["Alt-Click to permanantly hide this tab."] = true,
+
 	-- Layout options
 	["Show Frame"] = true,
 
@@ -165,6 +169,8 @@ local strings_enUS = {
 	["Sets where groups are anchored relative to the layout frame."] = true,
 	["Reset Position"] = true,
 	["Resets the layout frame's position and anchor."] = true,
+	["Hide tab"] = true,
+	["Do not show the tab when Grid is unlocked."] = true,
 
 	--}}}
 	--{{{ GridLayoutLayouts
