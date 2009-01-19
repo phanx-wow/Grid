@@ -82,6 +82,10 @@ local strings_ruRU = {
 	--{{{ GridLayout
     ["Layout"] = "Расположение",
 	["Options for GridLayout."] = "Опции для GridLayout",
+	
+	["Drag this tab to move Grid."] = "Перетаскивая этот ярлык вы перемстите Grid.",
+	["Lock Grid to hide this tab."] = "Закрепить Grid чтобы скрыть данный ярлык.",
+	["Alt-Click to permanantly hide this tab."] = "Alt-Клик скрывает данный ярлык.",
 
 	-- Layout options
 	["Show Frame"] = "Показать фреймы",
@@ -166,6 +170,9 @@ local strings_ruRU = {
 	["Sets where groups are anchored relative to the layout frame."] = "Установить пометку где будет находиться группа на экране",
 	["Reset Position"] = "Сбросить Позицию",
 	["Resets the layout frame's position and anchor."] = "Сбросить положение фреймов и пометок",
+	["Hide tab"] = "Скрыть ярлык",
+	["Do not show the tab when Grid is unlocked."] = "Не отображать ярлык когда Grid откреплен.",
+
 
 	--}}}
 	--{{{ GridLayoutLayouts
