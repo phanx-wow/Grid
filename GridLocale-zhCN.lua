@@ -83,6 +83,10 @@ local strings_zhCN = {
 	["Layout"] = "布局",
 	["Options for GridLayout."] = "Grid 布局的选项。",
 
+	["Drag this tab to move Grid."] = "拖动此标签移动 Grid。",
+	["Lock Grid to hide this tab."] = "锁定 Grid 隐藏此标签。",
+	["Alt-Click to permanantly hide this tab."] = "Alt-单击总是隐藏此标签。",
+
 	-- Layout options
 	["Show Frame"] = "显示框架",
 
@@ -165,6 +169,8 @@ local strings_zhCN = {
 	["Sets where groups are anchored relative to the layout frame."] = "设置布局中队伍的锚点。",
 	["Reset Position"] = "重置位置",
 	["Resets the layout frame's position and anchor."] = "重置布局框架的位置和锚点。",
+	["Hide tab"] = "隐藏标签",
+	["Do not show the tab when Grid is unlocked."] = "当未锁定 Grid 时不显示标签。",
 
 	--}}}
 	--{{{ GridLayoutLayouts
