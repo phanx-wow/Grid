@@ -14,10 +14,10 @@ local strings_deDE = {
 	--}}}
 	--{{{ GridFrame
 	["Frame"] = "Rahmen",
-	["Options for GridFrame."] = "Optionen für den Grid Rahmen.",
+	["Options for GridFrame."] = "Optionen für den Grid-Rahmen.",
 
 	["Show Tooltip"] = "Zeige Tooltip",
-	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "Anzeige des Tooltips. Wähle 'Immer', 'Nie' oder 'Außerhalb des Kampfes'.",
+	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "Wann sollen Tooltips angezeigt werden: 'Außerhalb des Kampfes', 'Immer' oder 'Nie'.",
 	["Always"] = "Immer",
 	["Never"] = "Nie",
 	["OOC"] = "Außerhalb des Kampfes",
@@ -83,6 +83,10 @@ local strings_deDE = {
 	["Layout"] = "Layout",
 	["Options for GridLayout."] = "Optionen für das Layout von Grid.",
 
+	["Drag this tab to move Grid."] = "Reiter klicken und bewegen, um Grid zu verschieben.",
+	["Lock Grid to hide this tab."] = "'Grid sperren' um diesen Reiter zu verstecken.",
+	["Alt-Click to permanantly hide this tab."] = "Alt-Klick um diesen Reiter immer zu verstecken.",
+
 	-- Layout options
 	["Show Frame"] = "Zeige Rahmen",
 
@@ -99,11 +103,11 @@ local strings_deDE = {
 	["Horizontal groups"] = "Horizontal gruppieren",
 	["Switch between horzontal/vertical groups."] = "Wechselt zwischen horizontaler/vertikaler Gruppierung.",
 	["Clamped to screen"] = "Im Bildschirm lassen",
-	["Toggle whether to permit movement out of screen."] = "Legt fest ob der Rahmen im Bildschirm bleiben soll.",
-	["Frame lock"] = "Rahmen sperren",
-	["Locks/unlocks the grid for movement."] = "Sperrt/entsperrt den Rahmen zum Bewegen.",
-	["Click through the Grid Frame"] = "Durch Grid Rahmen klicken",
-	["Allows mouse click through the Grid Frame."] = "Erlaubt Mausklicks durch den Grid Rahmen.",
+	["Toggle whether to permit movement out of screen."] = "Legt fest ob der Grid-Rahmen im Bildschirm bleiben soll.",
+	["Frame lock"] = "Grid sperren",
+	["Locks/unlocks the grid for movement."] = "Sperrt Grid oder entsperrt Grid, um den Rahmen zu verschieben.",
+	["Click through the Grid Frame"] = "Durch Grid-Rahmen klicken",
+	["Allows mouse click through the Grid Frame."] = "Erlaubt Mausklicks durch den Grid-Rahmen.",
 
 	["CENTER"] = "ZENTRIERT",
 	["TOP"] = "OBEN",
@@ -134,7 +138,7 @@ local strings_deDE = {
 	["Set the coloring strategy of pet units."] = "Legt fest, wie die Begleiter eingefärbt werden.",
 	["By Owner Class"] = "Nach Besitzerklasse",
 	["By Creature Type"] = "Nach Kreaturtyp",
-	["Using Fallback color"] = "Nach Standardfarben",
+	["Using Fallback color"] = "Nach Ersatzfarbe",
 	["Beast"] = "Wildtier",
 	["Demon"] = "Dämon",
 	["Humanoid"] = "Humanoid",
@@ -144,7 +148,7 @@ local strings_deDE = {
 	["Not specified"] = "Nicht spezifiziert",
 	["Colors"] = "Farben",
 	["Color options for class and pets."] = "Legt fest, wie Klassen und Begleiter eingefärbt werden.",
-	["Fallback colors"] = "Standardfarben",
+	["Fallback colors"] = "Ersatzfarben",
 	["Color of unknown units or pets."] = "Farbe für unbekannte Einheiten oder Begleiter.",
 	["Unknown Unit"] = "Unbekannte Einheit",
 	["The color of unknown units."] = "Farbe für unbekannte Einheiten.",
@@ -165,6 +169,8 @@ local strings_deDE = {
 	["Sets where groups are anchored relative to the layout frame."] = "Setzt den Ankerpunkt der Gruppe relativ zum Layoutrahmen.",
 	["Reset Position"] = "Position zurücksetzen",
 	["Resets the layout frame's position and anchor."] = "Setzt den Ankerpunkt und die Position des Layoutrahmens zurück.",
+	["Hide tab"] = "Reiter verstecken",
+	["Do not show the tab when Grid is unlocked."] = "Reiter immer verstecken. (Egal ob Grid gesperrt oder entsperrt ist.)",
 
 	--}}}
 	--{{{ GridLayoutLayouts
