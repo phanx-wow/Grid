@@ -83,6 +83,10 @@ local strings_koKR = {
 	["Layout"] = "배치",
 	["Options for GridLayout."] = "배치 창과 그룹 배치를 위한 옵션을 설정합니다.",
 
+	["Drag this tab to move Grid."] = "Grid를 이동시키려면 이 탭을 드래그합니다.",
+	["Lock Grid to hide this tab."] = "이 탭을 숨기려면 Grid를 잠급니다.",
+	["Alt-Click to permanantly hide this tab."] = "영구적으로 Alt-클릭으로 이 탭을 숨깁니다.",
+
 	-- Layout options
 	["Show Frame"] = "창 표시",
 
@@ -100,8 +104,8 @@ local strings_koKR = {
 	["Switch between horzontal/vertical groups."] = "그룹 표시 방법을 가로/세로로 변경합니다.",
 	["Clamped to screen"] = "화면에 고정",
 	["Toggle whether to permit movement out of screen."] = "화면 밖으로 창이 나가지 않도록 사용합니다.",
-	["Frame lock"] = "창 고정",
-	["Locks/unlocks the grid for movement."] = "배치 창을 고정하거나 이동시킵니다.",
+	["Frame lock"] = "창 잠금",
+	["Locks/unlocks the grid for movement."] = "배치 창을 잠그거나 이동시킵니다.",
 	["Click through the Grid Frame"] = "창을 통해 클릭",
 	["Allows mouse click through the Grid Frame."] = "배치 창 위의 마우스 클릭을 허락합니다.",
 
@@ -165,6 +169,8 @@ local strings_koKR = {
 	["Sets where groups are anchored relative to the layout frame."] = "그룹 배치 창의 위치를 설정합니다.",
 	["Reset Position"] = "위치 초기화",
 	["Resets the layout frame's position and anchor."] = "배경 창의 위치와 앵커를 초기화 합니다.",
+	["Hide tab"] = "탭 숨김",
+	["Do not show the tab when Grid is unlocked."] = "Grid가 잠금 해제될 때 탭을 표시하지 않습니다.",
 
 	--}}}
 	--{{{ GridLayoutLayouts
@@ -182,7 +188,7 @@ local strings_koKR = {
 	["By Class"] = "직업별",
 	["By Class w/Pets"] = "직업별, 소환수",
 	["Onyxia"] = "오닉시아",
-	["By Group 25 w/tanks"] = "25인 공격대, 탱커",
+	["By Group 25 w/tanks"] = "25인 공격대, 방어전담",
 
 	--}}}
 	--{{{ GridRange
