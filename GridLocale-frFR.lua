@@ -9,6 +9,7 @@ local strings_frFR = {
 	["Configure"] = "Configurer",
 	["Configure Grid"] = "Configure Grid.",
 	["Hide minimap icon"] = "Cacher icône minicarte",
+	["Grid is disabled: use '/grid standby' to enable."] = "Grid est désactivé : utilisez '/grid standby' pour l'activer.",
 
 	--}}}
 	--{{{ GridFrame
@@ -81,6 +82,10 @@ local strings_frFR = {
 	--{{{ GridLayout
 	["Layout"] = "Grille",
 	["Options for GridLayout."] = "Options concernant GridLayout.",
+
+	["Drag this tab to move Grid."] = "Saississez cet onglet pour déplacer Grid.",
+	["Lock Grid to hide this tab."] = "Verrouillez Grid pour cacher cet onglet.",
+	["Alt-Click to permanantly hide this tab."] = "Alt+clic gauche pour cacher cet onglet de façon permanente.",
 
 	-- Layout options
 	["Show Frame"] = "Afficher la grille",
@@ -164,6 +169,8 @@ local strings_frFR = {
 	["Sets where groups are anchored relative to the layout frame."] = "Détermine où les groupes sont ancrés par rapport à la grille.",
 	["Reset Position"] = "RÀZ de la position",
 	["Resets the layout frame's position and anchor."] = "Réinitialise la position et l'ancrage du cadre de style.",
+	["Hide tab"] = "Cacher l'onglet",
+	["Do not show the tab when Grid is unlocked."] = "N'affiche pas l'onglet quand Grid est déverrouillé.",
 
 	--}}}
 	--{{{ GridLayoutLayouts
@@ -208,6 +215,16 @@ local strings_frFR = {
 	--{{{ GridStatusAggro
 	["Aggro"] = "Aggro",
 	["Aggro alert"] = "Prise d'aggro",
+	["High Threat color"] = "Couleur Menace haute",
+	["Color for High Threat."] = "La couleur à utiliser pour la menace haute.",
+	["Aggro color"] = "Couleur Aggro",
+	["Color for Aggro."] = "La couleur à utiliser pour l'aggro.",
+	["Tanking color"] = "Couleur Tank",
+	["Color for Tanking."] = "La couleur à utiliser pour les tanks.",
+	["Threat"] = "Menace",
+	["Show more detailed threat levels."] = "Affiche des niveaux de menace plus détaillés.",
+	["High"] = "Haut",
+	["Tank"] = "Tank",
 
 	--}}}
 	--{{{ GridStatusAuras
@@ -294,7 +311,7 @@ local strings_frFR = {
 	--{{{ GridStatusRange
 	["Range"] = "Portée",
 	["Range check frequency"] = "Fréquence des vérifications",
-	["Seconds between range checks"] = "Détermine le nombre de secondes entre chaque vérification de portée.",
+	["Seconds between range checks"] = "Le nombre de secondes entre chaque vérification de portée.",
 	["More than %d yards away"] = "À plus de %d mètres",
 	["%d yards"] = "%d mètres",
 	["Text"] = "Texte",
@@ -326,13 +343,13 @@ local strings_frFR = {
 	["X"] = "X",
 	["AFK"] = "ABS",
 	["Waiting color"] = "Couleur En attente",
-	["Color for Waiting."] = "La couleur de ceux qui n'ont pas encore répondu.",
+	["Color for Waiting."] = "La couleur à  utiliser pour ceux qui n'ont pas encore répondu.",
 	["Ready color"] = "Couleur Prêt",
-	["Color for Ready."] = "La couleur de ceux qui sont prêts.",
+	["Color for Ready."] = "La couleur à utiliser pour ceux qui sont prêts.",
 	["Not Ready color"] = "Couleur Pas prêt",
 	["Color for Not Ready."] = "La couleur de ceux qui ne sont pas prêts.",
 	["AFK color"] = "Couleur ABS",
-	["Color for AFK."] = "La couleur des absents.",
+	["Color for AFK."] = "La couleur à utiliser pour les absents.",
 
 	--}}}
 }
