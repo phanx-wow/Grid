@@ -763,16 +763,15 @@ function GridStatusAuras:ScanUnitAuras(unit)
 		if not name then
 			break
 		end
-
 		if not abolish_types_seen[debuffType] then
 			if debuff_names[name] then
 				debuff_names_seen[name] = true
 				self:UnitGainedDebuff(guid, class, name, rank, icon, count,
 									  debuffType, duration, expirationTime,
 									  isMine, isStealable)
-			end
 
-			if debuff_types[debuffType] then
+			elseif debuff_types[debuffType] then
+				-- elseif so that a named debuff doesn't trigger the type status
 				debuff_types_seen[debuffType] = true
 				self:UnitGainedDebuffType(guid, class, name, rank, icon, count,
 										  debuffType, duration, expirationTime,
