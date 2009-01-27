@@ -94,6 +94,7 @@ function GridFrameClass.prototype:Reset()
 	self:SetTextOrientation(GridFrame.db.profile.textorientation)
 	self:EnableText2(GridFrame.db.profile.enableText2)
 	self:SetIconSize(GridFrame.db.profile.iconSize, GridFrame.db.profile.iconBorderSize)
+	self:EnableMouseoverHighlight(GridFrame.db.profile.enableMouseoverHighlight)
 end
 
 function GridFrameClass.prototype:CreateFrames()
@@ -214,7 +215,7 @@ function GridFrameClass.prototype:CreateFrames()
 
 	-- set texture
 	f:SetNormalTexture(1,1,1,0)
-	f:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
+	self:EnableMouseoverHighlight(GridFrame.db.profile.enableMouseoverHighlight)
 
 	self.frame = f
 
@@ -380,6 +381,10 @@ function GridFrameClass.prototype:SetIconSize(size, borderSize)
 
 	f.Icon:SetWidth(size)
 	f.Icon:SetHeight(size)
+end
+
+function GridFrameClass.prototype:EnableMouseoverHighlight(enabled)
+	self.frame:SetHighlightTexture(enabled and "Interface\\QuestFrame\\UI-QuestTitleHighlight" or nil)
 end
 
 function GridFrameClass.prototype:SetFrameFont(font, size)
@@ -704,6 +709,7 @@ GridFrame.defaultDB = {
 	iconBorderSize = 1,
 	enableIconStackText = true,
 	enableIconCooldown = true,
+	enableMouseoverHighlight = true,
 	debug = false,
 	invertBarColor = false,
 	showTooltip = "OOC",
@@ -995,6 +1001,19 @@ GridFrame.options = {
 					set = function (v)
 							GridFrame.db.profile.enableIconCooldown = v
 							GridFrame:UpdateAllFrames()
+						end,
+				},
+				["mouseoverhighlight"] = {
+					type = "toggle",
+					name = string.format(L["Enable Mouseover Highlight"]),
+					desc = L["Toggle mouseover highlight."],
+					order = 22,
+					get = function ()
+						      return GridFrame.db.profile.enableMouseoverHighlight
+					      end,
+					set = function (v)
+							GridFrame.db.profile.enableMouseoverHighlight = v
+							GridFrame:WithAllFrames(function (f) f:EnableMouseoverHighlight(v) end)
 						end,
 				},
 				["fontsize"] = {
