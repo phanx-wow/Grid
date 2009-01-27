@@ -5,7 +5,7 @@ local strings_zhTW = {
 	["Debugging"] = "除錯",
 	["Module debugging menu."] = "除錯模組設定。",
 	["Debug"] = "除錯",
-	["Toggle debugging for %s."] = "啟用 %s 的除錯訊息。",
+	["Toggle debugging for %s."] = "啟用/禁用 %s 的除錯訊息。",
 	["Configure"] = "設定",
 	["Configure Grid"] = "設定 Grid",
 	["Hide minimap icon"] = "隱藏小地圖按鈕",
@@ -44,13 +44,13 @@ local strings_zhTW = {
 
 	["Options for %s indicator."] = "%s提示器的設定選項。",
 	["Statuses"] = "狀態",
-	["Toggle status display."] = "切換顯示狀態。",
+	["Toggle status display."] = "啟用/禁用顯示狀態。",
 
 	-- Advanced options
 	["Advanced"] = "進階",
 	["Advanced options."] = "進階選項。",
 	["Enable %s indicator"] = "啟用%s提示器",
-	["Toggle the %s indicator."] = "切換%s提示器。",
+	["Toggle the %s indicator."] = "啟用/禁用%s提示器。",
 	["Frame Width"] = "框架寬度",
 	["Adjust the width of each unit's frame."] = "為每一個單位框架調整寬度。",
 	["Frame Height"] = "框架高度",
@@ -59,6 +59,8 @@ local strings_zhTW = {
 	["Adjust the texture of each unit's frame."] = "調整每一個單位框架的材質。",
 	["Corner Size"] = "角落提示器大小",
 	["Adjust the size of the corner indicators."] = "調整角落提示器的大小。",
+	["Enable Mouseover Highlight"] = "啟用滑鼠懸停高亮",
+	["Toggle mouseover highlight."] = "啟用/禁用滑鼠懸停高亮。",
 	["Font"] = "字型設定",
 	["Adjust the font settings"] = "調整字型。",
 	["Font Size"] = "字型大小",
@@ -74,14 +76,18 @@ local strings_zhTW = {
 	["Icon Border Size"] = "圖示邊框大小",
 	["Adjust the size of the center icon's border."] = "調整中央圖示的邊框大小",
 	["Icon Stack Text"] = "圖示堆疊文字",
-	["Toggle center icon's stack count text."] = "啟用圖示的堆疊計數文字。",
+	["Toggle center icon's stack count text."] = "啟用/禁用圖示的堆疊計數文字。",
 	["Icon Cooldown Frame"] = "圖示冷卻時間框架",
-	["Toggle center icon's cooldown frame."] = "啟用圖示的冷卻時間框架。",
+	["Toggle center icon's cooldown frame."] = "啟用/禁用圖示的冷卻時間框架。",
 
 	--}}}
 	--{{{ GridLayout
 	["Layout"] = "版面編排",
 	["Options for GridLayout."] = "Grid版面設定選項。",
+
+	["Drag this tab to move Grid."] = "拖動此標簽移動 Grid。",
+	["Lock Grid to hide this tab."] = "鎖定 Grid 隱藏此標簽。",
+	["Alt-Click to permanantly hide this tab."] = "Alt-單擊總是隱藏此標簽。。",
 
 	-- Layout options
 	["Show Frame"] = "顯示框架",
@@ -99,7 +105,7 @@ local strings_zhTW = {
 	["Horizontal groups"] = "橫向顯示小組",
 	["Switch between horzontal/vertical groups."] = "轉換橫向/垂直顯示小組。",
 	["Clamped to screen"] = "限制框架於視窗內",
-	["Toggle whether to permit movement out of screen."] = "限制框架於視窗內，避免拖曳出視窗外。",
+	["Toggle whether to permit movement out of screen."] = "啟用/禁用框架於視窗內限制，避免拖曳出視窗外。",
 	["Frame lock"] = "鎖定框架",
 	["Locks/unlocks the grid for movement."] = "鎖定/解鎖 Grid 框架。",
 	["Click through the Grid Frame"] = "透過點擊 Grid 框架", 
@@ -165,6 +171,8 @@ local strings_zhTW = {
 	["Sets where groups are anchored relative to the layout frame."] = "設定版面編排中的小組錨點。",
 	["Reset Position"] = "重設位置",
 	["Resets the layout frame's position and anchor."] = "重設版面位置和錨點。",
+	["Hide tab"] = "隱藏標簽",
+	["Do not show the tab when Grid is unlocked."] = "當未鎖定 Grid 時不顯示標簽。",
 
 	--}}}
 	--{{{ GridLayoutLayouts

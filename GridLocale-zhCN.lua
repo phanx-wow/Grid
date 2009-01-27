@@ -3,11 +3,11 @@ local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local strings_zhCN = {
 	--{{{ GridCore
 	["Debugging"] = "除错",
-	["Module debugging menu."] = "除错模块设置。",
+	["Module debugging menu."] = "除错模块配置。",
 	["Debug"] = "除错",
-	["Toggle debugging for %s."] = "激活%s的除错。",
-	["Configure"] = "设置",
-	["Configure Grid"] = "设置 Grid",
+	["Toggle debugging for %s."] = "打开/关闭%s的除错。",
+	["Configure"] = "配置",
+	["Configure Grid"] = "配置 Grid",
 	["Hide minimap icon"] = "隐藏迷你地图按钮",
 	["Grid is disabled: use '/grid standby' to enable."] = "Gird 已被禁用：使用“/grid standby”命令启用。",
 
@@ -44,12 +44,12 @@ local strings_zhCN = {
 
 	["Options for %s indicator."] = "%s提示器的选项。",
 	["Statuses"] = "状态",
-	["Toggle status display."] = "选择显示状态。",
+	["Toggle status display."] = "打开/关闭显示状态。",
 
 	-- Advanced options
 	["Advanced"] = "高级",
 	["Advanced options."] = "高级选项。",
-	["Enable %s indicator"] = "激活%s指示",
+	["Enable %s indicator"] = "启用%s指示",
 	["Toggle the %s indicator."] = "打开/关闭%s指示。",
 	["Frame Width"] = "框架宽度",
 	["Adjust the width of each unit's frame."] = "调整个体框架的宽度。",
@@ -59,6 +59,8 @@ local strings_zhCN = {
 	["Adjust the texture of each unit's frame."] = "调整个体框架的材质。",
 	["Corner Size"] = "边角指示大小",
 	["Adjust the size of the corner indicators."] = "调整边角指示的大小。",
+	["Enable Mouseover Highlight"] = "启用鼠标悬停高亮",
+	["Toggle mouseover highlight."] = "打开/关闭鼠标悬停高亮。",
 	["Font"] = "字体",
 	["Adjust the font settings"] = "调整字体",
 	["Font Size"] = "字体大小",
@@ -74,9 +76,9 @@ local strings_zhCN = {
 	["Icon Border Size"] = "图标边框大小",
 	["Adjust the size of the center icon's border."] = "调整屏幕中心图标边框的大小。",
 	["Icon Stack Text"] = "图标堆叠文字",
-	["Toggle center icon's stack count text."] = "启用中心图标的堆叠计数文字。",
+	["Toggle center icon's stack count text."] = "打开/关闭中心图标的堆叠计数文字。",
 	["Icon Cooldown Frame"] = "图标冷却时间框架",
-	["Toggle center icon's cooldown frame."] = "启用中心图标的冷却时间框架。",
+	["Toggle center icon's cooldown frame."] = "打开/关闭中心图标的冷却时间框架。",
 
 	--}}}
 	--{{{ GridLayout
@@ -193,7 +195,7 @@ local strings_zhCN = {
 	--}}}
 	--{{{ GridRange
 	-- used for getting spell range from tooltip
-	["(%d+) yd range"] = "(%d+)码射程",
+	["(%d+) yd range"] = "(%d+)码距离",
 
 	--}}}
 	--{{{ GridStatus
@@ -208,8 +210,8 @@ local strings_zhCN = {
 	["Priority for %s"] = "%s的优先度",
 	["Range filter"] = "距离过滤",
 	["Range filter for %s"] = "%s的距离过滤",
-	["Enable"] = "激活",
-	["Enable %s"] = "激活%s",
+	["Enable"] = "启用",
+	["Enable %s"] = "启用%s",
 
 	--}}}
 	--{{{ GridStatusAggro
