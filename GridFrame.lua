@@ -1217,22 +1217,40 @@ function GridFrame:UpdateIndicators(frame)
 
 	-- self.statusmap[indicator][status]
 	for indicator in pairs(self.db.profile.statusmap) do
-		status = self:StatusForIndicator(unitid, indicator)
-		if status then
-			-- self:Debug("Showing status", status.text, "for", name, "on", indicator)
-			frame:SetIndicator(indicator,
-							   status.color,
-							   status.text,
-							   status.value,
-							   status.maxValue,
-							   status.texture,
-							   status.start,
-							   status.duration,
-							   status.stack)
-		else
-			-- self:Debug("Clearing indicator", indicator, "for", name)
-			frame:ClearIndicator(indicator)
+		self:UpdateIndicator(frame, unitid, indicator)
+	end
+end
+
+function GridFrame:UpdateIndicatorsForStatus(frame, status)
+	local indicator, status
+	local unitid = frame.unit or frame.frame and frame.frame.GetAttribute and frame.frame:GetAttribute("unit")
+	if not unitid then return end
+
+	-- self.statusmap[indicator][status]
+	local statusmap = self.db.profile.statusmap
+	for indicator in pairs(statusmap) do
+		if statusmap[status] then
+			self:UpdateIndicator(frame, unitid, indicator)
 		end
+	end
+end
+
+function GridFrame:UpdateIndicator(frame, unitid, indicator)
+	local status = self:StatusForIndicator(unitid, indicator)
+	if status then
+		-- self:Debug("Showing status", status.text, "for", name, "on", indicator)
+		frame:SetIndicator(indicator,
+						   status.color,
+						   status.text,
+						   status.value,
+						   status.maxValue,
+						   status.texture,
+						   status.start,
+						   status.duration,
+						   status.stack)
+	else
+		-- self:Debug("Clearing indicator", indicator, "for", name)
+		frame:ClearIndicator(indicator)
 	end
 end
 
@@ -1300,7 +1318,7 @@ function GridFrame:Grid_StatusGained(guid, status, priority, range, color, text,
 
 	for frameName,frame in pairs(self.registeredFrames) do
 		if frame.unitGUID == guid then
-			self:UpdateIndicators(frame)
+			self:UpdateIndicatorsForStatus(frame, status)
 		end
 	end
 end
@@ -1311,7 +1329,7 @@ function GridFrame:Grid_StatusLost(guid, status)
 
 	for frameName,frame in pairs(self.registeredFrames) do
 		if frame.unitGUID == guid then
-			self:UpdateIndicators(frame)
+			self:UpdateIndicatorsForStatus(frame, status)
 		end
 	end
 end
