@@ -1211,7 +1211,6 @@ function GridFrame:GetCornerSize()
 end
 
 function GridFrame:UpdateIndicators(frame)
-	local indicator, status
 	local unitid = frame.unit or frame.frame and frame.frame.GetAttribute and frame.frame:GetAttribute("unit")
 	if not unitid then return end
 
@@ -1222,7 +1221,6 @@ function GridFrame:UpdateIndicators(frame)
 end
 
 function GridFrame:UpdateIndicatorsForStatus(frame, status)
-	local indicator, status
 	local unitid = frame.unit or frame.frame and frame.frame.GetAttribute and frame.frame:GetAttribute("unit")
 	if not unitid then return end
 
@@ -1313,10 +1311,7 @@ end
 --{{{ Event handlers
 
 function GridFrame:Grid_StatusGained(guid, status, priority, range, color, text, value, maxValue, texture, start, duration, stack)
-
-	local frameName, frame
-
-	for frameName,frame in pairs(self.registeredFrames) do
+	for frameName, frame in pairs(self.registeredFrames) do
 		if frame.unitGUID == guid then
 			self:UpdateIndicatorsForStatus(frame, status)
 		end
@@ -1324,10 +1319,7 @@ function GridFrame:Grid_StatusGained(guid, status, priority, range, color, text,
 end
 
 function GridFrame:Grid_StatusLost(guid, status)
-	-- self:Debug("StatusLost", status, "on", name)
-	local frameName, frame
-
-	for frameName,frame in pairs(self.registeredFrames) do
+	for frameName, frame in pairs(self.registeredFrames) do
 		if frame.unitGUID == guid then
 			self:UpdateIndicatorsForStatus(frame, status)
 		end
