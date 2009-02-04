@@ -1228,8 +1228,8 @@ function GridFrame:UpdateIndicatorsForStatus(frame, status)
 
 	-- self.statusmap[indicator][status]
 	local statusmap = self.db.profile.statusmap
-	for indicator in pairs(statusmap) do
-		if statusmap[status] then
+	for indicator, map_for_indicator in pairs(statusmap) do
+		if map_for_indicator[status] then
 			self:UpdateIndicator(frame, unitid, indicator)
 		end
 	end
