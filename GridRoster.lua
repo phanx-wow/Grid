@@ -217,6 +217,7 @@ do
 	GridRoster.party_states = {
 		'solo',
 		'party',
+		'heroic_raid',
 		'raid',
 		'bg',
 		'arena',
@@ -238,7 +239,11 @@ do
 		end
 
 		if GetNumRaidMembers() > 0 then
-			return "raid"
+			if GetCurrentDungeonDifficulty() == 2 then
+				return "heroic_raid"
+			else
+				return "raid"
+			end
 		end
 
 		if GetNumPartyMembers() > 0 then

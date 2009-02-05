@@ -143,7 +143,8 @@ GridLayout.defaultDB = {
 		solo = L["By Group 5"],
 		party = L["By Group 5"],
 		arena = L["By Group 5"],
-		raid = L["By Group 25"],
+		heroic_raid = L["By Group 25"],
+		raid = L["By Group 10"],
 		bg = L["By Group 40"],
 	},
 
@@ -211,6 +212,20 @@ GridLayout.options = {
 					  GridLayout.db.profile.layouts.party = v
 					  GridLayout:ReloadLayout()
 				  end,
+			validate = {},
+		},
+		["heroic_raidlayout"] = {
+			type = "text",
+			name = L["Heroic Raid Layout"],
+			desc = L["Select which layout to use when in a heroic raid."],
+			order = ORDER_LAYOUT + 3,
+			get = function ()
+				      return GridLayout.db.profile.layouts.heroic_raid
+			      end,
+			set = function (v)
+				      GridLayout.db.profile.layouts.heroic_raid = v
+				      GridLayout:ReloadLayout()
+			      end,
 			validate = {},
 		},
 		["raidlayout"] = {
