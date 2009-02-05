@@ -4,6 +4,10 @@
 
 GridRoster = Grid:NewModule("GridRoster")
 
+GridRoster.defaultDB = {
+	party_state = "solo",
+}
+
 --
 local UnitExists = UnitExists
 local UnitName = UnitName
@@ -223,10 +227,6 @@ do
 		'arena',
 	}
 
-	-- possible values: arena, bg, raid, party, solo
-	local current_state = "solo"
-	local old_state = "solo"
-
 	local function GetPartyState()
 		local _, instance_type = IsInInstance()
 
@@ -254,15 +254,16 @@ do
 	end
 
 	function GridRoster:PartyTransitionCheck()
-		current_state = GetPartyState()
+		local current_state = GetPartyState()
+		local old_state = self.db.profile.party_state
 
 		if current_state ~= old_state then
 			self:TriggerEvent("Grid_PartyTransition", current_state, old_state)
-			old_state = current_state
+			self.db.profile.party_state = current_state
 		end
 	end
 
 	function GridRoster:GetPartyState()
-		return current_state
+		return self.db.profile.party_state
 	end
 end
