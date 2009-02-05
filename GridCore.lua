@@ -268,12 +268,9 @@ function Grid:OnEnable()
 	check_libraries()
 
 	self:RegisterEvent("ADDON_LOADED")
-	self:RegisterEvent("RosterLib_UnitChanged")
-	self:RegisterEvent("RosterLib_RosterUpdated")
 	self:EnableModules()
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
-	-- self:RegisterEvent("PLAYER_LEAVING_WORLD", "PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:TriggerEvent("Grid_Enabled")
 end
@@ -360,76 +357,9 @@ end
 
 --{{{ Event handlers
 
-function Grid:RosterLib_UnitChanged(unitid, name, class, subgroup, rank, oldname, oldunitid, oldclass, oldsubgroup, oldrank)
-	local needsUpdate = false
-
-	if not name then
-		self:Debug("UnitLeft "..(oldname))
-		-- self:TriggerEvent("Grid_UnitLeft", oldname)
-	elseif not oldname then
-		self:Debug("UnitJoined "..(name))
-		-- self:TriggerEvent("Grid_UnitJoined", name, unitid)
-	else
-		self:Debug("UnitChanged "..(name))
-		-- self:TriggerEvent("Grid_UnitChanged", name, unitid)
-	end
-end
-
-local prevInBG = false
-local prevInRaid = false
-local prevInParty = false
 function Grid:PLAYER_ENTERING_WORLD()
 	-- this is needed for zoning while in combat
 	self:PLAYER_REGEN_ENABLED()
-
-	-- this is needed to trigger an update when switching from one BG directly to another
-	prevInBG = false
-	return self:RosterLib_RosterUpdated()
-end
-
-function Grid:RosterLib_RosterUpdated()
-	local inParty = (GetNumPartyMembers() > 0 or GetNumRaidMembers() > 0)
-	local inRaid = GetNumRaidMembers() > 0
-	local inBG = select(2, IsInInstance()) == "pvp"
-
-	self:Debug("RosterUpdated",
-	           "Party:", prevInParty, "->", inParty,
-		   "Raid:", prevInRaid, "->", inRaid,
-		   "BG:", prevInBG, "->", inBG)
-
-	-- in bg -> (in bg | in raid | in party | left party)
-	-- in raid -> (in bg | in party | left party)
-	-- in party -> (in bg | in raid | left party)
-
-	if inBG then
-		if not prevInBG then
-			self:Debug("Grid_JoinedBattleground")
-			self:TriggerEvent("Grid_JoinedBattleground")
-		end
-		inParty = false
-		inRaid = false
-	elseif inRaid then
-		if not prevInRaid or prevInBG then
-			self:Debug("Grid_JoinedRaid")
-			self:TriggerEvent("Grid_JoinedRaid")
-		end
-		inParty = false
-		inBG = false
-	elseif inParty then
-		if not prevInParty or prevInRaid or prevInBG then
-			self:Debug("Grid_JoinedParty")
-			self:TriggerEvent("Grid_JoinedParty")
-		end
-		inRaid = false
-		inBG = false
-	else
-		self:Debug("Grid_LeftParty")
-		self:TriggerEvent("Grid_LeftParty")
-	end
-
-	prevInRaid = inRaid
-	prevInParty = inParty
-	prevInBG = inBG
 end
 
 function Grid:PLAYER_REGEN_DISABLED()
