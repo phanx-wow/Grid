@@ -61,7 +61,7 @@ function GridRoster:OnInitialize()
 end
 
 function GridRoster:OnEnable()
-	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateRoster")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("UNIT_PET", "UpdateRoster")
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateRoster")
 	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateRoster")
@@ -156,6 +156,17 @@ do
 			roster.unitid[guid] = unit
 			roster.guid[guid] = guid
 		end
+	end
+
+	function GridRoster:PLAYER_ENTERING_WORLD()
+		local old_state = self.db.profile.party_state
+		-- handle jumping from one BG to another
+		-- arenas too, just to be safe
+		if old_state == "bg" or old_state == "arena" then
+			self.db.profile.party_state = "solo"
+		end
+
+		return self:UpdateRoster()
 	end
 
 	function GridRoster:UpdateRoster()
