@@ -268,8 +268,8 @@ do
 		local old_state = self.db.profile.party_state
 
 		if current_state ~= old_state then
-			self:TriggerEvent("Grid_PartyTransition", current_state, old_state)
 			self.db.profile.party_state = current_state
+			self:TriggerEvent("Grid_PartyTransition", current_state, old_state)
 		end
 	end
 
