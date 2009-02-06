@@ -24,6 +24,9 @@ local roster = {
 -- for debugging
 GridRoster.roster = roster
 
+--
+local my_realm = GetRealmName()
+
 -- unit tables
 local party_units = {}
 local raid_units = {}
@@ -73,6 +76,7 @@ function GridRoster:OnEnable()
 end
 
 function GridRoster:GetGUIDByName(name, realm)
+	if realm == my_realm then realm = nil end
 	for guid, unit_name in pairs(roster.name) do
 		if name == unit_name and roster.realm[guid] == realm then
 			return guid
