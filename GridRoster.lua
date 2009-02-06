@@ -85,9 +85,8 @@ function GridRoster:GetNameByGUID(guid)
 end
 
 function GridRoster:GetGUIDByFullName(full_name)
-	local name, realm = ("(.+)%-(.*)"):match(full_name) or full_name
-
-	return self:GetGUIDByName(name, realm)
+	local name, realm = full_name:match("^([^%-]+)%-(.*)$")
+	return self:GetGUIDByName(name or full_name, realm)
 end
 
 function GridRoster:GetFullNameByGUID(guid)
