@@ -62,7 +62,7 @@ function GridStatusHeals:OnStatusEnable(status)
 	if status == "alert_heals" then
 		-- register events
 		self:RegisterEvent("Grid_UnitLeft")
-		self:RegisterEvent("Grid_LeftParty")
+		self:RegisterEvent("Grid_PartyTransition")
 		self:RegisterEvent("UNIT_HEALTH", "UpdateHealsForUnit")
 		self:RegisterEvent("UNIT_HEALTH_MAX", "UpdateHealsForUnit")
 
@@ -77,7 +77,7 @@ end
 function GridStatusHeals:OnStatusDisable(status)
 	if status == "alert_heals" then
 		self:UnregisterEvent("Grid_UnitLeft")
-		self:UnregisterEvent("Grid_LeftParty")
+		self:UnregisterEvent("Grid_PartyTransition")
 		self:UnregisterEvent("UNIT_HEALTH")
 		self:UnregisterEvent("UNIT_HEALTH_MAX")
 
@@ -100,8 +100,10 @@ function GridStatusHeals:Grid_UnitLeft(guid)
 end
 
 --[[wipe own-heals-table clean]]
-function GridStatusHeals:Grid_LeftParty()
-	ownHeals = {}
+function GridStatusHeals:Grid_PartyTransition(current_state)
+	if current_state == "solo" then
+		wipe(ownHeals)
+	end
 end
 
 function GridStatusHeals:HealComm_DirectHealStart(event, healerFullName, healSize, endTime, ...)
