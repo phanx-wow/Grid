@@ -1159,8 +1159,7 @@ function GridFrame:RegisterFrame(frame)
 end
 
 function GridFrame:WithAllFrames(func)
-	local frameName, frame
-	for frameName,frame in pairs(self.registeredFrames) do
+	for _,frame in pairs(self.registeredFrames) do
 		func(frame)
 	end
 end
@@ -1253,7 +1252,6 @@ function GridFrame:UpdateIndicator(frame, unitid, indicator)
 end
 
 function GridFrame:StatusForIndicator(unitid, indicator)
-	local statusName, enabled, status, inRange
 	local topPriority = 0
 	local topStatus
 	local statusmap = self.db.profile.statusmap[indicator]
@@ -1262,7 +1260,7 @@ function GridFrame:StatusForIndicator(unitid, indicator)
 	-- self.statusmap[indicator][status]
 
 	for statusName,enabled in pairs(statusmap) do
-		status = (enabled and GridStatus:GetCachedStatus(guid, statusName))
+		local status = (enabled and GridStatus:GetCachedStatus(guid, statusName))
 		if status then
 			local valid = true
 
@@ -1288,7 +1286,7 @@ function GridFrame:StatusForIndicator(unitid, indicator)
 
 			-- only check range for valid statuses
 			if valid then
-				inRange = not status.range or self:UnitInRange(unitid, status.range)
+				local inRange = not status.range or self:UnitInRange(unitid, status.range)
 
 				if ((status.priority or 99) > topPriority) and inRange then
 					topStatus = status
@@ -1311,7 +1309,7 @@ end
 --{{{ Event handlers
 
 function GridFrame:Grid_StatusGained(guid, status, priority, range, color, text, value, maxValue, texture, start, duration, stack)
-	for frameName, frame in pairs(self.registeredFrames) do
+	for _,frame in pairs(self.registeredFrames) do
 		if frame.unitGUID == guid then
 			self:UpdateIndicatorsForStatus(frame, status)
 		end
@@ -1319,7 +1317,7 @@ function GridFrame:Grid_StatusGained(guid, status, priority, range, color, text,
 end
 
 function GridFrame:Grid_StatusLost(guid, status)
-	for frameName, frame in pairs(self.registeredFrames) do
+	for _,frame in pairs(self.registeredFrames) do
 		if frame.unitGUID == guid then
 			self:UpdateIndicatorsForStatus(frame, status)
 		end
@@ -1338,7 +1336,6 @@ end
 
 function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
 	local menu = self.options.args
-	local status, descr, indicatorMenu
 
 	if indicator == "bar" then
 		menu[indicator] = nil
@@ -1383,7 +1380,7 @@ function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
 		end
 	end
 
-	indicatorMenu = menu[indicator].args
+	local indicatorMenu = menu[indicator].args
 
 	-- remove statuses that are not registered
 	for status,_ in pairs(indicatorMenu) do
@@ -1423,11 +1420,10 @@ end
 --{{ Debugging
 
 function GridFrame:ListRegisteredFrames()
-	local frameName, frame, isUnused, unusedFrame, i, frameStatus
 	self:Debug("--[ BEGIN Registered Frame List ]--")
 	self:Debug("FrameName", "UnitId", "UnitName", "Status")
 	for frameName,frame in pairs(self.registeredFrames) do
-		frameStatus = "|cff00ff00"
+		local frameStatus = "|cff00ff00"
 
 		if frame.frame:IsVisible() then
 			frameStatus = frameStatus .. "visible"
