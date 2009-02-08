@@ -139,6 +139,8 @@ do
 		local guid = UnitGUID(unit)
 
 		if guid then
+			if realm == "" then realm = nil end
+			
 			if units_to_remove[guid] then
 				units_to_remove[guid] = nil
 
