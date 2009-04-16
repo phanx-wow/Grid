@@ -1,10 +1,10 @@
-## Interface: 30000
+## Interface: 30100
 ## Title: Grid
 ## Notes: A modular, lightweight and screen-estate saving grid of party/raid unit frames
 ## Notes-zhCN: 小巧的轻量级模块化队伍框架
 ## Notes-zhTW: 精簡的團隊框架功能
 ## Author: Pastamancer & Maia
-## Version: 1.30000.2009021101
+## Version: 1.30000.2009041501
 ## X-ReleaseDate: "$Date$"
 ## X-Website: http://www.wowace.com/projects/grid/
 ## X-Category: UnitFrame
