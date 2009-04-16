@@ -711,7 +711,7 @@ local debuff_names_seen = {}
 local debuff_types_seen = {}
 local abolish_types_seen = {}
 function GridStatusAuras:ScanUnitAuras(unit)
-	local name, rank, icon, count, debuffType, duration, expirationTime, isMine, isStealable
+	local name, rank, icon, count, debuffType, duration, expirationTime, isMine, isStealable, caster
 
 	local guid = UnitGUID(unit)
 	if not GridRoster:IsGUIDInRaid(guid) then
@@ -727,7 +727,8 @@ function GridStatusAuras:ScanUnitAuras(unit)
 
 	-- scan for buffs
 	for buff_name in pairs(buff_names) do
-		name, rank, icon, count, debuffType, duration, expirationTime, isMine, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL")
+		name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL")
+		isMine = caster and caster == "player"
 
 		if name then
 			buff_names_seen[name] = true
@@ -736,7 +737,8 @@ function GridStatusAuras:ScanUnitAuras(unit)
 	end
 
 	for buff_name in pairs(player_buff_names) do
-		name, rank, icon, count, debuffType, duration, expirationTime, isMine, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL|PLAYER")
+		name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL|PLAYER")
+		isMine = caster and caster == "player"
 
 		if name then
 			player_buff_names_seen[name] = true
@@ -747,7 +749,8 @@ function GridStatusAuras:ScanUnitAuras(unit)
 	-- scan for abolish buffs so we can hide debuffs that are of the same type that is being abolished
 	if self.db.profile.abolish then
 		for buff_name, debuffType in pairs(abolish_types) do
-			name, rank, icon, count, debuffType, duration, expirationTime, isMine, isStealable = UnitAura(unit, buff_name, "HELPFUL")
+			name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, "HELPFUL")
+			isMine = caster and caster == "player"
 
 			if name then
 				abolish_types_seen[debuffType] = true
@@ -758,7 +761,8 @@ function GridStatusAuras:ScanUnitAuras(unit)
 	-- scan for debuffs
 	local index = 1
 	while true do
-		name, rank, icon, count, debuffType, duration, expirationTime, isMine, isStealable = UnitAura(unit, index, "HARMFUL")
+		name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, index, "HARMFUL")
+		isMine = caster and caster == "player"
 
 		if not name then
 			break
