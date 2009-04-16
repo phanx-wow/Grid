@@ -36,6 +36,7 @@ function GridLayoutHeaderClass.prototype:Reset()
 	self.frame:SetAttribute("showSolo", true)
 	self.frame:SetAttribute("showParty", true)
 	self.frame:SetAttribute("showRaid", true)
+	-- self.frame:SetAttribute("toggleForVehicle", true)
 
 	self.frame:SetAttribute("nameList", nil)
 	self.frame:SetAttribute("groupFilter", nil)
@@ -489,7 +490,7 @@ function GridLayout:OnEnable()
 	self.forceRaid = true
 	self:ScheduleEvent(self.CombatFix, 1, self)
 	
-	self:LoadLayout(self.db.profile.layout)
+	self:ReloadLayout()
 	-- position and scale frame
 	self:RestorePosition()
 	self:Scale()
