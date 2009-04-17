@@ -106,33 +106,29 @@ end
 function GridFrameClass.prototype:UpdateUnit()
 	local f = self.frame
 	local unitid = SecureButton_GetModifiedAttribute(f, "unit")
-
-	if not unitid then
-		return
-	end
-
-	local isPet = unitid:find("pet")
-
-	-- don't use GetModifiedUnit if this frame is for a pet
-	if not isPet then
-		unitid = SecureButton_GetModifiedUnit(f)
-	end
+	local unitguid
 
 	if unitid then
-		local unitGUID = UnitGUID(unitid)
-		local old_unitGUID = self.unitGUID
+		local isPet = unitid:find("pet")
+
+		-- don't use GetModifiedUnit if this frame is for a pet
+		if not isPet then
+			unitid = SecureButton_GetModifiedUnit(f)
+		end
+
+		unitGUID = UnitGUID(unitid)
 
 		-- frame guid hasn't changed, nothing to do
-		if unitGUID == old_unitGUID then
+		if unitGUID == self.unitGUID then
 			return
 		end
+	end
 
+	if unitid and unitGUID then
 		-- GridFrame:Debug(self.frame:GetName(), unitid, unitGUID)
-		if unitGUID ~= nil then
-			self.unitGUID = unitGUID
-			self.unit = unitid
-			self.unitName = UnitName(unitid)
-		end
+		self.unitGUID = unitGUID
+		self.unit = unitid
+		self.unitName = UnitName(unitid)
 
 		GridFrame:UpdateIndicators(self)
 	else
