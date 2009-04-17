@@ -46,11 +46,17 @@ end
 
 local function GridFrame_Initialize(self)
 	GridFrame:RegisterFrame(self)
+
 	self:SetAttribute("toggleForVehicle", true)
-	self:SetScript("OnEvent", GridFrame_OnEvent)
-	self:RegisterEvent("UNIT_PET")
+
 	self:SetScript("OnShow", GridFrame_OnShow)
 	self:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
+	self:SetScript("OnEvent", GridFrame_OnEvent)
+
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+	self:RegisterEvent("UNIT_ENTERED_VEHICLE")
+	self:RegisterEvent("UNIT_EXITED_VEHICLE")
+
 	GridFrame_OnEvent(self)
 end
 
@@ -114,13 +120,20 @@ function GridFrameClass.prototype:UpdateUnit()
 
 	if unitid then
 		local unitGUID = UnitGUID(unitid)
+		local old_unitGUID = self.unitGUID
+
+		-- frame guid hasn't changed, nothing to do
+		if unitGUID == old_unitGUID then
+			return
+		end
+
 		-- GridFrame:Debug(self.frame:GetName(), unitid, unitGUID)
 		if unitGUID ~= nil then
 			self.unitGUID = unitGUID
 			self.unit = unitid
 			self.unitName = UnitName(unitid)
 		end
-		
+
 		GridFrame:UpdateIndicators(self)
 	else
 		-- unit is nil
