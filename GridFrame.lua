@@ -28,30 +28,30 @@ local function GridFrame_OnAttributeChanged(self, name, value)
 	end
 
 	if name == "unit" then
-		if value then
-			frame.unit = value
-
-			local unitGUID = UnitGUID(value)
-			if unitGUID ~= nil then
-				frame.unitGUID = unitGUID
-			end
-
-			GridFrame:UpdateIndicators(frame)
-		else
-			-- unit is nil
-			frame.unitGUID = nil
-			frame.unitName = nil
-			frame.unit = value
-		end
+		frame:UpdateUnit()
 	elseif name == "type1" and (not value or value == "") then
 		self:SetAttribute("type1", "target")
 	end
 end
 
+local function GridFrame_OnEvent(self)
+	local frame = GridFrame.registeredFrames[self:GetName()]
+
+	if not frame then
+		return
+	end
+
+	frame:UpdateUnit()
+end
+
 local function GridFrame_Initialize(self)
 	GridFrame:RegisterFrame(self)
+	self:SetAttribute("toggleForVehicle", true)
+	self:SetScript("OnEvent", GridFrame_OnEvent)
+	self:RegisterEvent("UNIT_PET")
 	self:SetScript("OnShow", GridFrame_OnShow)
 	self:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
+	GridFrame_OnEvent(self)
 end
 
 --}}}
@@ -81,7 +81,7 @@ function GridFrameClass.prototype:init(frame)
 	GridFrameClass.super.prototype.init(self)
 	self.frame = frame
 	self:CreateFrames()
-	-- self:Reset()
+	self:Reset()
 end
 
 function GridFrameClass.prototype:Reset()
@@ -95,6 +95,39 @@ function GridFrameClass.prototype:Reset()
 	self:EnableText2(GridFrame.db.profile.enableText2)
 	self:SetIconSize(GridFrame.db.profile.iconSize, GridFrame.db.profile.iconBorderSize)
 	self:EnableMouseoverHighlight(GridFrame.db.profile.enableMouseoverHighlight)
+end
+
+function GridFrameClass.prototype:UpdateUnit()
+	local f = self.frame
+	local unitid = SecureButton_GetModifiedAttribute(f, "unit")
+
+	if not unitid then
+		return
+	end
+
+	local isPet = unitid:find("pet")
+
+	-- don't use GetModifiedUnit if this frame is for a pet
+	if not isPet then
+		unitid = SecureButton_GetModifiedUnit(f)
+	end
+
+	if unitid then
+		local unitGUID = UnitGUID(unitid)
+		-- GridFrame:Debug(self.frame:GetName(), unitid, unitGUID)
+		if unitGUID ~= nil then
+			self.unitGUID = unitGUID
+			self.unit = unitid
+			self.unitName = UnitName(unitid)
+		end
+		
+		GridFrame:UpdateIndicators(self)
+	else
+		-- unit is nil
+		self.unitGUID = nil
+		self.unit = nil
+		self.unitName = nil
+	end
 end
 
 function GridFrameClass.prototype:CreateFrames()
@@ -237,16 +270,16 @@ function GridFrameClass.prototype:OnEnter(frame)
 				(self.unit and UnitIsDeadOrGhost(self.unit)))) then
 
 		frame.unit = self.unit
-		UnitFrame_OnEnter(frame)
-		frame:SetScript("OnUpdate", UnitFrame_OnUpdate)
+		-- UnitFrame_OnEnter(frame)
+		-- frame:SetScript("OnUpdate", UnitFrame_OnUpdate)
 	else
 		self:OnLeave(frame)
 	end
 end
 
 function GridFrameClass.prototype:OnLeave(frame)
-	UnitFrame_OnLeave(frame)
-	frame:SetScript("OnUpdate", nil)
+	-- UnitFrame_OnLeave(frame)
+	-- frame:SetScript("OnUpdate", nil)
 end
 
 function GridFrameClass.prototype:SetWidth(width)
