@@ -501,7 +501,7 @@ end
 
 function GridStatusAuras:UnitGainedBuff(guid, class, name, rank, icon, count,
 										debuffType, duration, expirationTime,
-										isMine, isStealable)
+										caster, isStealable)
 	self:Debug("UnitGainedBuff", guid, class, name)
 
 	local status = GridStatusAuras.StatusForSpell(name, true)
@@ -548,7 +548,7 @@ end
 
 function GridStatusAuras:UnitGainedPlayerBuff(guid, class, name, rank, icon, count,
 											  debuffType, duration,
-											  expirationTime, isMine,
+											  expirationTime, caster,
 											  isStealable)
 	self:Debug("UnitGainedPlayerBuff", guid, name)
 
@@ -596,7 +596,7 @@ end
 
 function GridStatusAuras:UnitGainedDebuff(guid, class, name, rank, icon, count,
 										  debuffType, duration, expirationTime,
-										  isMine, isStealable)
+										  caster, isStealable)
 	self:Debug("UnitGainedDebuff", guid, class, name)
 
 	local status = GridStatusAuras.StatusForSpell(name, false)
@@ -633,7 +633,7 @@ end
 
 function GridStatusAuras:UnitGainedDebuffType(guid, class, name, rank, icon, count,
 											  debuffType, duration,
-											  expirationTime, isMine,
+											  expirationTime, caster,
 											  isStealable)
 	self:Debug("UnitGainedDebuffType", guid, class, debuffType)
 
@@ -711,7 +711,7 @@ local debuff_names_seen = {}
 local debuff_types_seen = {}
 local abolish_types_seen = {}
 function GridStatusAuras:ScanUnitAuras(unit)
-	local name, rank, icon, count, debuffType, duration, expirationTime, isMine, isStealable, caster
+	local name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable
 
 	local guid = UnitGUID(unit)
 	if not GridRoster:IsGUIDInRaid(guid) then
@@ -728,21 +728,19 @@ function GridStatusAuras:ScanUnitAuras(unit)
 	-- scan for buffs
 	for buff_name in pairs(buff_names) do
 		name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL")
-		isMine = caster and caster == "player"
 
 		if name then
 			buff_names_seen[name] = true
-			self:UnitGainedBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, isMine, isStealable)
+			self:UnitGainedBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 		end
 	end
 
 	for buff_name in pairs(player_buff_names) do
 		name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL|PLAYER")
-		isMine = caster and caster == "player"
 
 		if name then
 			player_buff_names_seen[name] = true
-			self:UnitGainedPlayerBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, isMine, isStealable)
+			self:UnitGainedPlayerBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 		end
 	end
 
@@ -750,7 +748,6 @@ function GridStatusAuras:ScanUnitAuras(unit)
 	if self.db.profile.abolish then
 		for buff_name, debuffType in pairs(abolish_types) do
 			name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, "HELPFUL")
-			isMine = caster and caster == "player"
 
 			if name then
 				abolish_types_seen[debuffType] = true
@@ -762,7 +759,6 @@ function GridStatusAuras:ScanUnitAuras(unit)
 	local index = 1
 	while true do
 		name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, index, "HARMFUL")
-		isMine = caster and caster == "player"
 
 		if not name then
 			break
@@ -772,14 +768,14 @@ function GridStatusAuras:ScanUnitAuras(unit)
 				debuff_names_seen[name] = true
 				self:UnitGainedDebuff(guid, class, name, rank, icon, count,
 									  debuffType, duration, expirationTime,
-									  isMine, isStealable)
+									  caster, isStealable)
 
 			elseif debuff_types[debuffType] then
 				-- elseif so that a named debuff doesn't trigger the type status
 				debuff_types_seen[debuffType] = true
 				self:UnitGainedDebuffType(guid, class, name, rank, icon, count,
 										  debuffType, duration, expirationTime,
-										  isMine, isStealable)
+										  caster, isStealable)
 			end
 		end
 
