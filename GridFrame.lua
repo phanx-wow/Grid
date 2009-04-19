@@ -28,20 +28,10 @@ local function GridFrame_OnAttributeChanged(self, name, value)
 	end
 
 	if name == "unit" then
-		frame:UpdateUnit()
+		-- don't do anything
 	elseif name == "type1" and (not value or value == "") then
 		self:SetAttribute("type1", "target")
 	end
-end
-
-local function GridFrame_OnEvent(self)
-	local frame = GridFrame.registeredFrames[self:GetName()]
-
-	if not frame then
-		return
-	end
-
-	frame:UpdateUnit()
 end
 
 local function GridFrame_Initialize(self)
@@ -51,12 +41,6 @@ local function GridFrame_Initialize(self)
 
 	self:SetScript("OnShow", GridFrame_OnShow)
 	self:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
-	self:SetScript("OnEvent", GridFrame_OnEvent)
-
-	self:RegisterEvent("PLAYER_ENTERING_WORLD")
-	self:RegisterEvent("UNIT_PET")
-
-	GridFrame_OnEvent(self)
 end
 
 --}}}
@@ -102,40 +86,10 @@ function GridFrameClass.prototype:Reset()
 	self:EnableMouseoverHighlight(GridFrame.db.profile.enableMouseoverHighlight)
 end
 
-function GridFrameClass.prototype:UpdateUnit()
+function GridFrameClass.prototype:GetModifiedUnit()
 	local f = self.frame
-	local unitid = SecureButton_GetModifiedAttribute(f, "unit")
-	local unitguid
 
-	if unitid then
-		local isPet = unitid:find("pet")
-
-		-- don't use GetModifiedUnit if this frame is for a pet
-		if not isPet then
-			unitid = SecureButton_GetModifiedUnit(f)
-		end
-
-		unitGUID = UnitGUID(unitid)
-
-		-- frame guid hasn't changed, nothing to do
-		if unitGUID == self.unitGUID then
-			return
-		end
-	end
-
-	if unitid and unitGUID then
-		-- GridFrame:Debug(self.frame:GetName(), unitid, unitGUID)
-		self.unitGUID = unitGUID
-		self.unit = unitid
-		self.unitName = UnitName(unitid)
-
-		GridFrame:UpdateIndicators(self)
-	else
-		-- unit is nil
-		self.unitGUID = nil
-		self.unit = nil
-		self.unitName = nil
-	end
+	return SecureButton_GetModifiedUnit(f)
 end
 
 function GridFrameClass.prototype:CreateFrames()
@@ -1157,13 +1111,19 @@ end
 function GridFrame:OnEnable()
 	self:RegisterEvent("Grid_StatusGained")
 	self:RegisterEvent("Grid_StatusLost")
-	self:UpdateOptionsMenu()
+
 	self:RegisterEvent("Grid_StatusRegistered", "UpdateOptionsMenu")
 	self:RegisterEvent("Grid_StatusUnregistered", "UpdateOptionsMenu")
-	self:ResetAllFrames()
-	self:UpdateAllFrames()
+
+	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateFrameUnits")
+	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateFrameUnits")
+	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateFrameUnits")
+	self:RegisterEvent("Grid_RosterUpdated", "UpdateFrameUnits")
+
 	media.RegisterCallback(self, "LibSharedMedia_Registered", "LibSharedMedia_Update")
 	media.RegisterCallback(self, "LibSharedMedia_SetGlobal", "LibSharedMedia_Update")
+
+	self:Reset()
 end
 
 function GridFrame:LibSharedMedia_Update(callback, type, handle)
@@ -1189,6 +1149,7 @@ function GridFrame:Reset()
 	GridFrame:WithAllFrames(function (f) f:SetFrameFont(font, GridFrame.db.profile.fontSize) end)
 
 	self:ResetAllFrames()
+	self:UpdateFrameUnits()
 	self:UpdateAllFrames()
 end
 
@@ -1225,9 +1186,7 @@ end
 function GridFrame:UpdateAllFrames()
 	self:WithAllFrames(
 		function (f)
-			if f.unit then
-				GridFrame:UpdateIndicators(f)
-			end
+			GridFrame:UpdateIndicators(f)
 		end)
 end
 
@@ -1250,31 +1209,62 @@ function GridFrame:GetCornerSize()
 	return self.db.profile.cornerSize
 end
 
+function GridFrame:UpdateFrameUnits()
+	for frame_name, frame in pairs(self.registeredFrames) do
+		local old_unit = frame.unit
+		local old_guid = frame.unitGUID
+		local unitid = frame:GetModifiedUnit()
+		local guid = unitid and UnitGUID(unitid) or nil
+
+		if old_unit ~= unitid or old_guid ~= guid then
+			self:Debug("Updating", frame_name, "to", unitid, guid, "was", old_unit, old_guid)
+
+			if guid and unitid then
+				frame.unit = unitid
+				frame.unitGUID = guid
+			
+				self:UpdateIndicators(frame)
+			else
+				frame.unit = nil
+				frame.unitGUID = nil
+				
+				self:ClearIndicators(frame)
+			end
+		end
+	end
+end
+
 function GridFrame:UpdateIndicators(frame)
-	local unitid = frame.unit or frame.frame and frame.frame.GetAttribute and frame.frame:GetAttribute("unit")
+	local unitid = frame.unit
 	if not unitid then return end
 
 	-- self.statusmap[indicator][status]
 	for indicator in pairs(self.db.profile.statusmap) do
-		self:UpdateIndicator(frame, unitid, indicator)
+		self:UpdateIndicator(frame, indicator)
+	end
+end
+
+function GridFrame:ClearIndicators(frame)
+	for indicator in pairs(self.db.profile.statusmap) do
+		self:ClearIndicator(frame, indicator)
 	end
 end
 
 function GridFrame:UpdateIndicatorsForStatus(frame, status)
-	local unitid = frame.unit or frame.frame and frame.frame.GetAttribute and frame.frame:GetAttribute("unit")
+	local unitid = frame.unit
 	if not unitid then return end
 
 	-- self.statusmap[indicator][status]
 	local statusmap = self.db.profile.statusmap
 	for indicator, map_for_indicator in pairs(statusmap) do
 		if map_for_indicator[status] then
-			self:UpdateIndicator(frame, unitid, indicator)
+			self:UpdateIndicator(frame, indicator)
 		end
 	end
 end
 
-function GridFrame:UpdateIndicator(frame, unitid, indicator)
-	local status = self:StatusForIndicator(unitid, indicator)
+function GridFrame:UpdateIndicator(frame, indicator)
+	local status = self:StatusForIndicator(frame.unitid, frame.unitGUID, indicator)
 	if status then
 		-- self:Debug("Showing status", status.text, "for", name, "on", indicator)
 		frame:SetIndicator(indicator,
@@ -1292,14 +1282,12 @@ function GridFrame:UpdateIndicator(frame, unitid, indicator)
 	end
 end
 
-function GridFrame:StatusForIndicator(unitid, indicator)
+function GridFrame:StatusForIndicator(unitid, guid, indicator)
 	local topPriority = 0
 	local topStatus
 	local statusmap = self.db.profile.statusmap[indicator]
-	local guid = UnitGUID(unitid)
 
 	-- self.statusmap[indicator][status]
-
 	for statusName,enabled in pairs(statusmap) do
 		local status = (enabled and GridStatus:GetCachedStatus(guid, statusName))
 		if status then
