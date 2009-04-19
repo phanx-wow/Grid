@@ -54,8 +54,7 @@ local function GridFrame_Initialize(self)
 	self:SetScript("OnEvent", GridFrame_OnEvent)
 
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
-	self:RegisterEvent("UNIT_ENTERED_VEHICLE")
-	self:RegisterEvent("UNIT_EXITED_VEHICLE")
+	self:RegisterEvent("UNIT_PET")
 
 	GridFrame_OnEvent(self)
 end
