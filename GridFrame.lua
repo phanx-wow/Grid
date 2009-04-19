@@ -21,14 +21,8 @@ local function GridFrame_OnShow(self)
 end
 
 local function GridFrame_OnAttributeChanged(self, name, value)
-	local frame = GridFrame.registeredFrames[self:GetName()]
-
-	if not frame then
-		return
-	end
-
 	if name == "unit" then
-		-- don't do anything
+		GridFrame:UpdateFrameUnits()
 	elseif name == "type1" and (not value or value == "") then
 		self:SetAttribute("type1", "target")
 	end
@@ -1158,6 +1152,7 @@ function GridFrame:RegisterFrame(frame)
 
 	self.registeredFrameCount = (self.registeredFrameCount or 0) + 1
 	self.registeredFrames[frame:GetName()] = self.frameClass:new(frame)
+	self:UpdateFrameUnits()
 end
 
 function GridFrame:WithAllFrames(func)
@@ -1211,24 +1206,29 @@ end
 
 function GridFrame:UpdateFrameUnits()
 	for frame_name, frame in pairs(self.registeredFrames) do
-		local old_unit = frame.unit
-		local old_guid = frame.unitGUID
-		local unitid = frame:GetModifiedUnit()
-		local guid = unitid and UnitGUID(unitid) or nil
-
-		if old_unit ~= unitid or old_guid ~= guid then
-			self:Debug("Updating", frame_name, "to", unitid, guid, "was", old_unit, old_guid)
-
-			if guid and unitid then
-				frame.unit = unitid
-				frame.unitGUID = guid
+		if frame.frame:IsVisible() then
+			local old_unit = frame.unit
+			local old_guid = frame.unitGUID
+			local unitid = frame:GetModifiedUnit()
+			local guid = unitid and UnitGUID(unitid) or nil
 			
-				self:UpdateIndicators(frame)
-			else
-				frame.unit = nil
-				frame.unitGUID = nil
+			if old_unit ~= unitid or old_guid ~= guid then
+				self:Debug("Updating", frame_name, "to", unitid, guid,
+						   "was", old_unit, old_guid)
 				
-				self:ClearIndicators(frame)
+				if unitid then
+					frame.unit = unitid
+					frame.unitGUID = guid
+					
+					if guid then
+						self:UpdateIndicators(frame)
+					end
+				else
+					frame.unit = nil
+					frame.unitGUID = nil
+					
+					self:ClearIndicators(frame)
+				end
 			end
 		end
 	end
