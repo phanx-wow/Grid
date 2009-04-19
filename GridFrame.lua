@@ -1246,7 +1246,7 @@ end
 
 function GridFrame:ClearIndicators(frame)
 	for indicator in pairs(self.db.profile.statusmap) do
-		self:ClearIndicator(frame, indicator)
+		frame:ClearIndicator(indicator)
 	end
 end
 
