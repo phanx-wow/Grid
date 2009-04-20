@@ -226,16 +226,14 @@ function GridFrameClass.prototype:OnEnter(frame)
 				(self.unit and UnitIsDeadOrGhost(self.unit)))) then
 
 		frame.unit = self.unit
-		-- UnitFrame_OnEnter(frame)
-		-- frame:SetScript("OnUpdate", UnitFrame_OnUpdate)
+		UnitFrame_OnEnter(frame)
 	else
 		self:OnLeave(frame)
 	end
 end
 
 function GridFrameClass.prototype:OnLeave(frame)
-	-- UnitFrame_OnLeave(frame)
-	-- frame:SetScript("OnUpdate", nil)
+	UnitFrame_OnLeave(frame)
 end
 
 function GridFrameClass.prototype:SetWidth(width)
