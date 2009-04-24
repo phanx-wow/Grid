@@ -23,7 +23,7 @@ local strings_koKR = {
 	["OOC"] = "비전투",
 	["Center Text Length"] = "중앙 문자 길이",
 	["Number of characters to show on Center Text indicator."] = "중앙 문자 지시기 위에 표시할 캐릭터의 숫자를 설정합니다.",
-	["Invert Bar Color"] = "바 색상 반전",
+	["Invert Bar Color"] = "바 색상 반대로",
 	["Swap foreground/background colors on bars."] = "바 위의 전경/배경 색상을 변경합니다.",
 	["Healing Bar Opacity"] = "치유 바 투명도",
 	["Sets the opacity of the healing bar."] = "치유 바의 투명도를 설정합니다.",
@@ -60,7 +60,7 @@ local strings_koKR = {
 	["Corner Size"] = "모서리 크기",
 	["Adjust the size of the corner indicators."] = "모서리 지시기의 크기를 조정합니다.",
 	["Enable Mouseover Highlight"] = "마우스오버 강조 사용",
-	["Toggle mouseover highlight."] = "마우스오버 강조를 전환합니다.",
+	["Toggle mouseover highlight."] = "마우스오버 강조를 사용합니다.",
 	["Font"] = "글꼴",
 	["Adjust the font settings"] = "글꼴 설정을 조정합니다.",
 	["Font Size"] = "글꼴 크기",
@@ -172,7 +172,7 @@ local strings_koKR = {
 	["Group Anchor"] = "그룹 위치",
 	["Sets where groups are anchored relative to the layout frame."] = "그룹 배치 창의 위치를 설정합니다.",
 	["Reset Position"] = "위치 초기화",
-	["Resets the layout frame's position and anchor."] = "배경 창의 위치와 앵커를 초기화 합니다.",
+	["Resets the layout frame's position and anchor."] = "배경 창의 위치와 앵커를 기본값으로 되돌립니다.",
 	["Hide tab"] = "탭 숨김",
 	["Do not show the tab when Grid is unlocked."] = "Grid가 잠금 해제될 때 탭을 표시하지 않습니다.",
 
@@ -203,6 +203,8 @@ local strings_koKR = {
 	--{{{ GridStatus
 	["Status"] = "상태",
 	["Options for %s."] = "%s|1을;를; 위한 옵션을 설정합니다.",
+	["Reset class colors"] = "직업 색상 초기화",
+	["Reset class colors to defaults."] = "직업 색상을 기본값으로 되돌립니다.",
 
 	-- module prototype
 	["Status: %s"] = "상태: %s",
