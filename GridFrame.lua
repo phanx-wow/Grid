@@ -1106,6 +1106,8 @@ function GridFrame:OnEnable()
 
 	self:RegisterEvent("Grid_StatusRegistered", "UpdateOptionsMenu")
 	self:RegisterEvent("Grid_StatusUnregistered", "UpdateOptionsMenu")
+	
+	self:RegisterEvent("Grid_ColorsChanged", "UpdateAllFrames")
 
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateFrameUnits")
 	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateFrameUnits")

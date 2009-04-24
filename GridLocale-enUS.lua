@@ -203,6 +203,8 @@ local strings_enUS = {
 	--{{{ GridStatus
 	["Status"] = true,
 	["Options for %s."] = true,
+	["Reset class colors"] = true,
+	["Reset class colors to defaults."] = true,
 
 	-- module prototype
 	["Status: %s"] = true,
