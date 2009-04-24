@@ -90,9 +90,8 @@ local strings_ruRU = {
 	["Alt-Click to permanantly hide this tab."] = "Alt-Клик скрывает данный ярлык.",
 
 	-- Layout options
-	["Show Frame"] = "Показать фреймы",
+	["Show Frame"] = "Отображение фреймов",
     
-	["Always"] = "Всегда",
 	["Solo Layout"] = "Расположение в соло",
 	["Select which layout to use when not in a party."] = "Выбрать какое расположение использовать не находясь в группе.",
 	["Party Layout"] = "Расположение группы",
@@ -166,8 +165,6 @@ local strings_ruRU = {
 	["Color for %s."] = "Цвет для %s.",
 
 	-- Advanced options
-	--["Advanced"] = "Доплнительно", -- double?
-	--["Advanced options."] = "Дополнительные опции",
 	["Layout Anchor"] = "Пометка расположения",
 	["Sets where Grid is anchored relative to the screen."] = "Установить пометку где будет находиться Grid на экране",
 	["Group Anchor"] = "Пометка группы",
@@ -176,7 +173,6 @@ local strings_ruRU = {
 	["Resets the layout frame's position and anchor."] = "Сбросить положение фреймов и пометок",
 	["Hide tab"] = "Скрыть ярлык",
 	["Do not show the tab when Grid is unlocked."] = "Не отображать ярлык когда Grid откреплен.",
-
 
 	--}}}
 	--{{{ GridLayoutLayouts
@@ -205,6 +201,8 @@ local strings_ruRU = {
 	--{{{ GridStatus
 	["Status"] = "Статус",
 	["Options for %s."] = "Опции для %s.",
+	["Reset class colors"] = "Сбросс окраски классов",
+	["Reset class colors to defaults."] = "Сбросить окраску классов на значение по умолчанию.",
 
 	-- module prototype
 	["Status: %s"] = "Статус: %s",
@@ -292,13 +290,13 @@ local strings_ruRU = {
 
 	--}}}
 	--{{{ GridStatusHealth
-	["Low HP"] = "Мало HP",
+	["Low HP"] = "Мало ЗД",
 	["DEAD"] = "ТРУП",
-	["FD"] = "СС",
+	["FD"] = "ПМ",
 	["Offline"] = "Оффлайн",
 	["Unit health"] = "Здоровье единицы",
 	["Health deficit"] = "Дефицит здоровья",
-	["Low HP warning"] = "Предупреждение Мало HP",
+	["Low HP warning"] = "Предупреждение Мало ЗД",
 	["Feign Death warning"] = "Предупреждение о Симуляции смерти",
 	["Death warning"] = "Предупреждение о смерти",
 	["Offline warning"] = "Предупреждение об оффлайне",
@@ -310,7 +308,7 @@ local strings_ruRU = {
 	["Health threshold"] = "Порог здоровья",
 	["Only show deficit above % damage."] = "Показывать дефицит только после % урона.",
 	["Color deficit based on class."] = "Цвет дефицита в зависимости от класса",
-	["Low HP threshold"] = "Порог \"Мало HP\"",
+	["Low HP threshold"] = "Порог \"Мало ЗД\"",
 	["Set the HP % for the low HP warning."] = "Установить % для предупредения о том что у единицы мало здоровья.",
 
 	--}}}
@@ -334,7 +332,7 @@ local strings_ruRU = {
 	["Voice Chat"] = "Голосовой чат",
 	["Talking"] = "Говорит",
 	
-		--}}}
+	--}}}
 	--{{{ GridStatusVehicle
 	["In Vehicle"] = "На транспорте",
 	["Driving"] = "Управляет",
