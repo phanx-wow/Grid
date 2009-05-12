@@ -71,8 +71,7 @@ function GridFrameClass.prototype:Reset()
 	for _,indicator in ipairs(self.indicators) do
 		self:ClearIndicator(indicator.type)
 	end
-	self:SetWidth(GridFrame:GetFrameWidth())
-	self:SetHeight(GridFrame:GetFrameHeight())
+	self:SetBorderSize(GridFrame.db.profile.borderSize)
 	self:SetOrientation(GridFrame.db.profile.orientation)
 	self:SetTextOrientation(GridFrame.db.profile.textorientation)
 	self:EnableText2(GridFrame.db.profile.enableText2)
@@ -241,9 +240,10 @@ function GridFrameClass.prototype:SetWidth(width)
 	if not InCombatLockdown() then
 		f:SetWidth(width)
 	end
-	f.Bar:SetWidth(width-4)
-	f.BarBG:SetWidth(width-4)
-	f.HealingBar:SetWidth(width-4)
+	local newWidth = width - (GridFrame.db.profile.borderSize+1)*2
+	f.Bar:SetWidth(newWidth)
+	f.BarBG:SetWidth(newWidth)
+	f.HealingBar:SetWidth(newWidth)
 
 	self:PlaceIndicators()
 end
@@ -253,9 +253,10 @@ function GridFrameClass.prototype:SetHeight(height)
 	if not InCombatLockdown() then
 		f:SetHeight(height)
 	end
-	f.Bar:SetHeight(height-4)
-	f.BarBG:SetHeight(height-4)
-	f.HealingBar:SetHeight(height-4)
+	local newHeight = height - (GridFrame.db.profile.borderSize+1)*2
+	f.Bar:SetHeight(newHeight)
+	f.BarBG:SetHeight(newHeight)
+	f.HealingBar:SetHeight(newHeight)
 
 	self:PlaceIndicators()
 end
@@ -328,6 +329,29 @@ function GridFrameClass.prototype:PlaceIndicators()
 			f.Text2:SetPoint("TOP", f, "CENTER")
 		end
 	end
+end
+
+function GridFrameClass.prototype:SetBorderSize(borderSize)
+	local f = self.frame
+
+	local backdrop = f:GetBackdrop()
+	
+	backdrop.edgeSize = borderSize
+	backdrop.insets.left = borderSize
+	backdrop.insets.right = borderSize
+	backdrop.insets.top = borderSize
+	backdrop.insets.bottom = borderSize
+	
+	local r, g, b, a = f:GetBackdropBorderColor()
+	
+	f:SetBackdrop(backdrop)
+	f:SetBackdropBorderColor(r, g, b, a)
+	f:SetBackdropColor(0,0,0,1)
+	
+	self:SetWidth(GridFrame:GetFrameWidth())
+	self:SetHeight(GridFrame:GetFrameHeight())
+	
+	self:PositionAllIndicators()
 end
 
 function GridFrameClass.prototype:SetCornerSize(size)
@@ -519,22 +543,36 @@ function GridFrameClass.prototype:CreateIndicator(indicator)
    f:SetFrameLevel(5)
    f:Hide()
    
-   -- position indicator wherever needed
-   if indicator == "corner1" then
-      -- bottom left
-      f:SetPoint("BOTTOMLEFT", self.frame, "BOTTOMLEFT", 1, 1)
-   elseif indicator == "corner2" then
-      -- bottom right
-      f:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -1, 1)
-   elseif indicator == "corner3" then
-      -- top right
-      f:SetPoint("TOPRIGHT", self.frame, "TOPRIGHT", -1, -1)
-   elseif indicator == "corner4" then
-      -- top left
-      f:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 1, -1)
-   end
-   
    self.frame[indicator] = f
+   
+   self:PositionIndicator(indicator)
+end
+
+function GridFrameClass.prototype:PositionIndicator(indicator)
+   local f = self.frame[indicator]
+   if f then
+      local borderSize = GridFrame:GetBorderSize()
+	  -- position indicator wherever needed
+	  if indicator == "corner1" then
+		 -- bottom left
+		 f:SetPoint("BOTTOMLEFT", self.frame, "BOTTOMLEFT", borderSize, borderSize)
+	  elseif indicator == "corner2" then
+		 -- bottom right
+		 f:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -borderSize, borderSize)
+	  elseif indicator == "corner3" then
+		 -- top right
+		 f:SetPoint("TOPRIGHT", self.frame, "TOPRIGHT", -borderSize, -borderSize)
+	  elseif indicator == "corner4" then
+		 -- top left
+		 f:SetPoint("TOPLEFT", self.frame, "TOPLEFT", borderSize, -borderSize)
+	  end
+   end
+end
+
+function GridFrameClass.prototype:PositionAllIndicators()
+	for indicator in pairs(GridFrame.db.profile.statusmap) do
+		self:PositionIndicator(indicator)
+	end
 end
 
 function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, maxValue, texture, start, duration, stack)
@@ -684,6 +722,7 @@ GridFrame.InitialConfigFunction = GridFrame_Initialize
 GridFrame.defaultDB = {
 	frameHeight = 26,
 	frameWidth = 26,
+	borderSize = 1,
 	cornerSize = 5,
 	orientation = "VERTICAL",
 	textorientation = "VERTICAL",
@@ -914,6 +953,21 @@ GridFrame.options = {
 						      GridFrame:ResizeAllFrames()
 						      GridFrame:ScheduleEvent("GridFrame_UpdateLayoutSize", "Grid_ReloadLayout", 0.5)
 					      end,
+				},
+				["bordersize"] = {
+					type = "range",
+					name = L["Border Size"],
+					desc = L["Adjust the size of the border indicators."],
+					min = 1,
+					max = 9,
+					step = 1,
+					get = function ()
+							  return GridFrame.db.profile.borderSize
+						  end,
+					set = function (v)
+							  GridFrame.db.profile.borderSize = v
+						      GridFrame:WithAllFrames(function (f) f:SetBorderSize(v) end)
+						  end,
 				},
 				["cornersize"] = {
 					type = "range",
@@ -1198,6 +1252,10 @@ end
 
 function GridFrame:GetFrameHeight()
 	return self.db.profile.frameHeight
+end
+
+function GridFrame:GetBorderSize()
+	return self.db.profile.borderSize
 end
 
 function GridFrame:GetCornerSize()
