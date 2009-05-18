@@ -219,12 +219,17 @@ end
 
 -- shows the default unit tooltip
 function GridFrameClass.prototype:OnEnter(frame)
-	if GridFrame.db.profile.showTooltip == "Always" or
-		(GridFrame.db.profile.showTooltip == "OOC" and
-			(not Grid.inCombat or
-				(self.unit and UnitIsDeadOrGhost(self.unit)))) then
+	local unit = self.unit
+	local showTooltip = GridFrame.db.profile.showTooltip
 
-		frame.unit = self.unit
+	if unit and UnitExists(unit) and (
+		showTooltip == "Always" or
+		(showTooltip == "OOC" and
+			(not InCombatLockdown() or
+			 UnitIsDeadOrGhost(unit)))
+		) then
+
+		frame.unit = unit
 		UnitFrame_OnEnter(frame)
 	else
 		self:OnLeave(frame)
