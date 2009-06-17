@@ -489,7 +489,7 @@ function GridLayout:OnEnable()
 	self.forceRaid = true
 	self:ScheduleEvent(self.CombatFix, 1, self)
 	
-	self:ReloadLayout()
+	self:LoadLayout(self.db.profile.layout or self.db.profile.layouts["heroic_raid"])
 	-- position and scale frame
 	self:RestorePosition()
 	self:Scale()
@@ -579,7 +579,9 @@ end
 
 function GridLayout:UpdateTabVisibility()
 	local settings = self.db.profile
-	self.frame:EnableMouse(settings.hideTab)
+	if not InCombatLockdown() then
+		self.frame:EnableMouse(settings.hideTab)
+	end
 
 	if settings.FrameLock or settings.hideTab then
 		self.frame.tab:Hide()
@@ -796,6 +798,11 @@ local function getColumnAnchorPoint(point, horizontal)
 end
 
 function GridLayout:LoadLayout(layoutName)
+	self.db.profile.layout = layoutName
+	if InCombatLockdown() then 
+		reloadLayoutQueued = true
+		return 
+	end
 	local p = self.db.profile
 	local horizontal = p.horizontal
 	local layout = self.layoutSettings[layoutName]
