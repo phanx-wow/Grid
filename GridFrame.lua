@@ -1180,10 +1180,10 @@ function GridFrame:OnEnable()
 end
 
 function GridFrame:LibSharedMedia_Update(callback, type, handle)
-	if type == "font" then
-		self:WithAllFrames(function (f) f:SetFrameFont(media:Fetch("font", self.db.profile.font)) end)
-	elseif type == "statusbar" then
-		self:WithAllFrames(function (f) f:SetFrameTexture(media:Fetch("statusbar", self.db.profile.texture)) end)
+ 	if type == "font" then
+ 		self:WithAllFrames(function (f) f:SetFrameFont(media:Fetch("font", self.db.profile.font), self.db.profile.fontSize) end)
+ 	elseif type == "statusbar" then
+ 		self:WithAllFrames(function (f) f:SetFrameTexture(media:Fetch("statusbar", self.db.profile.texture)) end)
 	end
 end
 
