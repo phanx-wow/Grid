@@ -59,7 +59,7 @@ function GridLayoutHeaderClass.prototype:CreateFrames(isPetGroup)
 
 	self.frame = CreateFrame("Frame", "GridLayoutHeader"..NUM_HEADERS,
 							 GridLayoutFrame, template)
-	self.frame:SetAttribute("template", "SecureUnitButtonTemplate") 
+	self.frame:SetAttribute("template", "SecureUnitButtonTemplate")
 	self.frame.initialConfigFunction = GridLayout_InitialConfigFunction
 end
 
@@ -216,8 +216,8 @@ GridLayout.options = {
 		},
 		["heroic_raidlayout"] = {
 			type = "text",
-			name = L["Heroic Raid Layout"],
-			desc = L["Select which layout to use when in a heroic raid."],
+			name = L["25 Player Raid Layout"],
+			desc = L["Select which layout to use when in a 25 player raid."],
 			order = ORDER_LAYOUT + 3,
 			get = function ()
 				      return GridLayout.db.profile.layouts.heroic_raid
@@ -230,8 +230,8 @@ GridLayout.options = {
 		},
 		["raidlayout"] = {
 			type = "text",
-			name = L["Raid Layout"],
-			desc = L["Select which layout to use when in a raid."],
+			name = L["10 Player Raid Layout"],
+			desc = L["Select which layout to use when in a 10 player raid."],
 			order = ORDER_LAYOUT + 3,
 			get = function ()
 				      return GridLayout.db.profile.layouts.raid
@@ -461,7 +461,7 @@ if media then
 				  GridLayout.db.profile.borderTexture = v
 				  GridLayout:UpdateColor()
 			  end,
-	}		  
+	}
 
 	GridLayout.options.args.advanced.args["border"] = border_options
 end
@@ -483,12 +483,12 @@ function GridLayout:OnEnable()
 	if not self.frame then
 		self:CreateFrames()
 	end
-	
+
 	self:UpdateTabVisibility()
 
 	self.forceRaid = true
 	self:ScheduleEvent(self.CombatFix, 1, self)
-	
+
 	self:LoadLayout(self.db.profile.layout or self.db.profile.layouts["heroic_raid"])
 	-- position and scale frame
 	self:RestorePosition()
@@ -799,9 +799,9 @@ end
 
 function GridLayout:LoadLayout(layoutName)
 	self.db.profile.layout = layoutName
-	if InCombatLockdown() then 
+	if InCombatLockdown() then
 		reloadLayoutQueued = true
-		return 
+		return
 	end
 	local p = self.db.profile
 	local horizontal = p.horizontal

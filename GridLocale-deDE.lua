@@ -53,7 +53,7 @@ local strings_deDE = {
 	["Toggle the %s indicator."] = "Aktiviert den %s Indikator.",
 	["Frame Width"] = "Rahmenbreite",
 	["Adjust the width of each unit's frame."] = "Die Breite von jedem Einheitenfenster anpassen.",
-	["Frame Height"] = "Rahmenhöhe",	
+	["Frame Height"] = "Rahmenhöhe",
 	["Adjust the height of each unit's frame."] = "Die Höhe von jedem Einheitenfenster anpassen.",
 	["Frame Texture"] = "Rahmentextur",
 	["Adjust the texture of each unit's frame."] = "Die Textur von jedem Einheitenfenster anpassen.",
@@ -61,7 +61,7 @@ local strings_deDE = {
 	["Adjust the size of the corner indicators."] = "Die Größe der Eckenindikatoren anpassen.",
 	["Enable Mouseover Highlight"] = "Rahmen Hervorhebung",
 	["Toggle mouseover highlight."] = "Rahmen Hervorhebung (Mouseover Highlight) ein-/ausschalten.",
-	["Font"] = "Schriftart",	
+	["Font"] = "Schriftart",
 	["Adjust the font settings"] = "Die Schriftart anpassen",
 	["Font Size"] = "Schriftgröße",
 	["Adjust the font size."] = "Die Schriftgröße anpassen.",
@@ -96,10 +96,10 @@ local strings_deDE = {
 	["Select which layout to use when not in a party."] = "Wähle welches Layout benutzt werden soll, wenn Du in keiner Gruppe bist.",
 	["Party Layout"] = "Gruppen Layout",
 	["Select which layout to use when in a party."] = "Wähle welches Gruppen Layout benutzt werden soll.",
-	["Heroic Raid Layout"] = "Schlachtzug Layout (Heroisch)",
-	["Select which layout to use when in a heroic raid."] = "Wähle welches Schlachtzug Layout (Heroisch) benutzt werden soll.",
-	["Raid Layout"] = "Schlachtzug Layout",
-	["Select which layout to use when in a raid."] = "Wähle welches Schlachtzug Layout benutzt werden soll.",
+	["25 Player Raid Layout"] = "25 Spieler Schlachtzug Layout",
+	["Select which layout to use when in a 25 player raid."] = "Wähle welches Schlachtzug Layout für 25 Spieler benutzt werden soll.",
+	["10 Player Raid Layout"] = "10 Spieler Schlachtzug Layout",
+	["Select which layout to use when in a 10 player raid."] = "Wähle welches Schlachtzug Layout für 10 Spieler benutzt werden soll.",
 	["Battleground Layout"] = "Schlachtfeld Layout",
 	["Select which layout to use when in a battleground."] = "Wähle welches Schlachtfeld Layout benutzt werden soll.",
 	["Arena Layout"] = "Arena Layout",
@@ -336,7 +336,7 @@ local strings_deDE = {
 	--{{{ GridStatusVehicle
 	["In Vehicle"] = "In Fahrzeug",
 	["Driving"] = "Fährt",
-	
+
 	--}}}
 	--{{{ GridStatusReadyCheck
 	["Ready Check"] = "Bereitschaftscheck",
@@ -354,7 +354,7 @@ local strings_deDE = {
 	["Color for Not Ready."] = "Farbe für 'Nicht bereit'.",
 	["AFK color"] = "AFK Farbe",
 	["Color for AFK."] = "Farbe für 'AFK'.",
-	
+
 }
 
 L:RegisterTranslations("deDE", function() return strings_deDE end)

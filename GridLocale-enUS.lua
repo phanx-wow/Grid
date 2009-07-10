@@ -98,10 +98,10 @@ local strings_enUS = {
 	["Select which layout to use when not in a party."] = true,
 	["Party Layout"] = true,
 	["Select which layout to use when in a party."] = true,
-	["Heroic Raid Layout"] = true,
-	["Select which layout to use when in a heroic raid."] = true,
-	["Raid Layout"] = true,
-	["Select which layout to use when in a raid."] = true,
+	["25 Player Raid Layout"] = true,
+	["Select which layout to use when in a 25 player raid."] = true,
+	["10 Player Raid Layout"] = true,
+	["Select which layout to use when in a 10 player raid."] = true,
 	["Battleground Layout"] = true,
 	["Select which layout to use when in a battleground."] = true,
 	["Arena Layout"] = true,
@@ -260,7 +260,7 @@ local strings_enUS = {
 	["Class Filter"] = true,
 	["Show status for the selected classes."] = true,
 	["Show on %s."] = true,
-	["Show if mine"] = true,	
+	["Show if mine"] = true,
 	["Display status only if the buff was cast by you."] = true,
 	["Show if missing"] = true,
 	["Display status only if the buff is not active."] = true,
@@ -340,7 +340,7 @@ local strings_enUS = {
 	--{{{ GridStatusVehicle
 	["In Vehicle"] = true,
 	["Driving"] = true,
-	
+
 	--}}}
 	--{{{ GridStatusReadyCheck
 	["Ready Check"] = true,
@@ -358,7 +358,7 @@ local strings_enUS = {
 	["Color for Not Ready."] = true,
 	["AFK color"] = true,
 	["Color for AFK."] = true,
-	
+
 	--}}}
 	--{{{ Unused translations: translators, please remove these
 	["Show Pets for Party"] = true,

@@ -140,7 +140,7 @@ do
 
 		if guid then
 			if realm == "" then realm = nil end
-			
+
 			if units_to_remove[guid] then
 				units_to_remove[guid] = nil
 
@@ -255,10 +255,21 @@ do
 		end
 
 		if GetNumRaidMembers() > 0 then
-			if GetCurrentDungeonDifficulty() == 2 then
-				return "heroic_raid"
+			if type(GetRaidDifficulty) == "function" then
+				-- 3.2
+				if GetRaidDifficulty() == 2 or GetRaidDifficulty() == 4 then
+					return "heroic_raid"
+				else
+					return "raid"
+				end			
 			else
-				return "raid"
+				-- 3.1
+                if GetCurrentDungeonDifficulty() == 2 then
+                	return "heroic_raid"
+                else
+                    return "raid"
+                end
+
 			end
 		end
 
