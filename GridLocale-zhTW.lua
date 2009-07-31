@@ -57,6 +57,8 @@ local strings_zhTW = {
 	["Adjust the height of each unit's frame."] = "為每一個單位框架調整高度。",
 	["Frame Texture"] = "框架材質",
 	["Adjust the texture of each unit's frame."] = "調整每一個單位框架的材質。",
+	["Border Size"] = "邊框大小",
+	["Adjust the size of the border indicators."] = "調整邊框提示器大小",
 	["Corner Size"] = "角落提示器大小",
 	["Adjust the size of the corner indicators."] = "調整角落提示器的大小。",
 	["Enable Mouseover Highlight"] = "啟用滑鼠懸停高亮",
@@ -88,18 +90,16 @@ local strings_zhTW = {
 	["Drag this tab to move Grid."] = "拖動此標簽移動 Grid。",
 	["Lock Grid to hide this tab."] = "鎖定 Grid 隱藏此標簽。",
 	["Alt-Click to permanantly hide this tab."] = "Alt-單擊總是隱藏此標簽。。",
-
-	-- Layout options
 	["Show Frame"] = "顯示框架",
 
 	["Solo Layout"] = "單人版面編排",
 	["Select which layout to use when not in a party."] = "選擇單人版面編排方式。",
 	["Party Layout"] = "隊伍版面編排",
 	["Select which layout to use when in a party."] = "選擇隊伍版面編排方式。",
-	["Heroic Raid Layout"] = "英雄團隊版面編排",
-	["Select which layout to use when in a heroic raid."] = "選擇英雄團隊版面編排方式。",
-	["Raid Layout"] = "團隊版面編排",
-	["Select which layout to use when in a raid."] = "選擇團隊版面編排方式。",
+	["25 Player Raid Layout"] = "25人團隊模式",
+	["Select which layout to use when in a 25 player raid."] = "選擇25人團隊模式面板編排",
+	["10 Player Raid Layout"] = "10人團隊模式",
+	["Select which layout to use when in a 10 player raid."] = "選擇10人團隊模式面板編排",
 	["Battleground Layout"] = "戰場版面編排",
 	["Select which layout to use when in a battleground."] = "選擇戰場版面編排方式。",
 	["Arena Layout"] = "競技場版面編排",
@@ -203,6 +203,8 @@ local strings_zhTW = {
 	--{{{ GridStatus
 	["Status"] = "狀態",
 	["Options for %s."] = "%s 設定選項。",
+	["Reset class colors"] = "重置職業顔色",
+	["Reset class colors to defaults."] = "重置職業顔色為默認",
 
 	-- module prototype
 	["Status: %s"] = "狀態: %s",
@@ -357,15 +359,6 @@ local strings_zhTW = {
 	
 	--}}}
 	--{{{ Unused translations: translators, please remove these
-	["Show Pets for Party"] = "隊伍中顯示寵物",
-	["Grouped"] = "隊伍",
-	["Show party/self as an extra group."] = "將自己/小隊額外顯示出來。",
-	["Select which raid layout to use."] = "選擇使用何種團隊版面",
-	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "設定何時顯示Grid：可選'總是'，'隊伍'或'團隊'。",
-	["Raid"] = "團隊",
-	["Show the pets for the party below the party itself."] = "在小隊下方顯示該隊員的寵物。",
-	["Show Party in Raid"] = "在團隊中顯示小隊",
-
 	--}}}
 }
 
