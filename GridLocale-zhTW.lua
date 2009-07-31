@@ -15,7 +15,6 @@ local strings_zhTW = {
 	--{{{ GridFrame
 	["Frame"] = "框架",
 	["Options for GridFrame."] = "GridFrame 設定選項。",
-
 	["Show Tooltip"] = "顯示提示訊息",
 	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "顯示單位框架的提示訊息。選擇「總是」，「永不」或「戰鬥外」。",
 	["Always"] = "總是",
