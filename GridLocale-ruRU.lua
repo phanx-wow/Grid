@@ -1,4 +1,4 @@
-local L = AceLibrary("AceLocale-2.2"):new("Grid") 
+﻿local L = AceLibrary("AceLocale-2.2"):new("Grid") 
 
 local strings_ruRU = { 
 	--{{{ GridCore 
@@ -17,7 +17,7 @@ local strings_ruRU = {
 	["Options for GridFrame."] = "Опции фреймов Grid",
 
     ["Show Tooltip"] = "Показывать подсказки",
-	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "Показывать подсказку еденицы.  Выберите 'Всегда', 'Никогда', или 'Вне боя'.",
+	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "Показывать подсказку единицы.  Выберите 'Всегда', 'Никогда', или 'Вне боя'.",
 	["Always"] = "Всегда",
 	["Never"] = "Никогда",
 	["OOC"] = "Вне боя",
@@ -95,21 +95,21 @@ local strings_ruRU = {
 	["Solo Layout"] = "Расположение в соло",
 	["Select which layout to use when not in a party."] = "Выбрать какое расположение использовать не находясь в группе.",
 	["Party Layout"] = "Расположение группы",
-	["Heroic Raid Layout"] = "Расположение рейда (героик)",
-	["Select which layout to use when in a heroic raid."] = "Выбрать какое расположение использовать в рейде, героического уровня.",
 	["Select which layout to use when in a party."] = "Выбрать какое расположение использовать в группе.",
-	["Raid Layout"] = "Расположение рейда",
-	["Select which layout to use when in a raid."] = "Выбрать какое расположение использовать в рейде.",
+	["25 Player Raid Layout"] = "Расположение для 25 игроков",
+	["Select which layout to use when in a 25 player raid."] = "Выбрать какое расположение использовать в рейде для 25 игроков.",
+	["10 Player Raid Layout"] = "Расположение для 10 игроков",
+	["Select which layout to use when in a 10 player raid."] = "Выбрать какое расположение использовать в рейде для 10 игроков.",
 	["Battleground Layout"] = "Расположение на ПС",
 	["Select which layout to use when in a battleground."] = "Выбрать какое расположение использовать на полях сражений.",
 	["Arena Layout"] = "Расположение на арене",
 	["Select which layout to use when in an arena."] = "Выбрать какое расположение использовать на арене.",
-    ["Horizontal groups"] = "Группы горизонтально",
+	["Horizontal groups"] = "Группы горизонтально",
 	["Switch between horzontal/vertical groups."] = "Переключить между группы вертикально/горизонтально.",
 	["Clamped to screen"] = "В пределах экрана",
 	["Toggle whether to permit movement out of screen."] = "Не позволять перемещать окно за пределы экрана",
 	["Frame lock"] = "Закрепить фреймы",
-	["Locks/unlocks the grid for movement."] = "Закрепляет/открепить окно для передвижения",
+	["Locks/unlocks the grid for movement."] = "Закрепляет/открепляет окно для передвижения",
 	["Click through the Grid Frame"] = "Выбирать через окно Grid",
 	["Allows mouse click through the Grid Frame."] = "Разрешает мышкой кликать сквозь окно Grid",
 
@@ -153,9 +153,9 @@ local strings_ruRU = {
 	["Colors"] = "Цвета",
 	["Color options for class and pets."] = "Опции окраски для классов и питомцев",
 	["Fallback colors"] = "Цвета неизветсных",
-	["Color of unknown units or pets."] = "Цвет неизвестных едениц или питомцев",
-	["Unknown Unit"] = "Неизвестная еденица",
-	["The color of unknown units."] = "Цвет неизвестной еденицы",
+	["Color of unknown units or pets."] = "Цвет неизвестных единиц или питомцев",
+	["Unknown Unit"] = "Неизвестная единица",
+	["The color of unknown units."] = "Цвет неизвестной единицы",
 	["Unknown Pet"] = "Неизвестные питомцы",
 	["The color of unknown pets."] = "Цвет неизветсных питомцев",
 	["Class colors"] = "Цвет классов",
@@ -267,7 +267,7 @@ local strings_ruRU = {
 
 	--}}}
 	--{{{ GridStatusName
-    ["Unit Name"] = "Имя еденицы",
+    ["Unit Name"] = "Имя единицы",
 	["Color by class"] = "Цвет по классу",
 
 	--}}}
@@ -309,7 +309,7 @@ local strings_ruRU = {
 	["Only show deficit above % damage."] = "Показывать дефицит только после % урона.",
 	["Color deficit based on class."] = "Цвет дефицита в зависимости от класса",
 	["Low HP threshold"] = "Порог \"Мало ЗД\"",
-	["Set the HP % for the low HP warning."] = "Установить % для предупредения о том что у единицы мало здоровья.",
+	["Set the HP % for the low HP warning."] = "Установить % для предупреждения о том что у единицы мало здоровья.",
 
 	--}}}
 	--{{{ GridStatusRange
