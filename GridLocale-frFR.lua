@@ -1,4 +1,4 @@
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local strings_frFR = {
 	--{{{ GridCore
@@ -57,6 +57,8 @@ local strings_frFR = {
 	["Adjust the height of each unit's frame."] = "Modifie la hauteur utilisée par chaque cellule d'unité.",
 	["Frame Texture"] = "Texture des cellules",
 	["Adjust the texture of each unit's frame."] = "Modifie la texture utilisée par chaque cellule d'unité.",
+	["Border Size"] = "Tailles des bords",
+	["Adjust the size of the border indicators."] = "Modifie la taille des indicateurs dans les bords.",
 	["Corner Size"] = "Taille des coins",
 	["Adjust the size of the corner indicators."] = "Modifie la taille des indicateurs dans les coins.",
 	["Enable Mouseover Highlight"] = "Activer la surbrillance au survol",
@@ -96,10 +98,10 @@ local strings_frFR = {
 	["Select which layout to use when not in a party."] = "Sélectionnez la disposition à utiliser quand vous êtes tout seul.",
 	["Party Layout"] = "Disposition en groupe",
 	["Select which layout to use when in a party."] = "Sélectionnez la disposition à utiliser quand vous êtes dans un groupe.",
-	["Heroic Raid Layout"] = "Disposition en raid héroïque",
-	["Select which layout to use when in a heroic raid."] = "Sélectionnez la disposition à utiliser quand vous êtes dans un raid héroïque.",
-	["Raid Layout"] = "Disposition en raid",
-	["Select which layout to use when in a raid."] = "Sélectionnez la disposition à utiliser quand vous êtes dans un raid.",
+	["25 Player Raid Layout"] = "Disposition en raid 25",
+	["Select which layout to use when in a 25 player raid."] = "Sélectionnez la disposition à utiliser quand vous êtes dans un raid de 25 joueurs.",
+	["10 Player Raid Layout"] = "Disposition en raid 10",
+	["Select which layout to use when in a 10 player raid."] = "Sélectionnez la disposition à utiliser quand vous êtes dans un raid de 10 joueurs.",
 	["Battleground Layout"] = "Disposition en CdB",
 	["Select which layout to use when in a battleground."] = "Sélectionnez la disposition à utiliser quand vous êtes dans un champ de bataille.",
 	["Arena Layout"] = "Disposition en arène",
@@ -203,6 +205,8 @@ local strings_frFR = {
 	--{{{ GridStatus
 	["Status"] = "Statut",
 	["Options for %s."] = "Options concernant %s.",
+	["Reset class colors"] = "Réinitialisez la couleur des classes",
+	["Reset class colors to defaults."] = "Réinitialisez la couleur des classes par défaut.",
 
 	-- module prototype
 	["Status: %s"] = "Statut : %s",
