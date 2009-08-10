@@ -17,7 +17,7 @@
 ## DefaultState: enabled
 ## LoadOnDemand: 0
 
-## OptionalDeps: Ace2, LibBabble-Class-3.0, CallbackHandler-1.0, ChatThrottleLib, DewdropLib, FuBarPlugin-2.0, LibGratuity-3.0, LibHealComm-3.0, LibSharedMedia-3.0, UTF8, Clique, CT_RaidAssist, FuBar, JustClick, oRA2, SharedMedia
+## OptionalDeps: Ace2, LibBabble-Class-3.0, CallbackHandler-1.0, ChatThrottleLib, DewdropLib, FuBarPlugin-2.0, LibGratuity-3.0, LibHealComm-3.0, LibSharedMedia-3.0, UTF8, Clique, CT_RaidAssist, FuBar, JustClick, oRA2, SharedMedia, Waterfall-1.0
 
 ## Non-Ace Libraries
 #libs\UTF8\utf8data.lua
