@@ -88,7 +88,6 @@ local strings_esES = {
 	["Always"] = "Siempre", 
 	["Grouped"] = "En grupo", 
 	["Raid"] = "En raid", 
-	["Raid Layout"] = "Disposicion de raid", 
 	["Select which raid layout to use."] = "Eliga la disposicion de raid para usar", 
 	["Show Party in Raid"] = "Enseña grupo en raid", 
 	["Show party/self as an extra group."] = "Enseña grupo/mismo como un grupo extra", 
