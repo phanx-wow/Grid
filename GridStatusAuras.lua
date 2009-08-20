@@ -687,7 +687,7 @@ function GridStatusAuras:UpdateAuraScanList()
 		if type(settings) == "table" and settings.enable then
 			local name = settings.text
 
-			if name then
+			if name and not debuff_types[name] then
 				local isBuff = GridStatusAuras.StatusForSpell(name, true) == status
 
 				if isBuff then
