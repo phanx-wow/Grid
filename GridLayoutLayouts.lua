@@ -98,22 +98,22 @@ GridLayout:AddLayout(L["By Group 15"], {
 	})
 
 GridLayout:AddLayout(L["By Group 15 w/Pets"], {
-			     [1] = {
-				     groupFilter = "1",
-			     },
-			     [2] = {
-				     groupFilter = "2",
-			     },
-			     [3] = {
-				     groupFilter = "3",
-			     },
-			     [4] = {
-					 groupFilter = "1,2,3",
-				     isPetGroup = true,
-				     unitsPerColumn = 5,
-				     maxColumns = 5,
-			     },
-		     })
+		[1] = {
+			groupFilter = "1",
+		},
+		[2] = {
+			groupFilter = "2",
+		},
+		[3] = {
+			groupFilter = "3",
+		},
+		[4] = {
+			 groupFilter = "1,2,3",
+			isPetGroup = true,
+			unitsPerColumn = 5,
+			maxColumns = 5,
+		},
+	})
 
 GridLayout:AddLayout(L["By Group 10"], {
 		[1] = {
@@ -140,60 +140,60 @@ GridLayout:AddLayout(L["By Group 10 w/Pets"], {
 	})
 
 GridLayout:AddLayout(L["By Group 5"], {
-			     [1] = {
-					 showParty = true,
-					 showRaid = false,
-					 sortMethod = "INDEX",
-			     },
-		     })
+		[1] = {
+			showParty = true,
+			showRaid = false,
+			sortMethod = "INDEX",
+		},
+	})
 
 GridLayout:AddLayout(L["By Group 5 w/Pets"], {
-			     [1] = {
-					 showParty = true,
-					 showRaid = false,
-					 sortMethod = "INDEX",
-			     },
-			     [2] = {
-					 showParty = true,
-					 showRaid = false,
-					 sortMethod = "INDEX",
+		[1] = {
+			showParty = true,
+			showRaid = false,
+			sortMethod = "INDEX",
+		},
+		[2] = {
+			showParty = true,
+			showRaid = false,
+			sortMethod = "INDEX",
 
-				     isPetGroup = true,
-				     unitsPerColumn = 5,
-				     maxColumns = 5,
-			     },
-		     })
+			isPetGroup = true,
+			unitsPerColumn = 5,
+			maxColumns = 5,
+		},
+	})
 
 GridLayout:AddLayout(L["By Class"], {
 		[1] = {
 			groupFilter = "WARRIOR",
 		},
 		[2] = {
-			groupFilter = "PRIEST",
+			groupFilter = "DEATHKNIGHT",
 		},
 		[3] = {
-			groupFilter = "DRUID",
+			groupFilter = "ROGUE",
 		},
 		[4] = {
 			groupFilter = "PALADIN",
 		},
 		[5] = {
-			groupFilter = "SHAMAN",
+			groupFilter = "DRUID",
 		},
 		[6] = {
-			groupFilter = "MAGE",
+			groupFilter = "SHAMAN",
 		},
 		[7] = {
-			groupFilter = "WARLOCK",
+			groupFilter = "PRIEST",
 		},
 		[8] = {
-			groupFilter = "HUNTER",
+			groupFilter = "MAGE",
 		},
 		[9] = {
-			groupFilter = "ROGUE",
+			groupFilter = "WARLOCK",
 		},
 		[10] = {
-			groupFilter = "DEATHKNIGHT",
+			groupFilter = "HUNTER",
 		},
 	})
 
@@ -202,61 +202,59 @@ GridLayout:AddLayout(L["By Class w/Pets"], {
 			groupFilter = "WARRIOR",
 		},
 		[2] = {
-			groupFilter = "PRIEST",
+			groupFilter = "DEATHKNIGHT",
 		},
 		[3] = {
-			groupFilter = "DRUID",
+			groupFilter = "ROGUE",
 		},
 		[4] = {
 			groupFilter = "PALADIN",
 		},
 		[5] = {
-			groupFilter = "SHAMAN",
+			groupFilter = "DRUID",
 		},
 		[6] = {
-			groupFilter = "MAGE",
+			groupFilter = "SHAMAN",
 		},
 		[7] = {
-			groupFilter = "WARLOCK",
+			groupFilter = "PRIEST",
 		},
 		[8] = {
-			groupFilter = "HUNTER",
+			groupFilter = "MAGE",
 		},
 		[9] = {
-			groupFilter = "ROGUE",
+			groupFilter = "WARLOCK",
 		},
 		[10] = {
-			groupFilter = "DEATHKNIGHT",
+			groupFilter = "HUNTER",
 		},
 		[11] = {
 			isPetGroup = true,
 		},
 	})
 
-GridLayout:AddLayout(L["By Group 25 w/tanks"],
-		     {
-			     [1] = {
-				     groupFilter = "MAINTANK,MAINASSIST",
-				     groupingOrder = "MAINTANK,MAINASSIST",
-			     },
-			     -- spacer
-			     [2] = {
-				     groupFilter = "",
-			     },
-			     [3] = {
-				     groupFilter = "1",
-			     },
-			     [4] = {
-				     groupFilter = "2",
-			     },
-			     [5] = {
-				     groupFilter = "3",
-			     },
-			     [6] = {
-				     groupFilter = "4",
-			     },
-			     [7] = {
-				     groupFilter = "5",
-			     }
-		     })
-				     
+GridLayout:AddLayout(L["By Group 25 w/tanks"], {
+		[1] = {
+			groupFilter = "MAINTANK,MAINASSIST",
+			groupingOrder = "MAINTANK,MAINASSIST",
+		},
+		-- spacer
+		[2] = {
+			groupFilter = "",
+		},
+		[3] = {
+			groupFilter = "1",
+		},
+		[4] = {
+			groupFilter = "2",
+		},
+		[5] = {
+			groupFilter = "3",
+		},
+		[6] = {
+			groupFilter = "4",
+		},
+		[7] = {
+			groupFilter = "5",
+		}
+	})

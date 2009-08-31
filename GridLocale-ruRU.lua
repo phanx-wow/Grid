@@ -1,7 +1,7 @@
-﻿local L = AceLibrary("AceLocale-2.2"):new("Grid") 
+﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
-local strings_ruRU = { 
-	--{{{ GridCore 
+local strings_ruRU = {
+	--{{{ GridCore
 	["Debugging"] = "Отладка",
 	["Module debugging menu."] = "Меню модуля отладки",
 	["Debug"] = "Отладка",
@@ -16,7 +16,7 @@ local strings_ruRU = {
 	["Frame"] = "Фреймы",
 	["Options for GridFrame."] = "Опции фреймов Grid",
 
-    ["Show Tooltip"] = "Показывать подсказки",
+	["Show Tooltip"] = "Показывать подсказки",
 	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "Показывать подсказку единицы.  Выберите 'Всегда', 'Никогда', или 'Вне боя'.",
 	["Always"] = "Всегда",
 	["Never"] = "Никогда",
@@ -28,7 +28,7 @@ local strings_ruRU = {
 	["Healing Bar Opacity"] = "Прозрачность полосы лечения",
 	["Sets the opacity of the healing bar."] = "Установить прозрачность полосы лечения.",
 
-    ["Indicators"] = "Индикаторы",
+	["Indicators"] = "Индикаторы",
 	["Border"] = "Граница",
 	["Health Bar"] = "Полоса здоровья",
 	["Health Bar Color"] = "Цвет полосы здоровья",
@@ -42,7 +42,7 @@ local strings_ruRU = {
 	["Bottom Right Corner"] = "Нижний правый угол",
 	["Frame Alpha"] = "Прозрачность фреймов",
 
-    ["Options for %s indicator."] = "Опции для %s индикаторов.",
+	["Options for %s indicator."] = "Опции для %s индикаторов.",
 	["Statuses"] = "Статусы",
 	["Toggle status display."] = "Переключить статус на дисплее.",
 
@@ -65,6 +65,11 @@ local strings_ruRU = {
 	["Adjust the font settings"] = "Настройка параметров шрифта",
 	["Font Size"] = "Размер шрифта",
 	["Adjust the font size."] = "Настройка размера шрифта",
+--	["Font Outline"] = "",
+--	["Adjust the font outline."] = "",
+--	["None"] = "",
+--	["Thin"] = "",
+--	["Thick"] = "",
 	["Orientation of Frame"] = "Ориентация фреймов",
 	["Set frame orientation."] = "Установить ориеетацию фреймов",
 	["Orientation of Text"] = "Ориентация текста",
@@ -75,23 +80,23 @@ local strings_ruRU = {
 	["Adjust the size of the center icon."] = "Настройка размера значка в центре",
 	["Icon Border Size"] = "Размер границы значка",
 	["Adjust the size of the center icon's border."] = "Настраивает размер границы значка в центре.",
-    ["Icon Stack Text"] = "Текст множества значков",
+	["Icon Stack Text"] = "Текст множества значков",
 	["Toggle center icon's stack count text."] = "Показывать количество значков в множестве",
 	["Icon Cooldown Frame"] = "Фрейм перерыва (cooldown) значка",
 	["Toggle center icon's cooldown frame."] = "Показывать фрейм перерыва значка в центре",
 
 	--}}}
 	--{{{ GridLayout
-    ["Layout"] = "Расположение",
+	["Layout"] = "Расположение",
 	["Options for GridLayout."] = "Опции для GridLayout",
-	
+
 	["Drag this tab to move Grid."] = "Перетаскивая этот ярлык вы перемстите Grid.",
 	["Lock Grid to hide this tab."] = "Закрепить Grid чтобы скрыть данный ярлык.",
 	["Alt-Click to permanantly hide this tab."] = "Alt-Клик скрывает данный ярлык.",
 
 	-- Layout options
 	["Show Frame"] = "Отображение фреймов",
-    
+
 	["Solo Layout"] = "Расположение в соло",
 	["Select which layout to use when not in a party."] = "Выбрать какое расположение использовать не находясь в группе.",
 	["Party Layout"] = "Расположение группы",
@@ -124,7 +129,7 @@ local strings_ruRU = {
 	["BOTTOMRIGHT"] = "ВНИЗУ СПРАВА",
 
 	-- Display options
-    ["Padding"] = "Заполнение",
+	["Padding"] = "Заполнение",
 	["Adjust frame padding."] = "Настроить заполнение фреймов",
 	["Spacing"] = "Интервалы",
 	["Adjust frame spacing."] = "Настроить интервалы между фреймами",
@@ -176,7 +181,7 @@ local strings_ruRU = {
 
 	--}}}
 	--{{{ GridLayoutLayouts
-    ["None"] = "Нет",
+	["None"] = "Нет",
 	["By Group 40"] = "Для Группы из 40 чел.",
 	["By Group 25"] = "Для Группы из 25 чел.",
 	["By Group 25 w/Pets"] = "Для Группы из 25 чел. с питомцами",
@@ -267,7 +272,7 @@ local strings_ruRU = {
 
 	--}}}
 	--{{{ GridStatusName
-    ["Unit Name"] = "Имя единицы",
+	["Unit Name"] = "Имя единицы",
 	["Color by class"] = "Цвет по классу",
 
 	--}}}
@@ -331,12 +336,12 @@ local strings_ruRU = {
 	--{{{ GridStatusVoiceComm
 	["Voice Chat"] = "Голосовой чат",
 	["Talking"] = "Говорит",
-	
+
 	--}}}
 	--{{{ GridStatusVehicle
 	["In Vehicle"] = "На транспорте",
 	["Driving"] = "Управляет",
-	
+
 	--}}}
 	--{{{ GridStatusReadyCheck
 	["Ready Check"] = "Проверка готовности",
@@ -354,8 +359,8 @@ local strings_ruRU = {
 	["Color for Not Ready."] = "Окраска не готовых",
 	["AFK color"] = "Отсутствие",
 	["Color for AFK."] = "Окраска отсутствующих",
-	
-	--}}} 
-} 
 
-L:RegisterTranslations("ruRU", function() return strings_ruRU end)  
+	--}}}
+}
+
+L:RegisterTranslations("ruRU", function() return strings_ruRU end)

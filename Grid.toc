@@ -1,26 +1,24 @@
 ## Interface: 30200
-## Title: Grid
-## Notes: A modular, lightweight and screen-estate saving grid of party/raid unit frames
-## Notes-zhCN: 小巧的轻量级模块化队伍框架
-## Notes-zhTW: 精簡的團隊框架功能
-## Author: Pastamancer & Maia
 ## Version: 1.30200.2009081101
 ## X-ReleaseDate: "$Date$"
-## X-Website: http://www.wowace.com/projects/grid/
-## X-Category: UnitFrame
-## X-AceForum: 2525
-## X-RelSite-WoWI: 5747
-## X-RelSite-Curse: 9503
 
+## Title: Grid
+## Notes: A modular, lightweight, and screen-estate saving grid of party/raid unit frames.
+## Notes-zhCN: 小巧的轻量级模块化队伍框架
+## Notes-zhTW: 精簡的團隊框架功能
+
+## Author: Pastamancer & Maia
+## X-AceForum: 2525
+## X-Category: UnitFrame
+## X-RelSite-Curse: 9503
+## X-RelSite-WoWI: 5747
+## X-Website: http://www.wowace.com/projects/grid/
+
+## OptionalDeps: Ace2, CallbackHandler-1.0, ChatThrottleLib, DewdropLib, FuBarPlugin-2.0, LibGratuity-3.0, LibHealComm-3.0, LibSharedMedia-3.0, UTF8, Waterfall-1.0, Clique, CT_RaidAssist, FuBar, JustClick, oRA2, SharedMedia
 ## SavedVariables: GridDB
 
-## DefaultState: enabled
-## LoadOnDemand: 0
-
-## OptionalDeps: Ace2, LibBabble-Class-3.0, CallbackHandler-1.0, ChatThrottleLib, DewdropLib, FuBarPlugin-2.0, LibGratuity-3.0, LibHealComm-3.0, LibSharedMedia-3.0, UTF8, Clique, CT_RaidAssist, FuBar, JustClick, oRA2, SharedMedia, Waterfall-1.0
-
 ## Non-Ace Libraries
-#libs\UTF8\utf8data.lua
+#  libs\UTF8\utf8data.lua
 libs\UTF8\utf8.lua
 
 ## Ace Libraries
@@ -29,13 +27,13 @@ embeds.xml
 #Locales
 GridLocale-enUS.lua
 GridLocale-deDE.lua
-GridLocale-frFR.lua
-GridLocale-zhCN.lua
-GridLocale-koKR.lua
-GridLocale-zhTW.lua
 GridLocale-esES.lua
 GridLocale-esMX.lua
+GridLocale-frFR.lua
+GridLocale-koKR.lua
 GridLocale-ruRU.lua
+GridLocale-zhCN.lua
+GridLocale-zhTW.lua
 
 # Grid
 GridCore.lua

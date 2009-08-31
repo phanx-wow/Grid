@@ -53,8 +53,6 @@ function GridStatus.modulePrototype:_UnregisterEvent(event)
 	end
 end
 
-
-
 function GridStatus.modulePrototype:Reset()
 	self.debugging = self.db.profile.debug
 	self:Debug("Reset")
@@ -109,11 +107,11 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 					desc = string.format(L["Color for %s"], desc),
 					order = 90,
 					hasAlpha = true,
-					get = function ()
+					get = function()
 						      local color = module.db.profile[status].color
 						      return color.r, color.g, color.b, color.a
 					      end,
-					set = function (r, g, b, a)
+					set = function(r, g, b, a)
 						      local color = module.db.profile[status].color
 						      color.r = r
 						      color.g = g
@@ -129,10 +127,10 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 					max = 99,
 					min = 0,
 					step = 1,
-					get = function ()
+					get = function()
 						      return module.db.profile[status].priority
 					      end,
-					set = function (v)
+					set = function(v)
 						      module.db.profile[status].priority = v
 					      end,
 				},
@@ -155,10 +153,10 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 					name = L["Enable"],
 					desc = string.format(L["Enable %s"], desc),
 					order = 112,
-					get = function ()
+					get = function()
 						      return module.db.profile[status].enable
 					      end,
-					set = function (v)
+					set = function(v)
 						      module.db.profile[status].enable = v
 							  if v then
 								  if module['OnStatusEnable'] then
@@ -236,11 +234,11 @@ GridStatus.options = {
 							name = L["Unknown Unit"],
 							desc = L["The color of unknown units."],
 							order = 100,
-							get = function ()
+							get = function()
 									  local c = GridStatus.db.profile.colors.UNKNOWN_UNIT
 									  return c.r, c.g, c.b, c.a
 								  end,
-							set = function (r, g, b, a)
+							set = function(r, g, b, a)
 									  local c = GridStatus.db.profile.colors.UNKNOWN_UNIT
 									  c.r, c.g, c.b, c.a = r, g, b, a
 									  GridStatus:TriggerEvent("Grid_ColorsChanged")
@@ -252,11 +250,11 @@ GridStatus.options = {
 							name = L["Unknown Pet"],
 							desc = L["The color of unknown pets."],
 							order = 100,
-							get = function ()
+							get = function()
 									  local c = GridStatus.db.profile.colors.UNKNOWN_PET
 									  return c.r, c.g, c.b, c.a
 								  end,
-							set = function (r, g, b, a)
+							set = function(r, g, b, a)
 									  local c = GridStatus.db.profile.colors.UNKNOWN_PET
 									  c.r, c.g, c.b, c.a = r, g, b, a
 									  GridStatus:TriggerEvent("Grid_ColorsChanged")
@@ -284,10 +282,10 @@ GridStatus.options = {
 					name = L["Pet coloring"],
 					desc = L["Set the coloring strategy of pet units."],
 					order = 200,
-					get = function ()
+					get = function()
 							  return GridStatus.db.profile.colors.PetColorType
 						  end,
-					set = function (v)
+					set = function(v)
 							  GridStatus.db.profile.colors.PetColorType = v
 							  GridStatus:TriggerEvent("Grid_ColorsChanged")
 						  end,
@@ -305,32 +303,30 @@ GridStatus.options = {
 --}}}
 
 function GridStatus:FillColorOptions(options)
-	local BabbleClass = LibStub:GetLibrary("LibBabble-Class-3.0")
-	local BC = BabbleClass:GetLookupTable()
+	local classEnglishToLocal = {}
+	FillLocalizedClassList(classEnglishToLocal, false)
+
 	local classcolor = {}
-	for class, color in pairs(RAID_CLASS_COLORS) do
+	for class, color in pairs(CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS) do
 		classcolor[class] = { r = color.r, g = color.g, b = color.b }
 	end
+
 	local colors = self.db.profile.colors
-	for _, class in ipairs{
-		"Warlock", "Warrior", "Hunter", "Mage",
-		"Priest", "Druid", "Paladin", "Shaman", "Rogue", "Deathknight",
-	} do
-		local name = class:upper()
-		local l_class = BC[class]
-		if not colors[name] then
-			colors[name] = classcolor[name]
+	for class in pairs(classcolor) do
+		if not colors[class] then
+			colors[class] = classcolor[class]
 		end
+		local classLocal = classEnglishToLocal[class]
 		options.args.class.args[class] = {
 			type = "color",
-			name = l_class,
-			desc = L["Color for %s."]:format(l_class),
-			get = function ()
-				local c = colors[name]
+			name = classLocal,
+			desc = L["Color for %s."]:format(classLocal),
+			get = function()
+				local c = colors[class]
 				return c.r, c.g, c.b
 			end,
-			set = function (r, g, b)
-				local c = colors[name]
+			set = function(r, g, b)
+				local c = colors[class]
 				c.r, c.g, c.b = r, g, b
 				GridStatus:TriggerEvent("Grid_ColorsChanged")
 			end,
@@ -350,16 +346,16 @@ function GridStatus:FillColorOptions(options)
 	}
 	
 	-- wtf, this is ugly... refactor!
-	for _, class in ipairs{L["Beast"],L["Demon"],L["Humanoid"],L["Undead"],L["Dragonkin"],L["Elemental"],L["Not specified"]} do
+	for _, class in ipairs{ L["Beast"], L["Demon"], L["Humanoid"], L["Undead"], L["Dragonkin"], L["Elemental"], L["Not specified"] } do
 		options.args.creaturetype.args[class] = {
 			type = "color",
 			name = class,
 			desc = L["Color for %s."]:format(class),
-			get = function ()
+			get = function()
 				local c = colors[class]
 				return c.r, c.g, c.b
 			end,
-			set = function (r, g, b)
+			set = function(r, g, b)
 				local c = colors[class]
 				c.r, c.g, c.b = r, g, b
 				GridStatus:TriggerEvent("Grid_ColorsChanged")
@@ -370,7 +366,7 @@ end
 
 function GridStatus:ResetClassColors()
 	local colors = self.db.profile.colors
-	for class, class_color in pairs(RAID_CLASS_COLORS) do
+	for class, class_color in pairs(CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS) do
 		local c = colors[class]
 		c.r, c.g, c.b = class_color.r, class_color.g, class_color.b
 	end
@@ -431,7 +427,7 @@ function GridStatus:RegisteredStatusIterator()
 	local status
 	local gsreg = self.registry
 	local gsregdescr = self.registryDescriptions
-	return function ()
+	return function()
 		status = next(gsreg, status)
 		return status, gsreg[status], gsregdescr[status]
 	end
@@ -503,9 +499,7 @@ function GridStatus:SendStatusGained(guid, status, priority, range, color, text,
 	cached.duration = duration
 	cached.stack = stack
 
-	self:TriggerEvent("Grid_StatusGained", guid, status,
-			  priority, range, color, text, value, maxValue,
-			  texture, start, duration, stack)
+	self:TriggerEvent("Grid_StatusGained", guid, status, priority, range, color, text, value, maxValue, texture, start, duration, stack)
 end
 
 function GridStatus:SendStatusLost(guid, status)
@@ -548,7 +542,7 @@ function GridStatus:CachedStatusIterator(status)
 
 	if status then
 		-- iterator for a specific status
-		return function ()
+		return function()
 			guid = next(cache, guid)
 
 			-- we reached the end early?
@@ -568,7 +562,7 @@ function GridStatus:CachedStatusIterator(status)
 		end
 	else
 		-- iterator for all units, all statuses
-		return function ()
+		return function()
 			status = next(cache[guid], status)
 			
 			-- find the next unit with a status
@@ -639,5 +633,3 @@ end
 
 --}}}
 --}}}
-
-

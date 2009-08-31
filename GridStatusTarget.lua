@@ -15,22 +15,22 @@ local cur_target
 
 --{{{ AceDB defaults
 GridStatusTarget.defaultDB = {
-    debug = false, 
-    player_target = {
-        text = L["Target"],
-        enable = true,
-        color = { r = 0.8, g = 0.8, b = 0.8, a = 0.8 },
-        priority = 99,
-        range = false,
-    },
+	debug = false, 
+	player_target = {
+		text = L["Target"],
+		enable = true,
+		color = { r = 0.8, g = 0.8, b = 0.8, a = 0.8 },
+		priority = 99,
+		range = false,
+	},
 }
 --}}}
 
 GridStatusTarget.options = false
  
 function GridStatusTarget:OnInitialize()
-    self.super.OnInitialize(self)
-    self:RegisterStatus('player_target', L["Your Target"], nil, true)
+	self.super.OnInitialize(self)
+	self:RegisterStatus('player_target', L["Your Target"], nil, true)
 end
 
 function GridStatusTarget:OnStatusEnable(status)
@@ -57,12 +57,12 @@ function GridStatusTarget:PLAYER_TARGET_CHANGED()
 	if UnitExists("target") and settings.enable then
 		cur_target = UnitGUID("target")
 		self.core:SendStatusGained(cur_target, "player_target",
-				    settings.priority,
-				    (settings.range and 40),
-				    settings.color,
-				    settings.text,
-				    nil,
-				    nil,
-				    settings.icon)
+			settings.priority,
+			(settings.range and 40),
+			settings.color,
+			settings.text,
+			nil,
+			nil,
+			settings.icon)
 	end
 end

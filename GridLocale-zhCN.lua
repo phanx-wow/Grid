@@ -65,6 +65,11 @@ local strings_zhCN = {
 	["Adjust the font settings"] = "调整字体",
 	["Font Size"] = "字体大小",
 	["Adjust the font size."] = "调整字体尺寸。",
+--	["Font Outline"] = "",
+--	["Adjust the font outline."] = "",
+--	["None"] = "",
+--	["Thin"] = "",
+--	["Thick"] = "",
 	["Orientation of Frame"] = "框架方向",
 	["Set frame orientation."] = "设置框架方向。",
 	["Orientation of Text"] = "文字方向",
@@ -252,7 +257,7 @@ local strings_zhCN = {
 	["Class Filter"] = "职业过滤",
 	["Show status for the selected classes."] = "显示选定职业的状态。",
 	["Show on %s."] = "在%s上显示。",
-	["Show if mine"] = "显示自身",	
+	["Show if mine"] = "显示自身",
 	["Display status only if the buff was cast by you."] = "显示你施放增益时的状态。",
 	["Show if missing"] = "缺少时显示",
 	["Display status only if the buff is not active."] = "仅在增益缺少时才显示状态。",
@@ -332,7 +337,7 @@ local strings_zhCN = {
 	--{{{ GridStatusVehicle
 	["In Vehicle"] = "使用载具",
 	["Driving"] = "驾驶中",
-	
+
 	--}}}
 	--{{{ GridStatusReadyCheck
 	["Ready Check"] = "检查就绪",
@@ -350,7 +355,7 @@ local strings_zhCN = {
 	["Color for Not Ready."] = "未准备好时的颜色。",
 	["AFK color"] = "暂离颜色",
 	["Color for AFK."] = "暂离时的颜色。",
-	
+
 	--}}}
 	--{{{ Unused translations: translators, please remove these
 	["Show Pets for Party"] = "小队中显示宠物",

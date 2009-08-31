@@ -18,12 +18,11 @@ do
 		"AceLocale-2.2",
 		"AceOO-2.0",
 		"Dewdrop-2.0",
-		"Waterfall-1.0",
+		-- "Waterfall-1.0", -- Don't warn about optional libraries.
 		-- "DoesNotExist-Ace2",
 	}
 
 	local libstub_libs = {
-		"LibBabble-Class-3.0",
 		"LibGratuity-3.0",
 		"LibHealComm-3.0",
 		"LibSharedMedia-3.0",
@@ -104,8 +103,8 @@ if waterfall then
 		desc = L["Configure Grid"],
 		guiHidden = true,
 		func = function () 
-				   waterfall:Open("Grid")
-		       end,
+				waterfall:Open("Grid")
+		end,
 	}
 	
 	waterfall:Register("Grid", "aceOptions", Grid.options, "title", "Grid Configuration")
@@ -244,8 +243,8 @@ end
 --}}}
 
 function Grid:OnInitialize()
-	self:RegisterDefaults('profile', Grid.defaults )
-	self:RegisterChatCommand({'/grid'}, self.options )
+	self:RegisterDefaults('profile', Grid.defaults)
+	self:RegisterChatCommand('/grid', self.options)
 
 	-- we need to save debugging state over sessions :(
 	self.debugging = self.db.profile.debug
@@ -292,7 +291,7 @@ end
 
 function Grid:OnProfileEnable()
 	self.debugging = self.db.profile.debug
-	self:Debug("Loaded profile", "(", self:GetProfile(),")")
+	self:Debug("Loaded profile", "(", self:GetProfile(), ")")
 	self:ResetModules()
 end
 
@@ -325,12 +324,12 @@ function Grid:AddModuleDebugMenu(module)
 		name = module.name,
 		desc = string.format(L["Toggle debugging for %s."], module.name),
 		get = function ()
-			      return module.db.profile.debug
-		      end,
+			return module.db.profile.debug
+		end,
 		set = function (v)
-			      module.db.profile.debug = v
-			      module.debugging = v
-		      end,
+			module.db.profile.debug = v
+			module.debugging = v
+		end,
 	}
 
 end
@@ -348,11 +347,11 @@ function Grid:DisableModules()
 end
 
 function Grid:ResetModules()
-    for name,module in self:IterateModules() do
-	self:Debug("Resetting " .. name)
-	module.db = self:AcquireDBNamespace(name)
-	module:Reset()
-    end
+	for name, module in self:IterateModules() do
+		self:Debug("Resetting " .. name)
+		module.db = self:AcquireDBNamespace(name)
+		module:Reset()
+	end
 end
 
 --{{{ Event handlers

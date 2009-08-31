@@ -66,6 +66,11 @@ local strings_zhTW = {
 	["Adjust the font settings"] = "調整字型。",
 	["Font Size"] = "字型大小",
 	["Adjust the font size."] = "調整字型大小。",
+--	["Font Outline"] = "",
+--	["Adjust the font outline."] = "",
+--	["None"] = "",
+--	["Thin"] = "",
+--	["Thick"] = "",
 	["Orientation of Frame"] = "框架排列方式",
 	["Set frame orientation."] = "設定框架排列方式。",
 	["Orientation of Text"] = "文字排列方式",
@@ -109,8 +114,8 @@ local strings_zhTW = {
 	["Toggle whether to permit movement out of screen."] = "啟用/禁用框架於視窗內限制，避免拖曳出視窗外。",
 	["Frame lock"] = "鎖定框架",
 	["Locks/unlocks the grid for movement."] = "鎖定/解鎖 Grid 框架。",
-	["Click through the Grid Frame"] = "透過點擊 Grid 框架", 
-	["Allows mouse click through the Grid Frame."] = "允許透過滑鼠點擊 Grid 框架。", 
+	["Click through the Grid Frame"] = "透過點擊 Grid 框架",
+	["Allows mouse click through the Grid Frame."] = "允許透過滑鼠點擊 Grid 框架。",
 
 	["CENTER"] = "中",
 	["TOP"] = "上",
@@ -191,7 +196,7 @@ local strings_zhTW = {
 	["By Class"] = "以職業排列",
 	["By Class w/Pets"] = "以職業排列及寵物",
 	["Onyxia"] = "單數雙數小隊交錯排列",
-	["By Group 25 w/tanks"] = "25人團隊及坦克",	
+	["By Group 25 w/tanks"] = "25人團隊及坦克",
 
 	--}}}
 	--{{{ GridRange
@@ -233,7 +238,7 @@ local strings_zhTW = {
 
 	--}}}
 	--{{{ GridStatusAuras
-	["Auras"] = "光環",	
+	["Auras"] = "光環",
 	["Debuff type: %s"] = "減益類型: %s",
 	["Poison"] = "毒",
 	["Disease"] = "疾病",
@@ -257,7 +262,7 @@ local strings_zhTW = {
 	["Class Filter"] = "職業過濾",
 	["Show status for the selected classes."] = "顯示選定職業的狀態。",
 	["Show on %s."] = "在%s上顯示。",
-	["Show if mine"] = "顯示我的",	
+	["Show if mine"] = "顯示我的",
 	["Display status only if the buff was cast by you."] = "顯示只有你所施放的增益。",
 	["Show if missing"] = "顯示缺少",
 	["Display status only if the buff is not active."] = "當缺少增益時提示。",
@@ -337,7 +342,7 @@ local strings_zhTW = {
 	--{{{ GridStatusVehicle
 	["In Vehicle"] = "載具上",
 	["Driving"] = "操作",
-	
+
 	--}}}
 	--{{{ GridStatusReadyCheck
 	["Ready Check"] = "檢查就緒",
@@ -355,7 +360,7 @@ local strings_zhTW = {
 	["Color for Not Ready."] = "尚未就緒的顏色",
 	["AFK color"] = "暫離的顏色",
 	["Color for AFK."] = "暫離的顏色",
-	
+
 	--}}}
 	--{{{ Unused translations: translators, please remove these
 	--}}}

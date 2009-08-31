@@ -2,8 +2,6 @@
 
 local Dewdrop = AceLibrary("Dewdrop-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
-local BabbleClass = LibStub:GetLibrary("LibBabble-Class-3.0")
-local BC = BabbleClass:GetLookupTable()
 
 --}}}
 
@@ -265,7 +263,7 @@ function GridStatusAuras:RegisterStatuses()
 
 			self:Debug("registering", status, desc)
 			self:RegisterStatus(status, desc,
-					    self:OptionsForStatus(status, isBuff), false, order)
+					self:OptionsForStatus(status, isBuff), false, order)
 		end
 	end
 end
@@ -280,6 +278,14 @@ function GridStatusAuras:UnregisterStatuses()
 	end
 end
 
+local classes = { }
+do
+	local t = { }
+	FillLocalizedClassList(t, false)
+	for token, name in pairs(t) do
+		classes[token:lower()] = name
+	end
+end
 
 function GridStatusAuras:OptionsForStatus(status, isBuff)
 	local auraOptions = {
@@ -292,32 +298,19 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 		},
 	}
 
-	local classes = {
-		warrior = BC["Warrior"],
-		priest = BC["Priest"],
-		druid = BC["Druid"],
-		paladin = BC["Paladin"],
-		shaman = BC["Shaman"],
-		mage = BC["Mage"],
-		warlock = BC["Warlock"],
-		hunter = BC["Hunter"],
-		rogue = BC["Rogue"],
-		deathknight = BC["Deathknight"],
-	}
-
-	for class,name in pairs(classes) do
-		local class,name = class,name
+	for class, name in pairs(classes) do
+		local class, name = class,name
 		auraOptions.class.args[class] = {
 			type = "toggle",
 			name = name,
 			desc = string.format(L["Show on %s."], name),
-			get = function ()
-				      return GridStatusAuras.db.profile[status][class] ~= false
-			      end,
-			set = function (v)
-				      GridStatusAuras.db.profile[status][class] = v
-				      GridStatusAuras:UpdateAllUnitAuras()
-			      end,
+			get = function()
+					return GridStatusAuras.db.profile[status][class] ~= false
+				end,
+			set = function(v)
+					GridStatusAuras.db.profile[status][class] = v
+					GridStatusAuras:UpdateAllUnitAuras()
+				end,
 		}
 	end
 
@@ -327,27 +320,27 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 			name = L["Show if mine"],
 			desc = L["Display status only if the buff was cast by you."],
 			order = 110,
-			get = function ()
-					  return GridStatusAuras.db.profile[status].mine
-				  end,
-			set = function (v)
-					  GridStatusAuras.db.profile[status].mine = v
-					  GridStatusAuras:UpdateAuraScanList()
-					  GridStatusAuras:UpdateAllUnitAuras()
-				  end,
+			get = function()
+					return GridStatusAuras.db.profile[status].mine
+				end,
+			set = function(v)
+					GridStatusAuras.db.profile[status].mine = v
+					GridStatusAuras:UpdateAuraScanList()
+					GridStatusAuras:UpdateAllUnitAuras()
+				end,
 		}
 		auraOptions.missing = {
 			type = "toggle",
 			name = L["Show if missing"],
 			desc = L["Display status only if the buff is not active."],
 			order = 110,
-			get = function ()
-				      return GridStatusAuras.db.profile[status].missing
-			      end,
-			set = function (v)
-				      GridStatusAuras.db.profile[status].missing = v
-				      GridStatusAuras:UpdateAllUnitAuras()
-			      end,
+			get = function()
+					return GridStatusAuras.db.profile[status].missing
+				end,
+			set = function(v)
+					GridStatusAuras.db.profile[status].missing = v
+					GridStatusAuras:UpdateAllUnitAuras()
+				end,
 		}
 	end
 
@@ -356,13 +349,13 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 		name = L["Show duration"],
 		desc = L["Show the time remaining, for use with the center icon cooldown."],
 		order = 111,
-		get = function ()
-				  return GridStatusAuras.db.profile[status].duration
-			  end,
-		set = function (v)
-				  GridStatusAuras.db.profile[status].duration = v
-				  GridStatusAuras:UpdateAllUnitAuras()
-			  end,
+		get = function()
+				return GridStatusAuras.db.profile[status].duration
+			end,
+		set = function(v)
+				GridStatusAuras.db.profile[status].duration = v
+				GridStatusAuras:UpdateAllUnitAuras()
+			end,
 	}
 
 	return auraOptions
@@ -499,9 +492,7 @@ end
 --   keep track of each debuff type seen and information about the last debuff
 --   of that type seen.
 
-function GridStatusAuras:UnitGainedBuff(guid, class, name, rank, icon, count,
-										debuffType, duration, expirationTime,
-										caster, isStealable)
+function GridStatusAuras:UnitGainedBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 	self:Debug("UnitGainedBuff", guid, class, name)
 
 	local status = GridStatusAuras.StatusForSpell(name, true)
@@ -511,17 +502,17 @@ function GridStatusAuras:UnitGainedBuff(guid, class, name, rank, icon, count,
 	if settings.enable and not settings.missing and settings[class] ~= false then
 		local start = settings.duration and expirationTime and (expirationTime - duration)
 		self.core:SendStatusGained(guid,
-								   status,
-								   settings.priority,
-								   (settings.range and 40),
-								   settings.color,
-								   settings.text,
-								   count,
-								   nil,
-								   icon,
-								   start,
-								   duration,
-								   count)
+			status,
+			settings.priority,
+			(settings.range and 40),
+			settings.color,
+			settings.text,
+			count,
+			nil,
+			icon,
+			start,
+			duration,
+			count)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
@@ -536,20 +527,17 @@ function GridStatusAuras:UnitLostBuff(guid, class, name)
 
 	if settings.enable and settings.missing and settings[class] ~= false then
 		self.core:SendStatusGained(guid,
-								   status,
-								   settings.priority,
-								   (settings.range and 40),
-								   settings.color,
-								   settings.text)
+			status,
+			settings.priority,
+			(settings.range and 40),
+			settings.color,
+			settings.text)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
 end
 
-function GridStatusAuras:UnitGainedPlayerBuff(guid, class, name, rank, icon, count,
-											  debuffType, duration,
-											  expirationTime, caster,
-											  isStealable)
+function GridStatusAuras:UnitGainedPlayerBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 	self:Debug("UnitGainedPlayerBuff", guid, name)
 
 	local status = GridStatusAuras.StatusForSpell(name, true)
@@ -559,17 +547,17 @@ function GridStatusAuras:UnitGainedPlayerBuff(guid, class, name, rank, icon, cou
 	if settings.enable and not settings.missing and settings[class] ~= false then
 		local start = settings.duration and expirationTime and (expirationTime - duration)
 		self.core:SendStatusGained(guid,
-								   status,
-								   settings.priority,
-								   (settings.range and 40),
-								   settings.color,
-								   settings.text,
-								   count,
-								   nil,
-								   icon,
-								   start,
-								   duration,
-								   count)
+			status,
+			settings.priority,
+			(settings.range and 40),
+			settings.color,
+			settings.text,
+			count,
+			nil,
+			icon,
+			start,
+			duration,
+			count)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
@@ -584,19 +572,17 @@ function GridStatusAuras:UnitLostPlayerBuff(guid, class, name)
 
 	if settings.enable and settings.missing and settings[class] ~= false then
 		self.core:SendStatusGained(guid,
-								   status,
-								   settings.priority,
-								   (settings.range and 40),
-								   settings.color,
-								   settings.text)
+			status,
+			settings.priority,
+			(settings.range and 40),
+			settings.color,
+			settings.text)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
 end
 
-function GridStatusAuras:UnitGainedDebuff(guid, class, name, rank, icon, count,
-										  debuffType, duration, expirationTime,
-										  caster, isStealable)
+function GridStatusAuras:UnitGainedDebuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 	self:Debug("UnitGainedDebuff", guid, class, name)
 
 	local status = GridStatusAuras.StatusForSpell(name, false)
@@ -606,17 +592,17 @@ function GridStatusAuras:UnitGainedDebuff(guid, class, name, rank, icon, count,
 	if settings.enable and settings[class] ~= false then
 		local start = settings.duration and expirationTime and (expirationTime - duration)
 		self.core:SendStatusGained(guid,
-								   status,
-								   settings.priority,
-								   (settings.range and 40),
-								   settings.color,
-								   settings.text,
-								   count,
-								   nil,
-								   icon,
-								   start,
-								   duration,
-								   count)
+			status,
+			settings.priority,
+			(settings.range and 40),
+			settings.color,
+			settings.text,
+			count,
+			nil,
+			icon,
+			start,
+			duration,
+			count)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
@@ -631,10 +617,7 @@ function GridStatusAuras:UnitLostDebuff(guid, class, name)
 	self.core:SendStatusLost(guid, status)
 end
 
-function GridStatusAuras:UnitGainedDebuffType(guid, class, name, rank, icon, count,
-											  debuffType, duration,
-											  expirationTime, caster,
-											  isStealable)
+function GridStatusAuras:UnitGainedDebuffType(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 	self:Debug("UnitGainedDebuffType", guid, class, debuffType)
 
 	local status = debuffType and "debuff_" .. strlower(debuffType)
@@ -644,17 +627,17 @@ function GridStatusAuras:UnitGainedDebuffType(guid, class, name, rank, icon, cou
 	if settings.enable and settings[class] ~= false then
 		local start = settings.duration and expirationTime and (expirationTime - duration)
 		self.core:SendStatusGained(guid,
-								   status,
-								   settings.priority,
-								   (settings.range and 40),
-								   settings.color,
-								   settings.text,
-								   count,
-								   nil,
-								   icon,
-								   start,
-								   duration,
-								   count)
+			status,
+			settings.priority,
+			(settings.range and 40),
+			settings.color,
+			settings.text,
+			count,
+			nil,
+			icon,
+			start,
+			duration,
+			count)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
@@ -766,16 +749,11 @@ function GridStatusAuras:ScanUnitAuras(unit)
 		if not abolish_types_seen[debuffType] then
 			if debuff_names[name] then
 				debuff_names_seen[name] = true
-				self:UnitGainedDebuff(guid, class, name, rank, icon, count,
-									  debuffType, duration, expirationTime,
-									  caster, isStealable)
-
+				self:UnitGainedDebuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 			elseif debuff_types[debuffType] then
 				-- elseif so that a named debuff doesn't trigger the type status
 				debuff_types_seen[debuffType] = true
-				self:UnitGainedDebuffType(guid, class, name, rank, icon, count,
-										  debuffType, duration, expirationTime,
-										  caster, isStealable)
+				self:UnitGainedDebuffType(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 			end
 		end
 
