@@ -14,7 +14,7 @@
 ## X-RelSite-WoWI: 5747
 ## X-Website: http://www.wowace.com/projects/grid/
 
-## OptionalDeps: Ace2, CallbackHandler-1.0, ChatThrottleLib, DewdropLib, FuBarPlugin-2.0, LibGratuity-3.0, LibHealComm-3.0, LibSharedMedia-3.0, UTF8, Waterfall-1.0, Clique, CT_RaidAssist, FuBar, JustClick, oRA2, SharedMedia
+## OptionalDeps: Ace2, CallbackHandler-1.0, ChatThrottleLib, DewdropLib, FuBarPlugin-2.0, LibGratuity-3.0, LibHealComm-4.0, LibWrapperHealComm-1.0, LibSharedMedia-3.0, UTF8, Waterfall-1.0, Clique, CT_RaidAssist, FuBar, JustClick, oRA2, SharedMedia
 ## SavedVariables: GridDB
 
 ## Non-Ace Libraries

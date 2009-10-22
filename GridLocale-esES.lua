@@ -258,9 +258,6 @@ local strings_esES = {
 	["Incoming heals"] = "Curas que vienen",
 	["Ignore Self"] = "Ignorar mismo",
 	["Ignore heals cast by you."] = "Ignorar hechizos hecho por tu mismo.",
-	["Show HealComm Users"] = "Enseña los que usan HealComm",
-	["Displays HealComm users and versions."] = "Enseña los que usan HealComm y sus versiones",
-	["HealComm Users"] = "Los que usan HealComm",
 
 	--}}}
 	--{{{ GridStatusHealth

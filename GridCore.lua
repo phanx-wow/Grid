@@ -24,7 +24,8 @@ do
 
 	local libstub_libs = {
 		"LibGratuity-3.0",
-		"LibHealComm-3.0",
+		"LibHealComm-4.0",
+		"LibWrapperHealComm-1.0",
 		"LibSharedMedia-3.0",
 		-- "DoesNotExist-LibStub",
 	}

@@ -293,9 +293,6 @@ local strings_frFR = {
 	["Incoming heals"] = "Soins entrants",
 	["Ignore Self"] = "Vous ignorer",
 	["Ignore heals cast by you."] = "Ignore les soins que vous incantez.",
-	["Show HealComm Users"] = "Utilisateurs HealComm",
-	["Displays HealComm users and versions."] = "Affiche les utilisateurs de HealComm et leurs versions.",
-	["HealComm Users"] = "Utilisateurs de HealComm",
 
 	--}}}
 	--{{{ GridStatusHealth

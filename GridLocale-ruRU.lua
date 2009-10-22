@@ -293,9 +293,6 @@ local strings_ruRU = {
 	["Incoming heals"] = "Поступающее лечения",
 	["Ignore Self"] = "Игнорировать себя",
 	["Ignore heals cast by you."] = "Игнорировать свои лечебные заклинания",
-	["Show HealComm Users"] = "Показать пользователей HealComm",
-	["Displays HealComm users and versions."] = "Показать пользователей HealComm и версию аддона",
-	["HealComm Users"] = "Пользователи HealComm",
 
 	--}}}
 	--{{{ GridStatusHealth

@@ -293,9 +293,6 @@ local strings_koKR = {
 	["Incoming heals"] = "치유 받음",
 	["Ignore Self"] = "자신 무시",
 	["Ignore heals cast by you."] = "자신의 치유 시전은 무시합니다.",
-	["Show HealComm Users"] = "HealComm 사용자 표시",
-	["Displays HealComm users and versions."] = "HealComm 사용자와 버전을 표시합니다.",
-	["HealComm Users"] = "HealComm 사용자",
 
 	--}}}
 	--{{{ GridStatusHealth

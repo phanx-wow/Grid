@@ -16,7 +16,8 @@ externals:
     libs/Dewdrop-2.0: svn://svn.wowace.com/wow/dewdroplib/mainline/trunk/Dewdrop-2.0
     libs/FuBarPlugin-2.0: svn://svn.wowace.com/wow/fubarplugin-2-0/mainline/trunk/FuBarPlugin-2.0
     libs/LibGratuity-3.0: svn://svn.wowace.com/wow/libgratuity-3-0/mainline/trunk
-    libs/LibHealComm-3.0: svn://svn.wowace.com/wow/libhealcomm-3-0/mainline/trunk
+    libs/LibHealComm-4.0: git://git.wowace.com/wow/libhealcomm-4-0/mainline.git
+    libs/LibWrapperHealComm-1.0: git://git.wowace.com/wow/libwrapperhealcomm-1-0/mainline.git
     libs/LibSharedMedia-3.0: svn://svn.wowace.com/wow/libsharedmedia-3-0/mainline/trunk
     libs/LibStub: svn://svn.wowace.com/wow/libstub/mainline/tags/1.0
     libs/UTF8: http://grid.13th-floor.org/svn/trunk/UTF8

@@ -290,9 +290,6 @@ local strings_zhTW = {
 	["Incoming heals"] = "治療中",
 	["Ignore Self"] = "忽略自己",
 	["Ignore heals cast by you."] = "忽略自己施放的治療法術。",
-	["Show HealComm Users"] = "顯示 HealComm 使用者",
-	["Displays HealComm users and versions."] = "顯示 HealComm 使用者及版本。",
-	["HealComm Users"] = "HealComm 使用者",
 
 	--}}}
 	--{{{ GridStatusHealth

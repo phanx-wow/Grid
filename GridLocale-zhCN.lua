@@ -285,9 +285,6 @@ local strings_zhCN = {
 	["Incoming heals"] = "正被治疗",
 	["Ignore Self"] = "忽略自己",
 	["Ignore heals cast by you."] = "忽略对自己施放的治疗。",
-	["Show HealComm Users"] = "显示 HealComm 库使用者",
-	["Displays HealComm users and versions."] = "显示 HealComm 库使用者及其版本。",
-	["HealComm Users"] = "HealComm 使用者名单",
 
 	--}}}
 	--{{{ GridStatusHealth

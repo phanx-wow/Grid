@@ -293,9 +293,6 @@ local strings_enUS = {
 	["Incoming heals"] = true,
 	["Ignore Self"] = true,
 	["Ignore heals cast by you."] = true,
-	["Show HealComm Users"] = true,
-	["Displays HealComm users and versions."] = true,
-	["HealComm Users"] = true,
 
 	--}}}
 	--{{{ GridStatusHealth

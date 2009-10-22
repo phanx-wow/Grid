@@ -1,5 +1,5 @@
 --{{{ Libraries
-local HealComm = LibStub:GetLibrary("LibHealComm-3.0", true)
+local HealComm = LibStub:GetLibrary("LibHealComm-4.0", true)
 if not HealComm then return end
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 --}}}
@@ -38,17 +38,10 @@ local healsOptions = {
 			GridStatusHeals.db.profile.alert_heals.ignore_self = v
 		end,
 	},
-	versioncheck = {
-		type = "execute",
-		name = L["Show HealComm Users"],
-		desc = L["Displays HealComm users and versions."],
-		func = function() GridStatusHeals:ShowHealCommVersions() end,
-	},
 }
 
 local settings
-local playerName = UnitName("player")
-local ownHeals = {}
+local playerGUID = UnitGUID("player")
 
 --{{{ Initialisation
 function GridStatusHeals:OnInitialize()
@@ -61,30 +54,30 @@ end
 function GridStatusHeals:OnStatusEnable(status)
 	if status == "alert_heals" then
 		-- register events
-		self:RegisterEvent("Grid_UnitLeft")
-		self:RegisterEvent("Grid_PartyTransition")
 		self:RegisterEvent("UNIT_HEALTH", "UpdateHealsForUnit")
 		self:RegisterEvent("UNIT_HEALTH_MAX", "UpdateHealsForUnit")
 
 		-- register callbacks
-		HealComm.RegisterCallback(self, "HealComm_DirectHealStart")
-		HealComm.RegisterCallback(self, "HealComm_DirectHealStop")
-		HealComm.RegisterCallback(self, "HealComm_DirectHealDelayed")
-		HealComm.RegisterCallback(self, "HealComm_HealModifierUpdate")
+		HealComm.RegisterCallback(self, "HealComm_HealStarted")
+		HealComm.RegisterCallback(self, "HealComm_HealUpdated")
+		HealComm.RegisterCallback(self, "HealComm_HealDelayed")
+		HealComm.RegisterCallback(self, "HealComm_HealStopped")
+		HealComm.RegisterCallback(self, "HealComm_ModifierChanged")
+		HealComm.RegisterCallback(self, "HealComm_GUIDDisappeared")
 	end
 end
 
 function GridStatusHeals:OnStatusDisable(status)
 	if status == "alert_heals" then
-		self:UnregisterEvent("Grid_UnitLeft")
-		self:UnregisterEvent("Grid_PartyTransition")
 		self:UnregisterEvent("UNIT_HEALTH")
 		self:UnregisterEvent("UNIT_HEALTH_MAX")
 
-		HealComm.UnregisterCallback(self, "HealComm_DirectHealStart")
-		HealComm.UnregisterCallback(self, "HealComm_DirectHealStop")
-		HealComm.UnregisterCallback(self, "HealComm_DirectHealDelayed")
-		HealComm.UnregisterCallback(self, "HealComm_HealModifierUpdate")
+		HealComm.UnregisterCallback(self, "HealComm_HealStarted")
+		HealComm.UnregisterCallback(self, "HealComm_HealUpdated")
+		HealComm.UnregisterCallback(self, "HealComm_HealDelayed")
+		HealComm.UnregisterCallback(self, "HealComm_HealStopped")
+		HealComm.UnregisterCallback(self, "HealComm_ModifierChanged")
+		HealComm.UnregisterCallback(self, "HealComm_GUIDDisappeared")
 
 		self.core:SendStatusLostAllUnits("alert_heals")
 	end
@@ -93,110 +86,76 @@ end
 
 --{{{ Event/Callback handling
 
---[[free the leaving units entry in own-heals-table]]
-function GridStatusHeals:Grid_UnitLeft(guid)
-	local fullName = GridRoster:GetFullNameByGUID(guid)
-	ownHeals[fullName] = nil
+function GridStatusHeals:HealComm_HealStarted(event, casterGUID, spellID, healType, endTime, ...)
+	self:UpdateIncomingHeals(casterGUID, ...)
 end
 
---[[wipe own-heals-table clean]]
-function GridStatusHeals:Grid_PartyTransition(current_state)
-	if current_state == "solo" then
-		wipe(ownHeals)
-	end
+function GridStatusHeals:HealComm_HealUpdated(event, casterGUID, spellID, healType, endTime, ...)
+	self:UpdateIncomingHeals(casterGUID, ...)
 end
 
-function GridStatusHeals:HealComm_DirectHealStart(event, healerFullName, healSize, endTime, ...)
-	self:HandleIncomingHeal(healerFullName, healSize, ...)
+function GridStatusHeals:HealComm_HealDelayed(event, casterGUID, spellID, healType, endTime, ...)
+	self:UpdateIncomingHeals(casterGUID, ...)
 end
 
-function GridStatusHeals:HealComm_DirectHealStop(event, healerFullName, healSize, succeeded, ...)
-	--set healSize to zero to make track of ownHeals easier
-	--remember this in case you nead the healsize in the future
-	self:HandleIncomingHeal(healerFullName, 0, ...)
+function GridStatusHeals:HealComm_HealStopped(event, casterGUID, spellID, healType, endTime, ...)
+	self:UpdateIncomingHeals(casterGUID, ...)
 end
 
-function GridStatusHeals:HealComm_DirectHealDelayed(event, healerFullName, healSize, endTime, ...)
-	self:HandleIncomingHeal(healerFullName, healSize, ...)
+function GridStatusHeals:HealComm_ModifierChanged(event, guid)
+	self:UpdateIncomingHeals(nil, guid)
 end
 
-function GridStatusHeals:HealComm_HealModifierUpdate(event, unit, targetFullName, healModifier)
-	self:UpdateIncomingHeals(targetFullName)
-end
-
-function GridStatusHeals:HandleIncomingHeal(healerFullName, healSize, ...)
-	local isOwnHeal = healerFullName == playerName
-	if isOwnHeal and settings.ignore_self then
-		return
-	end
-
-	--iterate through targets of heal and update them
-	for i = 1, select("#", ...) do
-		local targetFullName = select(i, ...)
-		--track own heals
-		if isOwnHeal then
-			ownHeals[targetFullName] = healSize
-		end
-		self:UpdateIncomingHeals(targetFullName, isOwnHeal)
-	end
+function GridStatusHeals:HealComm_GUIDDisappeared(event, guid)
+	self:UpdateIncomingHeals(nil, guid)
 end
 
 function GridStatusHeals:UpdateHealsForUnit(unitid)
-	local name, realm = UnitName(unitid)
-	self:UpdateIncomingHeals(type(realm) == "string" and name .. "-" .. realm or name)
+	self:UpdateIncomingHeals(nil, UnitGUID(unitid))
 end
 
 --}}}
 
 --{{{ General functionality
 
-function GridStatusHeals:ShowHealCommVersions()
-	local versions = HealComm:GetRaidOrPartyVersions()
-	Grid:Print(L["HealComm Users"])
-	local your_version = versions[playerName]
-	for user, version in pairs(versions) do
-		if version then
-			if version < your_version then
-				version = ("|cffff0000%d|r"):format(version)
-			elseif version > your_version then
-				version = ("|cff00ff00%d|r"):format(version)
-			end
-			Grid:Print(("%s: %s"):format(user, version))
-		end
+function GridStatusHeals:UpdateIncomingHeals(casterGUID, ...)
+	if settings.ignore_self and casterGUID == playerGUID then
+		return
+	end
+	--iterate through targets of heal and update them
+	for i = 1, select("#", ...) do
+		local guid = select(i, ...)
+		local unitid = GridRoster:GetUnitidByGUID(guid)
+		if unitid then
+            local incoming
+            if not settings.ignore_self then
+                incoming = HealComm:GetHealAmount(guid, HealComm.ALL_HEALS, GetTime() + 4)
+            else
+                incoming = HealComm:GetOthersHealAmount(guid, HealComm.ALL_HEALS, GetTime() + 4)
+            end
+            if incoming and incoming > 0 and not UnitIsDeadOrGhost(unitid) then
+                local effectiveIncoming = incoming * HealComm:GetHealModifier(guid)
+                self:SendIncomingHealsStatus(
+                    guid,
+                    effectiveIncoming,
+                    UnitHealth(unitid) + effectiveIncoming,
+                    UnitHealthMax(unitid)
+                )
+            else
+                self.core:SendStatusLost(guid, "alert_heals")
+            end
+        end
 	end
 end
 
-function GridStatusHeals:UpdateIncomingHeals(fullName, isOwnHeal)
-	--get incoming heals from other healers
-	local incoming = HealComm:UnitIncomingHealGet(fullName, GetTime() + 100.0) or 0
-
-	--add own incoming heals if not ignored
-	if not settings.ignore_self then
-		incoming = incoming + (ownHeals[fullName] or 0)
-	end
-
-	local guid = GridRoster:GetGUIDByFullName(fullName)
-	if incoming > 0 and not UnitIsDeadOrGhost(fullName) then
-		local effectiveIncoming = incoming * HealComm:UnitHealModifierGet(fullName)
-		self:SendIncomingHealsStatus(
-			guid,
-			effectiveIncoming,
-			UnitHealth(fullName) + effectiveIncoming,
-			UnitHealthMax(fullName)
-		)
-	else
-		self.core:SendStatusLost(guid, "alert_heals")
-	end
-end
-
-function GridStatusHeals:SendIncomingHealsStatus(gridName, incoming, estimatedHealth, maxHealth)
+function GridStatusHeals:SendIncomingHealsStatus(guid, incoming, estimatedHealth, maxHealth)
 	--add heal modifier to incoming value caused by buffs and debuffs
 	--local modifier = UnitHealModifierGet(unitName)
 	-- local effectiveIncoming = modifier * incoming
 
 	local incomingText = self:FormatIncomingText(incoming)
 	self.core:SendStatusGained(
-		gridName, "alert_heals",
+		guid, "alert_heals",
 		settings.priority,
 		(settings.range and 40),
 		settings.color,
