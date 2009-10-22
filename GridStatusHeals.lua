@@ -41,11 +41,13 @@ local healsOptions = {
 }
 
 local settings
-local playerGUID = UnitGUID("player")
+local playerGUID
 
 --{{{ Initialisation
 function GridStatusHeals:OnInitialize()
 	self.super.OnInitialize(self)
+
+	self:RegisterEvent("PLAYER_LOGIN", function() playerGUID = UnitGUID("player") end)
 
 	settings = GridStatusHeals.db.profile.alert_heals
 	self:RegisterStatus("alert_heals", L["Incoming heals"], healsOptions, true)
@@ -127,30 +129,30 @@ function GridStatusHeals:UpdateIncomingHeals(casterGUID, ...)
 		local guid = select(i, ...)
 		local unitid = GridRoster:GetUnitidByGUID(guid)
 		if unitid then
-            local incoming
-            if not settings.ignore_self then
-                incoming = HealComm:GetHealAmount(guid, HealComm.ALL_HEALS, GetTime() + 4)
-            else
-                incoming = HealComm:GetOthersHealAmount(guid, HealComm.ALL_HEALS, GetTime() + 4)
-            end
-            if incoming and incoming > 0 and not UnitIsDeadOrGhost(unitid) then
-                local effectiveIncoming = incoming * HealComm:GetHealModifier(guid)
-                self:SendIncomingHealsStatus(
-                    guid,
-                    effectiveIncoming,
-                    UnitHealth(unitid) + effectiveIncoming,
-                    UnitHealthMax(unitid)
-                )
-            else
-                self.core:SendStatusLost(guid, "alert_heals")
-            end
-        end
+			local incoming
+			if not settings.ignore_self then
+				incoming = HealComm:GetHealAmount(guid, HealComm.ALL_HEALS, GetTime() + 4)
+			else
+				incoming = HealComm:GetOthersHealAmount(guid, HealComm.ALL_HEALS, GetTime() + 4)
+			end
+			if incoming and incoming > 0 and not UnitIsDeadOrGhost(unitid) then
+				local effectiveIncoming = incoming * HealComm:GetHealModifier(guid)
+				self:SendIncomingHealsStatus(
+					guid,
+					effectiveIncoming,
+					UnitHealth(unitid) + effectiveIncoming,
+					UnitHealthMax(unitid)
+				)
+			else
+				self.core:SendStatusLost(guid, "alert_heals")
+			end
+		end
 	end
 end
 
 function GridStatusHeals:SendIncomingHealsStatus(guid, incoming, estimatedHealth, maxHealth)
-	--add heal modifier to incoming value caused by buffs and debuffs
-	--local modifier = UnitHealModifierGet(unitName)
+	-- add heal modifier to incoming value caused by buffs and debuffs
+	-- local modifier = UnitHealModifierGet(unitName)
 	-- local effectiveIncoming = modifier * incoming
 
 	local incomingText = self:FormatIncomingText(incoming)
@@ -175,4 +177,3 @@ function GridStatusHeals:FormatIncomingText(incoming)
 	return incomingText
 end
 --}}}
-
