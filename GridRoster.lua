@@ -255,21 +255,11 @@ do
 		end
 
 		if GetNumRaidMembers() > 0 then
-			if type(GetRaidDifficulty) == "function" then
-				-- 3.2
-				if GetRaidDifficulty() == 2 or GetRaidDifficulty() == 4 then
-					return "heroic_raid"
-				else
-					return "raid"
-				end			
+			local raid_difficulty = GetRaidDifficulty()
+			if raid_difficulty == 2 or raid_difficulty == 4 then
+				return "heroic_raid"
 			else
-				-- 3.1
-                if GetCurrentDungeonDifficulty() == 2 then
-                	return "heroic_raid"
-                else
-                    return "raid"
-                end
-
+				return "raid"
 			end
 		end
 
