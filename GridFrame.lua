@@ -1324,7 +1324,7 @@ function GridFrame:UpdateIndicatorsForStatus(frame, status)
 end
 
 function GridFrame:UpdateIndicator(frame, indicator)
-	local status = self:StatusForIndicator(frame.unitid, frame.unitGUID, indicator)
+	local status = self:StatusForIndicator(frame.unit, frame.unitGUID, indicator)
 	if status then
 		-- self:Debug("Showing status", status.text, "for", name, "on", indicator)
 		frame:SetIndicator(indicator,
