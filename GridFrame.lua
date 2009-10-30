@@ -17,6 +17,7 @@ if media then media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\
 --{{{ FrameXML functions
 
 local function GridFrame_OnShow(self)
+	GridFrame:UpdateFrameUnits()
 	GridFrame:TriggerEvent("Grid_UpdateLayoutSize")
 end
 
