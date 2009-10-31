@@ -199,23 +199,24 @@ function GridStatusHealth:Grid_UnitJoined(guid, unitid)
 end
 
 function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
-	local cur, max = UnitHealth(unitid), UnitHealthMax(unitid)
-
 	local guid = UnitGUID(unitid)
-	local settings = self.db.profile.unit_health
-	local deficitSettings = self.db.profile.unit_healthDeficit
-	local healthText
-	local priority = settings.priority
 
 	if not GridRoster:IsGUIDInRaid(guid) then
 		return
 	end
 
+	local cur, max = UnitHealth(unitid), UnitHealthMax(unitid)
+
+	local healthSettings = self.db.profile.unit_health
+	local deficitSettings = self.db.profile.unit_healthDeficit
+	local healthPriority = healthSettings.priority
+	local deficitPriority = deficitSettings.priority
+
 	if UnitIsDeadOrGhost(unitid) then
 		self:StatusDeath(guid, true)
 		self:StatusFeignDeath(guid, false)
 		self:StatusLowHealth(guid, false)
-		if settings.deadAsFullHealth then
+		if healthSettings.deadAsFullHealth then
 			cur = max
 		end
 	else
@@ -225,21 +226,26 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 	end
 
 	self:StatusOffline(guid, not UnitIsConnected(unitid))
+	
+	local healthText
+	local deficitText
 
 	if cur < max then
-		healthText = self:FormatHealthText(cur,max)
+		healthText = self:FormatHealthText(cur)
+		deficitText = self:FormatDeficitText(cur,max)
 	else
-		priority = 1
+		healthPriority = 1
+		deficitPriority = 1
 	end
 
 	if (cur / max * 100) <= deficitSettings.threshold then
 		self.core:SendStatusGained(guid, "unit_healthDeficit",
-					    deficitSettings.priority,
+					    deficitPriority,
 					    (deficitSettings.range and 40),
 					    (deficitSettings.useClassColors and 
 						 self.core:UnitColor(guid) or
 					     deficitSettings.color),
-					    healthText,
+					    deficitText,
 					    cur, max,
 					    deficitSettings.icon)
 	else
@@ -247,17 +253,28 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 	end
 
 	self.core:SendStatusGained(guid, "unit_health",
-				    priority,
-				    (ignoreRange ~= true and settings.range and 40),
-				    (settings.useClassColors and 
+				    healthPriority,
+				    (ignoreRange ~= true and healthSettings.range and 40),
+				    (healthSettings.useClassColors and 
 					 self.core:UnitColor(guid) or
-				     settings.color),
+				     healthSettings.color),
 					healthText,
 					cur, max,
-					settings.icon)
+					healthSettings.icon)
 end
 
-function GridStatusHealth:FormatHealthText(cur, max)
+function GridStatusHealth:FormatHealthText(cur)
+	local healthText
+	if cur > 999 then
+		healthText = string.format("%.1fk", cur/1000.0)
+	else
+		healthText = string.format("%d", cur)
+	end
+
+	return healthText
+end
+
+function GridStatusHealth:FormatDeficitText(cur, max)
 	local healthText
 	local deficit = max - cur
 	if deficit > 999 then
