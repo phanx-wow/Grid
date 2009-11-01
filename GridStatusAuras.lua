@@ -729,11 +729,11 @@ function GridStatusAuras:ScanUnitAuras(unit)
 
 	-- scan for abolish buffs so we can hide debuffs that are of the same type that is being abolished
 	if self.db.profile.abolish then
-		for buff_name, debuffType in pairs(abolish_types) do
-			name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, "HELPFUL")
+		for buff_name, debuff_type in pairs(abolish_types) do
+			name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL")
 
 			if name then
-				abolish_types_seen[debuffType] = true
+				abolish_types_seen[debuff_type] = true
 			end
 		end
 	end
