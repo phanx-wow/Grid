@@ -293,6 +293,14 @@ local strings_koKR = {
 	["Incoming heals"] = "치유 받음",
 	["Ignore Self"] = "자신 무시",
 	["Ignore heals cast by you."] = "자신의 치유 시전은 무시합니다.",
+	["Heal filter"] = "치유 필터",
+	["Show incoming heals for the selected heal types."] = "치유 받음을 표시할 치유의 타입을 선택합니다.",
+	["Direct heals"] = "직접 치유",
+	["Include direct heals."] = "직접 치유를 표시합니다.",
+	["Channeled heals"] = "정신 집중 치유",
+	["Include channeled heals."] = "정신 집중 치유를 표시합니다.",
+	["HoT heals"] = "지속 치유",
+	["Include heal over time effects."] = "지속 치유 표시합니다.",
 
 	--}}}
 	--{{{ GridStatusHealth
