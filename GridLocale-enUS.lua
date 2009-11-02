@@ -293,6 +293,14 @@ local strings_enUS = {
 	["Incoming heals"] = true,
 	["Ignore Self"] = true,
 	["Ignore heals cast by you."] = true,
+	["Heal filter"] = true,
+	["Show incoming heals for the selected heal types."] = true,
+	["Direct heals"] = true,
+	["Include direct heals."] = true,
+	["Channeled heals"] = true,
+	["Include channeled heals."] = true,
+	["HoT heals"] = true,
+	["Include heal over time effects."] = true,
 
 	--}}}
 	--{{{ GridStatusHealth

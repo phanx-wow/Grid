@@ -18,6 +18,11 @@ GridStatusHeals.defaultDB = {
 		priority = 50,
 		range = false,
 		ignore_self = false,
+		heal_filter = {
+		  direct = true,
+		  channeled = true,
+		  hot = true,
+        },
 		icon = nil,
 	},
 }
@@ -36,8 +41,52 @@ local healsOptions = {
 		end,
 		set  = function(v)
 			GridStatusHeals.db.profile.alert_heals.ignore_self = v
+			GridStatusHeals:UpdateAllHeals()
 		end,
 	},
+	heal_filter = {
+        type = "group",
+        name = L["Heal filter"],
+        desc = L["Show incoming heals for the selected heal types."],
+        args = {
+            direct = {
+                type = "toggle",
+                name = L["Direct heals"],
+                desc = L["Include direct heals."],
+                get  = function()
+                    return GridStatusHeals.db.profile.alert_heals.heal_filter.direct
+                end,
+                set  = function(v)
+                    GridStatusHeals.db.profile.alert_heals.heal_filter.direct = v
+                    GridStatusHeals:UpdateAllHeals()
+                end,
+            },
+            channeled = {
+                type = "toggle",
+                name = L["Channeled heals"],
+                desc = L["Include channeled heals."],
+                get  = function()
+                    return GridStatusHeals.db.profile.alert_heals.heal_filter.channeled
+                end,
+                set  = function(v)
+                    GridStatusHeals.db.profile.alert_heals.heal_filter.channeled = v
+                    GridStatusHeals:UpdateAllHeals()
+                end,
+            },
+            hot = {
+                type = "toggle",
+                name = L["HoT heals"],
+                desc = L["Include heal over time effects."],
+                get  = function()
+                    return GridStatusHeals.db.profile.alert_heals.heal_filter.hot
+                end,
+                set  = function(v)
+                    GridStatusHeals.db.profile.alert_heals.heal_filter.hot = v
+                    GridStatusHeals:UpdateAllHeals()
+                end,
+            },
+        },
+    },
 }
 
 local settings
@@ -66,6 +115,8 @@ function GridStatusHeals:OnStatusEnable(status)
 		HealComm.RegisterCallback(self, "HealComm_HealStopped")
 		HealComm.RegisterCallback(self, "HealComm_ModifierChanged")
 		HealComm.RegisterCallback(self, "HealComm_GUIDDisappeared")
+		
+		self:UpdateAllHeals()
 	end
 end
 
@@ -89,39 +140,53 @@ end
 --{{{ Event/Callback handling
 
 function GridStatusHeals:HealComm_HealStarted(event, casterGUID, spellID, healType, endTime, ...)
-	self:UpdateIncomingHeals(casterGUID, ...)
+	self:UpdateIncomingHeals(casterGUID, healType, ...)
 end
 
 function GridStatusHeals:HealComm_HealUpdated(event, casterGUID, spellID, healType, endTime, ...)
-	self:UpdateIncomingHeals(casterGUID, ...)
+	self:UpdateIncomingHeals(casterGUID, healType, ...)
 end
 
 function GridStatusHeals:HealComm_HealDelayed(event, casterGUID, spellID, healType, endTime, ...)
-	self:UpdateIncomingHeals(casterGUID, ...)
+	self:UpdateIncomingHeals(casterGUID, healType, ...)
 end
 
 function GridStatusHeals:HealComm_HealStopped(event, casterGUID, spellID, healType, endTime, ...)
-	self:UpdateIncomingHeals(casterGUID, ...)
+	self:UpdateIncomingHeals(casterGUID, healType, ...)
 end
 
 function GridStatusHeals:HealComm_ModifierChanged(event, guid)
-	self:UpdateIncomingHeals(nil, guid)
+	self:UpdateIncomingHeals(nil, nil, guid)
 end
 
 function GridStatusHeals:HealComm_GUIDDisappeared(event, guid)
-	self:UpdateIncomingHeals(nil, guid)
+	self:UpdateIncomingHeals(nil,  nil, guid)
 end
 
 function GridStatusHeals:UpdateHealsForUnit(unitid)
-	self:UpdateIncomingHeals(nil, UnitGUID(unitid))
+	self:UpdateIncomingHeals(nil,  nil, UnitGUID(unitid))
+end
+
+function GridStatusHeals:UpdateAllHeals()
+	for guid in GridRoster:IterateRoster() do
+		self:UpdateIncomingHeals(nil,  nil, guid)
+	end
 end
 
 --}}}
 
 --{{{ General functionality
 
-function GridStatusHeals:UpdateIncomingHeals(casterGUID, ...)
+function GridStatusHeals:UpdateIncomingHeals(casterGUID, healType, ...)
 	if settings.ignore_self and casterGUID == playerGUID then
+		return
+	end
+	local heal_filter = settings.heal_filter
+	local heal_mask = bit.bor(heal_filter.direct and HealComm.DIRECT_HEALS or 0,
+	                           heal_filter.channeled and HealComm.CHANNEL_HEALS or 0,
+	                           heal_filter.hot and HealComm.HOT_HEALS or 0,
+	                           heal_filter.hot and HealComm.BOMB_HEALS or 0)
+	if healType and (bit.band(healType, heal_mask) == 0) then
 		return
 	end
 	--iterate through targets of heal and update them
@@ -131,9 +196,9 @@ function GridStatusHeals:UpdateIncomingHeals(casterGUID, ...)
 		if unitid then
 			local incoming
 			if not settings.ignore_self then
-				incoming = HealComm:GetHealAmount(guid, HealComm.ALL_HEALS, GetTime() + 4)
+				incoming = HealComm:GetHealAmount(guid, heal_mask, GetTime() + 4)
 			else
-				incoming = HealComm:GetOthersHealAmount(guid, HealComm.ALL_HEALS, GetTime() + 4)
+				incoming = HealComm:GetOthersHealAmount(guid, heal_mask, GetTime() + 4)
 			end
 			if incoming and incoming > 0 and not UnitIsDeadOrGhost(unitid) then
 				local effectiveIncoming = incoming * HealComm:GetHealModifier(guid)
