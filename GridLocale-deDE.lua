@@ -57,6 +57,8 @@ local strings_deDE = {
 	["Adjust the height of each unit's frame."] = "Die Höhe von jedem Einheitenfenster anpassen.",
 	["Frame Texture"] = "Rahmentextur",
 	["Adjust the texture of each unit's frame."] = "Die Textur von jedem Einheitenfenster anpassen.",
+	["Border Size"] = "Randbreite",
+	["Adjust the size of the border indicators."] = "Die Randbreite der Indikatoren anpassen.",
 	["Corner Size"] = "Eckengröße",
 	["Adjust the size of the corner indicators."] = "Die Größe der Eckenindikatoren anpassen.",
 	["Enable Mouseover Highlight"] = "Rahmen Hervorhebung",
@@ -208,6 +210,8 @@ local strings_deDE = {
 	--{{{ GridStatus
 	["Status"] = "Status",
 	["Options for %s."] = "Optionen für %s.",
+	["Reset class colors"] = "Klassenfarben zurücksetzen",
+	["Reset class colors to defaults."] = "Klassenfarben auf Standard zurücksetzen.",
 
 	-- module prototype
 	["Status: %s"] = "Status: %s",
@@ -286,9 +290,17 @@ local strings_deDE = {
 	--}}}
 	--{{{ GridStatusHeals
 	["Heals"] = "Heilungen",
-	["Incoming heals"] = "Eingehende Heilung",
+	["Incoming heals"] = "Eingehende Heilungen",
 	["Ignore Self"] = "Sich selbst ignorieren",
 	["Ignore heals cast by you."] = "Ignoriert Heilungen die von Dir gezaubert werden.",
+	["Heal filter"] = "Heilungsfilter",
+	["Show incoming heals for the selected heal types."] = "Zeigt eingehende Heilungen für die ausgewählten Heilungstypen.",
+	["Direct heals"] = "Direkte Heilungen",
+	["Include direct heals."] = "Direkte Heilungen einbeziehen.",
+	["Channeled heals"] = "Kanalisierte Heilungen",
+	["Include channeled heals."] = "Kanalisierte Heilungen einbeziehen.",
+	["HoT heals"] = "HoT Heilungen",
+	["Include heal over time effects."] = "HoT (Heal over Time - Heilung über Zeit) Effekte einbeziehen.",
 
 	--}}}
 	--{{{ GridStatusHealth
