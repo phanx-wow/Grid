@@ -293,6 +293,14 @@ local strings_ruRU = {
 	["Incoming heals"] = "Поступающее лечения",
 	["Ignore Self"] = "Игнорировать себя",
 	["Ignore heals cast by you."] = "Игнорировать свои лечебные заклинания",
+	["Heal filter"] = "Фильтр исцеления",
+	["Show incoming heals for the selected heal types."] = "Показывает входящее исцеления для выбранного типа исцеления.",
+	["Direct heals"] = "Прямое исцеление",
+	["Include direct heals."] = "Включить прямое исцеление.",
+	["Channeled heals"] = "Потоковое исцеление",
+	["Include channeled heals."] = "Включить потоковое исцеление.",
+	["HoT heals"] = "Исцеление за время",
+	["Include heal over time effects."] = "Включить исцеление за время (ХоТы).",
 
 	--}}}
 	--{{{ GridStatusHealth
