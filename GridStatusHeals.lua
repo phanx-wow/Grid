@@ -160,22 +160,27 @@ function GridStatusHeals:HealComm_ModifierChanged(event, guid)
 end
 
 function GridStatusHeals:HealComm_GUIDDisappeared(event, guid)
-	self:UpdateIncomingHeals(nil,  nil, guid)
+	self:UpdateIncomingHeals(nil, nil, guid)
 end
 
 function GridStatusHeals:UpdateHealsForUnit(unitid)
-	self:UpdateIncomingHeals(nil,  nil, UnitGUID(unitid))
-end
-
-function GridStatusHeals:UpdateAllHeals()
-	for guid in GridRoster:IterateRoster() do
-		self:UpdateIncomingHeals(nil,  nil, guid)
-	end
+	self:UpdateIncomingHeals(nil, nil, UnitGUID(unitid))
 end
 
 --}}}
 
 --{{{ General functionality
+
+function GridStatusHeals:Reset()
+	self.super.Reset(self)
+	self:UpdateAllHeals()
+end
+
+function GridStatusHeals:UpdateAllHeals()
+	for guid in GridRoster:IterateRoster() do
+		self:UpdateIncomingHeals(nil, nil, guid)
+	end
+end
 
 function GridStatusHeals:UpdateIncomingHeals(casterGUID, healType, ...)
 	if settings.ignore_self and casterGUID == playerGUID then
