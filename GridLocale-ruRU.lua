@@ -1,7 +1,6 @@
-﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
+﻿AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("ruRU", function() return {
 
-local strings_ruRU = {
-	--{{{ GridCore
+--{{{ GridCore
 	["Debugging"] = "Отладка",
 	["Module debugging menu."] = "Меню модуля отладки",
 	["Debug"] = "Отладка",
@@ -10,9 +9,9 @@ local strings_ruRU = {
 	["Configure Grid"] = "Настройка Grid",
 	["Hide minimap icon"] = "Скрыть иконку на миникарте",
 	["Grid is disabled: use '/grid standby' to enable."] = "Grid отключен: для включения введите '/grid standby'",
+--}}}
 
-	--}}}
-	--{{{ GridFrame
+--{{{ GridFrame
 	["Frame"] = "Фреймы",
 	["Options for GridFrame."] = "Опции фреймов Grid",
 
@@ -86,9 +85,9 @@ local strings_ruRU = {
 	["Toggle center icon's stack count text."] = "Показывать количество значков в множестве",
 	["Icon Cooldown Frame"] = "Фрейм перерыва (cooldown) значка",
 	["Toggle center icon's cooldown frame."] = "Показывать фрейм перерыва значка в центре",
+--}}}
 
-	--}}}
-	--{{{ GridLayout
+--{{{ GridLayout
 	["Layout"] = "Расположение",
 	["Options for GridLayout."] = "Опции для GridLayout",
 
@@ -182,9 +181,9 @@ local strings_ruRU = {
 	["Resets the layout frame's position and anchor."] = "Сбросить положение фреймов и пометок",
 	["Hide tab"] = "Скрыть ярлык",
 	["Do not show the tab when Grid is unlocked."] = "Не отображать ярлык когда Grid откреплен.",
+--}}}
 
-	--}}}
-	--{{{ GridLayoutLayouts
+--{{{ GridLayoutLayouts
 	["None"] = "Нет",
 	["By Group 40"] = "Для Группы из 40 чел.",
 	["By Group 25"] = "Для Группы из 25 чел.",
@@ -200,14 +199,14 @@ local strings_ruRU = {
 	["By Class w/Pets"] = "По классам с питомцами",
 	["Onyxia"] = "Для Ониксии",
 	["By Group 25 w/tanks"] = "Группой из 25 чел. с танками",
+--}}}
 
-	--}}}
-	--{{{ GridRange
+--{{{ GridRange
 	-- used for getting spell range from tooltip
 	["(%d+) yd range"] = "Радиус действия: (%d+) м",
+--}}}
 
-	--}}}
-	--{{{ GridStatus
+--{{{ GridStatus
 	["Status"] = "Статус",
 	["Options for %s."] = "Опции для %s.",
 	["Reset class colors"] = "Сбросс окраски классов",
@@ -223,9 +222,9 @@ local strings_ruRU = {
 	["Range filter for %s"] = "Фильтр радиуса для %s",
 	["Enable"] = "Включено",
 	["Enable %s"] = "Включено %s",
+--}}}
 
-	--}}}
-	--{{{ GridStatusAggro
+--{{{ GridStatusAggro
 	["Aggro"] = "Агро",
 	["Aggro alert"] = "Сигнал Агро",
 	["High Threat color"] = "Цвет наивысшей угрозы",
@@ -238,9 +237,9 @@ local strings_ruRU = {
 	["Show more detailed threat levels."] = "Отображение более подробного уровеня угрозы.",
 	["High"] = "Наивысшая",
 	["Tank"] = "Танк",
+--}}}
 
-	--}}}
-	--{{{ GridStatusAuras
+--{{{ GridStatusAuras
 	["Auras"] = "Ауры",
 	["Debuff type: %s"] = "Тип Дебаффа: %s",
 	["Poison"] = "Яды",
@@ -273,22 +272,9 @@ local strings_ruRU = {
 	["Skip units that have an active Abolish buff."] = "Пропускает персонажей на которых есть активные баффы исцеления.",
 	["Show duration"] = "Длительность",
 	["Show the time remaining, for use with the center icon cooldown."] = "Показывать в центре иконки остаток времени.",
+--}}}
 
-	--}}}
-	--{{{ GridStatusName
-	["Unit Name"] = "Имя единицы",
-	["Color by class"] = "Цвет по классу",
-
-	--}}}
-	--{{{ GridStatusMana
-	["Mana"] = "Мана",
-	["Low Mana"] = "Мало маны",
-	["Mana threshold"] = "Порог маны",
-	["Set the percentage for the low mana warning."] = "Установить процент для предупреждения об окончании маны.",
-	["Low Mana warning"] = "Предупреждение о заканчивающейся мане",
-
-	--}}}
-	--{{{ GridStatusHeals
+--{{{ GridStatusHeals
 	["Heals"] = "Лечения",
 	["Incoming heals"] = "Поступающее лечения",
 	["Ignore Self"] = "Игнорировать себя",
@@ -301,9 +287,9 @@ local strings_ruRU = {
 	["Include channeled heals."] = "Включить потоковое исцеление.",
 	["HoT heals"] = "Исцеление за время",
 	["Include heal over time effects."] = "Включить исцеление за время (ХоТы).",
+--}}}
 
-	--}}}
-	--{{{ GridStatusHealth
+--{{{ GridStatusHealth
 	["Low HP"] = "Мало ЗД",
 	["DEAD"] = "ТРУП",
 	["FD"] = "ПМ",
@@ -324,9 +310,22 @@ local strings_ruRU = {
 	["Color deficit based on class."] = "Цвет дефицита в зависимости от класса",
 	["Low HP threshold"] = "Порог \"Мало ЗД\"",
 	["Set the HP % for the low HP warning."] = "Установить % для предупреждения о том что у единицы мало здоровья.",
+--}}}
 
-	--}}}
-	--{{{ GridStatusRange
+--{{{ GridStatusMana
+	["Mana"] = "Мана",
+	["Low Mana"] = "Мало маны",
+	["Mana threshold"] = "Порог маны",
+	["Set the percentage for the low mana warning."] = "Установить процент для предупреждения об окончании маны.",
+	["Low Mana warning"] = "Предупреждение о заканчивающейся мане",
+--}}}
+
+--{{{ GridStatusName
+	["Unit Name"] = "Имя единицы",
+	["Color by class"] = "Цвет по классу",
+--}}}
+
+--{{{ GridStatusRange
 	["Range"] = "Расстояние",
 	["Range check frequency"] = "Частота проверки растояния",
 	["Seconds between range checks"] = "Частота проверки в секундах",
@@ -335,24 +334,9 @@ local strings_ruRU = {
 	["Text"] = "Текст",
 	["Text to display on text indicators"] = "Отображаемый текст в индикаторе",
 	["<range>"] = "<range>",
+--}}}
 
-	--}}}
-	--{{{ GridStatusTarget
-	["Target"] = "Цель",
-	["Your Target"] = "Ваша цель",
-
-	--}}}
-	--{{{ GridStatusVoiceComm
-	["Voice Chat"] = "Голосовой чат",
-	["Talking"] = "Говорит",
-
-	--}}}
-	--{{{ GridStatusVehicle
-	["In Vehicle"] = "На транспорте",
-	["Driving"] = "Управляет",
-
-	--}}}
-	--{{{ GridStatusReadyCheck
+--{{{ GridStatusReadyCheck
 	["Ready Check"] = "Проверка готовности",
 	["Set the delay until ready check results are cleared."] = "Установите задержку,временной простой перед очисткой результатов проверки готовности.",
 	["Delay"] = "Задержка",
@@ -368,8 +352,21 @@ local strings_ruRU = {
 	["Color for Not Ready."] = "Окраска не готовых",
 	["AFK color"] = "Отсутствие",
 	["Color for AFK."] = "Окраска отсутствующих",
+--}}}
 
-	--}}}
-}
+--{{{ GridStatusTarget
+	["Target"] = "Цель",
+	["Your Target"] = "Ваша цель",
+--}}}
 
-L:RegisterTranslations("ruRU", function() return strings_ruRU end)
+--{{{ GridStatusVehicle
+	["In Vehicle"] = "На транспорте",
+	["Driving"] = "Управляет",
+--}}}
+
+--{{{ GridStatusVoiceComm
+	["Voice Chat"] = "Голосовой чат",
+	["Talking"] = "Говорит",
+--}}}
+
+} end)

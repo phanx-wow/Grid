@@ -1,7 +1,6 @@
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhTW", function() return {
 
-local strings_zhTW = {
-	--{{{ GridCore
+--{{{ GridCore
 	["Debugging"] = "除錯",
 	["Module debugging menu."] = "除錯模組設定。",
 	["Debug"] = "除錯",
@@ -10,9 +9,9 @@ local strings_zhTW = {
 	["Configure Grid"] = "設定 Grid",
 	["Hide minimap icon"] = "隱藏小地圖按鈕",
 	["Grid is disabled: use '/grid standby' to enable."] = "Gird 已被禁用：輸入'/grid standby'的指令啟用。",
+--}}}
 
-	--}}}
-	--{{{ GridFrame
+--{{{ GridFrame
 	["Frame"] = "框架",
 	["Options for GridFrame."] = "GridFrame 設定選項。",
 	["Show Tooltip"] = "顯示提示訊息",
@@ -85,9 +84,9 @@ local strings_zhTW = {
 	["Toggle center icon's stack count text."] = "啟用/禁用圖示的堆疊計數文字。",
 	["Icon Cooldown Frame"] = "圖示冷卻時間框架",
 	["Toggle center icon's cooldown frame."] = "啟用/禁用圖示的冷卻時間框架。",
+--}}}
 
-	--}}}
-	--{{{ GridLayout
+--{{{ GridLayout
 	["Layout"] = "版面編排",
 	["Options for GridLayout."] = "Grid版面設定選項。",
 
@@ -179,9 +178,9 @@ local strings_zhTW = {
 	["Resets the layout frame's position and anchor."] = "重設版面位置和錨點。",
 	["Hide tab"] = "隱藏標簽",
 	["Do not show the tab when Grid is unlocked."] = "當未鎖定 Grid 時不顯示標簽。",
+--}}}
 
-	--}}}
-	--{{{ GridLayoutLayouts
+--{{{ GridLayoutLayouts
 	["None"] = "無",
 	["By Group 40"] = "40人團隊",
 	["By Group 25"] = "25人團隊",
@@ -197,14 +196,14 @@ local strings_zhTW = {
 	["By Class w/Pets"] = "以職業排列及寵物",
 	["Onyxia"] = "單數雙數小隊交錯排列",
 	["By Group 25 w/tanks"] = "25人團隊及坦克",
+--}}}
 
-	--}}}
-	--{{{ GridRange
+--{{{ GridRange
 	-- used for getting spell range from tooltip
 	["(%d+) yd range"] = "(%d+)碼距離",
+--}}}
 
-	--}}}
-	--{{{ GridStatus
+--{{{ GridStatus
 	["Status"] = "狀態",
 	["Options for %s."] = "%s 設定選項。",
 	["Reset class colors"] = "重置職業顔色",
@@ -220,9 +219,9 @@ local strings_zhTW = {
 	["Range filter for %s"] = "%s的距離過濾",
 	["Enable"] = "啟用",
 	["Enable %s"] = "啟用%s",
+--}}}
 
-	--}}}
-	--{{{ GridStatusAggro
+--{{{ GridStatusAggro
 	["Aggro"] = "仇恨",
 	["Aggro alert"] = "仇恨警告",
 	["High Threat color"] = "高仇恨的顏色",
@@ -235,9 +234,9 @@ local strings_zhTW = {
 	["Show more detailed threat levels."] = "顯示更詳細的仇恨值",
 	["High"] = "高",
 	["Tank"] = "坦克",
+--}}}
 
-	--}}}
-	--{{{ GridStatusAuras
+--{{{ GridStatusAuras
 	["Auras"] = "光環",
 	["Debuff type: %s"] = "減益類型: %s",
 	["Poison"] = "毒",
@@ -270,29 +269,16 @@ local strings_zhTW = {
 	["Skip units that have an active Abolish buff."] = "略過身上有驅散增益的單位。",
 	["Show duration"] = "顯示持續時間",
 	["Show the time remaining, for use with the center icon cooldown."] = "在圖示中顯示持續時間。",
+--}}}
 
-	--}}}
-	--{{{ GridStatusName
-	["Unit Name"] = "名字",
-	["Color by class"] = "使用職業顏色",
-
-	--}}}
-	--{{{ GridStatusMana
-	["Mana"] = "法力",
-	["Low Mana"] = "法力不足",
-	["Mana threshold"] = "法力不足臨界點",
-	["Set the percentage for the low mana warning."] = "設定當法力低於臨界點時警告。",
-	["Low Mana warning"] = "法力不足警報",
-
-	--}}}
-	--{{{ GridStatusHeals
+--{{{ GridStatusHeals
 	["Heals"] = "治療",
 	["Incoming heals"] = "治療中",
 	["Ignore Self"] = "忽略自己",
 	["Ignore heals cast by you."] = "忽略自己施放的治療法術。",
+--}}}
 
-	--}}}
-	--{{{ GridStatusHealth
+--{{{ GridStatusHealth
 	["Low HP"] = "生命力不足",
 	["DEAD"] = "死亡",
 	["FD"] = "假死",
@@ -313,9 +299,22 @@ local strings_zhTW = {
 	["Color deficit based on class."] = "損失生命力值根據不同的職業著色。",
 	["Low HP threshold"] = "生命力不足臨界點",
 	["Set the HP % for the low HP warning."] = "設定當生命力低於臨界點時警告。",
+--}}}
 
-	--}}}
-	--{{{ GridStatusRange
+--{{{ GridStatusMana
+	["Mana"] = "法力",
+	["Low Mana"] = "法力不足",
+	["Mana threshold"] = "法力不足臨界點",
+	["Set the percentage for the low mana warning."] = "設定當法力低於臨界點時警告。",
+	["Low Mana warning"] = "法力不足警報",
+--}}}
+
+--{{{ GridStatusName
+	["Unit Name"] = "名字",
+	["Color by class"] = "使用職業顏色",
+--}}}
+
+--{{{ GridStatusRange
 	["Range"] = "距離",
 	["Range check frequency"] = "距離檢測頻率",
 	["Seconds between range checks"] = "設定程式多少秒檢測一次距離",
@@ -324,24 +323,9 @@ local strings_zhTW = {
 	["Text"] = "文字",
 	["Text to display on text indicators"] = "顯示文字於文字提示器上",
 	["<range>"] = "<距離>",
+--}}}
 
-	--}}}
-	--{{{ GridStatusTarget
-	["Target"] = "目標",
-	["Your Target"] = "你的目標",
-
-	--}}}
-	--{{{ GridStatusVoiceComm
-	["Voice Chat"] = "語音",
-	["Talking"] = "說話中",
-
-	--}}}
-	--{{{ GridStatusVehicle
-	["In Vehicle"] = "載具上",
-	["Driving"] = "操作",
-
-	--}}}
-	--{{{ GridStatusReadyCheck
+--{{{ GridStatusReadyCheck
 	["Ready Check"] = "檢查就緒",
 	["Set the delay until ready check results are cleared."] = "設定檢查就續結果清除的延遲。",
 	["Delay"] = "延遲",
@@ -357,10 +341,21 @@ local strings_zhTW = {
 	["Color for Not Ready."] = "尚未就緒的顏色",
 	["AFK color"] = "暫離的顏色",
 	["Color for AFK."] = "暫離的顏色",
+--}}}
 
-	--}}}
-	--{{{ Unused translations: translators, please remove these
-	--}}}
-}
+--{{{ GridStatusTarget
+	["Target"] = "目標",
+	["Your Target"] = "你的目標",
+--}}}
 
-L:RegisterTranslations("zhTW", function() return strings_zhTW end)
+--{{{ GridStatusVehicle
+	["In Vehicle"] = "載具上",
+	["Driving"] = "操作",
+--}}}
+
+--{{{ GridStatusVoiceComm
+	["Voice Chat"] = "語音",
+	["Talking"] = "說話中",
+--}}}
+
+} end)

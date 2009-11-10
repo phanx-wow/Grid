@@ -17,14 +17,14 @@
 ## OptionalDeps: Ace2, CallbackHandler-1.0, ChatThrottleLib, DewdropLib, FuBarPlugin-2.0, LibGratuity-3.0, LibHealComm-4.0, LibWrapperHealComm-1.0, LibSharedMedia-3.0, UTF8, Waterfall-1.0, Clique, CT_RaidAssist, FuBar, JustClick, oRA2, SharedMedia
 ## SavedVariables: GridDB
 
-## Non-Ace Libraries
-#  libs\UTF8\utf8data.lua
+# Non-Ace Libraries
+# libs\UTF8\utf8data.lua
 libs\UTF8\utf8.lua
 
 ## Ace Libraries
 embeds.xml
 
-#Locales
+# Locales
 GridLocale-enUS.lua
 GridLocale-deDE.lua
 GridLocale-esES.lua
@@ -44,14 +44,14 @@ GridLayoutLayouts.lua
 GridFrame.lua
 GridStatus.lua
 
-GridStatusHealth.lua
 GridStatusAggro.lua
-GridStatusName.lua
-GridStatusMana.lua
-GridStatusHeals.lua
 GridStatusAuras.lua
-GridStatusTarget.lua
+GridStatusHeals.lua
+GridStatusHealth.lua
+GridStatusMana.lua
+GridStatusName.lua
 GridStatusRange.lua
-GridStatusVoiceComm.lua
-GridStatusVehicle.lua
 GridStatusReadyCheck.lua
+GridStatusTarget.lua
+GridStatusVehicle.lua
+GridStatusVoiceComm.lua

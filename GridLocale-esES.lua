@@ -1,7 +1,6 @@
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esES", function() return {
 
-local strings_esES = {
-	--{{{ GridCore
+--{{{ GridCore
 	["Debugging"] = "Debugeando",
 	["Module debugging menu."] = "Menu de debugeando de modulo.",
 	["Debug"] = "Debugear",
@@ -9,9 +8,9 @@ local strings_esES = {
 	["Configure"] = "Configurar",
 	["Configure Grid"] = "Configura Grid.",
 	["Hide minimap icon"] = "Esconder icon de la minimap",
+--}}}
 
-	--}}}
-	--{{{ GridFrame
+--{{{ GridFrame
 	["Frame"] = "Celda",
 	["Options for GridFrame."] = "Opciones sobre GridFrame.",
 
@@ -81,9 +80,9 @@ local strings_esES = {
 	["Toggle center icon's stack count text."] = "Ajustar texto del icono apilado.",
 	["Icon Cooldown Frame"] = "Celda de cooldown del icono",
 	["Toggle center icon's cooldown frame."] = "Ajustar la celda del cooldown del icono.",
+--}}}
 
-	--}}}
-	--{{{ GridLayout
+--{{{ GridLayout
 	["Layout"] = "Disposicion",
 	["Options for GridLayout."] = "Opciones sobre GridLayout.",
 
@@ -163,9 +162,9 @@ local strings_esES = {
 	["Sets where groups are anchored relative to the layout frame."] = "Determina donde estan anclados los grupos relativamente a la celda de disposicion.",
 	["Reset Position"] = "Resetear posicion",
 	["Resets the layout frame's position and anchor."] = "Resetea la celda de disposicion y su ancla.",
+--}}}
 
-	--}}}
-	--{{{ GridLayoutLayouts
+--{{{ GridLayoutLayouts
 	["None"] = "Ninguno",
 	["By Group 40"] = "Raid de 40",
 	["By Group 25"] = "Raid de 25",
@@ -181,14 +180,14 @@ local strings_esES = {
 	["By Class w/Pets"] = "Por clase con mascotas ",
 	["Onyxia"] = "Onyxia",
 	["By Group 25 w/tanks"] = "Raid de 25 con tankes",
+--}}}
 
-	--}}}
-	--{{{ GridRange
+--{{{ GridRange
 	-- used for getting spell range from tooltip
 	["(%d+) yd range"] = "Alcance de (%d+) m",
+--}}}
 
-	--}}}
-	--{{{ GridStatus
+--{{{ GridStatus
 	["Status"] = "Estado",
 	["Options for %s."] = "Opciones sobre %s.",
 
@@ -202,14 +201,14 @@ local strings_esES = {
 	["Range filter for %s"] = "Filtro de distancia para %s.",
 	["Enable"] = "Activar",
 	["Enable %s"] = "Activa %s.",
+--}}}
 
-	--}}}
-	--{{{ GridStatusAggro
+--{{{ GridStatusAggro
 	["Aggro"] = "Aggro",
 	["Aggro alert"] = "Alerta de aggro",
+--}}}
 
-	--}}}
-	--{{{ GridStatusAuras
+--{{{ GridStatusAuras
 	["Auras"] = "Auras",
 	["Debuff type: %s"] = "Tipo de debuff : %s",
 	["Poison"] = "Veneno",
@@ -238,29 +237,16 @@ local strings_esES = {
 	["Display status only if the buff is not active."] = "Affiche le statut uniquement si le buff n'est pas actif.",
 	["Filter Abolished units"] = "Filtra unidades suprimidos",
 	["Skip units that have an active Abolish buff."] = "Pasar unidades que tiene buff de suprimido puesto",
+--}}}
 
-	--}}}
-	--{{{ GridStatusName
-	["Unit Name"] = "Nombre de unidad",
-	["Color by class"] = "Colorar por clase",
-
-	--}}}
-	--{{{ GridStatusMana
-	["Mana"] = "Mana",
-	["Low Mana"] = "Mana Baja",
-	["Mana threshold"] = "Limite de mana",
-	["Set the percentage for the low mana warning."] = "Determina el porcentaje que sale el aviso de mana baja.",
-	["Low Mana warning"] = "Aviso de mana baja",
-
-	--}}}
-	--{{{ GridStatusHeals
+--{{{ GridStatusHeals
 	["Heals"] = "Curas",
 	["Incoming heals"] = "Curas que vienen",
 	["Ignore Self"] = "Ignorar mismo",
 	["Ignore heals cast by you."] = "Ignorar hechizos hecho por tu mismo.",
+--}}}
 
-	--}}}
-	--{{{ GridStatusHealth
+--{{{ GridStatusHealth
 	["Low HP"] = "Vida Baja",
 	["DEAD"] = "Muerto",
 	["FD"] = "FM",
@@ -281,26 +267,60 @@ local strings_esES = {
 	["Color deficit based on class."] = "Colorar deficit en base de clase",
 	["Low HP threshold"] = "Limite de vida baja.",
 	["Set the HP % for the low HP warning."] = "Determina el % de vida para el aviso de baja vida.",
+--}}}
 
-	--}}}
-	--{{{ GridStatusRange
+--{{{ GridStatusMana
+	["Mana"] = "Mana",
+	["Low Mana"] = "Mana Baja",
+	["Mana threshold"] = "Limite de mana",
+	["Set the percentage for the low mana warning."] = "Determina el porcentaje que sale el aviso de mana baja.",
+	["Low Mana warning"] = "Aviso de mana baja",
+--}}}
+
+--{{{ GridStatusName
+	["Unit Name"] = "Nombre de unidad",
+	["Color by class"] = "Colorar por clase",
+--}}}
+
+--{{{ GridStatusRange
 	["Range"] = "Alcance",
 	["Range check frequency"] = "Frequencia de verificar alcance",
 	["Seconds between range checks"] = "Determina segundos entre verificaciones de alcance.",
 	["More than %d yards away"] = "A mas de %d metros",
 	["%d yards"] = "%d metros",
+--}}}
 
-	--}}}
-	--{{{ GridStatusTarget
+--{{{ GridStatusReadyCheck
+--	["Ready Check"] = "",
+--	["Set the delay until ready check results are cleared."] = "",
+--	["Delay"] = "",
+--	["?"] = "",
+--	["R"] = "",
+--	["X"] = "",
+--	["AFK"] = "",
+--	["Waiting color"] = "",
+--	["Color for Waiting."] = "",
+--	["Ready color"] = "Couleur Prêt",
+--	["Color for Ready."] = "",
+--	["Not Ready color"] = "",
+--	["Color for Not Ready."] = "",
+--	["AFK color"] = "",
+--	["Color for AFK."] = "",
+--}}}
+
+--{{{ GridStatusTarget
 	["Target"] = "Diana",
 	["Your Target"] = "Tu diana",
+--}}}
 
-	--}}}
-	--{{{ GridStatusVoiceComm
+--{{{ GridStatusVehicle
+--	["In Vehicle"] = "",
+--	["Driving"] = "",
+--}}}
+
+--{{{ GridStatusVoiceComm
 	["Voice Chat"] = "Discussion vocal",
 	["Talking"] = "Habla",
+--}}}
 
-	--}}}
-}
-
-L:RegisterTranslations("esES", function() return strings_esES end)
+} end)

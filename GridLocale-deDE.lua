@@ -1,7 +1,6 @@
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("deDE", function() return {
 
-local strings_deDE = {
-	--{{{ GridCore
+--{{{ GridCore
 	["Debugging"] = "Debuggen",
 	["Module debugging menu."] = "Debug-Menü",
 	["Debug"] = "Debug",
@@ -10,9 +9,9 @@ local strings_deDE = {
 	["Configure Grid"] = "Grid konfigurieren",
 	["Hide minimap icon"] = "Minikarten Button verstecken",
 	["Grid is disabled: use '/grid standby' to enable."] = "Grid ist ausgeschaltet: Tippe '/grid standby' zum einschalten.",
+--}}}
 
-	--}}}
-	--{{{ GridFrame
+--{{{ GridFrame
 	["Frame"] = "Rahmen",
 	["Options for GridFrame."] = "Optionen für den Grid-Rahmen.",
 
@@ -86,9 +85,9 @@ local strings_deDE = {
 	["Toggle center icon's stack count text."] = "Stack-Text für Symbol im Zentrum ein-/ausblenden.",
 	["Icon Cooldown Frame"] = "Symbol Cooldown-Rahmen",
 	["Toggle center icon's cooldown frame."] = "Cooldown-Rahmen für Symbol im Zentrum ein-/ausblenden.",
+--}}}
 
-	--}}}
-	--{{{ GridLayout
+--{{{ GridLayout
 	["Layout"] = "Layout",
 	["Options for GridLayout."] = "Optionen für das Layout von Grid.",
 
@@ -182,9 +181,9 @@ local strings_deDE = {
 	["Resets the layout frame's position and anchor."] = "Setzt den Ankerpunkt und die Position des Layoutrahmens zurück.",
 	["Hide tab"] = "Reiter verstecken",
 	["Do not show the tab when Grid is unlocked."] = "Reiter immer verstecken. (Egal ob Grid gesperrt oder entsperrt ist.)",
+--}}}
 
-	--}}}
-	--{{{ GridLayoutLayouts
+--{{{ GridLayoutLayouts
 	["None"] = "Ausblenden",
 	["By Group 40"] = "40er Gruppe",
 	["By Group 25"] = "25er Gruppe",
@@ -200,14 +199,14 @@ local strings_deDE = {
 	["By Class w/Pets"] = "Nach Klasse mit Begleitern",
 	["Onyxia"] = "Onyxia",
 	["By Group 25 w/tanks"] = "25er Gruppe mit Tanks",
+--}}}
 
-	--}}}
-	--{{{ GridRange
+--{{{ GridRange
 	-- used for getting spell range from tooltip
 	["(%d+) yd range"] = "(%d+) Meter Reichweite",
+--}}}
 
-	--}}}
-	--{{{ GridStatus
+--{{{ GridStatus
 	["Status"] = "Status",
 	["Options for %s."] = "Optionen für %s.",
 	["Reset class colors"] = "Klassenfarben zurücksetzen",
@@ -223,9 +222,9 @@ local strings_deDE = {
 	["Range filter for %s"] = "Entfernungsfilter für %s",
 	["Enable"] = "Aktivieren",
 	["Enable %s"] = "Aktiviert %s",
+--}}}
 
-	--}}}
-	--{{{ GridStatusAggro
+--{{{ GridStatusAggro
 	["Aggro"] = "Aggro",
 	["Aggro alert"] = "Aggro-Alarm",
 	["High Threat color"] = "Hohe Bedrohung Farbe",
@@ -238,9 +237,9 @@ local strings_deDE = {
 	["Show more detailed threat levels."] = "Zeigt mehrere Bedrohungsstufen.",
 	["High"] = "Hoch",
 	["Tank"] = "Tank",
+--}}}
 
-	--}}}
-	--{{{ GridStatusAuras
+--{{{ GridStatusAuras
 	["Auras"] = "Auren",
 	["Debuff type: %s"] = "Schwächungszaubertyp: %s",
 	["Poison"] = "Gift",
@@ -273,22 +272,9 @@ local strings_deDE = {
 	["Skip units that have an active Abolish buff."] = "Einheiten verwerfen, die einen aktiven bereinigenden Stärkungszauber haben (Krankheit/Vergiftung aufheben).",
 	["Show duration"] = "Dauer anzeigen",
 	["Show the time remaining, for use with the center icon cooldown."] = "Zeigt die Dauer im Cooldown-Rahmen (Symbol im Zentrum).",
+--}}}
 
-	--}}}
-	--{{{ GridStatusName
-	["Unit Name"] = "Namen",
-	["Color by class"] = "In Klassenfarbe",
-
-	--}}}
-	--{{{ GridStatusMana
-	["Mana"] = "Mana",
-	["Low Mana"] = "Wenig Mana",
-	["Mana threshold"] = "Mana Grenzwert",
-	["Set the percentage for the low mana warning."] = "Setzt den % Grenzwert für die Wenig Mana Warnung.",
-	["Low Mana warning"] = "Wenig Mana Warnung",
-
-	--}}}
-	--{{{ GridStatusHeals
+--{{{ GridStatusHeals
 	["Heals"] = "Heilungen",
 	["Incoming heals"] = "Eingehende Heilungen",
 	["Ignore Self"] = "Sich selbst ignorieren",
@@ -301,9 +287,9 @@ local strings_deDE = {
 	["Include channeled heals."] = "Kanalisierte Heilungen einbeziehen.",
 	["HoT heals"] = "HoT Heilungen",
 	["Include heal over time effects."] = "HoT (Heal over Time - Heilung über Zeit) Effekte einbeziehen.",
+--}}}
 
-	--}}}
-	--{{{ GridStatusHealth
+--{{{ GridStatusHealth
 	["Low HP"] = "Wenig HP",
 	["DEAD"] = "TOT",
 	["FD"] = "TG",
@@ -324,9 +310,22 @@ local strings_deDE = {
 	["Color deficit based on class."] = "Färbt das Defizit nach Klassenfarbe.",
 	["Low HP threshold"] = "Wenig HP Grenzwert",
 	["Set the HP % for the low HP warning."] = "Setzt den % Grenzwert für die Wenig HP Warnung.",
+--}}}
 
-	--}}}
-	--{{{ GridStatusRange
+--{{{ GridStatusMana
+	["Mana"] = "Mana",
+	["Low Mana"] = "Wenig Mana",
+	["Mana threshold"] = "Mana Grenzwert",
+	["Set the percentage for the low mana warning."] = "Setzt den % Grenzwert für die Wenig Mana Warnung.",
+	["Low Mana warning"] = "Wenig Mana Warnung",
+--}}}
+
+--{{{ GridStatusName
+	["Unit Name"] = "Namen",
+	["Color by class"] = "In Klassenfarbe",
+--}}}
+
+--{{{ GridStatusRange
 	["Range"] = "Entfernung",
 	["Range check frequency"] = "Häufigkeit der Reichweitenmessung",
 	["Seconds between range checks"] = "Sekunden zwischen den Reichweitenmessungen",
@@ -335,24 +334,9 @@ local strings_deDE = {
 	["Text"] = "Text",
 	["Text to display on text indicators"] = "Text, der in einem Textindikator angezeigt wird",
 	["<range>"] = "<entfernung>",
+--}}}
 
-	--}}}
-	--{{{ GridStatusTarget
-	["Target"] = "Ziel",
-	["Your Target"] = "Dein Ziel",
-
-	--}}}
-	--{{{ GridStatusVoiceComm
-	["Voice Chat"] = "Sprachchat",
-	["Talking"] = "Redet",
-
-	--}}}
-	--{{{ GridStatusVehicle
-	["In Vehicle"] = "In Fahrzeug",
-	["Driving"] = "Fährt",
-
-	--}}}
-	--{{{ GridStatusReadyCheck
+--{{{ GridStatusReadyCheck
 	["Ready Check"] = "Bereitschaftscheck",
 	["Set the delay until ready check results are cleared."] = "Zeit, bis die Bereitschaftscheck-Ergebnisse gelöscht werden.",
 	["Delay"] = "Verzögerung",
@@ -368,7 +352,21 @@ local strings_deDE = {
 	["Color for Not Ready."] = "Farbe für 'Nicht bereit'.",
 	["AFK color"] = "AFK Farbe",
 	["Color for AFK."] = "Farbe für 'AFK'.",
+--}}}
 
-}
+--{{{ GridStatusTarget
+	["Target"] = "Ziel",
+	["Your Target"] = "Dein Ziel",
+--}}}
 
-L:RegisterTranslations("deDE", function() return strings_deDE end)
+--{{{ GridStatusVehicle
+	["In Vehicle"] = "In Fahrzeug",
+	["Driving"] = "Fährt",
+--}}}
+
+--{{{ GridStatusVoiceComm
+	["Voice Chat"] = "Sprachchat",
+	["Talking"] = "Redet",
+--}}}
+
+} end)

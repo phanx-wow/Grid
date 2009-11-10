@@ -1,7 +1,6 @@
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("koKR", function() return {
 
-local strings_koKR = {
-	--{{{ GridCore
+--{{{ GridCore
 	["Debugging"] = "디버깅",
 	["Module debugging menu."] = "모듈 디버깅 메뉴를 설정합니다.",
 	["Debug"] = "디버그",
@@ -10,9 +9,9 @@ local strings_koKR = {
 	["Configure Grid"] = "Grid 옵션을 설정합니다.",
 	["Hide minimap icon"] = "미니맵 아이콘 숨김",
 	["Grid is disabled: use '/grid standby' to enable."] = "Grid가 비활성화 되었을시: '/grid standby'를 입력하면 활성화 됩니다.",
+--}}}
 
-	--}}}
-	--{{{ GridFrame
+--{{{ GridFrame
 	["Frame"] = "창",
 	["Options for GridFrame."] = "각 유닛 창의 표시를 위한 옵션을 설정합니다.",
 
@@ -86,9 +85,9 @@ local strings_koKR = {
 	["Toggle center icon's stack count text."] = "중앙 아이콘에 중첩 갯수 문자를 표시합니다.",
 	["Icon Cooldown Frame"] = "아이콘 재사용 창",
 	["Toggle center icon's cooldown frame."] = "중앙 아이콘에 재사용 창을 표시합니다.",
+--}}}
 
-	--}}}
-	--{{{ GridLayout
+--{{{ GridLayout
 	["Layout"] = "배치",
 	["Options for GridLayout."] = "배치 창과 그룹 배치를 위한 옵션을 설정합니다.",
 
@@ -182,9 +181,9 @@ local strings_koKR = {
 	["Resets the layout frame's position and anchor."] = "배경 창의 위치와 앵커를 기본값으로 되돌립니다.",
 	["Hide tab"] = "탭 숨김",
 	["Do not show the tab when Grid is unlocked."] = "Grid가 잠금 해제될 때 탭을 표시하지 않습니다.",
+--}}}
 
-	--}}}
-	--{{{ GridLayoutLayouts
+--{{{ GridLayoutLayouts
 	["None"] = "없음",
 	["By Group 40"] = "40인 공격대",
 	["By Group 25"] = "25인 공격대",
@@ -200,14 +199,14 @@ local strings_koKR = {
 	["By Class w/Pets"] = "직업별, 소환수",
 	["Onyxia"] = "오닉시아",
 	["By Group 25 w/tanks"] = "25인 공격대, 방어전담",
+--}}}
 
-	--}}}
-	--{{{ GridRange
+--{{{ GridRange
 	-- used for getting spell range from tooltip
 	["(%d+) yd range"] = "(%d+)미터",
+--}}}
 
-	--}}}
-	--{{{ GridStatus
+--{{{ GridStatus
 	["Status"] = "상태",
 	["Options for %s."] = "%s|1을;를; 위한 옵션을 설정합니다.",
 	["Reset class colors"] = "직업 색상 초기화",
@@ -223,9 +222,9 @@ local strings_koKR = {
 	["Range filter for %s"] = "%s|1을;를; 위한 거리 필터",
 	["Enable"] = "사용",
 	["Enable %s"] = "%s|1을;를; 사용",
+--}}}
 
-	--}}}
-	--{{{ GridStatusAggro
+--{{{ GridStatusAggro
 	["Aggro"] = "어그로",
 	["Aggro alert"] = "어그로 경고",
 	["High Threat color"] = "위협 수준 높음 색상",
@@ -238,9 +237,9 @@ local strings_koKR = {
 	["Show more detailed threat levels."] = "상세한 위협 수준을 표시합니다.",
 	["High"] = "높음",
 	["Tank"] = "방전",
+--}}}
 
-	--}}}
-	--{{{ GridStatusAuras
+--{{{ GridStatusAuras
 	["Auras"] = "효과",
 	["Debuff type: %s"] = "디버프 타입: %s",
 	["Poison"] = "독",
@@ -273,22 +272,9 @@ local strings_koKR = {
 	["Skip units that have an active Abolish buff."] = "버프를 해제할 수 있는 유닛을 무시합니다.",
 	["Show duration"] = "지속시간 표시",
 	["Show the time remaining, for use with the center icon cooldown."] = "중앙 아이콘에 남은 시간의 재사용 대기시간을 표시합니다.",
+--}}}
 
-	--}}}
-	--{{{ GridStatusName
-	["Unit Name"] = "유닛 이름",
-	["Color by class"] = "직업별 색상",
-
-	--}}}
-	--{{{ GridStatusMana
-	["Mana"] = "마나",
-	["Low Mana"] = "마나 낮음",
-	["Mana threshold"] = "마나 수치",
-	["Set the percentage for the low mana warning."] = "마나 낮음 경고를 위한 백분율을 설정합니다.",
-	["Low Mana warning"] = "마나 낮음 경고",
-
-	--}}}
-	--{{{ GridStatusHeals
+--{{{ GridStatusHeals
 	["Heals"] = "치유",
 	["Incoming heals"] = "치유 받음",
 	["Ignore Self"] = "자신 무시",
@@ -301,9 +287,9 @@ local strings_koKR = {
 	["Include channeled heals."] = "정신 집중 치유를 표시합니다.",
 	["HoT heals"] = "지속 치유",
 	["Include heal over time effects."] = "지속 치유 표시합니다.",
+--}}}
 
-	--}}}
-	--{{{ GridStatusHealth
+--{{{ GridStatusHealth
 	["Low HP"] = "생명력 낮음",
 	["DEAD"] = "죽음",
 	["FD"] = "죽척",
@@ -324,9 +310,22 @@ local strings_koKR = {
 	["Color deficit based on class."] = "직업에 기준을 둔 결손 색상을 사용합니다.",
 	["Low HP threshold"] = "생명력 낮음 수치",
 	["Set the HP % for the low HP warning."] = "생명력 낮음 경고를 위한 백분율을 설정합니다.",
+--}}}
 
-	--}}}
-	--{{{ GridStatusRange
+--{{{ GridStatusMana
+	["Mana"] = "마나",
+	["Low Mana"] = "마나 낮음",
+	["Mana threshold"] = "마나 수치",
+	["Set the percentage for the low mana warning."] = "마나 낮음 경고를 위한 백분율을 설정합니다.",
+	["Low Mana warning"] = "마나 낮음 경고",
+--}}}
+
+--{{{ GridStatusName
+	["Unit Name"] = "유닛 이름",
+	["Color by class"] = "직업별 색상",
+--}}}
+
+--{{{ GridStatusRange
 	["Range"] = "거리",
 	["Range check frequency"] = "거리 체크 빈도",
 	["Seconds between range checks"] = "거리 체크의 시간(초)를 설정합니다.",
@@ -335,24 +334,9 @@ local strings_koKR = {
 	["Text"] = "문자",
 	["Text to display on text indicators"] = "문자 지시기 위에 표시할 문자",
 	["<range>"] = "<범위>",
+--}}}
 
-	--}}}
-	--{{{ GridStatusTarget
-	["Target"] = "대상",
-	["Your Target"] = "당신의 대상",
-
-	--}}}
-	--{{{ GridStatusVoiceComm
-	["Voice Chat"] = "음성 대화",
-	["Talking"] = "대화중",
-
-	--}}}
-	--{{{ GridStatusVehicle
-	["In Vehicle"] = "탈것",
-	["Driving"] = "운전",
-
-	--}}}
-	--{{{ GridStatusReadyCheck
+--{{{ GridStatusReadyCheck
 	["Ready Check"] = "전투 준비",
 	["Set the delay until ready check results are cleared."] = "전투 준비 체크 결과를 표시합니다.",
 	["Delay"] = "지연",
@@ -368,19 +352,32 @@ local strings_koKR = {
 	["Color for Not Ready."] = "전투 준비가 되지 않았을 때 색상",
 	["AFK color"] = "자리비움 색상",
 	["Color for AFK."] = "자리비움 상태일 때 색상",
+--}}}
 
-	--}}}
-	--{{{ Unused translations: translators, please remove these
-	["Show Pets for Party"] = "파티시 소환수 표시",
-	["Grouped"] = "파티",
-	["Show party/self as an extra group."] = "공격대시 자신과 파티원을 추가로 표시합니다.",
-	["Select which raid layout to use."] = "사용할 공격대 배치를 선택합니다.",
-	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "Grid 표시 설정: '항상', '파티' 또는 '공격대'를 선택합니다.",
-	["Raid"] = "공격대",
-	["Show the pets for the party below the party itself."] = "파티시 파티원의 소환수를 표시합니다.",
-	["Show Party in Raid"] = "공격대시 파티원 표시",
+--{{{ GridStatusTarget
+	["Target"] = "대상",
+	["Your Target"] = "당신의 대상",
+--}}}
 
-	--}}}
-}
+--{{{ GridStatusVehicle
+	["In Vehicle"] = "탈것",
+	["Driving"] = "운전",
+--}}}
 
-L:RegisterTranslations("koKR", function() return strings_koKR end)
+--{{{ GridStatusVoiceComm
+	["Voice Chat"] = "음성 대화",
+	["Talking"] = "대화중",
+--}}}
+
+--{{{ Unused translations: translators, please remove these
+--	["Show Pets for Party"] = "파티시 소환수 표시",
+--	["Grouped"] = "파티",
+--	["Show party/self as an extra group."] = "공격대시 자신과 파티원을 추가로 표시합니다.",
+--	["Select which raid layout to use."] = "사용할 공격대 배치를 선택합니다.",
+--	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "Grid 표시 설정: '항상', '파티' 또는 '공격대'를 선택합니다.",
+--	["Raid"] = "공격대",
+--	["Show the pets for the party below the party itself."] = "파티시 파티원의 소환수를 표시합니다.",
+--	["Show Party in Raid"] = "공격대시 파티원 표시",
+--}}}
+
+} end)

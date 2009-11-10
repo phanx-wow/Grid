@@ -1,7 +1,6 @@
-﻿local L = AceLibrary("AceLocale-2.2"):new("Grid")
+﻿AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("frFR", function() return {
 
-local strings_frFR = {
-	--{{{ GridCore
+--{{{ GridCore
 	["Debugging"] = "Débogage",
 	["Module debugging menu."] = "Menu du module de débogage.",
 	["Debug"] = "Déboger",
@@ -10,9 +9,9 @@ local strings_frFR = {
 	["Configure Grid"] = "Configure Grid.",
 	["Hide minimap icon"] = "Cacher icône minicarte",
 	["Grid is disabled: use '/grid standby' to enable."] = "Grid est désactivé : utilisez '/grid standby' pour l'activer.",
+--}}}
 
-	--}}}
-	--{{{ GridFrame
+--{{{ GridFrame
 	["Frame"] = "Cellules",
 	["Options for GridFrame."] = "Options concernant GridFrame.",
 
@@ -86,9 +85,9 @@ local strings_frFR = {
 	["Toggle center icon's stack count text."] = "Active ou non le texte indiquant le cumul sur l'icône centrale.",
 	["Icon Cooldown Frame"] = "Texte du temps de recharge sur l'icône",
 	["Toggle center icon's cooldown frame."] = "Active ou non le texte indiquant le temps de recharge sur l'icône centrale.",
+--}}}
 
-	--}}}
-	--{{{ GridLayout
+--{{{ GridLayout
 	["Layout"] = "Grille",
 	["Options for GridLayout."] = "Options concernant GridLayout.",
 
@@ -182,9 +181,9 @@ local strings_frFR = {
 	["Resets the layout frame's position and anchor."] = "Réinitialise la position et l'ancrage du cadre de style.",
 	["Hide tab"] = "Cacher l'onglet",
 	["Do not show the tab when Grid is unlocked."] = "N'affiche pas l'onglet quand Grid est déverrouillé.",
+--}}}
 
-	--}}}
-	--{{{ GridLayoutLayouts
+--{{{ GridLayoutLayouts
 	["None"] = "Aucun",
 	["By Group 40"] = "Raid de 40",
 	["By Group 25"] = "Raid de 25",
@@ -200,14 +199,14 @@ local strings_frFR = {
 	["By Class w/Pets"] = "Par classe avec familiers",
 	["Onyxia"] = "Onyxia",
 	["By Group 25 w/tanks"] = "Raid de 25 avec tanks",
+--}}}
 
-	--}}}
-	--{{{ GridRange
+--{{{ GridRange
 	-- used for getting spell range from tooltip
 	["(%d+) yd range"] = "(%d+) m de portée",
+--}}}
 
-	--}}}
-	--{{{ GridStatus
+--{{{ GridStatus
 	["Status"] = "Statut",
 	["Options for %s."] = "Options concernant %s.",
 	["Reset class colors"] = "Réinitialisez la couleur des classes",
@@ -223,9 +222,9 @@ local strings_frFR = {
 	["Range filter for %s"] = "Affiche uniquement %s si l'unité est à portée.",
 	["Enable"] = "Activer",
 	["Enable %s"] = "Active %s.",
+--}}}
 
-	--}}}
-	--{{{ GridStatusAggro
+--{{{ GridStatusAggro
 	["Aggro"] = "Aggro",
 	["Aggro alert"] = "Prise d'aggro",
 	["High Threat color"] = "Couleur Menace haute",
@@ -238,9 +237,9 @@ local strings_frFR = {
 	["Show more detailed threat levels."] = "Affiche des niveaux de menace plus détaillés.",
 	["High"] = "Haut",
 	["Tank"] = "Tank",
+--}}}
 
-	--}}}
-	--{{{ GridStatusAuras
+--{{{ GridStatusAuras
 	["Auras"] = "Auras",
 	["Debuff type: %s"] = "Type de débuff : %s",
 	["Poison"] = "Poison",
@@ -273,29 +272,16 @@ local strings_frFR = {
 	["Skip units that have an active Abolish buff."] = "Ignore les unités qui ont un buff Abolition actif.",
 	["Show duration"] = "Afficher la durée",
 	["Show the time remaining, for use with the center icon cooldown."] = "Affiche le temps restant. À utiliser avec le temps de recharge de l'icône centrale.",
+--}}}
 
-	--}}}
-	--{{{ GridStatusName
-	["Unit Name"] = "Nom de l'unité",
-	["Color by class"] = "Colorer selon la classe",
-
-	--}}}
-	--{{{ GridStatusMana
-	["Mana"] = "Mana",
-	["Low Mana"] = "Mana faible",
-	["Mana threshold"] = "Seuil du mana",
-	["Set the percentage for the low mana warning."] = "Détermine le pourcentage de mana à partir duquel s'enclenche l'avertissement Mana faible.",
-	["Low Mana warning"] = "Alerte Mana faible",
-
-	--}}}
-	--{{{ GridStatusHeals
+--{{{ GridStatusHeals
 	["Heals"] = "Soins",
 	["Incoming heals"] = "Soins entrants",
 	["Ignore Self"] = "Vous ignorer",
 	["Ignore heals cast by you."] = "Ignore les soins que vous incantez.",
+--}}}
 
-	--}}}
-	--{{{ GridStatusHealth
+--{{{ GridStatusHealth
 	["Low HP"] = "Vie f.",
 	["DEAD"] = "MORT",
 	["FD"] = "FM",
@@ -316,9 +302,22 @@ local strings_frFR = {
 	["Color deficit based on class."] = "Colorie le déficit selon la classe de l'unité.",
 	["Low HP threshold"] = "Seuil de vie faible",
 	["Set the HP % for the low HP warning."] = "Détermine le pourcentage de vie à partir duquel s'enclenche l'avertissement Vie faible.",
+--}}}
 
-	--}}}
-	--{{{ GridStatusRange
+--{{{ GridStatusMana
+	["Mana"] = "Mana",
+	["Low Mana"] = "Mana faible",
+	["Mana threshold"] = "Seuil du mana",
+	["Set the percentage for the low mana warning."] = "Détermine le pourcentage de mana à partir duquel s'enclenche l'avertissement Mana faible.",
+	["Low Mana warning"] = "Alerte Mana faible",
+--}}}
+
+--{{{ GridStatusName
+	["Unit Name"] = "Nom de l'unité",
+	["Color by class"] = "Colorer selon la classe",
+--}}}
+
+--{{{ GridStatusRange
 	["Range"] = "Portée",
 	["Range check frequency"] = "Fréquence des vérifications",
 	["Seconds between range checks"] = "Le nombre de secondes entre chaque vérification de portée.",
@@ -327,24 +326,9 @@ local strings_frFR = {
 	["Text"] = "Texte",
 	["Text to display on text indicators"] = "Le texte à afficher sur les indicateurs textuels.",
 	["<range>"] = "<portée>",
+--}}}
 
-	--}}}
-	--{{{ GridStatusTarget
-	["Target"] = "Cible",
-	["Your Target"] = "Votre cible",
-
-	--}}}
-	--{{{ GridStatusVoiceComm
-	["Voice Chat"] = "Discussion vocale",
-	["Talking"] = "Parle",
-
-	--}}}
-	--{{{ GridStatusVehicle
-	["In Vehicle"] = "Dans un véhicule",
-	["Driving"] = "Conduit",
-
-	--}}}
-	--{{{ GridStatusReadyCheck
+--{{{ GridStatusReadyCheck
 	["Ready Check"] = "Appel",
 	["Set the delay until ready check results are cleared."] = "Définit le délai avant que les résultats de l'appel ne soient effacés.",
 	["Delay"] = "Délai",
@@ -360,8 +344,21 @@ local strings_frFR = {
 	["Color for Not Ready."] = "La couleur de ceux qui ne sont pas prêts.",
 	["AFK color"] = "Couleur ABS",
 	["Color for AFK."] = "La couleur à utiliser pour les absents.",
+--}}}
 
-	--}}}
-}
+--{{{ GridStatusTarget
+	["Target"] = "Cible",
+	["Your Target"] = "Votre cible",
+--}}}
 
-L:RegisterTranslations("frFR", function() return strings_frFR end)
+--{{{ GridStatusVehicle
+	["In Vehicle"] = "Dans un véhicule",
+	["Driving"] = "Conduit",
+--}}}
+
+--{{{ GridStatusVoiceComm
+	["Voice Chat"] = "Discussion vocale",
+	["Talking"] = "Parle",
+--}}}
+
+} end)

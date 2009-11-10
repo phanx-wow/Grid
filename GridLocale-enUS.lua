@@ -1,7 +1,6 @@
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("enUS", function() return {
 
-local strings_enUS = {
-	--{{{ GridCore
+--{{{ GridCore
 	["Debugging"] = true,
 	["Module debugging menu."] = true,
 	["Debug"] = true,
@@ -10,9 +9,9 @@ local strings_enUS = {
 	["Configure Grid"] = true,
 	["Hide minimap icon"] = true,
 	["Grid is disabled: use '/grid standby' to enable."] = true,
+--}}}
 
-	--}}}
-	--{{{ GridFrame
+--{{{ GridFrame
 	["Frame"] = true,
 	["Options for GridFrame."] = true,
 
@@ -86,9 +85,9 @@ local strings_enUS = {
 	["Toggle center icon's stack count text."] = true,
 	["Icon Cooldown Frame"] = true,
 	["Toggle center icon's cooldown frame."] = true,
+--}}}
 
-	--}}}
-	--{{{ GridLayout
+--{{{ GridLayout
 	["Layout"] = true,
 	["Options for GridLayout."] = true,
 
@@ -182,9 +181,9 @@ local strings_enUS = {
 	["Resets the layout frame's position and anchor."] = true,
 	["Hide tab"] = true,
 	["Do not show the tab when Grid is unlocked."] = true,
+--}}}
 
-	--}}}
-	--{{{ GridLayoutLayouts
+--{{{ GridLayoutLayouts
 	["None"] = true,
 	["By Group 40"] = true,
 	["By Group 25"] = true,
@@ -200,14 +199,14 @@ local strings_enUS = {
 	["By Class w/Pets"] = true,
 	["Onyxia"] = true,
 	["By Group 25 w/tanks"] = true,
+--}}}
 
-	--}}}
-	--{{{ GridRange
+--{{{ GridRange
 	-- used for getting spell range from tooltip
 	["(%d+) yd range"] = true,
+--}}}
 
-	--}}}
-	--{{{ GridStatus
+--{{{ GridStatus
 	["Status"] = true,
 	["Options for %s."] = true,
 	["Reset class colors"] = true,
@@ -223,9 +222,9 @@ local strings_enUS = {
 	["Range filter for %s"] = true,
 	["Enable"] = true,
 	["Enable %s"] = true,
+--}}}
 
-	--}}}
-	--{{{ GridStatusAggro
+--{{{ GridStatusAggro
 	["Aggro"] = true,
 	["Aggro alert"] = true,
 	["High Threat color"] = true,
@@ -238,9 +237,9 @@ local strings_enUS = {
 	["Show more detailed threat levels."] = true,
 	["High"] = true,
 	["Tank"] = true,
+--}}}
 
-	--}}}
-	--{{{ GridStatusAuras
+--{{{ GridStatusAuras
 	["Auras"] = true,
 	["Debuff type: %s"] = true,
 	["Poison"] = true,
@@ -273,22 +272,9 @@ local strings_enUS = {
 	["Skip units that have an active Abolish buff."] = true,
 	["Show duration"] = true,
 	["Show the time remaining, for use with the center icon cooldown."] = true,
+--}}}
 
-	--}}}
-	--{{{ GridStatusName
-	["Unit Name"] = true,
-	["Color by class"] = true,
-
-	--}}}
-	--{{{ GridStatusMana
-	["Mana"] = true,
-	["Low Mana"] = true,
-	["Mana threshold"] = true,
-	["Set the percentage for the low mana warning."] = true,
-	["Low Mana warning"] = true,
-
-	--}}}
-	--{{{ GridStatusHeals
+--{{{ GridStatusHeals
 	["Heals"] = true,
 	["Incoming heals"] = true,
 	["Ignore Self"] = true,
@@ -301,9 +287,9 @@ local strings_enUS = {
 	["Include channeled heals."] = true,
 	["HoT heals"] = true,
 	["Include heal over time effects."] = true,
+--}}}
 
-	--}}}
-	--{{{ GridStatusHealth
+--{{{ GridStatusHealth
 	["Low HP"] = true,
 	["DEAD"] = true,
 	["FD"] = true,
@@ -324,9 +310,22 @@ local strings_enUS = {
 	["Color deficit based on class."] = true,
 	["Low HP threshold"] = true,
 	["Set the HP % for the low HP warning."] = true,
+--}}}
 
-	--}}}
-	--{{{ GridStatusRange
+--{{{ GridStatusMana
+	["Mana"] = true,
+	["Low Mana"] = true,
+	["Mana threshold"] = true,
+	["Set the percentage for the low mana warning."] = true,
+	["Low Mana warning"] = true,
+--}}}
+
+--{{{ GridStatusName
+	["Unit Name"] = true,
+	["Color by class"] = true,
+--}}}
+
+--{{{ GridStatusRange
 	["Range"] = true,
 	["Range check frequency"] = true,
 	["Seconds between range checks"] = true,
@@ -335,24 +334,9 @@ local strings_enUS = {
 	["Text"] = true,
 	["Text to display on text indicators"] = true,
 	["<range>"] = true,
+--}}}
 
-	--}}}
-	--{{{ GridStatusTarget
-	["Target"] = true,
-	["Your Target"] = true,
-
-	--}}}
-	--{{{ GridStatusVoiceComm
-	["Voice Chat"] = true,
-	["Talking"] = true,
-
-	--}}}
-	--{{{ GridStatusVehicle
-	["In Vehicle"] = true,
-	["Driving"] = true,
-
-	--}}}
-	--{{{ GridStatusReadyCheck
+--{{{ GridStatusReadyCheck
 	["Ready Check"] = true,
 	["Set the delay until ready check results are cleared."] = true,
 	["Delay"] = true,
@@ -368,9 +352,24 @@ local strings_enUS = {
 	["Color for Not Ready."] = true,
 	["AFK color"] = true,
 	["Color for AFK."] = true,
+--}}}
 
-	--}}}
-	--{{{ Unused translations: translators, please remove these
+--{{{ GridStatusTarget
+	["Target"] = true,
+	["Your Target"] = true,
+--}}}
+
+--{{{ GridStatusVehicle
+	["In Vehicle"] = true,
+	["Driving"] = true,
+--}}}
+
+--{{{ GridStatusVoiceComm
+	["Voice Chat"] = true,
+	["Talking"] = true,
+--}}}
+
+--{{{ Unused translations: translators, please remove these
 	["Show Pets for Party"] = true,
 	["Grouped"] = true,
 	["Show party/self as an extra group."] = true,
@@ -379,8 +378,6 @@ local strings_enUS = {
 	["Raid"] = true,
 	["Show the pets for the party below the party itself."] = true,
 	["Show Party in Raid"] = true,
+--}}}
 
-	--}}}
-}
-
-L:RegisterTranslations("enUS", function() return strings_enUS end)
+} end)

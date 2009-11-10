@@ -18,14 +18,12 @@ do
 		"AceLocale-2.2",
 		"AceOO-2.0",
 		"Dewdrop-2.0",
-		-- "Waterfall-1.0", -- Don't warn about optional libraries.
 		-- "DoesNotExist-Ace2",
 	}
 
 	local libstub_libs = {
 		"LibGratuity-3.0",
 		"LibHealComm-4.0",
-		"LibWrapperHealComm-1.0",
 		"LibSharedMedia-3.0",
 		-- "DoesNotExist-LibStub",
 	}

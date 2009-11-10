@@ -1,7 +1,6 @@
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhCN", function() return {
 
-local strings_zhCN = {
-	--{{{ GridCore
+--{{{ GridCore
 	["Debugging"] = "除错",
 	["Module debugging menu."] = "除错模块配置。",
 	["Debug"] = "除错",
@@ -10,9 +9,9 @@ local strings_zhCN = {
 	["Configure Grid"] = "配置 Grid",
 	["Hide minimap icon"] = "隐藏迷你地图按钮",
 	["Grid is disabled: use '/grid standby' to enable."] = "Gird 已被禁用：使用“/grid standby”命令启用。",
+--}}}
 
-	--}}}
-	--{{{ GridFrame
+--{{{ GridFrame
 	["Frame"] = "框架",
 	["Options for GridFrame."] = "Grid 框架的选项。",
 
@@ -84,9 +83,9 @@ local strings_zhCN = {
 	["Toggle center icon's stack count text."] = "打开/关闭中心图标的堆叠计数文字。",
 	["Icon Cooldown Frame"] = "图标冷却时间框架",
 	["Toggle center icon's cooldown frame."] = "打开/关闭中心图标的冷却时间框架。",
+--}}}
 
-	--}}}
-	--{{{ GridLayout
+--{{{ GridLayout
 	["Layout"] = "布局",
 	["Options for GridLayout."] = "Grid 布局的选项。",
 
@@ -176,9 +175,9 @@ local strings_zhCN = {
 	["Resets the layout frame's position and anchor."] = "重置布局框架的位置和锚点。",
 	["Hide tab"] = "隐藏标签",
 	["Do not show the tab when Grid is unlocked."] = "当未锁定 Grid 时不显示标签。",
+--}}}
 
-	--}}}
-	--{{{ GridLayoutLayouts
+--{{{ GridLayoutLayouts
 	["None"] = "无",
 	["By Group 40"] = "40人团队",
 	["By Group 25"] = "25人团队",
@@ -194,14 +193,14 @@ local strings_zhCN = {
 	["By Class w/Pets"] = "职业以及宠物",
 	["Onyxia"] = "单数双数队伍排列",
 	["By Group 25 w/tanks"] = "25人团队及 MT",
+--}}}
 
-	--}}}
-	--{{{ GridRange
+--{{{ GridRange
 	-- used for getting spell range from tooltip
-	["(%d+) yd range"] = "(%d+)码距离",
+	["(%d+) yd range"] = "(%d+)码射程", -- changed from 码距离 as per hehehillman (ticket #166)
+--}}}
 
-	--}}}
-	--{{{ GridStatus
+--{{{ GridStatus
 	["Status"] = "状态",
 	["Options for %s."] = "%s状态的选项。",
 
@@ -215,9 +214,9 @@ local strings_zhCN = {
 	["Range filter for %s"] = "%s的距离过滤",
 	["Enable"] = "启用",
 	["Enable %s"] = "启用%s",
+--}}}
 
-	--}}}
-	--{{{ GridStatusAggro
+--{{{ GridStatusAggro
 	["Aggro"] = "仇恨",
 	["Aggro alert"] = "仇恨警报",
 	["High Threat color"] = "高威胁颜色",
@@ -230,9 +229,9 @@ local strings_zhCN = {
 	["Show more detailed threat levels."] = "显示更多威胁分级。",
 	["High"] = "高",
 	["Tank"] = "坦克",
+--}}}
 
-	--}}}
-	--{{{ GridStatusAuras
+--{{{ GridStatusAuras
 	["Auras"] = "光环",
 	["Debuff type: %s"] = "减益类型：%s",
 	["Poison"] = "毒药",
@@ -265,29 +264,16 @@ local strings_zhCN = {
 	["Skip units that have an active Abolish buff."] = "忽略单位上存在无效效果。",
 	["Show duration"] = "显示持续效果",
 	["Show the time remaining, for use with the center icon cooldown."] = "显示的剩余时间，用于中心的图标冷却。",
+--}}}
 
-	--}}}
-	--{{{ GridStatusName
-	["Unit Name"] = "名字",
-	["Color by class"] = "使用职业颜色",
-
-	--}}}
-	--{{{ GridStatusMana
-	["Mana"] = "法力",
-	["Low Mana"] = "低法力",
-	["Mana threshold"] = "法力临界点",
-	["Set the percentage for the low mana warning."] = "设置低法力警告的临界点。",
-	["Low Mana warning"] = "低法力警报",
-
-	--}}}
-	--{{{ GridStatusHeals
+--{{{ GridStatusHeals
 	["Heals"] = "治疗",
 	["Incoming heals"] = "正被治疗",
 	["Ignore Self"] = "忽略自己",
 	["Ignore heals cast by you."] = "忽略对自己施放的治疗。",
+--}}}
 
-	--}}}
-	--{{{ GridStatusHealth
+--{{{ GridStatusHealth
 	["Low HP"] = "低",
 	["DEAD"] = "死",
 	["FD"] = "假",
@@ -308,9 +294,22 @@ local strings_zhCN = {
 	["Color deficit based on class."] = "用职业颜色来显示损失的血量。",
 	["Low HP threshold"] = "低血量临界点",
 	["Set the HP % for the low HP warning."] = "设置低血量警报的临界点。",
+--}}}
 
-	--}}}
-	--{{{ GridStatusRange
+--{{{ GridStatusMana
+	["Mana"] = "法力",
+	["Low Mana"] = "低法力",
+	["Mana threshold"] = "法力临界点",
+	["Set the percentage for the low mana warning."] = "设置低法力警告的临界点。",
+	["Low Mana warning"] = "低法力警报",
+--}}}
+
+--{{{ GridStatusName
+	["Unit Name"] = "名字",
+	["Color by class"] = "使用职业颜色",
+--}}}
+
+--{{{ GridStatusRange
 	["Range"] = "距离",
 	["Range check frequency"] = "距离检测的频率",
 	["Seconds between range checks"] = "多少秒检测一次距离",
@@ -319,24 +318,9 @@ local strings_zhCN = {
 	["Text"] = "文字",
 	["Text to display on text indicators"] = "在文字提示器上显示文字",
 	["<range>"] = "<距离>",
+--}}}
 
-	--}}}
-	--{{{ GridStatusTarget
-	["Target"] = "目标",
-	["Your Target"] = "你的目标",
-
-	--}}}
-	--{{{ GridStatusVoiceComm
-	["Voice Chat"] = "语音",
-	["Talking"] = "正在说话",
-
-	--}}}
-	--{{{ GridStatusVehicle
-	["In Vehicle"] = "使用载具",
-	["Driving"] = "驾驶中",
-
-	--}}}
-	--{{{ GridStatusReadyCheck
+--{{{ GridStatusReadyCheck
 	["Ready Check"] = "检查就绪",
 	["Set the delay until ready check results are cleared."] = "设置准备就绪检查结果清除的延迟。",
 	["Delay"] = "延迟",
@@ -352,19 +336,32 @@ local strings_zhCN = {
 	["Color for Not Ready."] = "未准备好时的颜色。",
 	["AFK color"] = "暂离颜色",
 	["Color for AFK."] = "暂离时的颜色。",
+--}}}
 
-	--}}}
-	--{{{ Unused translations: translators, please remove these
-	["Show Pets for Party"] = "小队中显示宠物",
-	["Grouped"] = "组队",
-	["Show party/self as an extra group."] = "把自己/小队单独显示出来。",
-	["Select which raid layout to use."] = "选择使用何种团队布局。",
-	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "设置何时显示 Grid：选择“一直”，“组队”或“团队”。",
-	["Raid"] = "团队",
-	["Show the pets for the party below the party itself."] = "小队中在下方显示宠物。",
-	["Show Party in Raid"] = "在团队中显示小队",
+--{{{ GridStatusTarget
+	["Target"] = "目标",
+	["Your Target"] = "你的目标",
+--}}}
 
-	--}}}
-}
+--{{{ GridStatusVehicle
+	["In Vehicle"] = "使用载具",
+	["Driving"] = "驾驶中",
+--}}}
 
-L:RegisterTranslations("zhCN", function() return strings_zhCN end)
+--{{{ GridStatusVoiceComm
+	["Voice Chat"] = "语音",
+	["Talking"] = "正在说话",
+--}}}
+
+--{{{ Unused translations: translators, please remove these
+--	["Show Pets for Party"] = "小队中显示宠物",
+--	["Grouped"] = "组队",
+--	["Show party/self as an extra group."] = "把自己/小队单独显示出来。",
+--	["Select which raid layout to use."] = "选择使用何种团队布局。",
+--	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "设置何时显示 Grid：选择“一直”，“组队”或“团队”。",
+--	["Raid"] = "团队",
+--	["Show the pets for the party below the party itself."] = "小队中在下方显示宠物。",
+--	["Show Party in Raid"] = "在团队中显示小队",
+--}}}
+
+} end)
