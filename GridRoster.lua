@@ -72,6 +72,8 @@ function GridRoster:OnEnable()
 	self:RegisterEvent("UNIT_NAME_UPDATE", "UpdateRoster")
 	self:RegisterEvent("UNIT_PORTRAIT_UPDATE", "UpdateRoster")
 
+	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "PartyTransitionCheck")
+
 	self:UpdateRoster()
 end
 
@@ -255,6 +257,9 @@ do
 		end
 
 		if GetNumRaidMembers() > 0 then
+			if instance_type == "none" and GetZonePVPInfo() == "combat" then
+				return "bg"
+			end
 			local raid_difficulty = GetRaidDifficulty()
 			if raid_difficulty == 2 or raid_difficulty == 4 then
 				return "heroic_raid"
