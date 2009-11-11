@@ -186,6 +186,7 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("koKR", function() 
 --{{{ GridLayoutLayouts
 	["None"] = "없음",
 	["By Group 40"] = "40인 공격대",
+	["By Group 40 w/Pets"] = "40인 공격대, 소환수",
 	["By Group 25"] = "25인 공격대",
 	["By Group 25 w/Pets"] = "25인 공격대, 소환수",
 	["By Group 20"] = "20인 공격대",

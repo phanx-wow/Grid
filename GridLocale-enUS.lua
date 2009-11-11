@@ -186,6 +186,7 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("enUS", function() 
 --{{{ GridLayoutLayouts
 	["None"] = true,
 	["By Group 40"] = true,
+	["By Group 40 w/Pets"] = true,
 	["By Group 25"] = true,
 	["By Group 25 w/Pets"] = true,
 	["By Group 20"] = true,

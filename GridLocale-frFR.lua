@@ -186,6 +186,7 @@
 --{{{ GridLayoutLayouts
 	["None"] = "Aucun",
 	["By Group 40"] = "Raid de 40",
+	["By Group 40 w/Pets"] = "Raid de 40 avec familiers",
 	["By Group 25"] = "Raid de 25",
 	["By Group 25 w/Pets"] = "Raid de 25 avec familiers",
 	["By Group 20"] = "Raid de 20",

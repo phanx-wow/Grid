@@ -167,6 +167,7 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esES", function() 
 --{{{ GridLayoutLayouts
 	["None"] = "Ninguno",
 	["By Group 40"] = "Raid de 40",
+	["By Group 40 w/Pets"] = "Raid de 40 con mascotas",
 	["By Group 25"] = "Raid de 25",
 	["By Group 25 w/Pets"] = "Raid de 25 con mascotas",
 	["By Group 20"] = "Raid de 20",

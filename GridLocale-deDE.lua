@@ -186,6 +186,7 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("deDE", function() 
 --{{{ GridLayoutLayouts
 	["None"] = "Ausblenden",
 	["By Group 40"] = "40er Gruppe",
+	["By Group 40 w/Pets"] = "40er Gruppe mit Begleitern",
 	["By Group 25"] = "25er Gruppe",
 	["By Group 25 w/Pets"] = "25er Gruppe mit Begleitern",
 	["By Group 20"] = "20er Gruppe",

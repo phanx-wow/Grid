@@ -183,6 +183,7 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhTW", function() 
 --{{{ GridLayoutLayouts
 	["None"] = "無",
 	["By Group 40"] = "40人團隊",
+	["By Group 40 w/Pets"] = "40人團隊及寵物",
 	["By Group 25"] = "25人團隊",
 	["By Group 25 w/Pets"] = "25人團隊及寵物",
 	["By Group 20"] = "20人團隊",

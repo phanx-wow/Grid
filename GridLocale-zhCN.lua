@@ -186,6 +186,7 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhCN", function() 
 --{{{ GridLayoutLayouts
 	["None"] = "无",
 	["By Group 40"] = "40人团队",
+	["By Group 40 w/Pets"] = "40人团队以及宠物",
 	["By Group 25"] = "25人团队",
 	["By Group 25 w/Pets"] = "25人团队以及宠物",
 	["By Group 20"] = "20人团队",

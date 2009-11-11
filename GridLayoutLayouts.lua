@@ -43,6 +43,39 @@ GridLayout:AddLayout(L["By Group 40"], {
 		},
 	})
 
+GridLayout:AddLayout(L["By Group 40 w/Pets"], {
+		[1] = {
+			groupFilter = "1",
+		},
+		[2] = {
+			groupFilter = "2",
+		},
+		[3] = {
+			groupFilter = "3",
+		},
+		[4] = {
+			groupFilter = "4",
+		},
+		[5] = {
+			groupFilter = "5",
+		},
+		[6] = {
+			groupFilter = "6",
+		},
+		[7] = {
+			groupFilter = "7",
+		},
+		[8] = {
+			groupFilter = "8",
+		},
+		[9] = {
+			groupFilter = "1,2,3,4,5,6,7,8",
+			isPetGroup = true,
+			unitsPerColumn = 5,
+			maxColumns = 8,
+		},
+	})
+
 GridLayout:AddLayout(L["By Group 25"], {
 		[1] = {
 			groupFilter = "1",
