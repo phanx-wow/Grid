@@ -203,8 +203,8 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("koKR", function() 
 --}}}
 
 --{{{ GridLDB
---	["Click to open the options in a GUI window."] = "",
---	["Right-Click to open the options in a drop-down menu."] = "",
+	["Click to open the options in a GUI window."] = "GUI 창의 옵션을 열려면 클릭하십시오.",
+	["Right-Click to open the options in a drop-down menu."] = "드롭다운 메뉴의 옵션을 열려면 오른쪽 클릭하십시오.",
 --}}}
 
 --{{{ GridRange
