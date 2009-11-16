@@ -202,6 +202,11 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("enUS", function() 
 	["By Group 25 w/tanks"] = true,
 --}}}
 
+--{{{ GridLDB
+	["Click to open the options in a GUI window."] = true,
+	["Right-Click to open the options in a drop-down menu."] = true,
+--}}}
+
 --{{{ GridRange
 	-- used for getting spell range from tooltip
 	["(%d+) yd range"] = true,

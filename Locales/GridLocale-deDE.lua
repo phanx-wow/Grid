@@ -202,6 +202,11 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("deDE", function() 
 	["By Group 25 w/tanks"] = "25er Gruppe mit Tanks",
 --}}}
 
+--{{{ GridLDB
+--	["Click to open the options in a GUI window."] = "",
+--	["Right-Click to open the options in a drop-down menu."] = "",
+--}}}
+
 --{{{ GridRange
 	-- used for getting spell range from tooltip
 	["(%d+) yd range"] = "(%d+) Meter Reichweite",

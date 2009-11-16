@@ -202,6 +202,11 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("koKR", function() 
 	["By Group 25 w/tanks"] = "25인 공격대, 방어전담",
 --}}}
 
+--{{{ GridLDB
+--	["Click to open the options in a GUI window."] = "",
+--	["Right-Click to open the options in a drop-down menu."] = "",
+--}}}
+
 --{{{ GridRange
 	-- used for getting spell range from tooltip
 	["(%d+) yd range"] = "(%d+)미터",

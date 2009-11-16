@@ -68,7 +68,7 @@ end
 --{{{ Grid
 --{{{  Initialization
 
-Grid = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceDebug-2.0", "AceModuleCore-2.0", "AceConsole-2.0", "FuBarPlugin-2.0")
+Grid = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceDebug-2.0", "AceModuleCore-2.0", "AceConsole-2.0")
 Grid:SetModuleMixins("AceDebug-2.0", "AceEvent-2.0", "AceModuleCore-2.0")
 Grid:RegisterDB("GridDB")
 Grid.debugFrame = ChatFrame1
@@ -101,20 +101,12 @@ if waterfall then
 		name = L["Configure"],
 		desc = L["Configure Grid"],
 		guiHidden = true,
-		func = function () 
+		func = function() 
 				waterfall:Open("Grid")
 		end,
 	}
 	
 	waterfall:Register("Grid", "aceOptions", Grid.options, "title", "Grid Configuration")
-	
-	function Grid:OnClick ()
-		if waterfall:IsOpen("Grid") then
-			waterfall:Close("Grid")
-		else
-			waterfall:Open("Grid")
-		end
-	end
 end
 
 --}}}
@@ -122,19 +114,8 @@ end
 
 Grid.defaults = {
 	debug = false,
+	minimap = { },
 }
-
---}}}
---{{{ FuBar settings
-
-Grid.name                   = "Grid"
-Grid.hasIcon                = true
-Grid.defaultMinimapPosition = 240
-Grid.cannotDetachTooltip    = true
-Grid.independentProfile     = true
-Grid.defaultPosition        = "RIGHT"
-Grid.hideWithoutStandby     = true
-Grid.OnMenuRequest          = Grid.options
 
 --}}}
 --}}}
@@ -252,13 +233,6 @@ function Grid:OnInitialize()
 
 	self:RegisterModules()
 	
-	-- rename FuBar menu to avoid confusion
-	-- this should be added to FuBarPlugin btw.
-	if not FuBar then
-		self.OnMenuRequest.args.hide.guiName = L["Hide minimap icon"]
-		self.OnMenuRequest.args.hide.desc = L["Hide minimap icon"]
-	end
-	
 	self:RegisterEvent("ADDON_LOADED")
 end
 
@@ -322,10 +296,10 @@ function Grid:AddModuleDebugMenu(module)
 		type = "toggle",
 		name = module.name,
 		desc = string.format(L["Toggle debugging for %s."], module.name),
-		get = function ()
+		get = function()
 			return module.db.profile.debug
 		end,
-		set = function (v)
+		set = function(v)
 			module.db.profile.debug = v
 			module.debugging = v
 		end,

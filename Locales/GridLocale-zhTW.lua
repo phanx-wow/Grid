@@ -199,6 +199,11 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhTW", function() 
 	["By Group 25 w/tanks"] = "25人團隊及坦克",
 --}}}
 
+--{{{ GridLDB
+--	["Click to open the options in a GUI window."] = "",
+--	["Right-Click to open the options in a drop-down menu."] = "",
+--}}}
+
 --{{{ GridRange
 	-- used for getting spell range from tooltip
 	["(%d+) yd range"] = "(%d+)碼距離",

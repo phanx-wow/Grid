@@ -202,6 +202,11 @@
 	["By Group 25 w/tanks"] = "Raid de 25 avec tanks",
 --}}}
 
+--{{{ GridLDB
+--	["Click to open the options in a GUI window."] = "",
+--	["Right-Click to open the options in a drop-down menu."] = "",
+--}}}
+
 --{{{ GridRange
 	-- used for getting spell range from tooltip
 	["(%d+) yd range"] = "(%d+) m de portée",

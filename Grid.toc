@@ -14,29 +14,30 @@
 ## X-RelSite-WoWI: 5747
 ## X-Website: http://www.wowace.com/projects/grid/
 
-## OptionalDeps: Ace2, CallbackHandler-1.0, ChatThrottleLib, DewdropLib, FuBarPlugin-2.0, LibGratuity-3.0, LibHealComm-4.0, LibWrapperHealComm-1.0, LibSharedMedia-3.0, UTF8, Waterfall-1.0, Clique, CT_RaidAssist, FuBar, JustClick, oRA2, SharedMedia
+## OptionalDeps: Ace2, DewdropLib, LibDataBroker-1.1, LibDBIcon-1.0, LibGratuity-3.0, LibHealComm-4.0, LibSharedMedia-3.0, LibWrapperHealComm-1.0, UTF8, Waterfall-1.0, SharedMedia
 ## SavedVariables: GridDB
 
 # Non-Ace Libraries
-# libs\UTF8\utf8data.lua
-libs\UTF8\utf8.lua
+# Libs\UTF8\utf8data.lua
+Libs\UTF8\utf8.lua
 
-## Ace Libraries
+# Ace Libraries
 embeds.xml
 
 # Locales
-GridLocale-enUS.lua
-GridLocale-deDE.lua
-GridLocale-esES.lua
-GridLocale-esMX.lua
-GridLocale-frFR.lua
-GridLocale-koKR.lua
-GridLocale-ruRU.lua
-GridLocale-zhCN.lua
-GridLocale-zhTW.lua
+Locales\GridLocale-enUS.lua
+Locales\GridLocale-deDE.lua
+Locales\GridLocale-esES.lua
+Locales\GridLocale-esMX.lua
+Locales\GridLocale-frFR.lua
+Locales\GridLocale-koKR.lua
+Locales\GridLocale-ruRU.lua
+Locales\GridLocale-zhCN.lua
+Locales\GridLocale-zhTW.lua
 
 # Grid
 GridCore.lua
+GridLDB.lua
 GridRoster.lua
 GridRange.lua
 GridLayout.lua

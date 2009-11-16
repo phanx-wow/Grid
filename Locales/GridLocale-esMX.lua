@@ -1,4 +1,4 @@
-AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esES", function() return {
+AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esMX", function() return {
 
 --{{{ GridCore
 	["Debugging"] = "Debugeando",
@@ -181,6 +181,11 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esES", function() 
 	["By Class w/Pets"] = "Por clase con mascotas ",
 	["Onyxia"] = "Onyxia",
 	["By Group 25 w/tanks"] = "Raid de 25 con tankes",
+--}}}
+
+--{{{ GridLDB
+--	["Click to open the options in a GUI window."] = "",
+--	["Right-Click to open the options in a drop-down menu."] = "",
 --}}}
 
 --{{{ GridRange
