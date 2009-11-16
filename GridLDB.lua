@@ -1,0 +1,73 @@
+--
+-- GridLDB.lua
+-- Adds a DataBroker launcher to Grid.
+--
+
+if not Grid then return end
+local Grid = Grid
+
+if not LibStub then return end
+if not LibStub:GetLibrary("LibDataBroker-1.1", true) then return end
+
+local Dewdrop = AceLibrary:HasInstance("Dewdrop-2.0") and AceLibrary("Dewdrop-2.0")
+if not Dewdrop then return end
+
+local Waterfall = AceLibrary:HasInstance("Waterfall-1.0") and AceLibrary("Waterfall-1.0")
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
+
+local GridLDB = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("Grid", {
+	type = "launcher",
+	label = "Grid",
+	icon = "Interface\\AddOns\\Grid\\icon",
+})
+Grid.LDB = GridLDB
+
+function GridLDB:OnClick(button)
+	if button == "RightButton" then
+		Dewdrop:Open(self, "children", function() Dewdrop:FeedAceOptionsTable(Grid.options) end)
+	elseif Waterfall then
+		if Waterfall:IsOpen("Grid") then
+			Waterfall:Close("Grid")
+		else
+			Waterfall:Open("Grid")
+		end
+	end
+end
+
+function GridLDB:OnTooltipShow()
+	self:AddLine("Grid")
+	if Waterfall then
+		self:AddLine(L["Click to open the options in a GUI window."], 0.2, 1, 0.2, 1)
+	end
+	self:AddLine(L["Right-Click to open the options in a drop-down menu."], 0.2, 1, 0.2, 1)
+end
+
+local f = CreateFrame("Frame")
+f:SetScript("OnEvent", function()
+	local LDBIcon = LibStub("LibDBIcon-1.0", true)
+	if LDBIcon then
+		LDBIcon:Register("Grid", GridLDB, Grid.db.profile.minimap)
+
+		Grid.options.args["minimap"] = {
+			order = -3,
+			name = L["Hide minimap icon"],
+			desc = L["Hide minimap icon"],
+			type = "toggle",
+			get = function()
+				return Grid.db.profile.minimap.hide
+			end,
+			set = function() 
+				if Grid.db.profile.minimap.hide then
+					LDBIcon:Show("Grid")
+					Grid.db.profile.minimap.hide = nil
+				else
+					LDBIcon:Hide("Grid")
+					Grid.db.profile.minimap.hide = true
+				end
+			end
+		}
+	end
+	f:UnregisterAllEvents()
+	f:SetScript("OnEvent", nil)
+end)
+f:RegisterEvent("PLAYER_LOGIN")
