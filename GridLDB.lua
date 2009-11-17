@@ -20,7 +20,6 @@ local GridLDB = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("Grid", {
 	label = "Grid",
 	icon = "Interface\\AddOns\\Grid\\icon",
 })
-Grid.LDB = GridLDB
 
 function GridLDB:OnClick(button)
 	if button == "RightButton" then
