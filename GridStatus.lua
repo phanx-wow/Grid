@@ -386,6 +386,12 @@ function GridStatus:OnEnable()
 	self:RegisterEvent("Grid_UnitLeft", "RemoveFromCache")
 end
 
+function GridStatus:Reset()
+	self.super.Reset(self)
+	self:FillColorOptions(self.options.args.color)
+	GridStatus:TriggerEvent("Grid_ColorsChanged")
+end
+
 --{{{ Status registry
 
 function GridStatus:RegisterStatus(status, description, moduleName)
