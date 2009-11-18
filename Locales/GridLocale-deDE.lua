@@ -203,8 +203,8 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("deDE", function() 
 --}}}
 
 --{{{ GridLDB
---	["Click to open the options in a GUI window."] = "",
---	["Right-Click to open the options in a drop-down menu."] = "",
+	["Click to open the options in a GUI window."] = "Linksklick: GUI Fenster.",
+	["Right-Click to open the options in a drop-down menu."] = "Rechtsklick: Drop-down Menu.",
 --}}}
 
 --{{{ GridRange
