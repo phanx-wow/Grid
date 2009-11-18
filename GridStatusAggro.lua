@@ -138,6 +138,12 @@ function GridStatusAggro:OnStatusDisable(status)
 	end
 end
 
+function GridStatusAggro:Reset()
+	self.super.Reset(self)
+	self:UpdateAllUnits()
+	setupmenu()
+end
+
 function GridStatusAggro:UpdateAllUnits()
 	for guid, unitid in GridRoster:IterateRoster() do
 		self:UpdateUnit(unitid)
