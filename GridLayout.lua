@@ -7,6 +7,20 @@ local AceOO = AceLibrary("AceOO-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local media = LibStub("LibSharedMedia-3.0")
 
+--}}}
+
+--{{{ ConfigMode
+
+local config_mode
+CONFIGMODE_CALLBACKS = CONFIGMODE_CALLBACKS or {}
+CONFIGMODE_CALLBACKS["Grid"] = function(action)
+	if action == "ON" then
+		config_mode = true
+	elseif action == "OFF" then
+		config_mode = nil
+	end
+	GridLayout:UpdateTabVisibility()
+end
 
 --}}}
 
@@ -557,7 +571,7 @@ end
 --}}}
 
 function GridLayout:StartMoveFrame()
-	if not self.db.profile.FrameLock then
+	if config_mode or not self.db.profile.FrameLock then
 		self.frame:StartMoving()
 		self.frame.isMoving = true
 	end
@@ -578,14 +592,14 @@ function GridLayout:UpdateTabVisibility()
 	local settings = self.db.profile	
 
 	if not InCombatLockdown() then
-		if settings.FrameLock or not settings.hideTab then
+		if not settings.hideTab or (not config_mode and settings.FrameLock) then
 			self.frame:EnableMouse(false)
 		else
 			self.frame:EnableMouse(true)
 		end
 	end
 
-	if settings.FrameLock or settings.hideTab then
+	if settings.hideTab or (not config_mode and settings.FrameLock) then
 		self.frame.tab:Hide()
 	else
 		self.frame.tab:Show()
