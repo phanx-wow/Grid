@@ -1328,8 +1328,9 @@ function GridFrame:UpdateIndicator(frame, indicator)
 	local status = self:StatusForIndicator(frame.unit, frame.unitGUID, indicator)
 	if status then
 		-- self:Debug("Showing status", status.text, "for", name, "on", indicator)
+		local color = status.color
 		frame:SetIndicator(indicator,
-			status.color,
+			{ r = color.r or 0, g = color.g or 0, b = color.b or 0, a = color.a or 1 },
 			status.text,
 			status.value,
 			status.maxValue,
