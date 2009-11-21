@@ -509,7 +509,7 @@ function GridFrameClass.prototype:SetText(text, color)
 		self.frame.Text:Hide()
 	end
 	if color then
-		self.frame.Text:SetTextColor(color.r, color.g, color.b, color.a)
+		self.frame.Text:SetTextColor(color.r, color.g, color.b, color.a or 1)
 	end
 end
 
@@ -526,7 +526,7 @@ function GridFrameClass.prototype:SetText2(text, color)
 		self.frame.Text2:Hide()
 	end
 	if color then
-		self.frame.Text2:SetTextColor(color.r, color.g, color.b, color.a)
+		self.frame.Text2:SetTextColor(color.r, color.g, color.b, color.a or 1)
 	end
 end
 
@@ -584,13 +584,13 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 	end
 
 	if indicator == "border" then
-		self.frame:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
+		self.frame:SetBackdropBorderColor(color.r, color.g, color.b, color.a or 1)
 	elseif indicator == "corner1" or indicator == "corner2" or indicator == "corner3" or indicator == "corner4" then
 		-- create indicator on demand if not available yet
 		if not self.frame[indicator] then
 			self:CreateIndicator(indicator)
 		end
-		self.frame[indicator]:SetBackdropColor(color.r, color.g, color.b, color.a)
+		self.frame[indicator]:SetBackdropColor(color.r, color.g, color.b, color.a or 1)
 		self.frame[indicator]:Show()
 	elseif indicator == "text" then
 		self:SetText(text, color)
@@ -610,12 +610,12 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 		end
 		if not GridFrame.db.profile.enableBarColor and
 			type(color) == "table" then
-			self:SetBarColor(color.r, color.g, color.b, color.a)
+			self:SetBarColor(color.r, color.g, color.b, color.a or 1)
 		end
 	elseif indicator == "barcolor" then
 		if GridFrame.db.profile.enableBarColor and
 			type(color) == "table" then
-			self:SetBarColor(color.r, color.g, color.b, color.a)
+			self:SetBarColor(color.r, color.g, color.b, color.a or 1)
 		end
 	elseif indicator == "healingBar" then
 		if value and maxValue then
@@ -624,16 +624,16 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 	elseif indicator == "icon" then
 		if texture then
 			if type(texture) == "table" then
-				self.frame.Icon:SetTexture(texture.r, texture.g, texture.b, texture.a)
+				self.frame.Icon:SetTexture(texture.r, texture.g, texture.b, texture.a or 1)
 			else
 				self.frame.Icon:SetTexture(texture)
 			end
 
 			if type(color) == "table" and not color.ignore then
 				if GridFrame.db.profile.iconBorderSize > 0 then
-					self.frame.IconBG:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
+					self.frame.IconBG:SetBackdropBorderColor(color.r, color.g, color.b, color.a or 1)
 				end
-				self.frame.Icon:SetAlpha(color.a)
+				self.frame.Icon:SetAlpha(color.a or 1)
 			else
 				self.frame.IconBG:SetBackdropBorderColor(0, 0, 0, 0)
 				self.frame.Icon:SetAlpha(1)
@@ -1328,9 +1328,8 @@ function GridFrame:UpdateIndicator(frame, indicator)
 	local status = self:StatusForIndicator(frame.unit, frame.unitGUID, indicator)
 	if status then
 		-- self:Debug("Showing status", status.text, "for", name, "on", indicator)
-		local color = status.color
 		frame:SetIndicator(indicator,
-			{ r = color.r or 0, g = color.g or 0, b = color.b or 0, a = color.a or 1 },
+			status.color,
 			status.text,
 			status.value,
 			status.maxValue,
