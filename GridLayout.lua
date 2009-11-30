@@ -46,6 +46,7 @@ end
 
 function GridLayoutHeaderClass.prototype:Reset()
 	self.frame:Hide()
+
 	self.frame:SetAttribute("showPlayer", true)
 	self.frame:SetAttribute("showSolo", true)
 	self.frame:SetAttribute("showParty", true)
@@ -63,6 +64,8 @@ function GridLayoutHeaderClass.prototype:Reset()
 	self.frame:SetAttribute("startingIndex", nil)
 	self.frame:SetAttribute("columnSpacing", nil)
 	self.frame:SetAttribute("columnAnchorPoint", nil)
+
+	self.frame:UnregisterEvent("UNIT_NAME_UPDATE")
 end
 
 function GridLayoutHeaderClass.prototype:CreateFrames(isPetGroup)

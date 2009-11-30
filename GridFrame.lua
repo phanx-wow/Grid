@@ -11,9 +11,6 @@ if media then media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\
 
 --}}}
 
---{{{  locals
-
---}}}
 --{{{ FrameXML functions
 
 local function GridFrame_OnShow(self)
@@ -39,6 +36,7 @@ local function GridFrame_Initialize(self)
 end
 
 --}}}
+
 --{{{ GridFrameClass
 
 local GridFrameClass = AceOO.Class("AceEvent-2.0", "AceDebug-2.0")
@@ -46,7 +44,7 @@ local GridFrameClass = AceOO.Class("AceEvent-2.0", "AceDebug-2.0")
 -- used by GridFrame:UpdateOptionsMenu()
 GridFrameClass.prototype.indicators = {
 	{ type = "border",		order = 1,  name = L["Border"] },
-	{ type = "bar",		order = 2,  name = L["Health Bar"] },
+	{ type = "bar",			order = 2,  name = L["Health Bar"] },
 	{ type = "barcolor",	order = 3,  name = L["Health Bar Color"] },
 	{ type = "healingBar",	order = 4,  name = L["Healing Bar"] },
 	{ type = "text",		order = 5,  name = L["Center Text"] },
@@ -447,14 +445,14 @@ function GridFrameClass.prototype:SetBar(value, max)
 	if max == nil then
 		max = 100
 	end
-	self.frame.Bar:SetValue(value/max*100)
+	self.frame.Bar:SetValue(value / max * 100)
 end
 
 function GridFrameClass.prototype:SetHealingBar(value, max)
 	if max == nil then
 		max = 100
 	end
-	self.frame.HealingBar:SetValue(value/max*100)
+	self.frame.HealingBar:SetValue(value / max * 100)
 	self:UpdateHealingBarColor()
 end
 
@@ -531,28 +529,28 @@ function GridFrameClass.prototype:SetText2(text, color)
 end
 
 function GridFrameClass.prototype:CreateIndicator(indicator)
-   local f = CreateFrame("Frame", nil, self.frame)
+	local f = CreateFrame("Frame", nil, self.frame)
 
-   f:SetWidth(GridFrame:GetCornerSize())
-   f:SetHeight(GridFrame:GetCornerSize())
-   f:SetBackdrop({
+	f:SetWidth(GridFrame:GetCornerSize())
+	f:SetHeight(GridFrame:GetCornerSize())
+	f:SetBackdrop({
 		bgFile = "Interface\\Addons\\Grid\\white16x16", tile = true, tileSize = 16,
 		edgeFile = "Interface\\Addons\\Grid\\white16x16", edgeSize = 1,
 		insets = {left = 1, right = 1, top = 1, bottom = 1},
 		})
-   f:SetBackdropBorderColor(0,0,0,1)
-   f:SetBackdropColor(1,1,1,1)
-   f:SetFrameLevel(5)
-   f:Hide()
-   
-   self.frame[indicator] = f
-   
-   self:PositionIndicator(indicator)
+	f:SetBackdropBorderColor(0,0,0,1)
+	f:SetBackdropColor(1,1,1,1)
+	f:SetFrameLevel(5)
+	f:Hide()
+	
+	self.frame[indicator] = f
+	
+	self:PositionIndicator(indicator)
 end
 
 function GridFrameClass.prototype:PositionIndicator(indicator)
-   local f = self.frame[indicator]
-   if f then
+	local f = self.frame[indicator]
+	if f then
 	local borderSize = GridFrame:GetBorderSize()
 	-- position indicator wherever needed
 	if indicator == "corner1" then
@@ -568,7 +566,7 @@ function GridFrameClass.prototype:PositionIndicator(indicator)
 		-- top left
 		f:SetPoint("TOPLEFT", self.frame, "TOPLEFT", borderSize, -borderSize)
 	end
-   end
+	end
 end
 
 function GridFrameClass.prototype:PositionAllIndicators()
@@ -608,13 +606,11 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 		if value and maxValue then
 			self:SetBar(value, maxValue)
 		end
-		if not GridFrame.db.profile.enableBarColor and
-			type(color) == "table" then
+		if not GridFrame.db.profile.enableBarColor and type(color) == "table" then
 			self:SetBarColor(color.r, color.g, color.b, color.a or 1)
 		end
 	elseif indicator == "barcolor" then
-		if GridFrame.db.profile.enableBarColor and
-			type(color) == "table" then
+		if GridFrame.db.profile.enableBarColor and type(color) == "table" then
 			self:SetBarColor(color.r, color.g, color.b, color.a or 1)
 		end
 	elseif indicator == "healingBar" then
@@ -726,7 +722,7 @@ GridFrame.defaultDB = {
 	textorientation = "VERTICAL",
 	enableText2 = false,
 	enableBarColor = false,
-	fontSize = 8,
+	fontSize = 10,
 	fontOutline = "NONE",
 	font = "Friz Quadrata TT",
 	texture = "Gradient",
@@ -886,7 +882,6 @@ GridFrame.options = {
 			name = L["Indicators"],
 			order = 50,
 		},
-
 		["advanced"] = {
 			type = "group",
 			name = L["Advanced"],
@@ -1068,7 +1063,7 @@ GridFrame.options = {
 					end,
 					set = function(v)
 						GridFrame.db.profile.fontSize = v
-						local font = media and media:Fetch('font', GridFrame.db.profile.font) or STANDARD_TEXT_FONT
+						local font = media and media:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
 						GridFrame:WithAllFrames(function(f) f:SetFrameFont(font, v, GridFrame.db.profile.fontOutline) end)
 					end,
 				},
@@ -1081,7 +1076,7 @@ GridFrame.options = {
 					end,
 					set = function(v)
 						GridFrame.db.profile.fontOutline = v
-						local font = media and media:Fetch('font', GridFrame.db.profile.font) or STANDARD_TEXT_FONT
+						local font = media and media:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
 						GridFrame:WithAllFrames(function(f) f:SetFrameFont(font, GridFrame.db.profile.fontSize, v) end)
 					end,
 					validate = { ["NONE"] = L["None"], ["OUTLINE"] = L["Thin"], ["THICKOUTLINE"] = L["Thick"] }
@@ -1205,7 +1200,7 @@ function GridFrame:Reset()
 
 	-- Fix for font size not updating on profile change
 	-- Can probably be done better
-	local font = media and media:Fetch('font', GridFrame.db.profile.font) or STANDARD_TEXT_FONT
+	local font = media and media:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
 	GridFrame:WithAllFrames(function(f) f:SetFrameFont(font, GridFrame.db.profile.fontSize, GridFrame.db.profile.fontOutline) end)
 
 	self:ResetAllFrames()
@@ -1515,7 +1510,7 @@ end
 function GridFrame:ListRegisteredFrames()
 	self:Debug("--[ BEGIN Registered Frame List ]--")
 	self:Debug("FrameName", "UnitId", "UnitName", "Status")
-	for frameName,frame in pairs(self.registeredFrames) do
+	for frameName, frame in pairs(self.registeredFrames) do
 		local frameStatus = "|cff00ff00"
 
 		if frame.frame:IsVisible() then
