@@ -7,16 +7,17 @@ local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 --{{{ Get Spell Names
 local BS = {
-	["Power Word: Shield"] = GetSpellInfo(17),
-	["Weakened Soul"] = GetSpellInfo(6788),
+	["Abolish Disease"] = GetSpellInfo(552),
+	["Abolish Poison"] = GetSpellInfo(2893),
+	["Forbearance"] = GetSpellInfo(25771),
+	["Ghost"] = GetSpellInfo(8326),
 	["Mortal Strike"] = GetSpellInfo(12294),
-	["Renew"] = GetSpellInfo(139),
+	["Power Word: Shield"] = GetSpellInfo(17),
+	["Lifebloom"] = GetSpellInfo(33763),
 	["Regrowth"] = GetSpellInfo(8936),
 	["Rejuvenation"] = GetSpellInfo(774),
-	["Lifebloom"] = GetSpellInfo(33763),
-	["Abolish Poison"] = GetSpellInfo(2893),
-	["Abolish Disease"] = GetSpellInfo(552),
-	["Ghost"] = GetSpellInfo(8326),
+	["Renew"] = GetSpellInfo(139),
+	["Weakened Soul"] = GetSpellInfo(6788),
 }
 --}}}
 
@@ -99,6 +100,15 @@ GridStatusAuras.defaultDB = {
 		["color"] = { r = .5, g = .5, b = .5, a = 1 },
 
 	},
+	[GridStatusAuras.StatusForSpell(BS["Forbearance"])] = {
+		["desc"] = string.format(L["Debuff: %s"], BS["Forbearance"]),
+		["text"] = BS["Forbearance"],
+		["enable"] = true,
+		["priority"] = 90,
+		["range"] = false,
+		["color"] = { r = .5, g = .5, b = .5, a = 1 },
+
+	},
 	[GridStatusAuras.StatusForSpell(BS["Weakened Soul"])] = {
 		["desc"] = string.format(L["Debuff: %s"], BS["Weakened Soul"]),
 		["text"] = BS["Weakened Soul"],
@@ -115,6 +125,14 @@ GridStatusAuras.defaultDB = {
 		["priority"] = 90,
 		["range"] = false,
 		["color"] = { r = .8, g = .2, b = .2, a = 1 },
+	},
+	[GridStatusAuras.StatusForSpell(BS["Lifebloom"], true)] = {
+		["desc"] = string.format(L["Buff: %s"], BS["Lifebloom"]),
+		["text"] = BS["Lifebloom"],
+		["enable"] = true,
+		["priority"] = 90,
+		["range"] = false,
+		["color"] = { r =  .3, g = .7, b = 0, a = 1 },
 	},
 	[GridStatusAuras.StatusForSpell(BS["Renew"], true)] = {
 		["desc"] = string.format(L["Buff: %s"], BS["Renew"]),

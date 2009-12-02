@@ -714,15 +714,15 @@ GridFrame.InitialConfigFunction = GridFrame_Initialize
 --{{{  AceDB defaults
 
 GridFrame.defaultDB = {
-	frameHeight = 26,
-	frameWidth = 26,
+	frameHeight = 36,
+	frameWidth = 36,
 	borderSize = 1,
 	cornerSize = 5,
 	orientation = "VERTICAL",
 	textorientation = "VERTICAL",
 	enableText2 = false,
 	enableBarColor = false,
-	fontSize = 10,
+	fontSize = 12,
 	fontOutline = "NONE",
 	font = "Friz Quadrata TT",
 	texture = "Gradient",
