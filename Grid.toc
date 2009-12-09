@@ -1,5 +1,5 @@
-## Interface: 30200
-## Version: 1.30200.2009120101
+## Interface: 30300
+## Version: 1.30300.2009120901
 ## X-ReleaseDate: "$Date$"
 
 ## Title: Grid
@@ -12,7 +12,7 @@
 ## X-Category: UnitFrame
 ## X-RelSite-Curse: 9503
 ## X-RelSite-WoWI: 5747
-## X-Website: http://www.wowace.com/projects/grid/
+## X-Website: http://www.wowace.com/addons/grid/
 
 ## OptionalDeps: Ace2, DewdropLib, LibDataBroker-1.1, LibDBIcon-1.0, LibGratuity-3.0, LibHealComm-4.0, LibSharedMedia-3.0, LibWrapperHealComm-1.0, UTF8, Waterfall-1.0, SharedMedia
 ## SavedVariables: GridDB
