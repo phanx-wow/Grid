@@ -1,5 +1,5 @@
 ## Interface: 30300
-## Version: 1.30300.2009120901
+## Version: 1.30200.2009120901
 ## X-ReleaseDate: "$Date$"
 
 ## Title: Grid
@@ -7,12 +7,12 @@
 ## Notes-zhCN: 小巧的轻量级模块化队伍/团队框架。
 ## Notes-zhTW: 精簡的團隊框架功能
 
-## Author: Pastamancer & Maia
-## X-AceForum: 2525
+## Author: Pastamancer, Maia
+## Credits: Greltok, Phanx, Jerry
 ## X-Category: UnitFrame
-## X-RelSite-Curse: 9503
-## X-RelSite-WoWI: 5747
 ## X-Website: http://www.wowace.com/addons/grid/
+## X-AceForum: 2525
+## X-WoWI-ID: 5747
 
 ## OptionalDeps: Ace2, DewdropLib, LibDataBroker-1.1, LibDBIcon-1.0, LibGratuity-3.0, LibHealComm-4.0, LibSharedMedia-3.0, LibWrapperHealComm-1.0, UTF8, Waterfall-1.0, SharedMedia
 ## SavedVariables: GridDB
