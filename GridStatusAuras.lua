@@ -17,6 +17,7 @@ local BS = {
 	["Regrowth"] = GetSpellInfo(8936),
 	["Rejuvenation"] = GetSpellInfo(774),
 	["Renew"] = GetSpellInfo(139),
+	["Riptide"] = GetSpellInfo(61295),
 	["Weakened Soul"] = GetSpellInfo(6788),
 }
 --}}}
@@ -100,6 +101,14 @@ GridStatusAuras.defaultDB = {
 		["color"] = { r = .5, g = .5, b = .5, a = 1 },
 
 	},
+	[GridStatusAuras.StatusForSpell(BS["Mortal Strike"])] = {
+		["desc"] = string.format(L["Debuff: %s"], BS["Mortal Strike"]),
+		["text"] = BS["Mortal Strike"],
+		["enable"] = true,
+		["priority"] = 90,
+		["range"] = false,
+		["color"] = { r = .8, g = .2, b = .2, a = 1 },
+	},
 	[GridStatusAuras.StatusForSpell(BS["Forbearance"])] = {
 		["desc"] = string.format(L["Debuff: %s"], BS["Forbearance"]),
 		["text"] = BS["Forbearance"],
@@ -118,21 +127,13 @@ GridStatusAuras.defaultDB = {
 		["color"] = { r = .5, g = .5, b = .5, a = 1 },
 
 	},
-	[GridStatusAuras.StatusForSpell(BS["Mortal Strike"])] = {
-		["desc"] = string.format(L["Debuff: %s"], BS["Mortal Strike"]),
-		["text"] = BS["Mortal Strike"],
+	[GridStatusAuras.StatusForSpell(BS["Power Word: Shield"], true)] = {
+		["desc"] = string.format(L["Buff: %s"], BS["Power Word: Shield"]),
+		["text"] = BS["Power Word: Shield"],
 		["enable"] = true,
-		["priority"] = 90,
+		["priority"] = 91,
 		["range"] = false,
-		["color"] = { r = .8, g = .2, b = .2, a = 1 },
-	},
-	[GridStatusAuras.StatusForSpell(BS["Lifebloom"], true)] = {
-		["desc"] = string.format(L["Buff: %s"], BS["Lifebloom"]),
-		["text"] = BS["Lifebloom"],
-		["enable"] = true,
-		["priority"] = 90,
-		["range"] = false,
-		["color"] = { r =  .3, g = .7, b = 0, a = 1 },
+		["color"] = { r = .8, g = .8, b =  0, a = 1 },
 	},
 	[GridStatusAuras.StatusForSpell(BS["Renew"], true)] = {
 		["desc"] = string.format(L["Buff: %s"], BS["Renew"]),
@@ -141,6 +142,14 @@ GridStatusAuras.defaultDB = {
 		["priority"] = 90,
 		["range"] = false,
 		["color"] = { r =  0, g = .7, b = .3, a = 1 },
+	},
+	[GridStatusAuras.StatusForSpell(BS["Lifebloom"], true)] = {
+		["desc"] = string.format(L["Buff: %s"], BS["Lifebloom"]),
+		["text"] = BS["Lifebloom"],
+		["enable"] = true,
+		["priority"] = 90,
+		["range"] = false,
+		["color"] = { r =  .3, g = .7, b = 0, a = 1 },
 	},
 	[GridStatusAuras.StatusForSpell(BS["Regrowth"], true)] = {
 		["desc"] = string.format(L["Buff: %s"], BS["Regrowth"]),
@@ -158,13 +167,13 @@ GridStatusAuras.defaultDB = {
 		["range"] = false,
 		["color"] = { r =  0, g = .3, b = .7, a = 1 },
 	},
-	[GridStatusAuras.StatusForSpell(BS["Power Word: Shield"], true)] = {
-		["desc"] = string.format(L["Buff: %s"], BS["Power Word: Shield"]),
-		["text"] = BS["Power Word: Shield"],
+	[GridStatusAuras.StatusForSpell(BS["Riptide"], true)] = {
+		["desc"] = string.format(L["Buff: %s"], BS["Riptide"]),
+		["text"] = BS["Riptide"],
 		["enable"] = true,
-		["priority"] = 91,
+		["priority"] = 90,
 		["range"] = false,
-		["color"] = { r = .8, g = .8, b =  0, a = 1 },
+		["color"] = { r = .4, g = 0, b = .8, a = 1 },
 	},
 }
 

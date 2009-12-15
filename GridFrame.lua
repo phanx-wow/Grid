@@ -717,7 +717,7 @@ GridFrame.defaultDB = {
 	frameHeight = 36,
 	frameWidth = 36,
 	borderSize = 1,
-	cornerSize = 5,
+	cornerSize = 6,
 	orientation = "VERTICAL",
 	textorientation = "VERTICAL",
 	enableText2 = false,
@@ -726,7 +726,7 @@ GridFrame.defaultDB = {
 	fontOutline = "NONE",
 	font = "Friz Quadrata TT",
 	texture = "Gradient",
-	iconSize = 14,
+	iconSize = 16,
 	iconBorderSize = 1,
 	enableIconStackText = true,
 	enableIconCooldown = true,
@@ -739,18 +739,18 @@ GridFrame.defaultDB = {
 	statusmap = {
 		["text"] = {
 			alert_death = true,
-			debuff_Ghost = true,
 			alert_feignDeath = true,
-			alert_offline = true,
-			unit_name = true,
-			unit_healthDeficit = true,
 			alert_heals = true,
+			alert_offline = true,
+			debuff_Ghost = true,
+			unit_healthDeficit = true,
+			unit_name = true,
 		},
 		["text2"] = {
 			alert_death = true,
-			debuff_Ghost = true,
 			alert_feignDeath = true,
 			alert_offline = true,
+			debuff_Ghost = true,
 		},
 		["border"] = {
 			alert_lowHealth = true,
@@ -763,10 +763,10 @@ GridFrame.defaultDB = {
 		["corner2"] = {
 		},
 		["corner3"] = {
-			debuff_poison = true,
-			debuff_magic = true,
-			debuff_disease = true,
 			debuff_curse = true,
+			debuff_disease = true,
+			debuff_magic = true,
+			debuff_poison = true,
 		},
 		["corner4"] = {
 			alert_aggro = true,
@@ -783,23 +783,23 @@ GridFrame.defaultDB = {
 		["bar"] = {
 			alert_death = true,
 			alert_offline = true,
+			debuff_Ghost = true,
 			unit_health = true,
-			debuff_ghost = true,
 		},
 		["barcolor"] = {
 			alert_death = true,
 			alert_offline = true,
+			debuff_Ghost = true,
 			unit_health = true,
-			debuff_ghost = true,
 		},
 		["healingBar"] = {
 			alert_heals = true,
 		},
 		["icon"] = {
-			debuff_poison = true,
-			debuff_magic = true,
-			debuff_disease = true,
 			debuff_curse = true,
+			debuff_disease = true,
+			debuff_magic = true,
+			debuff_poison = true,
 			ready_check = true,
 		}
 	},
