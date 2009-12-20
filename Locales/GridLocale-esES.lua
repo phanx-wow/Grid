@@ -209,7 +209,7 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esES", function() 
 
 --{{{ GridRange
 	-- used for getting spell range from tooltip
-	["(%d+) yd range"] = "(%d+) metros",
+	["(%d+) yd range"] = "Alcance de (%d+) m",
 --}}}
 
 --{{{ GridStatus
