@@ -1,13 +1,14 @@
---{{{ Libraries
-local HealComm = LibStub:GetLibrary("LibHealComm-4.0", true)
+local HealComm = LibStub("LibHealComm-4.0", true)
 if not HealComm then return end
+
+local settings
+local playerGUID
+
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
---}}}
 
-GridStatusHeals = GridStatus:NewModule("GridStatusHeals")
+local GridStatusHeals = GridStatus:NewModule("GridStatusHeals")
 GridStatusHeals.menuName = L["Heals"]
-
---{{{ AceDB defaults
+GridStatusHeals.options = false
 
 GridStatusHeals.defaultDB = {
 	debug = false,
@@ -26,10 +27,6 @@ GridStatusHeals.defaultDB = {
 		icon = nil,
 	},
 }
-
---}}}
-
-GridStatusHeals.options = false
 
 local healsOptions = {
 	ignoreSelf = {
@@ -89,10 +86,6 @@ local healsOptions = {
     },
 }
 
-local settings
-local playerGUID
-
---{{{ Initialisation
 function GridStatusHeals:OnInitialize()
 	self.super.OnInitialize(self)
 
@@ -135,9 +128,6 @@ function GridStatusHeals:OnStatusDisable(status)
 		self.core:SendStatusLostAllUnits("alert_heals")
 	end
 end
---}}}
-
---{{{ Event/Callback handling
 
 function GridStatusHeals:HealComm_HealStarted(event, casterGUID, spellID, healType, endTime, ...)
 	self:UpdateIncomingHeals(casterGUID, healType, ...)
@@ -167,11 +157,8 @@ function GridStatusHeals:UpdateHealsForUnit(unitid)
 	self:UpdateIncomingHeals(nil, nil, UnitGUID(unitid))
 end
 
---}}}
-
---{{{ General functionality
-
 function GridStatusHeals:Reset()
+	settings = GridStatusHeals.db.profile.alert_heals
 	self.super.Reset(self)
 	self:UpdateAllHeals()
 end
@@ -183,17 +170,15 @@ function GridStatusHeals:UpdateAllHeals()
 end
 
 function GridStatusHeals:UpdateIncomingHeals(casterGUID, healType, ...)
-	if settings.ignore_self and casterGUID == playerGUID then
-		return
-	end
+	if settings.ignore_self and casterGUID == playerGUID then return end
+
 	local heal_filter = settings.heal_filter
 	local heal_mask = bit.bor(heal_filter.direct and HealComm.DIRECT_HEALS or 0,
-	                           heal_filter.channeled and HealComm.CHANNEL_HEALS or 0,
-	                           heal_filter.hot and HealComm.HOT_HEALS or 0,
-	                           heal_filter.hot and HealComm.BOMB_HEALS or 0)
-	if healType and (bit.band(healType, heal_mask) == 0) then
-		return
-	end
+		heal_filter.channeled and HealComm.CHANNEL_HEALS or 0,
+		heal_filter.hot and HealComm.HOT_HEALS or 0,
+		heal_filter.hot and HealComm.BOMB_HEALS or 0)
+	if healType and bit.band(healType, heal_mask) == 0 then return end
+
 	--iterate through targets of heal and update them
 	for i = 1, select("#", ...) do
 		local guid = select(i, ...)
@@ -207,12 +192,7 @@ function GridStatusHeals:UpdateIncomingHeals(casterGUID, healType, ...)
 			end
 			if incoming and incoming > 0 and not UnitIsDeadOrGhost(unitid) then
 				local effectiveIncoming = incoming * HealComm:GetHealModifier(guid)
-				self:SendIncomingHealsStatus(
-					guid,
-					effectiveIncoming,
-					UnitHealth(unitid) + effectiveIncoming,
-					UnitHealthMax(unitid)
-				)
+				self:SendIncomingHealsStatus(guid, effectiveIncoming, UnitHealth(unitid) + effectiveIncoming, UnitHealthMax(unitid))
 			else
 				self.core:SendStatusLost(guid, "alert_heals")
 			end
@@ -225,25 +205,11 @@ function GridStatusHeals:SendIncomingHealsStatus(guid, incoming, estimatedHealth
 	-- local modifier = UnitHealModifierGet(unitName)
 	-- local effectiveIncoming = modifier * incoming
 
-	local incomingText = self:FormatIncomingText(incoming)
-	self.core:SendStatusGained(
-		guid, "alert_heals",
-		settings.priority,
-		(settings.range and 40),
-		settings.color,
-		incomingText,
-		estimatedHealth, maxHealth,
-		settings.icon
-	)
-end
-
-function GridStatusHeals:FormatIncomingText(incoming)
 	local incomingText
 	if incoming > 999 then
-		incomingText = string.format("+%.1fk", incoming/1000.0)
+		incomingText = ("+%.1fk"):format(incoming / 1000)
 	else
-		incomingText = string.format("+%d", incoming)
+		incomingText = ("+%d"):format(incoming)
 	end
-	return incomingText
+	self.core:SendStatusGained(guid, "alert_heals", settings.priority, (settings.range and 40), settings.color, incomingText, estimatedHealth, maxHealth, settings.icon)
 end
---}}}
