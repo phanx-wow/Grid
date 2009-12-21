@@ -343,7 +343,7 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esMX", function() 
 --}}}
 
 --{{{ GridStatusReadyCheck
-	["Ready Check"] = "Ready CHeck",
+	["Ready Check"] = "Ready Check",
 	["Set the delay until ready check results are cleared."] = "Establece el retraso hasta que los resultados del Ready Check se limpien",
 	["Delay"] = "Retraso",
 	["?"] = "?",
