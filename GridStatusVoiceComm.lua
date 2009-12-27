@@ -7,7 +7,7 @@
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
-local GridStatusVoiceComm = GridStatus:NewModule("GridStatusVoiceComm")
+local GridStatusVoiceComm = Grid:GetModule("GridStatus"):NewModule("GridStatusVoiceComm")
 GridStatusVoiceComm.menuName = L["Voice Chat"]
 
 GridStatusVoiceComm.defaultDB = {

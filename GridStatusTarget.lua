@@ -6,7 +6,7 @@
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
-local GridStatusTarget = GridStatus:NewModule("GridStatusTarget")
+local GridStatusTarget = Grid:GetModule("GridStatus"):NewModule("GridStatusTarget")
 GridStatusTarget.menuName = L["Target"]
 
 -- save the guid of our target here so we can send a StatusLost

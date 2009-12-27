@@ -2,9 +2,10 @@
 	GridLayout.lua
 ----------------------------------------------------------------------]]
 
-local AceOO = AceLibrary("AceOO-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local AceOO = AceLibrary("AceOO-2.0")
 local media = LibStub("LibSharedMedia-3.0")
+local GridRoster = Grid:GetModule("GridRoster")
 
 local GridLayout = Grid:NewModule("GridLayout")
 

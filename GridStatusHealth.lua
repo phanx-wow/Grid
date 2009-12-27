@@ -5,7 +5,7 @@
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
-local GridStatusHealth = GridStatus:NewModule("GridStatusHealth")
+local GridStatusHealth = Grid:GetModule("GridStatus"):NewModule("GridStatusHealth")
 GridStatusHealth.menuName = L["Health"]
 
 GridStatusHealth.defaultDB = {

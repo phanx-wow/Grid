@@ -6,7 +6,7 @@
 local Dewdrop = AceLibrary("Dewdrop-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
-local GridStatusAuras = GridStatus:NewModule("GridStatusAuras")
+local GridStatusAuras = Grid:GetModule("GridStatus"):NewModule("GridStatusAuras")
 GridStatusAuras.menuName = L["Auras"]
 
 --{{{ Get Spell Names

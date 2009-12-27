@@ -6,7 +6,7 @@
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
-local GridStatusReadyCheck = GridStatus:NewModule("GridStatusReadyCheck")
+local GridStatusReadyCheck = Grid:GetModule("GridStatus"):NewModule("GridStatusReadyCheck")
 GridStatusReadyCheck.menuName = L["Ready Check"]
 
 GridStatusReadyCheck.defaultDB = {

@@ -5,7 +5,7 @@
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
-local GridStatusMana = GridStatus:NewModule("GridStatusMana")
+local GridStatusMana = Grid:GetModule("GridStatus"):NewModule("GridStatusMana")
 GridStatusMana.menuName = L["Mana"]
 
 GridStatusMana.defaultDB = {
