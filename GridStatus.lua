@@ -1,13 +1,10 @@
--- GridStatus.lua
-
---{{{ Libraries
+--[[--------------------------------------------------------------------
+	GridStatus.lua
+----------------------------------------------------------------------]]
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
---}}}
---{{{ GridStatus
-
-GridStatus = Grid:NewModule("GridStatus", "AceModuleCore-2.0")
+local GridStatus = Grid:NewModule("GridStatus", "AceModuleCore-2.0")
 GridStatus:SetModuleMixins("AceDebug-2.0", "AceEvent-2.0")
 
 --{{{ Module prototype
@@ -637,5 +634,4 @@ function GridStatus:UnitColor(guid)
 	return colors.UNKNOWN_UNIT
 end
 
---}}}
 --}}}

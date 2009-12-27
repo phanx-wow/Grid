@@ -1,3 +1,8 @@
+--[[--------------------------------------------------------------------
+	GridLocale-esMX.lua
+	Latin American Spanish (Español - AL) localization for Grid.
+----------------------------------------------------------------------]]
+
 AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esMX", function() return {
 
 --{{{ GridCore
@@ -75,8 +80,8 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esMX", function() 
 	["Set frame orientation."] = "Establece la orientación de la fuente.",
 	["Orientation of Text"] = "Orientación del texto",
 	["Set frame text orientation."] = "Establece la orientación del texto.",
-	["VERTICAL"] = "VERTICAL",
-	["HORIZONTAL"] = "HORIZONTAL",
+	["VERTICAL"] = "Vertical",
+	["HORIZONTAL"] = "Horizontal",
 	["Icon Size"] = "Tamaño de icono",
 	["Adjust the size of the center icon."] = "Ajusta el tamaño del icono central.",
 	["Icon Border Size"] = "Tamaño del borde del icono",
@@ -119,15 +124,15 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esMX", function() 
 	["Click through the Grid Frame"] = "Click a través de Grid",
 	["Allows mouse click through the Grid Frame."] = "Permite hacer click a través de la ventana de Grid.",
 
-	["CENTER"] = "CENTRO",
-	["TOP"] = "ARRIBA",
-	["BOTTOM"] = "ABAJO",
-	["LEFT"] = "IZQUIERDA",
-	["RIGHT"] = "DERECHA",
-	["TOPLEFT"] = "SUPERIOR-IZQUIERDA",
-	["TOPRIGHT"] = "SUPERIOR-DERECHA",
-	["BOTTOMLEFT"] = "INFERIOR-IZQUIERDA",
-	["BOTTOMRIGHT"] = "INFERIOR-DERECHA",
+	["CENTER"] = "Centro",
+	["TOP"] = "Arriba",
+	["BOTTOM"] = "Abajo",
+	["LEFT"] = "Izquierda",
+	["RIGHT"] = "Derecha",
+	["TOPLEFT"] = "Superior-Izquierda",
+	["TOPRIGHT"] = "Superior-Derecha",
+	["BOTTOMLEFT"] = "Inferior-Izquierda",
+	["BOTTOMRIGHT"] = "Inferior-Derecha",
 
 	-- Display options
 	["Padding"] = "Relleno",
@@ -185,21 +190,20 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esMX", function() 
 
 --{{{ GridLayoutLayouts
 	["None"] = "Ninguno",
-	["By Group 40"] = "Grupo de 40",
-	["By Group 40 w/Pets"] = "Grupo de 40 con mascotas",
-	["By Group 25"] = "Grupo de 25",
-	["By Group 25 w/Pets"] = "Grupo de 25 con mascotas",
-	["By Group 20"] = "Grupo de 20",
-	["By Group 15"] = "Grupo de 15",
-	["By Group 15 w/Pets"] = "Grupo de 15 con mascotas",
-	["By Group 10"] = "Grupo de 10",
-	["By Group 10 w/Pets"] = "Grupo de 10 con mascotas",
+
 	["By Group 5"] = "Grupo de 5",
 	["By Group 5 w/Pets"] = "Grupo de 5 con mascotas",
-	["By Class"] = "Por clases",
-	["By Class w/Pets"] = "Por clases con mascotas",
-	["Onyxia"] = "Onyxia",
+	["By Group 10"] = "Grupo de 10",
+	["By Group 10 w/Pets"] = "Grupo de 10 con mascotas",
+	["By Group 15"] = "Grupo de 15",
+	["By Group 15 w/Pets"] = "Grupo de 15 con mascotas",
+	["By Group 25"] = "Grupo de 25",
+	["By Group 25 w/Pets"] = "Grupo de 25 con mascotas",
 	["By Group 25 w/tanks"] = "Grupo de 25 con tanques",
+	["By Group 40"] = "Grupo de 40",
+	["By Group 40 w/Pets"] = "Grupo de 40 con mascotas",
+	["By Class 10 w/Pets"] = "Grupo de 10 por clases",
+	["By Class 25 w/Pets"] = "Grupo de 25 por clases",
 --}}}
 
 --{{{ GridLDB
@@ -373,17 +377,6 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esMX", function() 
 --{{{ GridStatusVoiceComm
 	["Voice Chat"] = "Chat de voz",
 	["Talking"] = "Hablando",
---}}}
-
---{{{ Unused translations: translators, please remove these
-	["Show Pets for Party"] = "Mostrar mascotas para grupo",
-	["Grouped"] = "Agrupado",
-	["Show party/self as an extra group."] = "Mostrar grupo/propio como un grupo extra",
-	["Select which raid layout to use."] = "Selecciona qué configuración de banda usar",
-	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "Establece cuando está Grid visible: Elige 'Siempre', 'Agrupado' o 'Banda'",
-	["Raid"] = "Banda",
-	["Show the pets for the party below the party itself."] = "Muestra las mascotas del grupo debajo del grupo",
-	["Show Party in Raid"] = "Mostrar grupo en banda",
 --}}}
 
 } end)

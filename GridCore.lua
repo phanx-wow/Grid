@@ -1,79 +1,18 @@
--- GridCore.lua
--- insert boilerplate here
-
---{{{ Libraries
+--[[--------------------------------------------------------------------
+	GridCore.lua
+----------------------------------------------------------------------]]
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local waterfall = AceLibrary:HasInstance("Waterfall-1.0") and AceLibrary("Waterfall-1.0")
 
-local check_libraries
-do
-	local global_libs = {
-		"AceLibrary",
-		"LibStub",
-		-- "DoesNotExist-Global",
-	}
-
-	local ace2_libs = {
-		"AceLocale-2.2",
-		"AceOO-2.0",
-		"Dewdrop-2.0",
-		-- "DoesNotExist-Ace2",
-	}
-
-	local libstub_libs = {
-		"LibGratuity-3.0",
-		"LibHealComm-4.0",
-		"LibSharedMedia-3.0",
-		-- "DoesNotExist-LibStub",
-	}
-
-	function check_libraries ()
-		local missing = {}
-
-		for _, name in ipairs(global_libs) do
-			if not _G[name] then
-				table.insert(missing, name)
-			end
-		end
-
-		for _, name in ipairs(ace2_libs) do
-			if not AceLibrary:HasInstance(name) then
-				table.insert(missing, name)
-			end
-		end
-
-		for _, name in ipairs(libstub_libs) do
-			if not LibStub:GetLibrary(name, true) then
-				table.insert(missing, name)
-			end
-		end
-
-		if #missing > 0 then
-			local message = ("Grid was unable to find the following libraries:\n%s"):format(table.concat(missing, ", "))
-
-			StaticPopupDialogs["GRID_MISSING_LIBS"] = {
-				text = message,
-				button1 = "Okay",
-				timeout = 0,
-				whileDead = 1,
-			}
-
-			StaticPopup_Show("GRID_MISSING_LIBS")
-		end
-	end
-end
-
---}}}
---{{{ Grid
 --{{{  Initialization
 
-Grid = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceDebug-2.0", "AceModuleCore-2.0", "AceConsole-2.0")
+local Grid = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceDebug-2.0", "AceModuleCore-2.0", "AceConsole-2.0")
 Grid:SetModuleMixins("AceDebug-2.0", "AceEvent-2.0", "AceModuleCore-2.0")
 Grid:RegisterDB("GridDB")
 Grid.debugFrame = ChatFrame1
 
-Grid.check_libraries = check_libraries
+_G.Grid = Grid
 
 --{{{ AceOptions table
 
@@ -223,8 +162,8 @@ end
 --}}}
 
 function Grid:OnInitialize()
-	self:RegisterDefaults('profile', Grid.defaults)
-	self:RegisterChatCommand('/grid', self.options)
+	self:RegisterDefaults("profile", Grid.defaults)
+	self:RegisterChatCommand("/grid", self.options)
 
 	-- we need to save debugging state over sessions :(
 	self.debugging = self.db.profile.debug
@@ -237,7 +176,31 @@ function Grid:OnInitialize()
 end
 
 function Grid:OnEnable()
-	check_libraries()
+	local missingLibs = { }
+	for _, name in ipairs({ "AceLibrary", "LibStub" }) do
+		if not _G[name] then
+			table.insert(missingLibs, name)
+		end
+	end
+	for _, name in ipairs({ "AceLocale-2.2", "AceOO-2.0", "Dewdrop-2.0" }) do
+		if not AceLibrary:HasInstance(name) then
+			table.insert(missingLibs, name)
+		end
+	end
+	for _, name in ipairs({ "LibGratuity-3.0", "LibHealComm-4.0", "LibSharedMedia-3.0" }) do
+		if not LibStub(name, true) then
+			table.insert(missingLibs, name)
+		end
+	end
+	if #missing > 0 then
+		StaticPopupDialogs["GRID_MISSING_LIBS"] = {
+			text = ("Grid was unable to find the following libraries:\n%s"):format(table.concat(missingLibs, ", ")),
+			button1 = OKAY,
+			timeout = 0,
+			whileDead = 1,
+		}
+		StaticPopup_Show("GRID_MISSING_LIBS")
+	end
 
 	self:RegisterEvent("ADDON_LOADED")
 	self:EnableModules()
@@ -360,5 +323,4 @@ function Grid:ADDON_LOADED(addon)
 	self:RegisterModule(module.name, module)
 end
 
---}}}
 --}}}

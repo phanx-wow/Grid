@@ -1,11 +1,13 @@
---{{{ Libraries
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
---}}}
+--[[--------------------------------------------------------------------
+	GridStatusName.lua
+	GridStatus module for tracking unit names.
+----------------------------------------------------------------------]]
 
-GridStatusName = GridStatus:NewModule("GridStatusName")
+local L = AceLibrary("AceLocale-2.2"):new("Grid")
+
+local GridStatusName = GridStatus:NewModule("GridStatusName")
 GridStatusName.menuName = L["Unit Name"]
 
---{{{ AceDB defaults
 GridStatusName.defaultDB = {
 	debug = false,
 	unit_name = {
@@ -17,11 +19,9 @@ GridStatusName.defaultDB = {
 		range = false,
 	},
 }
---}}}	
 
 GridStatusName.options = false
 
---{{{ additional options
 local nameOptions = {
 	["class"] = {
 		type = 'toggle',
@@ -34,7 +34,6 @@ local nameOptions = {
 		end,
 	},
 }
---}}}
 
 function GridStatusName:OnInitialize()
 	self.super.OnInitialize(self)
@@ -96,16 +95,12 @@ function GridStatusName:UpdateGUID(guid)
 
 	local name = GridRoster:GetNameByGUID(guid)
 
-	if not name or not settings.enable then
-		return
-	end
-
+	if not name or not settings.enable then return end
 
 	-- set text
 	local text = name
 
 	local show_owner_name = true
-
 	if show_owner_name then
 		local unitid = GridRoster:GetUnitidByGUID(guid)
 		local owner_unitid = GridRoster:GetOwnerUnitidByUnitid(unitid)
@@ -124,10 +119,10 @@ function GridStatusName:UpdateGUID(guid)
 	local color = settings.class and self.core:UnitColor(guid) or settings.color
 
 	self.core:SendStatusGained(guid, "unit_name",
-				    settings.priority,
-				    nil,
-				    color,
-				    text)
+		settings.priority,
+		nil,
+		color,
+		text)
 end
 
 function GridStatusName:UpdateAllUnits()

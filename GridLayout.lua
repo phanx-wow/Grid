@@ -1,15 +1,14 @@
--- GridLayout.lua
--- insert boilerplate
-
---{{{ Libraries
+--[[--------------------------------------------------------------------
+	GridLayout.lua
+----------------------------------------------------------------------]]
 
 local AceOO = AceLibrary("AceOO-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local media = LibStub("LibSharedMedia-3.0")
 
---}}}
+local GridLayout = Grid:NewModule("GridLayout")
 
---{{{ ConfigMode
+--{{{ ConfigMode support
 
 local config_mode
 CONFIGMODE_CALLBACKS = CONFIGMODE_CALLBACKS or {}
@@ -145,8 +144,6 @@ end
 
 --{{{ GridLayout
 --{{{  Initialization
-
-GridLayout = Grid:NewModule("GridLayout")
 
 --{{{  AceDB defaults
 

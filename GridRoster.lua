@@ -1,8 +1,9 @@
--- GridRoster.lua
---
--- Keeps track of GUID <-> name <-> unitid mappings for party/raid members.
+--[[--------------------------------------------------------------------
+	GridRoster.lua
+	Keeps track of GUID <-> name <-> unitID mappings for party/raid members.
+----------------------------------------------------------------------]]
 
-GridRoster = Grid:NewModule("GridRoster")
+local GridRoster = Grid:NewModule("GridRoster")
 
 GridRoster.defaultDB = {
 	party_state = "solo",

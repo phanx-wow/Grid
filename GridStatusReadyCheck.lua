@@ -1,13 +1,33 @@
--- GridStatusReadyCheck.lua
---
--- Created By : Greltok
+--[[--------------------------------------------------------------------
+	GridStatusReadyCheck.lua
+	GridStatus module for reporting ready check responses.
+	Created by Greltok.
+----------------------------------------------------------------------]]
 
---{{{ Libraries
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
---}}}
 
-GridStatusReadyCheck = GridStatus:NewModule("GridStatusReadyCheck")
+local GridStatusReadyCheck = GridStatus:NewModule("GridStatusReadyCheck")
 GridStatusReadyCheck.menuName = L["Ready Check"]
+
+GridStatusReadyCheck.defaultDB = {
+	debug = false,
+	ready_check = {
+		text = L["Ready Check"],
+		enable = true,
+		color = { r = 1, g = 1, b = 1, a = 1 },
+		priority = 95,
+		delay = 5,
+		range = false,
+		colors = {
+			waiting = { r = 1, g = 1, b = 0, a = 1, ignore = true },
+			ready = { r = 0, g = 1, b = 0, a = 1, ignore = true },
+			not_ready = { r = 1, g = 0, b = 0, a = 1, ignore = true },
+			afk = { r = 1, g = 0, b = 0, a = 1, ignore = true }
+		},
+	},
+}
+
+GridStatusReadyCheck.options = false
 
 local readystatus = {
 	waiting = {
@@ -28,28 +48,6 @@ local readystatus = {
 	},
 }
 
---{{{ AceDB defaults
-GridStatusReadyCheck.defaultDB = {
-	debug = false,
-	ready_check = {
-		text = L["Ready Check"],
-		enable = true,
-		color = { r = 1, g = 1, b = 1, a = 1 },
-		priority = 95,
-		delay = 5,
-		range = false,
-		colors = {
-			waiting = { r = 1, g = 1, b = 0, a = 1, ignore = true },
-			ready = { r = 0, g = 1, b = 0, a = 1, ignore = true },
-			not_ready = { r = 1, g = 0, b = 0, a = 1, ignore = true },
-			afk = { r = 1, g = 0, b = 0, a = 1, ignore = true }
-		},
-	},
-}
---}}}
-
-GridStatusReadyCheck.options = false
-
 local function getstatuscolor(key)
 	local color = GridStatusReadyCheck.db.profile.ready_check.colors[key]
 	return color.r, color.g, color.b, color.a
@@ -64,7 +62,6 @@ local function setstatuscolor(key, r, g, b, a)
 	color.ignore = true
 end
 
---{{{ additional options
 local readyCheckOptions = {
 	["waiting"] = {
 		type = "color",
@@ -120,7 +117,6 @@ local readyCheckOptions = {
 	["color"] = false,
 	["range"] = false,
 }
---}}}
 
 function GridStatusReadyCheck:OnInitialize()
 	self.super.OnInitialize(self)
@@ -155,7 +151,14 @@ end
 
 function GridStatusReadyCheck:GainStatus(guid, key, settings)
 	local status = readystatus[key]
-	self.core:SendStatusGained(guid, "ready_check", settings.priority, nil, settings.colors[key], status.text, nil, nil, status.icon)
+	self.core:SendStatusGained(guid, "ready_check", 
+		settings.priority, 
+		nil, 
+		settings.colors[key], 
+		status.text, 
+		nil, 
+		nil, 
+		status.icon)
 end
 
 function GridStatusReadyCheck:READY_CHECK(originator)

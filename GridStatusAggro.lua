@@ -1,6 +1,11 @@
+--[[--------------------------------------------------------------------
+	GridStatusAggro.lua
+	GridStatus module for tracking aggro/threat.
+----------------------------------------------------------------------]]
+
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
-GridStatusAggro = GridStatus:NewModule("GridStatusAggro")
+local GridStatusAggro = GridStatus:NewModule("GridStatusAggro")
 GridStatusAggro.menuName = L["Aggro"]
 
 local function getthreatcolor(status)
@@ -164,13 +169,13 @@ function GridStatusAggro:UpdateUnit(unitid)
 	
 	if status and ((threat and (status > 0)) or (status > 1)) then
 		GridStatusAggro.core:SendStatusGained(guid, "alert_aggro",
-											  settings.priority,
-											  (settings.range and 40),
-											  (threat and settings.threatcolors[status] or settings.color),
-											  (threat and settings.threattexts[status] or settings.text),
-											  nil,
-											  nil,
-											  settings.icon)
+			settings.priority,
+			(settings.range and 40),
+			(threat and settings.threatcolors[status] or settings.color),
+			(threat and settings.threattexts[status] or settings.text),
+			nil,
+			nil,
+			settings.icon)
 	else
 		GridStatusAggro.core:SendStatusLost(guid, "alert_aggro")
 	end

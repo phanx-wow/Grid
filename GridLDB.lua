@@ -1,13 +1,10 @@
---
--- GridLDB.lua
--- Adds a DataBroker launcher to Grid.
---
+--[[--------------------------------------------------------------------
+	GridLDB.lua
+	Creates a DataBroker launcher for Grid.
+----------------------------------------------------------------------]]
 
-if not Grid then return end
-local Grid = Grid
-
-if not LibStub then return end
-if not LibStub:GetLibrary("LibDataBroker-1.1", true) then return end
+local DataBroker = LibStub("LibDataBroker-1.1", true)
+if not DataBroker then return end
 
 local Dewdrop = AceLibrary:HasInstance("Dewdrop-2.0") and AceLibrary("Dewdrop-2.0")
 if not Dewdrop then return end
@@ -15,13 +12,13 @@ if not Dewdrop then return end
 local Waterfall = AceLibrary:HasInstance("Waterfall-1.0") and AceLibrary("Waterfall-1.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
-local GridLDB = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("Grid", {
+local GridBroker = DataBroker:NewDataObject("Grid", {
 	type = "launcher",
-	label = "Grid",
+	label = GetAddOnInfo("Grid", "Title"),
 	icon = "Interface\\AddOns\\Grid\\icon",
 })
 
-function GridLDB:OnClick(button)
+function GridBroker:OnClick(button)
 	if button == "RightButton" then
 		Dewdrop:Open(self, "children", function() Dewdrop:FeedAceOptionsTable(Grid.options) end)
 	elseif Waterfall then
@@ -33,7 +30,7 @@ function GridLDB:OnClick(button)
 	end
 end
 
-function GridLDB:OnTooltipShow()
+function GridBroker:OnTooltipShow()
 	self:AddLine("Grid")
 	if Waterfall then
 		self:AddLine(L["Click to open the options in a GUI window."], 0.2, 1, 0.2, 1)
@@ -45,7 +42,7 @@ local f = CreateFrame("Frame")
 f:SetScript("OnEvent", function()
 	local LDBIcon = LibStub("LibDBIcon-1.0", true)
 	if LDBIcon then
-		LDBIcon:Register("Grid", GridLDB, Grid.db.profile.minimap)
+		LDBIcon:Register("Grid", GridBroker, Grid.db.profile.minimap)
 
 		Grid.options.args["minimap"] = {
 			order = -3,

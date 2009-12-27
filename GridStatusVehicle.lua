@@ -1,10 +1,11 @@
---
--- Provides a status indicating whether a unit is currently driving a vehicle
--- with a ui or not.
+--[[--------------------------------------------------------------------
+	GridStatusVehicle.lua
+	GridStatus module for showing when a unit is driving a vehicle with a UI.
+----------------------------------------------------------------------]]
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
-GridStatusVehicle = GridStatus:NewModule("GridStatusVehicle")
+local GridStatusVehicle = GridStatus:NewModule("GridStatusVehicle")
 GridStatusVehicle.menuName = L["In Vehicle"]
 
 GridStatusVehicle.defaultDB = {
@@ -25,7 +26,6 @@ function GridStatusVehicle:OnInitialize()
 	self:RegisterStatus("alert_vehicleui", L["In Vehicle"], nil, true)
 end
 
-
 function GridStatusVehicle:OnStatusEnable(status)
 	if status == "alert_vehicleui" then
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
@@ -35,7 +35,6 @@ function GridStatusVehicle:OnStatusEnable(status)
 		self:UpdateAllUnits()
 	end
 end
-
 
 function GridStatusVehicle:OnStatusDisable(status)
 	if status == "alert_vehicleui" then
@@ -47,25 +46,27 @@ function GridStatusVehicle:OnStatusDisable(status)
 	end
 end
 
-
 function GridStatusVehicle:UpdateAllUnits()
 	for guid, unitid in GridRoster:IterateRoster() do
 		self:UpdateUnit(unitid)
 	end
 end
 
-
 function GridStatusVehicle:UpdateUnit(unitid)
 	local pet_unitid = GridRoster:GetPetUnitidByUnitid(unitid)
-	if not pet_unitid then
-		return
-	end
+	if not pet_unitid then return end
 
 	local guid = UnitGUID(pet_unitid)
 
 	if UnitHasVehicleUI(unitid) then
 		local settings = self.db.profile.alert_vehicleui
-		self.core:SendStatusGained(guid, "alert_vehicleui", settings.priority, (settings.range and 40), settings.color, settings.text, nil, nil, settings.icon)
+		self.core:SendStatusGained(guid, "alert_vehicleui",
+			settings.priority, (settings.range and 40),
+			settings.color,
+			settings.text,
+			nil,
+			nil,
+			settings.icon)
 	else
 		self.core:SendStatusLost(guid, "alert_vehicleui")
 	end

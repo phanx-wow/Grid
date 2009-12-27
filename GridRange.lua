@@ -1,17 +1,11 @@
--- GridRange.lua
---
--- A TBC range library
-
---{{{ Libraries
+--[[--------------------------------------------------------------------
+	GridRange.lua
+----------------------------------------------------------------------]]
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
--- local BabbleSpell = LibStub:GetLibrary("LibBabble-Spell-3.0")
--- local BS = BabbleSpell:GetLookupTable()
-local gratuity = LibStub:GetLibrary("LibGratuity-3.0")
+local Gratuity = LibStub:GetLibrary("LibGratuity-3.0")
 
---}}}
-
-GridRange = Grid:NewModule("GridRange")
+local GridRange = Grid:NewModule("GridRange")
 
 local ranges, checks, rangelist
 local select = select
@@ -20,14 +14,9 @@ local CheckInteractDistance = CheckInteractDistance
 local UnitIsVisible = UnitIsVisible
 local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 
-local BS = {
-	["Mend Pet"] = GetSpellInfo(136),
-	["Health Funnel"] = GetSpellInfo(755),
-}
-
 local invalidSpells = {
-	[BS["Mend Pet"]] = true,
-	[BS["Health Funnel"]] = true,
+	[GetSpellInfo(755)] = true, -- Health Funnel
+	[GetSpellInfo(136)] = true, -- Mend Pet
 }
 
 local function addRange(range, check)
@@ -85,8 +74,8 @@ function GridRange:ScanSpellbook()
 		if not name then break end
 		-- beneficial spell with a range
 		if not invalidSpells[name] and IsSpellInRange(i, BOOKTYPE_SPELL, "player") then
-			gratuity:SetSpell(i, BOOKTYPE_SPELL)
-			local range = select(3, gratuity:Find(L["(%d+) yd range"], 2, 2))
+			Gratuity:SetSpell(i, BOOKTYPE_SPELL)
+			local range = select(3, Gratuity:Find(L["(%d+) yd range"], 2, 2))
 			if range then
 				local index = i -- we have to create an upvalue
 				addRange(tonumber(range), function (unit) return IsSpellInRange(index, BOOKTYPE_SPELL, unit) == 1 end)

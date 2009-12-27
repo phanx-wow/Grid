@@ -1,3 +1,8 @@
+--[[--------------------------------------------------------------------
+	GridStatusHeals.lua
+	GridStatus module for tracking incoming healing spells.
+----------------------------------------------------------------------]]
+
 local HealComm = LibStub("LibHealComm-4.0", true)
 if not HealComm then return end
 

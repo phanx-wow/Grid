@@ -1,15 +1,15 @@
--- GridFrame.lua
-
---{{{ Libraries
+--[[--------------------------------------------------------------------
+	GridFrame.lua
+----------------------------------------------------------------------]]
 
 local AceOO = AceLibrary("AceOO-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
-local GridRange = GridRange
+local GridRange = Grid:GetModule("GridRange")
 
 local media = LibStub("LibSharedMedia-3.0", true)
 if media then media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32") end
 
---}}}
+local GridFrame = Grid:NewModule("GridFrame")
 
 --{{{ FrameXML functions
 
@@ -707,7 +707,6 @@ end
 
 --{{{ GridFrame
 
-GridFrame = Grid:NewModule("GridFrame")
 GridFrame.frameClass = GridFrameClass
 GridFrame.InitialConfigFunction = GridFrame_Initialize
 

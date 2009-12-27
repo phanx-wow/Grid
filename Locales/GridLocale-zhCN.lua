@@ -1,3 +1,8 @@
+--[[--------------------------------------------------------------------
+	GridLocale-zhCN.lua
+	Simplified Chinese (简体中文) localization for Grid.
+----------------------------------------------------------------------]]
+
 AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhCN", function() return {
 
 --{{{ GridCore
@@ -185,21 +190,19 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhCN", function() 
 
 --{{{ GridLayoutLayouts
 	["None"] = "无",
-	["By Group 40"] = "40人团队",
-	["By Group 40 w/Pets"] = "40人团队以及宠物",
-	["By Group 25"] = "25人团队",
-	["By Group 25 w/Pets"] = "25人团队以及宠物",
-	["By Group 20"] = "20人团队",
-	["By Group 15"] = "15人团队",
-	["By Group 15 w/Pets"] = "15人团队以及宠物",
-	["By Group 10"] = "10人团队",
-	["By Group 10 w/Pets"] = "10人团队以及宠物",
 	["By Group 5"] = "5人小队",
 	["By Group 5 w/Pets"] = "5人小队以及宠物",
-	["By Class"] = "职业",
-	["By Class w/Pets"] = "职业以及宠物",
-	["Onyxia"] = "单数双数队伍排列",
-	["By Group 25 w/tanks"] = "25人团队及坦克",
+	["By Group 10"] = "10人团队",
+	["By Group 10 w/Pets"] = "10人团队以及宠物",
+	["By Group 15"] = "15人团队",
+	["By Group 15 w/Pets"] = "15人团队以及宠物",
+	["By Group 25"] = "25人团队",
+	["By Group 25 w/Pets"] = "25人团队以及宠物",
+	["By Group 25 w/Tanks"] = "25人团队及坦克",
+	["By Group 40"] = "40人团队",
+	["By Group 40 w/Pets"] = "40人团队以及宠物",
+	["By Class 10 w/Pets"] = "10人职业",
+	["By Class 25 w/Pets"] = "25人职业",
 --}}}
 
 --{{{ GridLDB
@@ -373,17 +376,6 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhCN", function() 
 --{{{ GridStatusVoiceComm
 	["Voice Chat"] = "语音",
 	["Talking"] = "正在说话",
---}}}
-
---{{{ Unused translations: translators, please remove these
---	["Show Pets for Party"] = "小队中显示宠物",
---	["Grouped"] = "组队",
---	["Show party/self as an extra group."] = "把自己/小队单独显示出来。",
---	["Select which raid layout to use."] = "选择使用何种团队布局。",
---	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "设置何时显示 Grid：选择“一直”，“组队”或“团队”。",
---	["Raid"] = "团队",
---	["Show the pets for the party below the party itself."] = "小队中在下方显示宠物。",
---	["Show Party in Raid"] = "在团队中显示小队",
 --}}}
 
 } end)

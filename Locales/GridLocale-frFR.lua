@@ -1,4 +1,9 @@
-﻿AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("frFR", function() return {
+﻿--[[--------------------------------------------------------------------
+	GridLocale-frFR.lua
+	French (Français) localization for Grid.
+----------------------------------------------------------------------]]
+
+AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("frFR", function() return {
 
 --{{{ GridCore
 	["Debugging"] = "Débogage",
@@ -75,8 +80,8 @@
 	["Set frame orientation."] = "Détermine l'orientation de la grille.",
 	["Orientation of Text"] = "Orientation du texte",
 	["Set frame text orientation."] = "Détermine l'orientation du texte de la grille.",
-	["VERTICAL"] = "VERTICAL",
-	["HORIZONTAL"] = "HORIZONTAL",
+	["VERTICAL"] = "Vertical",
+	["HORIZONTAL"] = "Horizontal",
 	["Icon Size"] = "Taille de l'icône centrale",
 	["Adjust the size of the center icon."] = "Modifie la taille de l'icône centrale.",
 	["Icon Border Size"] = "Taille de la bordure de l'icône centrale",
@@ -119,15 +124,15 @@
 	["Click through the Grid Frame"] = "Cliquer à travers Grid",
 	["Allows mouse click through the Grid Frame."] = "Permet les clics à travers le cadre de Grid.",
 
-	["CENTER"] = "CENTRE",
-	["TOP"] = "HAUT",
-	["BOTTOM"] = "BAS",
-	["LEFT"] = "GAUCHE",
-	["RIGHT"] = "DROITE",
-	["TOPLEFT"] = "HAUTGAUCHE",
-	["TOPRIGHT"] = "HAUTDROITE",
-	["BOTTOMLEFT"] = "BASGAUCHE",
-	["BOTTOMRIGHT"] = "BASDROITE",
+	["CENTER"] = "Centre",
+	["TOP"] = "Haut",
+	["BOTTOM"] = "Bas",
+	["LEFT"] = "Gauche",
+	["RIGHT"] = "Droite",
+	["TOPLEFT"] = "Hautgauche",
+	["TOPRIGHT"] = "Hautdroite",
+	["BOTTOMLEFT"] = "Basgauche",
+	["BOTTOMRIGHT"] = "Basdroite",
 
 	-- Display options
 	["Padding"] = "Espacement (cellules)",
@@ -185,21 +190,19 @@
 
 --{{{ GridLayoutLayouts
 	["None"] = "Aucun",
-	["By Group 40"] = "Raid de 40",
-	["By Group 40 w/Pets"] = "Raid de 40 avec familiers",
-	["By Group 25"] = "Raid de 25",
-	["By Group 25 w/Pets"] = "Raid de 25 avec familiers",
-	["By Group 20"] = "Raid de 20",
-	["By Group 15"] = "Raid de 15",
-	["By Group 15 w/Pets"] = "Raid de 15 avec familiers",
-	["By Group 10"] = "Raid de 10",
-	["By Group 10 w/Pets"] = "Raid de 10 avec familiers",
 	["By Group 5"] = "Groupe de 5",
 	["By Group 5 w/Pets"] = "Groupe de 5 avec familiers",
-	["By Class"] = "Par classe",
-	["By Class w/Pets"] = "Par classe avec familiers",
-	["Onyxia"] = "Onyxia",
-	["By Group 25 w/tanks"] = "Raid de 25 avec tanks",
+	["By Group 10"] = "Raid de 10",
+	["By Group 10 w/Pets"] = "Raid de 10 avec familiers",
+	["By Group 15"] = "Raid de 15",
+	["By Group 15 w/Pets"] = "Raid de 15 avec familiers",
+	["By Group 25"] = "Raid de 25",
+	["By Group 25 w/Pets"] = "Raid de 25 avec familiers",
+	["By Group 25 w/Tanks"] = "Raid de 25 avec tanks",
+	["By Group 40"] = "Raid de 40",
+	["By Group 40 w/Pets"] = "Raid de 40 avec familiers",
+	["By Class 10 w/Pets"] = "Groupe de 10 par classe",
+	["By Class 25 w/Pets"] = "Groupe de 25 par classe",
 --}}}
 
 --{{{ GridLDB

@@ -17,14 +17,36 @@
 ## OptionalDeps: Ace2, DewdropLib, LibDataBroker-1.1, LibDBIcon-1.0, LibGratuity-3.0, LibHealComm-4.0, LibSharedMedia-3.0, LibWrapperHealComm-1.0, UTF8, Waterfall-1.0, SharedMedia
 ## SavedVariables: GridDB
 
-# Non-Ace Libraries
+#@no-lib-strip@
+Libs\LibStub\LibStub.lua
+Libs\AceLibrary\AceLibrary.lua
+Libs\AceOO-2.0\AceOO-2.0.lua
+Libs\AceAddon-2.0\AceAddon-2.0.lua
+Libs\AceConsole-2.0\AceConsole-2.0.lua
+Libs\AceEvent-2.0\AceEvent-2.0.lua
+Libs\AceDB-2.0\AceDB-2.0.lua
+Libs\AceHook-2.1\AceHook-2.1.lua
+Libs\AceTab-2.0\AceTab-2.0.lua
+Libs\AceDebug-2.0\AceDebug-2.0.lua
+Libs\AceLocale-2.2\AceLocale-2.2.lua
+Libs\AceModuleCore-2.0\AceModuleCore-2.0.lua
+
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\Dewdrop-2.0\Dewdrop-2.0.lua
+#@end-no-lib-strip@
+Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
+#@no-lib-strip@
+Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
+Libs\LibGratuity-3.0\lib.xml
+Libs\LibHealComm-4.0\LibHealComm-4.0.xml
+Libs\LibSharedMedia-3.0\lib.xml
+Libs\LibWrapperHealComm-1.0\LibWrapperHealComm-1.0.xml
+Libs\Waterfall-1.0\Waterfall-1.0.lua
+#@end-no-lib-strip@
+
 # Libs\UTF8\utf8data.lua
 Libs\UTF8\utf8.lua
 
-# Ace Libraries
-embeds.xml
-
-# Locales
 Locales\GridLocale-enUS.lua
 Locales\GridLocale-deDE.lua
 Locales\GridLocale-esES.lua
@@ -35,7 +57,6 @@ Locales\GridLocale-ruRU.lua
 Locales\GridLocale-zhCN.lua
 Locales\GridLocale-zhTW.lua
 
-# Grid
 GridCore.lua
 GridLDB.lua
 GridRoster.lua

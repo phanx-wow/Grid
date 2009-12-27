@@ -1,18 +1,14 @@
---
--- GridStatusRange.lua
---
--- Created By : neXter
--- Modified By: Pastamancer
+--[[--------------------------------------------------------------------
+	GridStatusRange.lua
+	GridStatus module for tracking unit range.
+	Created by neXter, modified by Pastamancer.
+----------------------------------------------------------------------]]--
 
---{{{ Libraries
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
-local GridRange = GridRange
---}}}
+local GridRange = Grid:GetModule("GridRange")
 
-GridStatusRange = GridStatus:NewModule("GridStatusRange", "AceEvent-2.0")
-
+local GridStatusRange = GridStatus:NewModule("GridStatusRange", "AceEvent-2.0")
 GridStatusRange.menuName = L["Range"]
-
 
 -- ranges to check
 local ranges = {}
@@ -25,13 +21,11 @@ local function statusForRange(range)
     return ("alert_range_%d"):format(range)
 end
 
--- sets the default options for the entire module.
 GridStatusRange.defaultDB = {
     debug = false,
     frequency = 0.5,
     -- per-status defaults are setup by RegisterStatusForRange
 }
-
 
 GridStatusRange.extraOptions = {
     ["frequency"] = {
@@ -40,9 +34,9 @@ GridStatusRange.extraOptions = {
 		desc = L["Seconds between range checks"],
 		get = function() return GridStatusRange.db.profile.frequency end,
 		set = function(v)
-				  GridStatusRange.db.profile.frequency = v
-				  GridStatusRange:UpdateFrequency()
-			  end,
+				GridStatusRange.db.profile.frequency = v
+				GridStatusRange:UpdateFrequency()
+			end,
 		min = 0.1,
 		max = 5,
 		step = 0.1,
@@ -50,7 +44,6 @@ GridStatusRange.extraOptions = {
 		order = -1,
     },
 }
-
 
 function GridStatusRange:OnInitialize()
     self.super.OnInitialize(self)
@@ -112,7 +105,7 @@ function GridStatusRange:DisableRange(range)
 	if not status then
 		return
 	end
-	
+
 	self.core:SendStatusLostAllUnits(status)
 end
 
@@ -155,7 +148,7 @@ function GridStatusRange:RegisterStatusForRange(range)
 				a = 1 - (range % 51) / 55,
 			},
 		}
-		
+
 		self.db.profile[status_name] = settings
     end
 
@@ -180,16 +173,16 @@ function GridStatusRange:RegisterStatusForRange(range)
 				desc = string.format(L["Enable %s"], status_desc),
 				order = 112,
 				get = function ()
-						  return GridStatusRange.db.profile[status_name].enable
-					  end,
+						return GridStatusRange.db.profile[status_name].enable
+					end,
 				set = function (v)
-						  GridStatusRange.db.profile[status_name].enable = v
-						  if v then
-							  GridStatusRange:EnableRange(range)
-						  else
-							  GridStatusRange:DisableRange(range)
-						  end
-					  end,
+						GridStatusRange.db.profile[status_name].enable = v
+						if v then
+							GridStatusRange:EnableRange(range)
+						else
+							GridStatusRange:DisableRange(range)
+						end
+					end,
 			},
 			["text"] = {
 				type = "text",
@@ -198,11 +191,11 @@ function GridStatusRange:RegisterStatusForRange(range)
 				order = 113,
 				usage = L["<range>"],
 				get = function ()
-						  return GridStatusRange.db.profile[status_name].text
-					  end,
+						return GridStatusRange.db.profile[status_name].text
+					end,
 				set = function (v)
-						  GridStatusRange.db.profile[status_name].text = v
-					  end,
+						GridStatusRange.db.profile[status_name].text = v
+					end,
 			},
 		}
 
@@ -232,23 +225,21 @@ function GridStatusRange:SimpleRangeCheck()
 			if (UnitIsDead(unitid) or not UnitCanAssist("player", unitid)) then
 				unit_range = GridRange:GetUnitRange(unitid)
 			end
-
-			if not unit_range then unit_range = 100000 end
+			if not unit_range then
+				unit_range = 100000
+			end
 		end
-		
-
 
 		if unit_range > range then
 			self.core:SendStatusGained(guid, status_name,
-									   settings.priority, false,
-									   settings.color,
-									   settings.text)
+				settings.priority, false,
+				settings.color,
+				settings.text)
 		else
 			self.core:SendStatusLost(guid, status_name)
 		end
 	end
 end
-
 
 -- this is used if multiple ranges are enabled
 function GridStatusRange:RangeCheck()
@@ -261,22 +252,23 @@ function GridStatusRange:RangeCheck()
 				break
 			end
 		end
-		
-		if not unit_range and
-			(UnitIsDead(unitid) or not UnitCanAssist("player", unitid)) then
+
+		if not unit_range and (UnitIsDead(unitid) or not UnitCanAssist("player", unitid)) then
 			unit_range = GridRange:GetUnitRange(unitid)
 		end
 
-		if not unit_range then unit_range = 100000 end
+		if not unit_range then
+			unit_range = 100000
+		end
 
 		for range, status_name in pairs(ranges_status) do
 			local settings = self.db.profile[status_name]
-			
+
 			if unit_range > range then
 				self.core:SendStatusGained(guid, status_name,
-										   settings.priority, false,
-										   settings.color,
-										   settings.text)
+					settings.priority, false,
+					settings.color,
+					settings.text)
 			else
 				self.core:SendStatusLost(guid, status_name)
 			end
@@ -296,12 +288,12 @@ function GridStatusRange:UpdateFrequency()
 	elseif num_ranges == 1 then
 		self:Debug("Using SimpleRangeCheck")
 		self:ScheduleRepeatingEvent("GridStatusRange_RangeCheck",
-									self.SimpleRangeCheck,
-									self.db.profile.frequency, self)
+			self.SimpleRangeCheck,
+			self.db.profile.frequency, self)
 	else
 		self:Debug("Using RangeCheck")
 		self:ScheduleRepeatingEvent("GridStatusRange_RangeCheck",
-									self.RangeCheck,
-									self.db.profile.frequency, self)
+			self.RangeCheck,
+			self.db.profile.frequency, self)
 	end
 end

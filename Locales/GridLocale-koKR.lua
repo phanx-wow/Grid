@@ -1,3 +1,8 @@
+--[[--------------------------------------------------------------------
+	GridLocale-koKR.lua
+	Korean (한국어) localization for Grid.
+----------------------------------------------------------------------]]
+
 AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("koKR", function() return {
 
 --{{{ GridCore
@@ -185,21 +190,19 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("koKR", function() 
 
 --{{{ GridLayoutLayouts
 	["None"] = "없음",
-	["By Group 40"] = "40인 공격대",
-	["By Group 40 w/Pets"] = "40인 공격대, 소환수",
-	["By Group 25"] = "25인 공격대",
-	["By Group 25 w/Pets"] = "25인 공격대, 소환수",
-	["By Group 20"] = "20인 공격대",
-	["By Group 15"] = "15인 공격대",
-	["By Group 15 w/Pets"] = "15인 공격대, 소환수",
-	["By Group 10"] = "10인 공격대",
-	["By Group 10 w/Pets"] = "10인 공격대, 소환수",
 	["By Group 5"] = "5인 공격대",
 	["By Group 5 w/Pets"] = "5인 공격대, 소환수",
-	["By Class"] = "직업별",
-	["By Class w/Pets"] = "직업별, 소환수",
-	["Onyxia"] = "오닉시아",
-	["By Group 25 w/tanks"] = "25인 공격대, 방어전담",
+	["By Group 10"] = "10인 공격대",
+	["By Group 10 w/Pets"] = "10인 공격대, 소환수",
+	["By Group 15"] = "15인 공격대",
+	["By Group 15 w/Pets"] = "15인 공격대, 소환수",
+	["By Group 25"] = "25인 공격대",
+	["By Group 25 w/Pets"] = "25인 공격대, 소환수",
+	["By Group 25 w/Tanks"] = "25인 공격대, 방어전담",
+	["By Group 40"] = "40인 공격대",
+	["By Group 40 w/Pets"] = "40인 공격대, 소환수",
+	["By Class 10 w/Pets"] = "10인 공격대, 직업별",
+	["By Class 25 w/Pets"] = "25인 공격대, 직업별",
 --}}}
 
 --{{{ GridLDB
@@ -373,17 +376,6 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("koKR", function() 
 --{{{ GridStatusVoiceComm
 	["Voice Chat"] = "음성 대화",
 	["Talking"] = "대화중",
---}}}
-
---{{{ Unused translations: translators, please remove these
---	["Show Pets for Party"] = "파티시 소환수 표시",
---	["Grouped"] = "파티",
---	["Show party/self as an extra group."] = "공격대시 자신과 파티원을 추가로 표시합니다.",
---	["Select which raid layout to use."] = "사용할 공격대 배치를 선택합니다.",
---	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = "Grid 표시 설정: '항상', '파티' 또는 '공격대'를 선택합니다.",
---	["Raid"] = "공격대",
---	["Show the pets for the party below the party itself."] = "파티시 파티원의 소환수를 표시합니다.",
---	["Show Party in Raid"] = "공격대시 파티원 표시",
 --}}}
 
 } end)

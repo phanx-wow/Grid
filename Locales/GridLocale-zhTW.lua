@@ -1,3 +1,8 @@
+--[[--------------------------------------------------------------------
+	GridLocale-zhTW.lua
+	Traditional Chinese (正體中文) localization for Grid.
+----------------------------------------------------------------------]]
+
 AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhTW", function() return {
 
 --{{{ GridCore
@@ -182,21 +187,19 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhTW", function() 
 
 --{{{ GridLayoutLayouts
 	["None"] = "無",
-	["By Group 40"] = "40人團隊",
-	["By Group 40 w/Pets"] = "40人團隊及寵物",
-	["By Group 25"] = "25人團隊",
-	["By Group 25 w/Pets"] = "25人團隊及寵物",
-	["By Group 20"] = "20人團隊",
-	["By Group 15"] = "15人團隊",
-	["By Group 15 w/Pets"] = "15人團隊及寵物",
-	["By Group 10"] = "10人團隊",
-	["By Group 10 w/Pets"] = "10人團隊及寵物",
 	["By Group 5"] = "5人團隊",
 	["By Group 5 w/Pets"] = "5人團隊及寵物",
-	["By Class"] = "以職業排列",
-	["By Class w/Pets"] = "以職業排列及寵物",
-	["Onyxia"] = "單數雙數小隊交錯排列",
-	["By Group 25 w/tanks"] = "25人團隊及坦克",
+	["By Group 10"] = "10人團隊",
+	["By Group 10 w/Pets"] = "10人團隊及寵物",
+	["By Group 15"] = "15人團隊",
+	["By Group 15 w/Pets"] = "15人團隊及寵物",
+	["By Group 25"] = "25人團隊",
+	["By Group 25 w/Pets"] = "25人團隊及寵物",
+	["By Group 25 w/Tanks"] = "25人團隊及坦克",
+	["By Group 40"] = "40人團隊",
+	["By Group 40 w/Pets"] = "40人團隊及寵物",
+	["By Class 10 w/Pets"] = "10人以職業排列",
+	["By Class 25 w/Pets"] = "25人以職業排列",
 --}}}
 
 --{{{ GridLDB

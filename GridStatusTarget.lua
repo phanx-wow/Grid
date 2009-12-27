@@ -1,19 +1,17 @@
--- GridStatusTarget.lua
---
--- Created By : noha
--- Modified By: Pastamancer
+--[[--------------------------------------------------------------------
+	GridStatusTarget.lua
+	GridStatus module for tracking the player's target.
+	Created by noha, modified by Pastamancer.
+----------------------------------------------------------------------]]
 
---{{{ Libraries
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
---}}}
 
-GridStatusTarget = GridStatus:NewModule("GridStatusTarget")
+local GridStatusTarget = GridStatus:NewModule("GridStatusTarget")
 GridStatusTarget.menuName = L["Target"]
 
 -- save the guid of our target here so we can send a StatusLost
 local cur_target
 
---{{{ AceDB defaults
 GridStatusTarget.defaultDB = {
 	debug = false, 
 	player_target = {
@@ -24,7 +22,6 @@ GridStatusTarget.defaultDB = {
 		range = false,
 	},
 }
---}}}
 
 GridStatusTarget.options = false
  

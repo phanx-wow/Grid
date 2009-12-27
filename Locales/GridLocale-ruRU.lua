@@ -1,4 +1,9 @@
-﻿AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("ruRU", function() return {
+﻿--[[--------------------------------------------------------------------
+	GridLocale-ruRU.lua
+	Russian (Русский) localization for Grid.
+----------------------------------------------------------------------]]
+
+AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("ruRU", function() return {
 
 --{{{ GridCore
 	["Debugging"] = "Отладка",
@@ -75,8 +80,8 @@
 	["Set frame orientation."] = "Установить ориеетацию фреймов",
 	["Orientation of Text"] = "Ориентация текста",
 	["Set frame text orientation."] = "Установить ориентацию текста фреймов",
-	["VERTICAL"] = "ВЕРТИКАЛЬНО",
-	["HORIZONTAL"] = "ГОРИЗОНТАЛЬНО",
+	["VERTICAL"] = "Вертикально",
+	["HORIZONTAL"] = "Горизонтально",
 	["Icon Size"] = "Размер иконки",
 	["Adjust the size of the center icon."] = "Настройка размера значка в центре",
 	["Icon Border Size"] = "Размер границы значка",
@@ -119,15 +124,15 @@
 	["Click through the Grid Frame"] = "Выбирать через окно Grid",
 	["Allows mouse click through the Grid Frame."] = "Разрешает мышкой кликать сквозь окно Grid",
 
-	["CENTER"] = "ЦЕНТР",
-	["TOP"] = "ВВЕРХУ",
-	["BOTTOM"] = "ВНИЗУ",
-	["LEFT"] = "СЛЕВА",
-	["RIGHT"] = "СПРАВА",
-	["TOPLEFT"] = "ВВЕРХУ СЛЕВА",
-	["TOPRIGHT"] = "ВВЕРХУ СПРАВА",
-	["BOTTOMLEFT"] = "ВНИЗУ СЛЕВА",
-	["BOTTOMRIGHT"] = "ВНИЗУ СПРАВА",
+	["CENTER"] = "Центр",
+	["TOP"] = "Вверху",
+	["BOTTOM"] = "Внизу",
+	["LEFT"] = "Слева",
+	["RIGHT"] = "Справа",
+	["TOPLEFT"] = "Вверху Слева",
+	["TOPRIGHT"] = "Вверху Справа",
+	["BOTTOMLEFT"] = "Внизу Слева",
+	["BOTTOMRIGHT"] = "Внизу Справа",
 
 	-- Display options
 	["Padding"] = "Заполнение",
@@ -185,21 +190,19 @@
 
 --{{{ GridLayoutLayouts
 	["None"] = "Нет",
-	["By Group 40"] = "Для Группы из 40 чел.",
-	["By Group 40 w/Pets"] = "Для Группы из 40 чел. с питомцами",
-	["By Group 25"] = "Для Группы из 25 чел.",
-	["By Group 25 w/Pets"] = "Для Группы из 25 чел. с питомцами",
-	["By Group 20"] = "Для Группы из 20 чел.",
-	["By Group 15"] = "Для Группы из 15 чел.",
-	["By Group 15 w/Pets"] = "Для Группы из 15 чел. с питомцами",
-	["By Group 10"] = "Для Группы из 10 чел.",
-	["By Group 10 w/Pets"] = "Для Группы из 10 чел. с питомцами",
 	["By Group 5"] = "Для Группы из 5 чел.",
 	["By Group 5 w/Pets"] = "Для Группы из 5 чел. с питомцами",
-	["By Class"] = "По классам",
-	["By Class w/Pets"] = "По классам с питомцами",
-	["Onyxia"] = "Для Ониксии",
-	["By Group 25 w/tanks"] = "Группой из 25 чел. с танками",
+	["By Group 10"] = "Для Группы из 10 чел.",
+	["By Group 10 w/Pets"] = "Для Группы из 10 чел. с питомцами",
+	["By Group 15"] = "Для Группы из 15 чел.",
+	["By Group 15 w/Pets"] = "Для Группы из 15 чел. с питомцами",
+	["By Group 25"] = "Для Группы из 25 чел.",
+	["By Group 25 w/Pets"] = "Для Группы из 25 чел. с питомцами",
+	["By Group 25 w/Tanks"] = "Для Группы из 25 чел. с танками",
+	["By Group 40"] = "Для Группы из 40 чел.",
+	["By Group 40 w/Pets"] = "Для Группы из 40 чел. с питомцами",
+	["By Class 10 w/Pets"] = "По классам из 10 чел",
+	["By Class 25 w/Pets"] = "По классам из 25 чел",
 --}}}
 
 --{{{ GridLDB

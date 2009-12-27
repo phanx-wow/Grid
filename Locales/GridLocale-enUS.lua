@@ -1,3 +1,8 @@
+--[[--------------------------------------------------------------------
+	GridLocale-enUS.lua
+	English localization for Grid.
+----------------------------------------------------------------------]]
+
 AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("enUS", function() return {
 
 --{{{ GridCore
@@ -75,8 +80,8 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("enUS", function() 
 	["Set frame orientation."] = true,
 	["Orientation of Text"] = true,
 	["Set frame text orientation."] = true,
-	["VERTICAL"] = true,
-	["HORIZONTAL"] = true,
+	["VERTICAL"] = "Vertical",
+	["HORIZONTAL"] = "Horizontal",
 	["Icon Size"] = true,
 	["Adjust the size of the center icon."] = true,
 	["Icon Border Size"] = true,
@@ -119,15 +124,15 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("enUS", function() 
 	["Click through the Grid Frame"] = true,
 	["Allows mouse click through the Grid Frame."] = true,
 
-	["CENTER"] = true,
-	["TOP"] = true,
-	["BOTTOM"] = true,
-	["LEFT"] = true,
-	["RIGHT"] = true,
-	["TOPLEFT"] = true,
-	["TOPRIGHT"] = true,
-	["BOTTOMLEFT"] = true,
-	["BOTTOMRIGHT"] = true,
+	["CENTER"] = "Center",
+	["TOP"] = "Top",
+	["BOTTOM"] = "Bottom",
+	["LEFT"] = "Left",
+	["RIGHT"] = "Right",
+	["TOPLEFT"] = "Top Left",
+	["TOPRIGHT"] = "Top Right",
+	["BOTTOMLEFT"] = "Bottom Left",
+	["BOTTOMRIGHT"] = "Bottom Right",
 
 	-- Display options
 	["Padding"] = true,
@@ -185,21 +190,19 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("enUS", function() 
 
 --{{{ GridLayoutLayouts
 	["None"] = true,
-	["By Group 40"] = true,
-	["By Group 40 w/Pets"] = true,
-	["By Group 25"] = true,
-	["By Group 25 w/Pets"] = true,
-	["By Group 20"] = true,
-	["By Group 15"] = true,
-	["By Group 15 w/Pets"] = true,
-	["By Group 10"] = true,
-	["By Group 10 w/Pets"] = true,
 	["By Group 5"] = true,
 	["By Group 5 w/Pets"] = true,
-	["By Class"] = true,
-	["By Class w/Pets"] = true,
-	["Onyxia"] = true,
-	["By Group 25 w/tanks"] = true,
+	["By Group 10"] = true,
+	["By Group 10 w/Pets"] = true,
+	["By Group 15"] = true,
+	["By Group 15 w/Pets"] = true,
+	["By Group 25"] = true,
+	["By Group 25 w/Pets"] = true,
+	["By Group 25 w/Tanks"] = true,
+	["By Group 40"] = true,
+	["By Group 40 w/Pets"] = true,
+	["By Class 10 w/Pets"] = true,
+	["By Class 25 w/Pets"] = true,
 --}}}
 
 --{{{ GridLDB
@@ -373,17 +376,6 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("enUS", function() 
 --{{{ GridStatusVoiceComm
 	["Voice Chat"] = true,
 	["Talking"] = true,
---}}}
-
---{{{ Unused translations: translators, please remove these
-	["Show Pets for Party"] = true,
-	["Grouped"] = true,
-	["Show party/self as an extra group."] = true,
-	["Select which raid layout to use."] = true,
-	["Sets when the Grid is visible: Choose 'Always', 'Grouped', or 'Raid'."] = true,
-	["Raid"] = true,
-	["Show the pets for the party below the party itself."] = true,
-	["Show Party in Raid"] = true,
 --}}}
 
 } end)

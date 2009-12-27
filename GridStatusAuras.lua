@@ -1,9 +1,13 @@
---{{{ Libraries
+--[[--------------------------------------------------------------------
+	GridStatusAuras.lua
+	GridStatus module for tracking buffs/debuffs.
+----------------------------------------------------------------------]]
 
 local Dewdrop = AceLibrary("Dewdrop-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
---}}}
+local GridStatusAuras = GridStatus:NewModule("GridStatusAuras")
+GridStatusAuras.menuName = L["Auras"]
 
 --{{{ Get Spell Names
 local BS = {
@@ -22,25 +26,22 @@ local BS = {
 }
 --}}}
 
-GridStatusAuras = GridStatus:NewModule("GridStatusAuras")
-GridStatusAuras.menuName = L["Auras"]
-
-
 -- data used by aura scanning
 local buff_names = {}
 local player_buff_names = {}
 local debuff_names = {}
+
 local debuff_types = {
 	["Poison"] = true,
 	["Disease"] = true,
 	["Magic"] = true,
 	["Curse"] = true,
 }
+
 local abolish_types = {
 	[BS["Abolish Poison"]] = "Poison",
 	[BS["Abolish Disease"]] = "Disease",
 }
-
 
 function GridStatusAuras.StatusForSpell(spell, isBuff)
 	local prefix = "debuff_"
@@ -51,7 +52,6 @@ function GridStatusAuras.StatusForSpell(spell, isBuff)
 
 	return prefix .. string.gsub(spell, " ", "")
 end
-
 
 GridStatusAuras.defaultDB = {
 	debug = false,

@@ -1,13 +1,12 @@
---{{{ Libraries
+--[[--------------------------------------------------------------------
+	GridStatusHealth.lua
+	GridStatus module for tracking unit health.
+----------------------------------------------------------------------]]
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
---}}}
-
-GridStatusHealth = GridStatus:NewModule("GridStatusHealth")
+local GridStatusHealth = GridStatus:NewModule("GridStatusHealth")
 GridStatusHealth.menuName = L["Health"]
-
---{{{ AceDB defaults
 
 GridStatusHealth.defaultDB = {
 	debug = false,
@@ -60,10 +59,6 @@ GridStatusHealth.defaultDB = {
 	},
 }
 
---}}}
-
---{{{ AceOptions table
-
 GridStatusHealth.extraOptions = {
 	["deadAsFullHealth"] = {
 		type = "toggle",
@@ -79,8 +74,6 @@ GridStatusHealth.extraOptions = {
 			end,
 	},
 }
-
---}}}
 
 local healthOptions = {
 	["enable"] = false, -- you can't disable this
