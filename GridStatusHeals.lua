@@ -10,6 +10,7 @@ local settings
 local playerGUID
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local GridRoster = Grid:GetModule("GridRoster")
 
 local GridStatusHeals = Grid:GetModule("GridStatus"):NewModule("GridStatusHeals")
 GridStatusHeals.menuName = L["Heals"]

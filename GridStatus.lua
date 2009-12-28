@@ -3,6 +3,7 @@
 ----------------------------------------------------------------------]]
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local GridRoster = Grid:GetModule("GridRoster")
 
 local GridStatus = Grid:NewModule("GridStatus", "AceModuleCore-2.0")
 GridStatus:SetModuleMixins("AceDebug-2.0", "AceEvent-2.0")

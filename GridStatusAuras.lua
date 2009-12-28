@@ -3,8 +3,9 @@
 	GridStatus module for tracking buffs/debuffs.
 ----------------------------------------------------------------------]]
 
-local Dewdrop = AceLibrary("Dewdrop-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local Dewdrop = AceLibrary("Dewdrop-2.0")
+local GridRoster = Grid:GetModule("GridRoster")
 
 local GridStatusAuras = Grid:GetModule("GridStatus"):NewModule("GridStatusAuras")
 GridStatusAuras.menuName = L["Auras"]

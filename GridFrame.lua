@@ -1348,7 +1348,7 @@ function GridFrame:StatusForIndicator(unitid, guid, indicator)
 
 	-- self.statusmap[indicator][status]
 	for statusName, enabled in pairs(statusmap) do
-		local status = enabled and GridStatus:GetCachedStatus(guid, statusName)
+		local status = enabled and Grid:GetModule("GridStatus"):GetCachedStatus(guid, statusName)
 		if status then
 			local valid = true
 
@@ -1424,6 +1424,7 @@ end
 
 function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
 	local menu = self.options.args
+	local GridStatus = Grid:GetModule("GridStatus")
 
 	if indicator == "bar" then
 		menu[indicator] = nil

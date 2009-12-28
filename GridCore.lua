@@ -192,7 +192,7 @@ function Grid:OnEnable()
 			table.insert(missingLibs, name)
 		end
 	end
-	if #missing > 0 then
+	if #missingLibs > 0 then
 		StaticPopupDialogs["GRID_MISSING_LIBS"] = {
 			text = ("Grid was unable to find the following libraries:\n%s"):format(table.concat(missingLibs, ", ")),
 			button1 = OKAY,

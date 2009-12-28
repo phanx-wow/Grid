@@ -4,6 +4,7 @@
 ----------------------------------------------------------------------]]
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local GridRoster = Grid:GetModule("GridRoster")
 
 local GridStatusName = Grid:GetModule("GridStatus"):NewModule("GridStatusName")
 GridStatusName.menuName = L["Unit Name"]

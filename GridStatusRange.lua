@@ -6,6 +6,7 @@
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local GridRange = Grid:GetModule("GridRange")
+local GridRoster = Grid:GetModule("GridRoster")
 
 local GridStatusRange = Grid:GetModule("GridStatus"):NewModule("GridStatusRange", "AceEvent-2.0")
 GridStatusRange.menuName = L["Range"]

@@ -4,8 +4,10 @@
 ----------------------------------------------------------------------]]
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local GridStatus = Grid:GetModule("GridStatus")
+local GridRoster = Grid:GetModule("GridRoster")
 
-local GridStatusAggro = Grid:GetModule("GridStatus"):NewModule("GridStatusAggro")
+local GridStatusAggro = GridStatus:NewModule("GridStatusAggro")
 GridStatusAggro.menuName = L["Aggro"]
 
 local function getthreatcolor(status)

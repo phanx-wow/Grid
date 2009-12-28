@@ -27,7 +27,7 @@ end
 --{{{ Frame config function for secure headers
 
 function GridLayout_InitialConfigFunction(frame)
-	GridFrame.InitialConfigFunction(frame)
+	Grid:GetModule("GridFrame").InitialConfigFunction(frame)
 end
 
 --}}}
