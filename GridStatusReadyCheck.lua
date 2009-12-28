@@ -149,6 +149,12 @@ function GridStatusReadyCheck:OnStatusDisable(status)
 	end
 end
 
+function GridStatusReadyCheck:Reset()
+	self.super.Reset(self)
+	self:CancelScheduledEvent("GridStatusReadyCheck_Clear")
+	self:ClearStatus()
+end
+
 function GridStatusReadyCheck:GainStatus(guid, key, settings)
 	local status = readystatus[key]
 	self.core:SendStatusGained(guid, "ready_check", 
