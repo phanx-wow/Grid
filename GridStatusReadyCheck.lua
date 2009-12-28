@@ -164,6 +164,7 @@ end
 function GridStatusReadyCheck:READY_CHECK(originator)
 	local settings = self.db.profile.ready_check
 	if settings.enable and (self.raidAssist or IsPartyLeader()) then
+		local GridRoster = Grid:GetModule("GridRoster")
 		self:CancelScheduledEvent("GridStatusReadyCheck_Clear")
 		self.readyChecking = true
 		local originatorguid = GridRoster:GetGUIDByFullName(originator)
@@ -179,29 +180,14 @@ function GridStatusReadyCheck:READY_CHECK(originator)
 	end
 end
 
-if select(4, GetBuildInfo()) >= 30300 then
-	function GridStatusReadyCheck:READY_CHECK_CONFIRM(unit, confirm)
-		local settings = self.db.profile.ready_check
-		if settings.enable and self.readyChecking then
-			local guid = UnitGUID(unit)
-			if confirm then
-				self:GainStatus(guid, "ready", settings)
-			else
-				self:GainStatus(guid, "not_ready", settings)
-			end
-		end
-	end
-else
-	function GridStatusReadyCheck:READY_CHECK_CONFIRM(id, confirm)
-		local settings = self.db.profile.ready_check
-		if settings.enable and self.readyChecking then
-			local unitid = ((GetNumRaidMembers() > 0) and ("raid"..id)) or ("party"..id)
-			local guid = UnitGUID(unitid)
-			if confirm == 1 then
-				self:GainStatus(guid, "ready", settings)
-			else
-				self:GainStatus(guid, "not_ready", settings)
-			end
+function GridStatusReadyCheck:READY_CHECK_CONFIRM(unit, confirm)
+	local settings = self.db.profile.ready_check
+	if settings.enable and self.readyChecking then
+		local guid = UnitGUID(unit)
+		if confirm then
+			self:GainStatus(guid, "ready", settings)
+		else
+			self:GainStatus(guid, "not_ready", settings)
 		end
 	end
 end
