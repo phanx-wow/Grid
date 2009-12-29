@@ -6,6 +6,7 @@ local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local Gratuity = LibStub:GetLibrary("LibGratuity-3.0")
 
 local GridRange = Grid:NewModule("GridRange")
+_G.GridRange = GridRange
 
 local ranges, checks, rangelist
 local select = select

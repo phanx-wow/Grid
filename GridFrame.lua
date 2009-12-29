@@ -10,6 +10,7 @@ local media = LibStub("LibSharedMedia-3.0", true)
 if media then media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32") end
 
 local GridFrame = Grid:NewModule("GridFrame")
+_G.GridFrame = GridFrame
 
 --{{{ FrameXML functions
 
