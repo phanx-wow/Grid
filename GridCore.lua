@@ -40,11 +40,11 @@ if waterfall then
 		name = L["Configure"],
 		desc = L["Configure Grid"],
 		guiHidden = true,
-		func = function() 
+		func = function()
 				waterfall:Open("Grid")
 		end,
 	}
-	
+
 	waterfall:Register("Grid", "aceOptions", Grid.options, "title", "Grid Configuration")
 end
 
@@ -151,7 +151,7 @@ function Grid.modulePrototype:ADDON_LOADED(addon)
 	local name = GetAddOnMetadata(addon, "X-".. self.name .. "Module")
 	if not name then return end
 
-	local module = getglobal(name)
+	local module = getglobal(name) or Grid:GetModule(self.name):GetModule(name)
 	if not module or not module.name then return end
 
 	module.external = true
@@ -171,7 +171,7 @@ function Grid:OnInitialize()
 	self:AddModuleDebugMenu(self)
 
 	self:RegisterModules()
-	
+
 	self:RegisterEvent("ADDON_LOADED")
 end
 
