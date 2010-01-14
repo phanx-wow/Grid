@@ -178,14 +178,12 @@ GridStatusAuras.defaultDB = {
 	},
 }
 
-
 GridStatusAuras.extraOptions = {
 	header_buffs = {
 		type = "header",
 		name = L["Buffs"],
 		order = 10,
 	},
-
 	header_debufftypes_gap = {
 		type = "header",
 		order = 19,
@@ -195,7 +193,6 @@ GridStatusAuras.extraOptions = {
 		name = L["Debuff Types"],
 		order = 20,
 	},
-
 	header_abolish_gap = {
 		type = "header",
 		order = 27,
@@ -206,12 +203,10 @@ GridStatusAuras.extraOptions = {
 		desc = L["Skip units that have an active Abolish buff."],
 		get = function() return GridStatusAuras.db.profile.abolish end,
 		set = function()
-			GridStatusAuras.db.profile.abolish = 
-				not GridStatusAuras.db.profile.abolish
+			GridStatusAuras.db.profile.abolish = not GridStatusAuras.db.profile.abolish
 		end,
 		order = 28
 	},
-
 	header_debuffs_gap = {
 		type = "header",
 		order = 29,
@@ -223,20 +218,17 @@ GridStatusAuras.extraOptions = {
 	},
 }
 
-
 function GridStatusAuras:OnInitialize()
 	self.super.OnInitialize(self)
 
 	self:RegisterStatuses()
 end
 
-
 function GridStatusAuras:OnEnable()
 	self:CreateAddRemoveOptions()
 
 	self.super.OnEnable(self)
 end
-
 
 function GridStatusAuras:Reset()
 	self.super.Reset(self)
@@ -246,7 +238,6 @@ function GridStatusAuras:Reset()
 	self:CreateAddRemoveOptions()
 	self:UpdateAuraScanList()
 end
-
 
 function GridStatusAuras:EnabledStatusCount()
 	local enable_count = 0
@@ -260,7 +251,6 @@ function GridStatusAuras:EnabledStatusCount()
 	return enable_count
 end
 
-
 function GridStatusAuras:OnStatusEnable(status)
 	self:RegisterEvent("Grid_UnitJoined")
 	self:RegisterEvent("UNIT_AURA", "ScanUnitAuras")
@@ -268,7 +258,6 @@ function GridStatusAuras:OnStatusEnable(status)
 	self:UpdateAuraScanList()
 	self:UpdateAllUnitAuras()
 end
-
 
 function GridStatusAuras:OnStatusDisable(status)
 	self.core:SendStatusLostAllUnits(status)
@@ -280,7 +269,6 @@ function GridStatusAuras:OnStatusDisable(status)
 	end
 end
 
-
 function GridStatusAuras:RegisterStatuses()
 	for status, statusTbl in pairs(self.db.profile) do
 		if type(statusTbl) == "table" and statusTbl.text then
@@ -290,12 +278,10 @@ function GridStatusAuras:RegisterStatuses()
 			local order = statusTbl.order or (isBuff and 15 or 35)
 
 			self:Debug("registering", status, desc)
-			self:RegisterStatus(status, desc,
-					self:OptionsForStatus(status, isBuff), false, order)
+			self:RegisterStatus(status, desc, self:OptionsForStatus(status, isBuff), false, order)
 		end
 	end
 end
-
 
 function GridStatusAuras:UnregisterStatuses()
 	for status, moduleName, desc in self.core:RegisteredStatusIterator() do
@@ -389,7 +375,6 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 	return auraOptions
 end
 
-
 function GridStatusAuras:CreateAddRemoveOptions()
 	--self.options.args["AddRemoveHeader"] = {
 	--	type = "header",
@@ -435,7 +420,6 @@ function GridStatusAuras:CreateAddRemoveOptions()
 	end
 end
 
-
 function GridStatusAuras:AddAura(name, isBuff)
 	local status = GridStatusAuras.StatusForSpell(name, isBuff)
 	local desc
@@ -470,7 +454,6 @@ function GridStatusAuras:AddAura(name, isBuff)
 	self:OnStatusEnable(status)
 end
 
-
 function GridStatusAuras:DeleteAura(status)
 	self:UnregisterStatus(status)
 	self.options.args[status] = nil
@@ -479,18 +462,15 @@ function GridStatusAuras:DeleteAura(status)
 	self:UpdateAuraScanList()
 end
 
-
 function GridStatusAuras:UpdateAllUnitAuras()
 	for guid, unitid in GridRoster:IterateRoster() do
 		self:ScanUnitAuras(unitid)
 	end
 end
 
-
 function GridStatusAuras:Grid_UnitJoined(guid, unitid)
 	self:ScanUnitAuras(unitid)
 end
-
 
 -- Unit Aura Driver
 --

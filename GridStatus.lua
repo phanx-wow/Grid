@@ -68,9 +68,7 @@ function GridStatus.modulePrototype:InitializeOptions()
 			desc = string.format(L["Options for %s."], self.name),
 			args = {},
 		}
-
 	end
-
 	if self.extraOptions then
 		for name, option in pairs(self.extraOptions) do
 			self.options.args[name] = option
@@ -79,7 +77,6 @@ function GridStatus.modulePrototype:InitializeOptions()
 end
 
 function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMainMenu, order)
-	local module = self
 	local optionMenu
 
 	GridStatus:RegisterStatus(status, desc, (self.name or true))
@@ -90,10 +87,10 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 		if not self.options then
 			self:InitializeOptions()
 		end
-
 		optionMenu = self.options.args
 	end
 
+	local module = self
 	if not optionMenu[status] then
 		optionMenu[status] = {
 			type = "group",
@@ -332,7 +329,7 @@ function GridStatus:FillColorOptions(options)
 			end,
 		}
 	end
-	
+
 	options.args.class.args["Header"] = {
 		type = "header",
 		order = 110,
@@ -344,7 +341,7 @@ function GridStatus:FillColorOptions(options)
 		order = 111,
 		func = function() GridStatus:ResetClassColors() end,
 	}
-	
+
 	-- wtf, this is ugly... refactor!
 	for _, class in ipairs{ L["Beast"], L["Demon"], L["Humanoid"], L["Undead"], L["Dragonkin"], L["Elemental"], L["Not specified"] } do
 		options.args.creaturetype.args[class] = {
@@ -555,33 +552,33 @@ function GridStatus:CachedStatusIterator(status)
 			if guid == nil then
 				return nil
 			end
-			
+
 			while cache[guid][status] == nil do
 				guid = next(cache, guid)
-				
+
 				if guid == nil then
 					return nil
 				end
 			end
-			
+
 			return guid, status, cache[guid][status]
 		end
 	else
 		-- iterator for all units, all statuses
 		return function()
 			status = next(cache[guid], status)
-			
+
 			-- find the next unit with a status
 			while not status do
 				guid = next(cache, guid)
-				
+
 				if guid then
 					status = next(cache[guid], status)
 				else
 					return nil
 				end
 			end
-			
+
 			return guid, status, cache[guid][status]
 		end
 	end

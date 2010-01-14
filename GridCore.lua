@@ -151,7 +151,7 @@ function Grid.modulePrototype:ADDON_LOADED(addon)
 	local name = GetAddOnMetadata(addon, "X-".. self.name .. "Module")
 	if not name then return end
 
-	local module = getglobal(name) or Grid:GetModule(self.name):GetModule(name)
+	local module = (Grid:GetModule(self.name):HasModule(name) and Grid:GetModule(self.name):GetModule(name)) or _G[name]
 	if not module or not module.name then return end
 
 	module.external = true
