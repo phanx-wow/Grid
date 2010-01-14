@@ -60,7 +60,6 @@ end
 
 function GridStatus.modulePrototype:InitializeOptions()
 	GridStatus:Debug("InitializeOptions", self.name)
-	local module = self
 	if not self.options then
 		self.options = {
 			type = "group",

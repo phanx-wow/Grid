@@ -111,12 +111,21 @@ function Grid.modulePrototype:RegisterModule(name, module)
 			desc = string.format(L["Options for %s."], module.name),
 			args = {},
 		}
-
 	end
 
 	if module.extraOptions then
 		for name, option in pairs(module.extraOptions) do
 			module.options.args[name] = option
+		end
+	end
+
+	if module.options then
+		local numOptions = 0
+		for option in pairs(module.options.args) do
+			numOptions = numOptions + 1
+		end
+		if numOptions == 0 then
+			module.options = nil
 		end
 	end
 
