@@ -63,7 +63,7 @@ function GridStatus.modulePrototype:InitializeOptions()
 	if not self.options then
 		self.options = {
 			type = "group",
-			name = (self.menuName or self.name),
+			name = self.menuName or self.name,
 			desc = string.format(L["Options for %s."], self.name),
 			args = {},
 		}
@@ -76,16 +76,16 @@ function GridStatus.modulePrototype:InitializeOptions()
 end
 
 function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMainMenu, order)
+	GridStatus:RegisterStatus(status, desc, self.name or true)
+
 	local optionMenu
-
-	GridStatus:RegisterStatus(status, desc, (self.name or true))
-
 	if inMainMenu then
 		optionMenu = GridStatus.options.args
 	else
 		if not self.options then
 			self:InitializeOptions()
 		end
+		GridStatus.options.args[self.name] = self.options
 		optionMenu = self.options.args
 	end
 
@@ -104,16 +104,16 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 					order = 90,
 					hasAlpha = true,
 					get = function()
-						      local color = module.db.profile[status].color
-						      return color.r, color.g, color.b, color.a
-					      end,
+						local color = module.db.profile[status].color
+						return color.r, color.g, color.b, color.a
+					end,
 					set = function(r, g, b, a)
-						      local color = module.db.profile[status].color
-						      color.r = r
-						      color.g = g
-						      color.b = b
-						      color.a = a or 1
-					      end,
+						local color = module.db.profile[status].color
+						color.r = r
+						color.g = g
+						color.b = b
+						color.a = a or 1
+					end,
 				},
 				["priority"] = {
 					type = "range",
@@ -124,11 +124,11 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 					min = 0,
 					step = 1,
 					get = function()
-						      return module.db.profile[status].priority
-					      end,
+						return module.db.profile[status].priority
+					end,
 					set = function(v)
-						      module.db.profile[status].priority = v
-					      end,
+						module.db.profile[status].priority = v
+					end,
 				},
 				["Header"] = {
 					type = "header",
@@ -150,20 +150,20 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 					desc = string.format(L["Enable %s"], desc),
 					order = 112,
 					get = function()
-						      return module.db.profile[status].enable
-					      end,
+						return module.db.profile[status].enable
+					end,
 					set = function(v)
-						      module.db.profile[status].enable = v
-							  if v then
-								  if module['OnStatusEnable'] then
-									  module:OnStatusEnable(status)
-								  end
-							  else
-								  if module['OnStatusDisable'] then
-									  module:OnStatusDisable(status)
-								  end
-							  end
-					      end,
+						module.db.profile[status].enable = v
+							if v then
+								if module['OnStatusEnable'] then
+									module:OnStatusEnable(status)
+								end
+							else
+								if module['OnStatusDisable'] then
+									module:OnStatusDisable(status)
+								end
+							end
+					end,
 				},
 			},
 		}
@@ -177,6 +177,7 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 				end
 			end
 		end
+
 	end
 end
 
@@ -231,14 +232,14 @@ GridStatus.options = {
 							desc = L["The color of unknown units."],
 							order = 100,
 							get = function()
-									  local c = GridStatus.db.profile.colors.UNKNOWN_UNIT
-									  return c.r, c.g, c.b, c.a
-								  end,
+									local c = GridStatus.db.profile.colors.UNKNOWN_UNIT
+									return c.r, c.g, c.b, c.a
+								end,
 							set = function(r, g, b, a)
-									  local c = GridStatus.db.profile.colors.UNKNOWN_UNIT
-									  c.r, c.g, c.b, c.a = r, g, b, a
-									  GridStatus:TriggerEvent("Grid_ColorsChanged")
-								  end,
+									local c = GridStatus.db.profile.colors.UNKNOWN_UNIT
+									c.r, c.g, c.b, c.a = r, g, b, a
+									GridStatus:TriggerEvent("Grid_ColorsChanged")
+								end,
 							hasAlpha = false,
 						},
 						["pet"] = {
@@ -247,14 +248,14 @@ GridStatus.options = {
 							desc = L["The color of unknown pets."],
 							order = 100,
 							get = function()
-									  local c = GridStatus.db.profile.colors.UNKNOWN_PET
-									  return c.r, c.g, c.b, c.a
-								  end,
+									local c = GridStatus.db.profile.colors.UNKNOWN_PET
+									return c.r, c.g, c.b, c.a
+								end,
 							set = function(r, g, b, a)
-									  local c = GridStatus.db.profile.colors.UNKNOWN_PET
-									  c.r, c.g, c.b, c.a = r, g, b, a
-									  GridStatus:TriggerEvent("Grid_ColorsChanged")
-								  end,
+									local c = GridStatus.db.profile.colors.UNKNOWN_PET
+									c.r, c.g, c.b, c.a = r, g, b, a
+									GridStatus:TriggerEvent("Grid_ColorsChanged")
+								end,
 							hasAlpha = false,
 						},
 					},
@@ -279,12 +280,12 @@ GridStatus.options = {
 					desc = L["Set the coloring strategy of pet units."],
 					order = 200,
 					get = function()
-							  return GridStatus.db.profile.colors.PetColorType
-						  end,
+							return GridStatus.db.profile.colors.PetColorType
+						end,
 					set = function(v)
-							  GridStatus.db.profile.colors.PetColorType = v
-							  GridStatus:TriggerEvent("Grid_ColorsChanged")
-						  end,
+							GridStatus.db.profile.colors.PetColorType = v
+							GridStatus:TriggerEvent("Grid_ColorsChanged")
+						end,
 					validate = {["By Owner Class"] = L["By Owner Class"], ["By Creature Type"] = L["By Creature Type"], ["Using Fallback color"] = L["Using Fallback color"]},
 				},
 			},

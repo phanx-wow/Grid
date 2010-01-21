@@ -332,22 +332,22 @@ function GridFrameClass.prototype:SetBorderSize(borderSize)
 	local f = self.frame
 
 	local backdrop = f:GetBackdrop()
-	
+
 	backdrop.edgeSize = borderSize
 	backdrop.insets.left = borderSize
 	backdrop.insets.right = borderSize
 	backdrop.insets.top = borderSize
 	backdrop.insets.bottom = borderSize
-	
+
 	local r, g, b, a = f:GetBackdropBorderColor()
-	
+
 	f:SetBackdrop(backdrop)
 	f:SetBackdropBorderColor(r, g, b, a)
 	f:SetBackdropColor(0,0,0,1)
-	
+
 	self:SetWidth(GridFrame:GetFrameWidth())
 	self:SetHeight(GridFrame:GetFrameHeight())
-	
+
 	self:PositionAllIndicators()
 end
 
@@ -543,9 +543,9 @@ function GridFrameClass.prototype:CreateIndicator(indicator)
 	f:SetBackdropColor(1,1,1,1)
 	f:SetFrameLevel(5)
 	f:Hide()
-	
+
 	self.frame[indicator] = f
-	
+
 	self:PositionIndicator(indicator)
 end
 
@@ -648,13 +648,13 @@ function GridFrameClass.prototype:SetIndicator(indicator, color, text, value, ma
 			else
 				self.frame.IconCD:Hide()
 			end
-			
+
 			if tonumber(stack) and tonumber(stack) > 1 and GridFrame.db.profile.enableIconStackText then
 				self.frame.IconStackText:SetText(stack)
 			else
 				self.frame.IconStackText:SetText("")
 			end
-			
+
 			self.frame.IconBG:Show()
 			self.frame.Icon:Show()
 		else
@@ -1167,7 +1167,7 @@ function GridFrame:OnEnable()
 
 	self:RegisterEvent("Grid_StatusRegistered", "UpdateOptionsMenu")
 	self:RegisterEvent("Grid_StatusUnregistered", "UpdateOptionsMenu")
-	
+
 	self:RegisterEvent("Grid_ColorsChanged", "UpdateAllFrames")
 
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateFrameUnits")
@@ -1175,8 +1175,10 @@ function GridFrame:OnEnable()
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateFrameUnits")
 	self:RegisterEvent("Grid_RosterUpdated", "UpdateFrameUnits")
 
-	media.RegisterCallback(self, "LibSharedMedia_Registered", "LibSharedMedia_Update")
-	media.RegisterCallback(self, "LibSharedMedia_SetGlobal", "LibSharedMedia_Update")
+	if media then
+		media.RegisterCallback(self, "LibSharedMedia_Registered", "LibSharedMedia_Update")
+		media.RegisterCallback(self, "LibSharedMedia_SetGlobal", "LibSharedMedia_Update")
+	end
 
 	self:Reset()
 end
@@ -1272,21 +1274,21 @@ function GridFrame:UpdateFrameUnits()
 			local old_guid = frame.unitGUID
 			local unitid = frame:GetModifiedUnit()
 			local guid = unitid and UnitGUID(unitid) or nil
-			
+
 			if old_unit ~= unitid or old_guid ~= guid then
 				self:Debug("Updating", frame_name, "to", unitid, guid, "was", old_unit, old_guid)
-				
+
 				if unitid then
 					frame.unit = unitid
 					frame.unitGUID = guid
-					
+
 					if guid then
 						self:UpdateIndicators(frame)
 					end
 				else
 					frame.unit = nil
 					frame.unitGUID = nil
-					
+
 					self:ClearIndicators(frame)
 				end
 			end

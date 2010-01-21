@@ -104,10 +104,10 @@ function Grid.modulePrototype:RegisterModule(name, module)
 		module.db = self.core:AcquireDBNamespace(name)
 	end
 
-	if module.options == nil and module.extraOptions then
+	if module.extraOptions and not module.options then
 		module.options = {
 			type = "group",
-			name = (module.menuName or module.name),
+			name = module.menuName or module.name,
 			desc = string.format(L["Options for %s."], module.name),
 			args = {},
 		}
@@ -172,32 +172,6 @@ function Grid:OnInitialize()
 end
 
 function Grid:OnEnable()
-	local missingLibs = { }
-	for _, name in ipairs({ "AceLibrary", "LibStub" }) do
-		if not _G[name] then
-			table.insert(missingLibs, name)
-		end
-	end
-	for _, name in ipairs({ "AceLocale-2.2", "AceOO-2.0", "Dewdrop-2.0" }) do
-		if not AceLibrary:HasInstance(name) then
-			table.insert(missingLibs, name)
-		end
-	end
-	for _, name in ipairs({ "LibGratuity-3.0", "LibHealComm-4.0", "LibSharedMedia-3.0" }) do
-		if not LibStub(name, true) then
-			table.insert(missingLibs, name)
-		end
-	end
-	if #missingLibs > 0 then
-		StaticPopupDialogs["GRID_MISSING_LIBS"] = {
-			text = ("Grid was unable to find the following libraries:\n%s"):format(table.concat(missingLibs, ", ")),
-			button1 = OKAY,
-			timeout = 0,
-			whileDead = 1,
-		}
-		StaticPopup_Show("GRID_MISSING_LIBS")
-	end
-
 	self:RegisterEvent("ADDON_LOADED")
 	self:EnableModules()
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")

@@ -4,7 +4,7 @@
 
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local AceOO = AceLibrary("AceOO-2.0")
-local media = LibStub("LibSharedMedia-3.0")
+local media = LibStub("LibSharedMedia-3.0", true)
 local GridRoster = Grid:GetModule("GridRoster")
 
 local GridLayout = Grid:NewModule("GridLayout")
@@ -591,7 +591,7 @@ function GridLayout:StopMoveFrame()
 end
 
 function GridLayout:UpdateTabVisibility()
-	local settings = self.db.profile	
+	local settings = self.db.profile
 
 	if not InCombatLockdown() then
 		if not settings.hideTab or (not config_mode and settings.FrameLock) then
