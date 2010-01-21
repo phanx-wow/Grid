@@ -23,7 +23,7 @@ local invalidSpells = {
 local function addRange(range, check)
 	-- 100 yards is the farthest possible range
 	if range > 100 then return end
-	
+
 	if not checks[range] then
 		ranges[#ranges + 1] = range
 		table.sort(ranges)
@@ -94,6 +94,7 @@ function GridRange:OnEnable()
 	self.super.OnEnable(self)
 
 	self:ScanSpellbook()
+	self:ScheduleEvent("GridRange_ScanSpellbook", self.ScanSpellbook, 1, self)
 	self:RegisterEvent("LEARNED_SPELL_IN_TAB", "ScanSpellbook")
 	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "ScanSpellbook")
 end
@@ -112,7 +113,7 @@ end
 
 function GridRange:GetAvailableRangeList()
 	if not ranges or rangelist then return rangelist end
-	
+
 	rangelist = {}
 	for r in self:AvailableRangeIterator() do
 		rangelist[tostring(r)] = L["%d yards"]:format(r)
