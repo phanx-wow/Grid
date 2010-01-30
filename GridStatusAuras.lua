@@ -1,9 +1,14 @@
---{{{ Libraries
+--[[--------------------------------------------------------------------
+	GridStatusAuras.lua
+	GridStatus module for tracking buffs/debuffs.
+----------------------------------------------------------------------]]
 
-local Dewdrop = AceLibrary("Dewdrop-2.0")
 local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local Dewdrop = AceLibrary("Dewdrop-2.0")
+local GridRoster = Grid:GetModule("GridRoster")
 
---}}}
+local GridStatusAuras = Grid:GetModule("GridStatus"):NewModule("GridStatusAuras")
+GridStatusAuras.menuName = L["Auras"]
 
 --{{{ Get Spell Names
 local BS = {
@@ -23,25 +28,22 @@ local BS = {
 }
 --}}}
 
-GridStatusAuras = GridStatus:NewModule("GridStatusAuras")
-GridStatusAuras.menuName = L["Auras"]
-
-
 -- data used by aura scanning
 local buff_names = {}
 local player_buff_names = {}
 local debuff_names = {}
+
 local debuff_types = {
 	["Poison"] = true,
 	["Disease"] = true,
 	["Magic"] = true,
 	["Curse"] = true,
 }
+
 local abolish_types = {
 	[BS["Abolish Poison"]] = "Poison",
 	[BS["Abolish Disease"]] = "Disease",
 }
-
 
 function GridStatusAuras.StatusForSpell(spell, isBuff)
 	local prefix = "debuff_"
@@ -52,7 +54,6 @@ function GridStatusAuras.StatusForSpell(spell, isBuff)
 
 	return prefix .. string.gsub(spell, " ", "")
 end
-
 
 GridStatusAuras.defaultDB = {
 	debug = false,
@@ -136,14 +137,6 @@ GridStatusAuras.defaultDB = {
 		["range"] = false,
 		["color"] = { r = .8, g = .8, b =  0, a = 1 },
 	},
-	[GridStatusAuras.StatusForSpell(BS["Earth Shield"], true)] = {
-		["desc"] = string.format(L["Buff: %s"], BS["Earth Shield"]),
-		["text"] = BS["Earth Shield"],
-		["enable"] = true,
-		["priority"] = 91,
-		["range"] = false,
-		["color"] = { r = .8, g = .8, b =  0, a = 1 },
-	},
 	[GridStatusAuras.StatusForSpell(BS["Renew"], true)] = {
 		["desc"] = string.format(L["Buff: %s"], BS["Renew"]),
 		["text"] = BS["Renew"],
@@ -184,8 +177,15 @@ GridStatusAuras.defaultDB = {
 		["range"] = false,
 		["color"] = { r = .4, g = 0, b = .8, a = 1 },
 	},
+	[GridStatusAuras.StatusForSpell(BS["Earth Shield"], true)] = {
+		["desc"] = string.format(L["Buff: %s"], BS["Earth Shield"]),
+		["text"] = BS["Earth Shield"],
+		["enable"] = true,
+		["priority"] = 90,
+		["range"] = false,
+		["color"] = { r = .5, g = 0.7, b = 0.3, a = 1 },
+	},
 }
-
 
 GridStatusAuras.extraOptions = {
 	header_buffs = {
@@ -193,7 +193,6 @@ GridStatusAuras.extraOptions = {
 		name = L["Buffs"],
 		order = 10,
 	},
-
 	header_debufftypes_gap = {
 		type = "header",
 		order = 19,
@@ -203,7 +202,6 @@ GridStatusAuras.extraOptions = {
 		name = L["Debuff Types"],
 		order = 20,
 	},
-
 	header_abolish_gap = {
 		type = "header",
 		order = 27,
@@ -214,12 +212,10 @@ GridStatusAuras.extraOptions = {
 		desc = L["Skip units that have an active Abolish buff."],
 		get = function() return GridStatusAuras.db.profile.abolish end,
 		set = function()
-			GridStatusAuras.db.profile.abolish = 
-				not GridStatusAuras.db.profile.abolish
+			GridStatusAuras.db.profile.abolish = not GridStatusAuras.db.profile.abolish
 		end,
 		order = 28
 	},
-
 	header_debuffs_gap = {
 		type = "header",
 		order = 29,
@@ -231,20 +227,17 @@ GridStatusAuras.extraOptions = {
 	},
 }
 
-
 function GridStatusAuras:OnInitialize()
 	self.super.OnInitialize(self)
 
 	self:RegisterStatuses()
 end
 
-
 function GridStatusAuras:OnEnable()
 	self:CreateAddRemoveOptions()
 
 	self.super.OnEnable(self)
 end
-
 
 function GridStatusAuras:Reset()
 	self.super.Reset(self)
@@ -254,7 +247,6 @@ function GridStatusAuras:Reset()
 	self:CreateAddRemoveOptions()
 	self:UpdateAuraScanList()
 end
-
 
 function GridStatusAuras:EnabledStatusCount()
 	local enable_count = 0
@@ -268,7 +260,6 @@ function GridStatusAuras:EnabledStatusCount()
 	return enable_count
 end
 
-
 function GridStatusAuras:OnStatusEnable(status)
 	self:RegisterEvent("Grid_UnitJoined")
 	self:RegisterEvent("UNIT_AURA", "ScanUnitAuras")
@@ -276,7 +267,6 @@ function GridStatusAuras:OnStatusEnable(status)
 	self:UpdateAuraScanList()
 	self:UpdateAllUnitAuras()
 end
-
 
 function GridStatusAuras:OnStatusDisable(status)
 	self.core:SendStatusLostAllUnits(status)
@@ -288,7 +278,6 @@ function GridStatusAuras:OnStatusDisable(status)
 	end
 end
 
-
 function GridStatusAuras:RegisterStatuses()
 	for status, statusTbl in pairs(self.db.profile) do
 		if type(statusTbl) == "table" and statusTbl.text then
@@ -298,12 +287,10 @@ function GridStatusAuras:RegisterStatuses()
 			local order = statusTbl.order or (isBuff and 15 or 35)
 
 			self:Debug("registering", status, desc)
-			self:RegisterStatus(status, desc,
-					self:OptionsForStatus(status, isBuff), false, order)
+			self:RegisterStatus(status, desc, self:OptionsForStatus(status, isBuff), false, order)
 		end
 	end
 end
-
 
 function GridStatusAuras:UnregisterStatuses()
 	for status, moduleName, desc in self.core:RegisteredStatusIterator() do
@@ -397,7 +384,6 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 	return auraOptions
 end
 
-
 function GridStatusAuras:CreateAddRemoveOptions()
 	--self.options.args["AddRemoveHeader"] = {
 	--	type = "header",
@@ -443,7 +429,6 @@ function GridStatusAuras:CreateAddRemoveOptions()
 	end
 end
 
-
 function GridStatusAuras:AddAura(name, isBuff)
 	local status = GridStatusAuras.StatusForSpell(name, isBuff)
 	local desc
@@ -478,7 +463,6 @@ function GridStatusAuras:AddAura(name, isBuff)
 	self:OnStatusEnable(status)
 end
 
-
 function GridStatusAuras:DeleteAura(status)
 	self:UnregisterStatus(status)
 	self.options.args[status] = nil
@@ -487,18 +471,15 @@ function GridStatusAuras:DeleteAura(status)
 	self:UpdateAuraScanList()
 end
 
-
 function GridStatusAuras:UpdateAllUnitAuras()
 	for guid, unitid in GridRoster:IterateRoster() do
 		self:ScanUnitAuras(unitid)
 	end
 end
 
-
 function GridStatusAuras:Grid_UnitJoined(guid, unitid)
 	self:ScanUnitAuras(unitid)
 end
-
 
 -- Unit Aura Driver
 --
