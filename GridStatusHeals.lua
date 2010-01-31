@@ -114,7 +114,7 @@ function GridStatusHeals:OnStatusEnable(status)
 		HealComm.RegisterCallback(self, "HealComm_HealStopped")
 		HealComm.RegisterCallback(self, "HealComm_ModifierChanged")
 		HealComm.RegisterCallback(self, "HealComm_GUIDDisappeared")
-		
+
 		self:UpdateAllHeals()
 	end
 end

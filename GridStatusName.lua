@@ -51,7 +51,7 @@ function GridStatusName:OnStatusEnable(status)
 		self:RegisterEvent("Grid_UnitJoined", "UpdateGUID")
 		self:RegisterEvent("Grid_UnitChanged", "UpdateGUID")
 		self:RegisterEvent("Grid_UnitLeft", "UpdateGUID")
-		
+
 		self:RegisterEvent("Grid_ColorsChanged", "UpdateAllUnits")
 		self:UpdateAllUnits()
 	end
@@ -115,7 +115,7 @@ function GridStatusName:UpdateGUID(guid)
 			text = owner_name
 		end
 	end
-	
+
 	-- set color
 	local color = settings.class and self.core:UnitColor(guid) or settings.color
 

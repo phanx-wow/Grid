@@ -52,7 +52,7 @@ f:SetScript("OnEvent", function()
 			get = function()
 				return Grid.db.profile.minimap.hide
 			end,
-			set = function() 
+			set = function()
 				if Grid.db.profile.minimap.hide then
 					LDBIcon:Show("Grid")
 					Grid.db.profile.minimap.hide = nil

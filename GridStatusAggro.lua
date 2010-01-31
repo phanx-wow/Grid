@@ -89,11 +89,11 @@ local aggroDynamicOptions = {
 local function setupmenu()
 	local args = GridStatus.options.args["alert_aggro"].args
 	local threat = GridStatusAggro.db.profile.alert_aggro.threat
-	
+
 	if not aggroDynamicOptions.aggroColor then
 		aggroDynamicOptions.aggroColor = args.color
 	end
-	
+
 	if threat then
         args.color = nil
         args[1] = aggroDynamicOptions[1]
@@ -165,10 +165,10 @@ function GridStatusAggro:UpdateUnit(unitid)
 
 	local guid = UnitGUID(unitid)
 	local status = UnitThreatSituation(unitid)
-	
+
 	local settings = self.db.profile.alert_aggro
 	local threat = settings.threat
-	
+
 	if status and ((threat and (status > 0)) or (status > 1)) then
 		GridStatusAggro.core:SendStatusGained(guid, "alert_aggro",
 			settings.priority,

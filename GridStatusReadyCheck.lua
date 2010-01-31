@@ -40,7 +40,7 @@ local readystatus = {
 	},
 	not_ready = {
 		text = L["X"],
-		icon = READY_CHECK_NOT_READY_TEXTURE 
+		icon = READY_CHECK_NOT_READY_TEXTURE
 	},
 	afk = {
 		text = L["AFK"],
@@ -113,7 +113,7 @@ local readyCheckOptions = {
 			GridStatusReadyCheck.db.profile.ready_check.delay = v
 		end,
 	},
-	
+
 	["color"] = false,
 	["range"] = false,
 }
@@ -157,13 +157,13 @@ end
 
 function GridStatusReadyCheck:GainStatus(guid, key, settings)
 	local status = readystatus[key]
-	self.core:SendStatusGained(guid, "ready_check", 
-		settings.priority, 
-		nil, 
-		settings.colors[key], 
-		status.text, 
-		nil, 
-		nil, 
+	self.core:SendStatusGained(guid, "ready_check",
+		settings.priority,
+		nil,
+		settings.colors[key],
+		status.text,
+		nil,
+		nil,
 		status.icon)
 end
 

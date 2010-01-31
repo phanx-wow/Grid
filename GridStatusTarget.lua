@@ -13,7 +13,7 @@ GridStatusTarget.menuName = L["Target"]
 local cur_target
 
 GridStatusTarget.defaultDB = {
-	debug = false, 
+	debug = false,
 	player_target = {
 		text = L["Target"],
 		enable = true,
@@ -24,7 +24,7 @@ GridStatusTarget.defaultDB = {
 }
 
 GridStatusTarget.options = false
- 
+
 function GridStatusTarget:OnInitialize()
 	self.super.OnInitialize(self)
 	self:RegisterStatus('player_target', L["Your Target"], nil, true)
