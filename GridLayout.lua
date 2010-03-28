@@ -531,6 +531,7 @@ function GridLayout:Reset()
 	-- position and scale frame
 	self:RestorePosition()
 	self:Scale()
+	self:UpdateTabVisibility()
 end
 
 --{{{ Event handlers
