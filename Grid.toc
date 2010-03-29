@@ -14,7 +14,7 @@
 ## X-AceForum: 2525
 ## X-WoWI-ID: 5747
 
-## OptionalDeps: Ace2, DewdropLib, LibDataBroker-1.1, LibDBIcon-1.0, LibGratuity-3.0, LibHealComm-4.0, LibSharedMedia-3.0, LibWrapperHealComm-1.0, UTF8, Waterfall-1.0, SharedMedia
+## OptionalDeps: Ace2, DewdropLib, LibDataBroker-1.1, LibDBIcon-1.0, LibGratuity-3.0, LibHealComm-4.0, LibSharedMedia-3.0, UTF8, Waterfall-1.0, SharedMedia
 ## SavedVariables: GridDB
 
 #@no-lib-strip@
@@ -40,7 +40,6 @@ Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
 Libs\LibGratuity-3.0\lib.xml
 Libs\LibHealComm-4.0\LibHealComm-4.0.xml
 Libs\LibSharedMedia-3.0\lib.xml
-Libs\LibWrapperHealComm-1.0\LibWrapperHealComm-1.0.xml
 Libs\Waterfall-1.0\Waterfall-1.0.lua
 #@end-no-lib-strip@
 
