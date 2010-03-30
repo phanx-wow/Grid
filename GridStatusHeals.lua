@@ -105,7 +105,7 @@ function GridStatusHeals:OnStatusEnable(status)
 	if status == "alert_heals" then
 		-- register events
 		self:RegisterEvent("UNIT_HEALTH", "UpdateHealsForUnit")
-		self:RegisterEvent("UNIT_HEALTH_MAX", "UpdateHealsForUnit")
+		self:RegisterEvent("UNIT_MAXHEALTH", "UpdateHealsForUnit")
 
 		-- register callbacks
 		HealComm.RegisterCallback(self, "HealComm_HealStarted")
@@ -122,7 +122,7 @@ end
 function GridStatusHeals:OnStatusDisable(status)
 	if status == "alert_heals" then
 		self:UnregisterEvent("UNIT_HEALTH")
-		self:UnregisterEvent("UNIT_HEALTH_MAX")
+		self:UnregisterEvent("UNIT_MAXHEALTH")
 
 		HealComm.UnregisterCallback(self, "HealComm_HealStarted")
 		HealComm.UnregisterCallback(self, "HealComm_HealUpdated")
