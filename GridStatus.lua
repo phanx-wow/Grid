@@ -440,6 +440,8 @@ end
 --{{{ Caching status functions
 
 function GridStatus:SendStatusGained(guid, status, priority, range, color, text,  value, maxValue, texture, start, duration, stack)
+	if not guid then return end
+
 	local cache = self.cache
 	local cached
 
@@ -454,14 +456,6 @@ function GridStatus:SendStatusGained(guid, status, priority, range, color, text,
 	if text == nil then
 		text = ""
 	end
-
-	-- convert names to guid for backwards compatability
-	if guid and #guid ~= 18 then
-		-- assume we've been given a name
-		guid = GridRoster:GetGUIDByName(guid)
-	end
-
-	if not guid then return end
 
 	-- create cache for unit if needed
 	if not cache[guid] then
@@ -506,12 +500,6 @@ function GridStatus:SendStatusGained(guid, status, priority, range, color, text,
 end
 
 function GridStatus:SendStatusLost(guid, status)
-	-- convert names to guid for backwards compatability
-	if guid and #guid ~= 18 then
-		-- assume we've been given a name
-		guid = GridRoster:GetGUIDByName(guid)
-	end
-
 	if not guid then return end
 
 	-- if status isn't cached, don't send status lost event
@@ -588,20 +576,14 @@ end
 --{{{ Unit Colors
 
 function GridStatus:UnitColor(guid)
-	local colors = self.db.profile.colors
-
-	-- convert names to guid for backwards compatability
-	if guid and #guid ~= 18 then
-		-- assume we've been given a name
-		guid = GridRoster:GetGUIDByName(guid)
-	end
-
 	local unitid = GridRoster:GetUnitidByGUID(guid)
 
 	if not unitid then
 		-- bad news if we can't get a unitid
 		return
 	end
+
+	local colors = self.db.profile.colors
 
 	local owner = GridRoster:GetOwnerUnitidByUnitid(unitid)
 
