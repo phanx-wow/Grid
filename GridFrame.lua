@@ -120,13 +120,13 @@ function GridFrameClass.prototype:CreateFrames()
 	-- create healing bar
 	f.HealingBar = CreateFrame("StatusBar", nil, f)
 	f.HealingBar:SetStatusBarTexture(texture)
-	
+
 	local bar_texture = f.HealingBar:GetStatusBarTexture()
 	if bar_texture then
 		bar_texture:SetHorizTile(false)
 		bar_texture:SetVertTile(false)
 	end
-	
+
 	f.HealingBar:SetOrientation("VERTICAL")
 	f.HealingBar:SetMinMaxValues(0, 100)
 	f.HealingBar:SetValue(0)
@@ -137,13 +137,13 @@ function GridFrameClass.prototype:CreateFrames()
 	-- create bar
 	f.Bar = CreateFrame("StatusBar", nil, f)
 	f.Bar:SetStatusBarTexture(texture)
-	
+
 	bar_texture = f.Bar:GetStatusBarTexture()
 	if bar_texture then
 		bar_texture:SetHorizTile(false)
 		bar_texture:SetVertTile(false)
 	end
-	
+
 	f.Bar:SetOrientation("VERTICAL")
 	f.Bar:SetMinMaxValues(0,100)
 	f.Bar:SetValue(100)
@@ -423,7 +423,7 @@ function GridFrameClass.prototype:SetFrameTexture(texture)
 	self.frame.BarBG:SetTexture(texture)
 	self.frame.Bar:SetStatusBarTexture(texture)
 	self.frame.HealingBar:SetStatusBarTexture(texture)
-	
+
 	local bar_texture = self.frame.Bar:GetStatusBarTexture()
 	if bar_texture then
 		bar_texture:SetHorizTile(false)
