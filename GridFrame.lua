@@ -485,7 +485,7 @@ end
 function GridFrameClass.prototype:SetBarColor(r, g, b, a)
 	if GridFrame.db.profile.invertBarColor then
 		self.frame.Bar:SetStatusBarColor(r, g, b, a)
-		self.frame.BarBG:SetVertexColor(0, 0, 0, 0)
+		self.frame.BarBG:SetVertexColor(r * 0.2, g * 0.2, b * 0.2, 1)
 	else
 		self.frame.Bar:SetStatusBarColor(0, 0, 0, 0.8)
 		self.frame.BarBG:SetVertexColor(r, g, b, a)
@@ -495,13 +495,12 @@ function GridFrameClass.prototype:SetBarColor(r, g, b, a)
 end
 
 function GridFrameClass.prototype:UpdateHealingBarColor()
-	local intensity = GridFrame.db.profile.healingBar_intensity
 	if GridFrame.db.profile.invertBarColor then
 		local r, g, b, a = self.frame.Bar:GetStatusBarColor()
-		self.frame.HealingBar:SetStatusBarColor(r, g, b, a * intensity)
+		self.frame.HealingBar:SetStatusBarColor(r, g, b, a * GridFrame.db.profile.healingBar_intensity)
 	elseif self.frame.HealingBar:GetValue() > 0 then
 		local alpha = 0.8
-		local healingBar_alpha = intensity * alpha
+		local healingBar_alpha = GridFrame.db.profile.healingBar_intensity * alpha
 		local bar_alpha = 1 - (1 - alpha) / (1 - healingBar_alpha)
 		self.frame.Bar:SetStatusBarColor(0, 0, 0, bar_alpha)
 		self.frame.HealingBar:SetStatusBarColor(0, 0, 0, healingBar_alpha)
