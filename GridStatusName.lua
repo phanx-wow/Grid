@@ -87,8 +87,7 @@ function GridStatusName:UpdateVehicle(unitid)
 end
 
 function GridStatusName:UpdateUnit(unitid)
-	local guid = UnitGUID(unitid)
-	self:UpdateGUID(guid)
+	self:UpdateGUID(UnitGUID(unitid))
 end
 
 function GridStatusName:UpdateGUID(guid)
