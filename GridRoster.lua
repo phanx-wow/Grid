@@ -4,7 +4,6 @@
 ----------------------------------------------------------------------]]
 
 local GridRoster = Grid:NewModule("GridRoster")
-_G.GridRoster = GridRoster
 
 GridRoster.defaultDB = {
 	party_state = "solo",

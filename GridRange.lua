@@ -6,7 +6,6 @@ local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local Gratuity = LibStub:GetLibrary("LibGratuity-3.0")
 
 local GridRange = Grid:NewModule("GridRange")
-_G.GridRange = GridRange
 
 local ranges, checks, rangelist
 local select = select
@@ -95,8 +94,8 @@ function GridRange:OnEnable()
 
 	self:ScanSpellbook()
 	self:ScheduleEvent("GridRange_ScanSpellbook", self.ScanSpellbook, 1, self)
-	self:RegisterEvent("LEARNED_SPELL_IN_TAB", "ScanSpellbook")
-	self:RegisterEvent("CHARACTER_POINTS_CHANGED", "ScanSpellbook")
+	self:RegisterBucketEvent("LEARNED_SPELL_IN_TAB", 2, "ScanSpellbook")
+	self:RegisterBucketEvent("CHARACTER_POINTS_CHANGED", 2, "ScanSpellbook")
 end
 
 function GridRange:GetUnitRange(unit)

@@ -8,8 +8,6 @@ local GridRoster = Grid:GetModule("GridRoster")
 local GridStatus = Grid:NewModule("GridStatus", "AceModuleCore-2.0")
 GridStatus:SetModuleMixins("AceDebug-2.0", "AceEvent-2.0")
 
-_G.GridStatus = GridStatus -- Backwards compat for plugins
-
 --{{{ Module prototype
 
 GridStatus.modulePrototype.core = GridStatus

@@ -8,7 +8,6 @@ local media = LibStub("LibSharedMedia-3.0", true)
 local GridRoster = Grid:GetModule("GridRoster")
 
 local GridLayout = Grid:NewModule("GridLayout")
-_G.GridLayout = GridLayout
 
 --{{{ ConfigMode support
 
