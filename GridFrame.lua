@@ -2,8 +2,10 @@
 	GridFrame.lua
 ----------------------------------------------------------------------]]
 
+local _, ns = ...
+local L = ns.L
+
 local AceOO = AceLibrary("AceOO-2.0")
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
 local GridRange = Grid:GetModule("GridRange")
 
 local media = LibStub("LibSharedMedia-3.0", true)
@@ -1115,7 +1117,7 @@ GridFrame.options = {
 						GridFrame.db.profile.orientation = v
 						GridFrame:WithAllFrames(function(f) f:SetOrientation(v) end)
 					end,
-					validate = { ["VERTICAL"] = L["VERTICAL"], ["HORIZONTAL"] = L["HORIZONTAL"] }
+					validate = { ["VERTICAL"] = L["Vertical"], ["HORIZONTAL"] = L["Horizontal"] }
 				},
 				["textorientation"] = {
 					type = "text",
@@ -1128,7 +1130,7 @@ GridFrame.options = {
 						GridFrame.db.profile.textorientation = v
 						GridFrame:WithAllFrames(function(f) f:SetTextOrientation(v) end)
 					end,
-					validate = { ["VERTICAL"] = L["VERTICAL"], ["HORIZONTAL"] = L["HORIZONTAL"] }
+					validate = { ["VERTICAL"] = L["Vertical"], ["HORIZONTAL"] = L["Horizontal"] }
 				},
 			},
 		},

@@ -3,7 +3,9 @@
 	Russian (Русский) localization for Grid.
 ----------------------------------------------------------------------]]
 
-AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("ruRU", function() return {
+if GetLocale() ~= "ruRU" then return end
+local _, ns = ...
+ns.L = {
 
 --{{{ GridCore
 	["Debugging"] = "Отладка",
@@ -80,8 +82,8 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("ruRU", function() 
 	["Set frame orientation."] = "Установить ориеетацию фреймов",
 	["Orientation of Text"] = "Ориентация текста",
 	["Set frame text orientation."] = "Установить ориентацию текста фреймов",
-	["VERTICAL"] = "Вертикально",
-	["HORIZONTAL"] = "Горизонтально",
+	["Vertical"] = "Вертикально",
+	["Horizontal"] = "Горизонтально",
 	["Icon Size"] = "Размер иконки",
 	["Adjust the size of the center icon."] = "Настройка размера значка в центре",
 	["Icon Border Size"] = "Размер границы значка",
@@ -124,15 +126,15 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("ruRU", function() 
 	["Click through the Grid Frame"] = "Выбирать через окно Grid",
 	["Allows mouse click through the Grid Frame."] = "Разрешает мышкой кликать сквозь окно Grid",
 
-	["CENTER"] = "Центр",
-	["TOP"] = "Вверху",
-	["BOTTOM"] = "Внизу",
-	["LEFT"] = "Слева",
-	["RIGHT"] = "Справа",
-	["TOPLEFT"] = "Вверху Слева",
-	["TOPRIGHT"] = "Вверху Справа",
-	["BOTTOMLEFT"] = "Внизу Слева",
-	["BOTTOMRIGHT"] = "Внизу Справа",
+	["Center"] = "Центр",
+	["Top"] = "Вверху",
+	["Bottom"] = "Внизу",
+	["Left"] = "Слева",
+	["Right"] = "Справа",
+	["Top Left"] = "Вверху Слева",
+	["Top Right"] = "Вверху Справа",
+	["Bottom Left"] = "Внизу Слева",
+	["Bottom Right"] = "Внизу Справа",
 
 	-- Display options
 	["Padding"] = "Заполнение",
@@ -378,4 +380,4 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("ruRU", function() 
 	["Talking"] = "Говорит",
 --}}}
 
-} end)
+}

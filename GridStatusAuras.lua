@@ -3,7 +3,9 @@
 	GridStatus module for tracking buffs/debuffs.
 ----------------------------------------------------------------------]]
 
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local _, ns = ...
+local L = ns.L
+
 local Dewdrop = AceLibrary("Dewdrop-2.0")
 local GridRoster = Grid:GetModule("GridRoster")
 

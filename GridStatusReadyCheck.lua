@@ -4,7 +4,8 @@
 	Created by Greltok.
 ----------------------------------------------------------------------]]
 
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local _, ns = ...
+local L = ns.L
 
 local GridStatusReadyCheck = Grid:GetModule("GridStatus"):NewModule("GridStatusReadyCheck")
 GridStatusReadyCheck.menuName = L["Ready Check"]

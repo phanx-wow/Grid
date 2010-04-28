@@ -4,7 +4,9 @@
 	Created by neXter, modified by Pastamancer.
 ----------------------------------------------------------------------]]--
 
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local _, ns = ...
+local L = ns.L
+
 local GridRange = Grid:GetModule("GridRange")
 local GridRoster = Grid:GetModule("GridRoster")
 

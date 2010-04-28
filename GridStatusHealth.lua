@@ -3,7 +3,9 @@
 	GridStatus module for tracking unit health.
 ----------------------------------------------------------------------]]
 
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local _, ns = ...
+local L = ns.L
+
 local GridRoster = Grid:GetModule("GridRoster")
 
 local GridStatusHealth = Grid:GetModule("GridStatus"):NewModule("GridStatusHealth")

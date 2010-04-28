@@ -2,7 +2,9 @@
 	GridRange.lua
 ----------------------------------------------------------------------]]
 
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local _, ns = ...
+local L = ns.L
+
 local Gratuity = LibStub:GetLibrary("LibGratuity-3.0")
 
 local GridRange = Grid:NewModule("GridRange")

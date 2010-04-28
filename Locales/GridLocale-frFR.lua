@@ -3,7 +3,9 @@
 	French (Français) localization for Grid.
 ----------------------------------------------------------------------]]
 
-AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("frFR", function() return {
+if GetLocale() ~= "frFR" then return end
+local _, ns = ...
+ns.L = {
 
 --{{{ GridCore
 	["Debugging"] = "Débogage",
@@ -80,8 +82,8 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("frFR", function() 
 	["Set frame orientation."] = "Détermine l'orientation de la grille.",
 	["Orientation of Text"] = "Orientation du texte",
 	["Set frame text orientation."] = "Détermine l'orientation du texte de la grille.",
-	["VERTICAL"] = "Vertical",
-	["HORIZONTAL"] = "Horizontal",
+	["Vertical"] = "Vertical",
+	["Horizontal"] = "Horizontal",
 	["Icon Size"] = "Taille de l'icône centrale",
 	["Adjust the size of the center icon."] = "Modifie la taille de l'icône centrale.",
 	["Icon Border Size"] = "Taille de la bordure de l'icône centrale",
@@ -124,15 +126,15 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("frFR", function() 
 	["Click through the Grid Frame"] = "Cliquer à travers Grid",
 	["Allows mouse click through the Grid Frame."] = "Permet les clics à travers le cadre de Grid.",
 
-	["CENTER"] = "Centre",
-	["TOP"] = "Haut",
-	["BOTTOM"] = "Bas",
-	["LEFT"] = "Gauche",
-	["RIGHT"] = "Droite",
-	["TOPLEFT"] = "Hautgauche",
-	["TOPRIGHT"] = "Hautdroite",
-	["BOTTOMLEFT"] = "Basgauche",
-	["BOTTOMRIGHT"] = "Basdroite",
+	["Center"] = "Centre",
+	["Top"] = "Haut",
+	["Bottom"] = "Bas",
+	["Left"] = "Gauche",
+	["Right"] = "Droite",
+	["Top Left"] = "Hautgauche",
+	["Top Right"] = "Hautdroite",
+	["Bottom Left"] = "Basgauche",
+	["Bottom Right"] = "Basdroite",
 
 	-- Display options
 	["Padding"] = "Espacement (cellules)",
@@ -288,6 +290,14 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("frFR", function() 
 	["Incoming heals"] = "Soins entrants",
 	["Ignore Self"] = "Vous ignorer",
 	["Ignore heals cast by you."] = "Ignore les soins que vous incantez.",
+--	["Heal filter"] = true,
+--	["Show incoming heals for the selected heal types."] = true,
+--	["Direct heals"] = true,
+--	["Include direct heals."] = true,
+--	["Channeled heals"] = true,
+--	["Include channeled heals."] = true,
+--	["HoT heals"] = true,
+--	["Include heal over time effects."] = true,
 --}}}
 
 --{{{ GridStatusHealth
@@ -370,4 +380,4 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("frFR", function() 
 	["Talking"] = "Parle",
 --}}}
 
-} end)
+}

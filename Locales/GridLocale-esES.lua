@@ -3,7 +3,9 @@
 	Spanish (Español - EU) localization for Grid.
 ----------------------------------------------------------------------]]
 
-AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esES", function() return {
+if GetLocale() ~= "esES" then return end
+local _, ns = ...
+ns.L = {
 
 --{{{ GridCore
 	["Debugging"] = "Debugging",
@@ -80,8 +82,8 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esES", function() 
 	["Set frame orientation."] = "Establece la orientación de la fuente.",
 	["Orientation of Text"] = "Orientación del texto",
 	["Set frame text orientation."] = "Establece la orientación del texto.",
-	["VERTICAL"] = "Vertical",
-	["HORIZONTAL"] = "Horizontal",
+	["Vertical"] = "Vertical",
+	["Horziontal"] = "Horizontal",
 	["Icon Size"] = "Tamaño de icono",
 	["Adjust the size of the center icon."] = "Ajusta el tamaño del icono central.",
 	["Icon Border Size"] = "Tamaño del borde del icono",
@@ -124,15 +126,15 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esES", function() 
 	["Click through the Grid Frame"] = "Click a través de Grid",
 	["Allows mouse click through the Grid Frame."] = "Permite hacer click a través de la ventana de Grid.",
 
-	["CENTER"] = "Centro",
-	["TOP"] = "Arriba",
-	["BOTTOM"] = "Abajo",
-	["LEFT"] = "Izquierda",
-	["RIGHT"] = "Derecha",
-	["TOPLEFT"] = "Superior-Izquierda",
-	["TOPRIGHT"] = "Superior-Derecha",
-	["BOTTOMLEFT"] = "Inferior-Izquierda",
-	["BOTTOMRIGHT"] = "Inferior-Derecha",
+	["Center"] = "Centro",
+	["Top"] = "Arriba",
+	["Bottom"] = "Abajo",
+	["Left"] = "Izquierda",
+	["Right"] = "Derecha",
+	["Top Left"] = "Superior-Izquierda",
+	["Top Right"] = "Superior-Derecha",
+	["Bottom Left"] = "Inferior-Izquierda",
+	["Bottom Right"] = "Inferior-Derecha",
 
 	-- Display options
 	["Padding"] = "Relleno",
@@ -278,7 +280,7 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esES", function() 
 	["Show if missing"] = "Mostrar si falta",
 	["Display status only if the buff is not active."] = "Mostrar estado sólo si el bufo no está activo",
 	["Filter Abolished units"] = "Filtrar unidades eliminadas",
-	["Skip units that have an active Abolish buff."] = "Se salta las unidades que tienen un bufo activo de Suprimir", 
+	["Skip units that have an active Abolish buff."] = "Se salta las unidades que tienen un bufo activo de Suprimir",
 	["Show duration"] = "Mostrar duración",
 	["Show the time remaining, for use with the center icon cooldown."] = "Muestra el tiempo restante, para usar con el icono de cooldown central",
 --}}}
@@ -378,4 +380,4 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esES", function() 
 	["Talking"] = "Hablando",
 --}}}
 
-} end)
+}

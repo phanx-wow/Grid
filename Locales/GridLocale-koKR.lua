@@ -3,7 +3,9 @@
 	Korean (한국어) localization for Grid.
 ----------------------------------------------------------------------]]
 
-AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("koKR", function() return {
+if GetLocale() ~= "koKR" then return end
+local _, ns = ...
+ns.L = {
 
 --{{{ GridCore
 	["Debugging"] = "디버깅",
@@ -80,8 +82,8 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("koKR", function() 
 	["Set frame orientation."] = "프레임의 방향을 설정합니다.",
 	["Orientation of Text"] = "문자의 방향",
 	["Set frame text orientation."] = "프레임 문자의 방향을 설정합니다.",
-	["VERTICAL"] = "세로",
-	["HORIZONTAL"] = "가로",
+	["Vertical"] = "세로",
+	["Horizontal"] = "가로",
 	["Icon Size"] = "아이콘 크기",
 	["Adjust the size of the center icon."] = "중앙 아이콘의 크기를 조정합니다.",
 	["Icon Border Size"] = "아이콘 테두리 크기",
@@ -124,15 +126,15 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("koKR", function() 
 	["Click through the Grid Frame"] = "창을 통해 클릭",
 	["Allows mouse click through the Grid Frame."] = "배치 창 위의 마우스 클릭을 허락합니다.",
 
-	["CENTER"] = "중앙",
-	["TOP"] = "상단",
-	["BOTTOM"] = "하단",
-	["LEFT"] = "좌측",
-	["RIGHT"] = "우측",
-	["TOPLEFT"] = "좌측 상단",
-	["TOPRIGHT"] = "우측 상단",
-	["BOTTOMLEFT"] = "좌측 하단",
-	["BOTTOMRIGHT"] = "우측 하단",
+	["Center"] = "중앙",
+	["Top"] = "상단",
+	["Bottom"] = "하단",
+	["Left"] = "좌측",
+	["Right"] = "우측",
+	["Top Left"] = "좌측 상단",
+	["Top Right"] = "우측 상단",
+	["Bottom Left"] = "좌측 하단",
+	["Bottom Right"] = "우측 하단",
 
 	-- Display options
 	["Padding"] = "패팅",
@@ -378,4 +380,4 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("koKR", function() 
 	["Talking"] = "대화중",
 --}}}
 
-} end)
+}

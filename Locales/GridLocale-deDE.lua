@@ -3,7 +3,9 @@
 	German (Deutsch) localization for Grid.
 ----------------------------------------------------------------------]]
 
-AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("deDE", function() return {
+if GetLocale() ~= "deDE" then return end
+local _, ns = ...
+ns.L = {
 
 --{{{ GridCore
 	["Debugging"] = "Debuggen",
@@ -80,8 +82,8 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("deDE", function() 
 	["Set frame orientation."] = "Ausrichtung der Statusleiste festlegen.",
 	["Orientation of Text"] = "Ausrichtung des Texts",
 	["Set frame text orientation."] = "Text Ausrichtung festlegen.",
-	["VERTICAL"] = "Vertikal",
-	["HORIZONTAL"] = "Horizontal",
+	["Vertical"] = "Vertikal",
+	["Horziontal"] = "Horizontal",
 	["Icon Size"] = "Symbolgröße",
 	["Adjust the size of the center icon."] = "Die Größe des Symbols im Zentrum anpassen.",
 	["Icon Border Size"] = "Symbolrandbreite",
@@ -124,15 +126,15 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("deDE", function() 
 	["Click through the Grid Frame"] = "Durch Grid-Rahmen klicken",
 	["Allows mouse click through the Grid Frame."] = "Erlaubt Mausklicks durch den Grid-Rahmen.",
 
-	["CENTER"] = "Zentriert",
-	["TOP"] = "Oben",
-	["BOTTOM"] = "Unten",
-	["LEFT"] = "Links",
-	["RIGHT"] = "Rechts",
-	["TOPLEFT"] = "Obenlinks",
-	["TOPRIGHT"] = "Obenrechts",
-	["BOTTOMLEFT"] = "Untenlinks",
-	["BOTTOMRIGHT"] = "Untenrechts",
+	["Center"] = "Zentriert",
+	["Top"] = "Oben",
+	["Bottom"] = "Unten",
+	["Left"] = "Links",
+	["Right"] = "Rechts",
+	["Top Left"] = "Obenlinks",
+	["Top Right"] = "Obenrechts",
+	["Bottom Left"] = "Untenlinks",
+	["Bottom Right"] = "Untenrechts",
 
 	-- Display options
 	["Padding"] = "Zwischenabstand",
@@ -378,4 +380,4 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("deDE", function() 
 	["Talking"] = "Redet",
 --}}}
 
-} end)
+}

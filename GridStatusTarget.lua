@@ -4,7 +4,8 @@
 	Created by noha, modified by Pastamancer.
 ----------------------------------------------------------------------]]
 
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local _, ns = ...
+local L = ns.L
 
 local GridStatusTarget = Grid:GetModule("GridStatus"):NewModule("GridStatusTarget")
 GridStatusTarget.menuName = L["Target"]

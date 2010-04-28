@@ -3,7 +3,9 @@
 	Registers some layouts with GridLayout.
 ----------------------------------------------------------------------]]
 
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local _, ns = ...
+local L = ns.L
+
 local GridLayout = Grid:GetModule("GridLayout")
 
 GridLayout:AddLayout(L["None"], {})

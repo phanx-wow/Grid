@@ -3,7 +3,9 @@
 	Latin American Spanish (Español - AL) localization for Grid.
 ----------------------------------------------------------------------]]
 
-AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esMX", function() return {
+if GetLocale() ~= "esMX" then return end
+local _, ns = ...
+ns.L = {
 
 --{{{ GridCore
 	["Debugging"] = "Debugging",
@@ -80,8 +82,8 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esMX", function() 
 	["Set frame orientation."] = "Establece la orientación de la fuente.",
 	["Orientation of Text"] = "Orientación del texto",
 	["Set frame text orientation."] = "Establece la orientación del texto.",
-	["VERTICAL"] = "Vertical",
-	["HORIZONTAL"] = "Horizontal",
+	["Vertical"] = "Vertical",
+	["Horiztonal"] = "Horizontal",
 	["Icon Size"] = "Tamaño de icono",
 	["Adjust the size of the center icon."] = "Ajusta el tamaño del icono central.",
 	["Icon Border Size"] = "Tamaño del borde del icono",
@@ -124,15 +126,15 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esMX", function() 
 	["Click through the Grid Frame"] = "Click a través de Grid",
 	["Allows mouse click through the Grid Frame."] = "Permite hacer click a través de la ventana de Grid.",
 
-	["CENTER"] = "Centro",
-	["TOP"] = "Arriba",
-	["BOTTOM"] = "Abajo",
-	["LEFT"] = "Izquierda",
-	["RIGHT"] = "Derecha",
-	["TOPLEFT"] = "Superior-Izquierda",
-	["TOPRIGHT"] = "Superior-Derecha",
-	["BOTTOMLEFT"] = "Inferior-Izquierda",
-	["BOTTOMRIGHT"] = "Inferior-Derecha",
+	["Center"] = "Centro",
+	["Top"] = "Arriba",
+	["Bottom"] = "Abajo",
+	["Left"] = "Izquierda",
+	["Right"] = "Derecha",
+	["Top Left"] = "Superior-Izquierda",
+	["Top Right"] = "Superior-Derecha",
+	["Bottom Left"] = "Inferior-Izquierda",
+	["Bottom Right"] = "Inferior-Derecha",
 
 	-- Display options
 	["Padding"] = "Relleno",
@@ -379,4 +381,4 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("esMX", function() 
 	["Talking"] = "Hablando",
 --}}}
 
-} end)
+}

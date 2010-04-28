@@ -3,7 +3,9 @@
 	Traditional Chinese (正體中文) localization for Grid.
 ----------------------------------------------------------------------]]
 
-AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhTW", function() return {
+if GetLocale() ~= "esES" then return end
+local _, ns = ...
+ns.L = {
 
 --{{{ GridCore
 	["Debugging"] = "除錯",
@@ -13,12 +15,13 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhTW", function() 
 	["Configure"] = "設定",
 	["Configure Grid"] = "設定 Grid",
 	["Hide minimap icon"] = "隱藏小地圖按鈕",
-	["Grid is disabled: use '/grid standby' to enable."] = "Gird 已被禁用：輸入'/grid standby'的指令啟用。",
+	["Grid is disabled: use '/grid standby' to enable."] = "Grid 已被禁用：輸入'/grid standby'的指令啟用。",
 --}}}
 
 --{{{ GridFrame
 	["Frame"] = "框架",
 	["Options for GridFrame."] = "GridFrame 設定選項。",
+
 	["Show Tooltip"] = "顯示提示訊息",
 	["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."] = "顯示單位框架的提示訊息。選擇「總是」，「永不」或「戰鬥外」。",
 	["Always"] = "總是",
@@ -79,8 +82,8 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhTW", function() 
 	["Set frame orientation."] = "設定框架排列方式。",
 	["Orientation of Text"] = "文字排列方式",
 	["Set frame text orientation."] = "設定框架中文字排列方式。",
-	["VERTICAL"] = "垂直",
-	["HORIZONTAL"] = "水平",
+	["Vertical"] = "垂直",
+	["Horizontal"] = "水平",
 	["Icon Size"] = "圖示大小",
 	["Adjust the size of the center icon."] = "調整中央圖示大小。",
 	["Icon Border Size"] = "圖示邊框大小",
@@ -98,6 +101,8 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhTW", function() 
 	["Drag this tab to move Grid."] = "拖動此標簽移動 Grid。",
 	["Lock Grid to hide this tab."] = "鎖定 Grid 隱藏此標簽。",
 	["Alt-Click to permanantly hide this tab."] = "Alt-單擊總是隱藏此標簽。。",
+
+	-- Layout options
 	["Show Frame"] = "顯示框架",
 
 	["Solo Layout"] = "單人版面編排",
@@ -121,15 +126,15 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhTW", function() 
 	["Click through the Grid Frame"] = "透過點擊 Grid 框架",
 	["Allows mouse click through the Grid Frame."] = "允許透過滑鼠點擊 Grid 框架。",
 
-	["CENTER"] = "中",
-	["TOP"] = "上",
-	["BOTTOM"] = "下",
-	["LEFT"] = "左",
-	["RIGHT"] = "右",
-	["TOPLEFT"] = "左上",
-	["TOPRIGHT"] = "右上",
-	["BOTTOMLEFT"] = "左下",
-	["BOTTOMRIGHT"] = "右下",
+	["Center"] = "中",
+	["Top"] = "上",
+	["Bottom"] = "下",
+	["Left"] = "左",
+	["Right"] = "右",
+	["Top Left"] = "左上",
+	["Top Right"] = "右上",
+	["Bottom Left"] = "左下",
+	["Bottom Right"] = "右下",
 
 	-- Display options
 	["Padding"] = "間距",
@@ -285,6 +290,14 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhTW", function() 
 	["Incoming heals"] = "治療中",
 	["Ignore Self"] = "忽略自己",
 	["Ignore heals cast by you."] = "忽略自己施放的治療法術。",
+--	["Heal filter"] = true,
+--	["Show incoming heals for the selected heal types."] = true,
+--	["Direct heals"] = true,
+--	["Include direct heals."] = true,
+--	["Channeled heals"] = true,
+--	["Include channeled heals."] = true,
+--	["HoT heals"] = true,
+--	["Include heal over time effects."] = true,
 --}}}
 
 --{{{ GridStatusHealth
@@ -367,4 +380,4 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhTW", function() 
 	["Talking"] = "說話中",
 --}}}
 
-} end)
+}

@@ -2,7 +2,16 @@
 	GridCore.lua
 ----------------------------------------------------------------------]]
 
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
+local _, ns = ...
+
+if not ns.L then ns.L = { } end
+local L = setmetatable(ns.L, {
+	__index = function(t, k)
+		t[k] = k
+		return k
+	end
+})
+
 local waterfall = AceLibrary:HasInstance("Waterfall-1.0") and AceLibrary("Waterfall-1.0")
 
 --{{{  Initialization
@@ -13,6 +22,7 @@ Grid:RegisterDB("GridDB")
 Grid.debugFrame = ChatFrame1
 
 _G.Grid = Grid
+Grid.L = L
 
 --{{{ AceOptions table
 

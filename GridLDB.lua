@@ -3,6 +3,9 @@
 	Creates a DataBroker launcher for Grid.
 ----------------------------------------------------------------------]]
 
+local _, ns = ...
+local L = ns.L
+
 local DataBroker = LibStub("LibDataBroker-1.1", true)
 if not DataBroker then return end
 
@@ -10,7 +13,6 @@ local Dewdrop = AceLibrary:HasInstance("Dewdrop-2.0") and AceLibrary("Dewdrop-2.
 if not Dewdrop then return end
 
 local Waterfall = AceLibrary:HasInstance("Waterfall-1.0") and AceLibrary("Waterfall-1.0")
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
 
 local GridBroker = DataBroker:NewDataObject("Grid", {
 	type = "launcher",

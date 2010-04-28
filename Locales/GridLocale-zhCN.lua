@@ -3,7 +3,9 @@
 	Simplified Chinese (简体中文) localization for Grid.
 ----------------------------------------------------------------------]]
 
-AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhCN", function() return {
+if GetLocale() ~= "zhCN" then return end
+local _, ns = ...
+ns.L = {
 
 --{{{ GridCore
 	["Debugging"] = "除错",
@@ -80,8 +82,8 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhCN", function() 
 	["Set frame orientation."] = "设置框架方向。",
 	["Orientation of Text"] = "文字方向",
 	["Set frame text orientation."] = "设置文字方向。",
-	["VERTICAL"] = "竖直",
-	["HORIZONTAL"] = "水平",
+	["Vertical"] = "竖直",
+	["Horizontal"] = "水平",
 	["Icon Size"] = "图标大小",
 	["Adjust the size of the center icon."] = "调整中心图标的尺寸。",
 	["Icon Border Size"] = "图标外框大小",
@@ -124,15 +126,15 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhCN", function() 
 	["Click through the Grid Frame"] = "透过 Grid 框体点击",
 	["Allows mouse click through the Grid Frame."] = "是否允许透过 Grid 框体点击。",
 
-	["CENTER"] = "中心",
-	["TOP"] = "顶部",
-	["BOTTOM"] = "底部",
-	["LEFT"] = "左侧",
-	["RIGHT"] = "右侧",
-	["TOPLEFT"] = "左上",
-	["TOPRIGHT"] = "右上",
-	["BOTTOMLEFT"] = "左下",
-	["BOTTOMRIGHT"] = "右下",
+	["Center"] = "中心",
+	["Top"] = "顶部",
+	["Bottom"] = "底部",
+	["Left"] = "左侧",
+	["Right"] = "右侧",
+	["Top Left"] = "左上",
+	["Top Right"] = "右上",
+	["Bottom Left"] = "左下",
+	["Bottom Right"] = "右下",
 
 	-- Display options
 	["Padding"] = "填白",
@@ -378,4 +380,4 @@ AceLibrary("AceLocale-2.2"):new("Grid"):RegisterTranslations("zhCN", function() 
 	["Talking"] = "正在说话",
 --}}}
 
-} end)
+}

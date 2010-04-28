@@ -3,14 +3,16 @@
 	GridStatus module for tracking incoming healing spells.
 ----------------------------------------------------------------------]]
 
+local _, ns = ...
+local L = ns.L
+
 local HealComm = LibStub("LibHealComm-4.0", true)
 if not HealComm then return end
 
+local GridRoster = Grid:GetModule("GridRoster")
+
 local settings
 local playerGUID
-
-local L = AceLibrary("AceLocale-2.2"):new("Grid")
-local GridRoster = Grid:GetModule("GridRoster")
 
 local GridStatusHeals = Grid:GetModule("GridStatus"):NewModule("GridStatusHeals")
 GridStatusHeals.menuName = L["Heals"]
