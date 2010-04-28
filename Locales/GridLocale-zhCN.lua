@@ -16,6 +16,10 @@ ns.L = {
 	["Configure Grid"] = "配置 Grid",
 	["Hide minimap icon"] = "隐藏迷你地图按钮",
 	["Grid is disabled: use '/grid standby' to enable."] = "Gird 已被禁用：使用“/grid standby”命令启用。",
+--	["Enable dual profile"] = "",
+--	["Automatically swap profiles when switching talent specs."] = "",
+--	["Dual profile"] = "",
+--	["Select the profile to swap with the current profile when switching talent specs."] = "",
 --}}}
 
 --{{{ GridFrame

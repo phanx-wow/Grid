@@ -16,6 +16,10 @@ ns.L = {
 	["Configure Grid"] = "Configure Grid.",
 	["Hide minimap icon"] = "Cacher icône minicarte",
 	["Grid is disabled: use '/grid standby' to enable."] = "Grid est désactivé : utilisez '/grid standby' pour l'activer.",
+--	["Enable dual profile"] = "",
+--	["Automatically swap profiles when switching talent specs."] = "",
+--	["Dual profile"] = "",
+--	["Select the profile to swap with the current profile when switching talent specs."] = "",
 --}}}
 
 --{{{ GridFrame

@@ -167,9 +167,57 @@ end
 
 --}}}
 
+local activeTalentGroup
+
 function Grid:OnInitialize()
 	self:RegisterDefaults("profile", Grid.defaults)
 	self:RegisterChatCommand("/grid", self.options)
+
+	local function NoDualSpec()
+		return GetNumTalentGroups() == 1
+	end
+
+	self.options.args.profile.args.choose.order = 1
+	self.options.args.profile.args.other.order = 2
+	self.options.args.profile.args.copy.order = 3
+	self.options.args.profile.args.delete.order = 4
+	self.options.args.profile.args.reset.order = 5
+
+	self.options.args.profile.args.spacer = {
+		type = "header",
+		order = 6,
+		disabled = true,
+		hidden = NoDualSpec,
+	}
+	self.options.args.profile.args.dualEnabled = {
+		name = L["Enable dual profile"],
+		desc = L["Automatically swap profiles when switching talent specs."],
+		type = "toggle",
+		order = 7,
+		get = function() return self.db.char.enabled end,
+		set = function(enabled)
+			if enabled and not self.db.char.talentGroup then
+				self.db.char.talentGroup = activeTalentGroup
+				self.db.char.profile = self:GetProfile()
+				self.db.char.enabled = true
+			else
+				self.db.char.enabled = enabled
+				self:CheckDualSpecState()
+			end
+		end,
+		hidden = NoDualSpec,
+	}
+	self.options.args.profile.args.dualProfile = {
+		name = L["Dual profile"],
+		desc = L["Select the profile to swap with the current profile when switching talent specs."],
+		type = "text",
+		order = 8,
+		get = function() return self.db.char.profile or self:GetProfile() end,
+		set = function(value) self.db.char.profile = value end,
+		validate = self["acedb-profile-list"],
+		hidden = NoDualSpec,
+		disabled = function() return not self.db.char.enabled end,
+	}
 
 	-- we need to save debugging state over sessions :(
 	self.debugging = self.db.profile.debug
@@ -183,11 +231,18 @@ end
 
 function Grid:OnEnable()
 	self:RegisterEvent("ADDON_LOADED")
+
 	self:EnableModules()
+
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+
 	self:TriggerEvent("Grid_Enabled")
+
+	activeTalentGroup = GetActiveTalentGroup()
+	self:CheckDualSpecState()
+	self:RegisterEvent("PLAYER_TALENT_UPDATE")
 end
 
 StaticPopupDialogs["GRID_DISABLED"] = {
@@ -270,6 +325,18 @@ function Grid:ResetModules()
 	end
 end
 
+function Grid:CheckDualSpecState()
+	if self.db.char.enabled and self.db.char.talentGroup ~= activeTalentGroup then
+		local currentProfile = self:GetProfile()
+		local newProfile = self.db.char.profile
+		self.db.char.talentGroup = activeTalentGroup
+		if newProfile ~= currentProfile then
+			self:SetProfile(newProfile)
+			self.db.char.profile = currentProfile
+		end
+	end
+end
+
 --{{{ Event handlers
 
 function Grid:PLAYER_ENTERING_WORLD()
@@ -288,6 +355,14 @@ function Grid:PLAYER_REGEN_ENABLED()
 	if not Grid.inCombat then
 		self:Debug("Leaving combat")
 		self:TriggerEvent("Grid_LeavingCombat")
+	end
+end
+
+function Grid:PLAYER_TALENT_UPDATE()
+	local newTalentGroup = GetActiveTalentGroup()
+	if activeTalentGroup ~= newTalentGroup then
+		activeTalentGroup = newTalentGroup
+		self:CheckDualSpecState()
 	end
 end
 
