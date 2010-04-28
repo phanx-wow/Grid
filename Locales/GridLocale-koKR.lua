@@ -16,10 +16,10 @@ ns.L = {
 	["Configure Grid"] = "Grid 옵션을 설정합니다.",
 	["Hide minimap icon"] = "미니맵 아이콘 숨김",
 	["Grid is disabled: use '/grid standby' to enable."] = "Grid가 비활성화 되었을시: '/grid standby'를 입력하면 활성화 됩니다.",
---	["Enable dual profile"] = "",
---	["Automatically swap profiles when switching talent specs."] = "",
---	["Dual profile"] = "",
---	["Select the profile to swap with the current profile when switching talent specs."] = "",
+	["Enable dual profile"] = "이중 프로필 사용",
+	["Automatically swap profiles when switching talent specs."] = "특성 전환시 자동으로 프로필을 변경합니다.",
+	["Dual profile"] = "이중 프로필",
+	["Select the profile to swap with the current profile when switching talent specs."] = "특성 전환시 현재 프로필과 바꿀 프로필을 선택합니다.",
 --}}}
 
 --{{{ GridFrame
