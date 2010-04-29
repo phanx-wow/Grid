@@ -3,7 +3,7 @@
 	Traditional Chinese (正體中文) localization for Grid.
 ----------------------------------------------------------------------]]
 
-if GetLocale() ~= "esES" then return end
+if GetLocale() ~= "zhTW" then return end
 local _, ns = ...
 ns.L = {
 
@@ -16,10 +16,10 @@ ns.L = {
 	["Configure Grid"] = "設定 Grid",
 	["Hide minimap icon"] = "隱藏小地圖按鈕",
 	["Grid is disabled: use '/grid standby' to enable."] = "Grid 已被禁用：輸入'/grid standby'的指令啟用。",
---	["Enable dual profile"] = "",
---	["Automatically swap profiles when switching talent specs."] = "",
---	["Dual profile"] = "",
---	["Select the profile to swap with the current profile when switching talent specs."] = "",
+	["Enable dual profile"] = "啟用雙天賦配置",
+	["Automatically swap profiles when switching talent specs."] = "當切換天賦的時候自動切換配置",
+	["Dual profile"] = "雙天賦配置",
+	["Select the profile to swap with the current profile when switching talent specs."] = "當切換天賦的時候選擇配置文件替換當前配置文件",
 --}}}
 
 --{{{ GridFrame
@@ -294,14 +294,14 @@ ns.L = {
 	["Incoming heals"] = "治療中",
 	["Ignore Self"] = "忽略自己",
 	["Ignore heals cast by you."] = "忽略自己施放的治療法術。",
---	["Heal filter"] = true,
---	["Show incoming heals for the selected heal types."] = true,
---	["Direct heals"] = true,
---	["Include direct heals."] = true,
---	["Channeled heals"] = true,
---	["Include channeled heals."] = true,
---	["HoT heals"] = true,
---	["Include heal over time effects."] = true,
+	["Heal filter"] = "治療過濾",
+	["Show incoming heals for the selected heal types."] = "顯示治療中選擇的治療類型",
+	["Direct heals"] = "直接治療",
+	["Include direct heals."] = "加入直接治療",
+	["Channeled heals"] = "引導治療",
+	["Include channeled heals."] = "加入引導治療",
+	["HoT heals"] = "HoT治療",
+	["Include heal over time effects."] = "加入(HoT)持續回血效果",
 --}}}
 
 --{{{ GridStatusHealth
