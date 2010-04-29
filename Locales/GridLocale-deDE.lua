@@ -16,10 +16,10 @@ ns.L = {
 	["Configure Grid"] = "Grid konfigurieren",
 	["Hide minimap icon"] = "Minikarten Button verstecken",
 	["Grid is disabled: use '/grid standby' to enable."] = "Grid ist ausgeschaltet: Tippe '/grid standby' zum einschalten.",
---	["Enable dual profile"] = "",
---	["Automatically swap profiles when switching talent specs."] = "",
---	["Dual profile"] = "",
---	["Select the profile to swap with the current profile when switching talent specs."] = "",
+	["Enable dual profile"] = "Duales Profil aktivieren",
+	["Automatically swap profiles when switching talent specs."] = "Wechselt automatisch das Profil wenn die Talentspezialisierung gewechselt wird.",
+	["Dual profile"] = "Duales Profil",
+	["Select the profile to swap with the current profile when switching talent specs."] = "Wähle das Profil, das aktiviert werden soll wenn die momentane Talentspezialisierung gewechselt wird.",
 --}}}
 
 --{{{ GridFrame
