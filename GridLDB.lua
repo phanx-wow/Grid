@@ -64,6 +64,10 @@ f:SetScript("OnEvent", function()
 				end
 			end
 		}
+
+		hooksecurefunc(Grid, "OnProfileEnable", function()
+			LDBIcon[Grid.db.profile.minimap.hide and "Hide" or "Show"](LDBIcon, "Grid")
+		end)
 	end
 	f:UnregisterAllEvents()
 	f:SetScript("OnEvent", nil)
