@@ -1,5 +1,5 @@
 ## Interface: 30300
-## Version: 1.30300.1290
+## Version: 1.30300.1304
 ## X-ReleaseDate: "$Date$"
 
 ## Title: Grid
