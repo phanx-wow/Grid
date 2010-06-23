@@ -92,7 +92,7 @@ GridLayout:AddLayout(L["By Group 15 w/Pets"], {
 		groupFilter = "3",
 	},
 	[4] = {
-		 groupFilter = "1,2,3",
+		groupFilter = "1,2,3",
 		isPetGroup = true,
 		unitsPerColumn = 5,
 		maxColumns = 5,
