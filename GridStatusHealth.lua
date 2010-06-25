@@ -260,7 +260,7 @@ function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
 
 	self.core:SendStatusGained(guid, "unit_health",
 		healthPriority,
-		(ignoreRange and 40 or healthSettings.range),
+		(not ignoreRange and healthSettings.range and 40),
 		(healthSettings.useClassColors and self.core:UnitColor(guid) or healthSettings.color),
 		healthText,
 		cur, max,
