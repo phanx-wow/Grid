@@ -16,13 +16,13 @@ local GridFrame = Grid:NewModule("GridFrame")
 --{{{ FrameXML functions
 
 local function GridFrame_OnShow(self)
-	GridFrame:UpdateFrameUnits()
+	GridFrame:UpdateFrameUnits("GridFrame_OnShow")
 	GridFrame:TriggerEvent("Grid_UpdateLayoutSize")
 end
 
 local function GridFrame_OnAttributeChanged(self, name, value)
 	if name == "unit" then
-		GridFrame:UpdateFrameUnits()
+		GridFrame:UpdateFrameUnits("GridFrame_OnAttributeChanged")
 	elseif name == "type1" and (not value or value == "") then
 		self:SetAttribute("type1", "target")
 	end
@@ -473,6 +473,7 @@ function GridFrameClass.prototype:SetBar(value, max)
 		max = 100
 	end
 	self.frame.Bar:SetValue(value / max * 100)
+	self.frame.Bar:GetStatusBarTexture():SetTexCoord(0, value / max, 0, 1) -- don't squish textures!
 end
 
 function GridFrameClass.prototype:SetHealingBar(value, max)
@@ -480,6 +481,7 @@ function GridFrameClass.prototype:SetHealingBar(value, max)
 		max = 100
 	end
 	self.frame.HealingBar:SetValue(value / max * 100)
+	self.frame.HealingBar:GetStatusBarTexture():SetTexCoord(0, value / max, 0, 1) -- don't squish textures!
 	self:UpdateHealingBarColor()
 end
 
@@ -1198,7 +1200,7 @@ function GridFrame:OnEnable()
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateFrameUnits")
 	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateFrameUnits")
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateFrameUnits")
-	self:RegisterEvent("Grid_RosterUpdated", "UpdateFrameUnits")
+	self:RegisterBucketEvent("Grid_RosterUpdated", 0.5, "UpdateFrameUnits")
 
 	if media then
 		media.RegisterCallback(self, "LibSharedMedia_Registered", "LibSharedMedia_Update")
@@ -1231,7 +1233,7 @@ function GridFrame:Reset()
 	GridFrame:WithAllFrames(function(f) f:SetFrameFont(font, GridFrame.db.profile.fontSize, GridFrame.db.profile.fontOutline) end)
 
 	self:ResetAllFrames()
-	self:UpdateFrameUnits()
+	self:UpdateFrameUnits("Reset")
 	self:UpdateAllFrames()
 end
 
@@ -1240,7 +1242,7 @@ function GridFrame:RegisterFrame(frame)
 
 	self.registeredFrameCount = (self.registeredFrameCount or 0) + 1
 	self.registeredFrames[frame:GetName()] = self.frameClass:new(frame)
-	self:UpdateFrameUnits()
+	self:UpdateFrameUnits("RegisterFrame")
 end
 
 function GridFrame:WithAllFrames(func)
@@ -1292,12 +1294,13 @@ function GridFrame:GetCornerSize()
 	return self.db.profile.cornerSize
 end
 
-function GridFrame:UpdateFrameUnits()
+function GridFrame:UpdateFrameUnits(...)
+	self:Debug("UpdateFrameUnits", ...)
 	for frame_name, frame in pairs(self.registeredFrames) do
 		if frame.frame:IsVisible() then
 			local old_unit = frame.unit
 			local old_guid = frame.unitGUID
-			local unitid = frame:GetModifiedUnit()
+			local unitid = SecureButton_GetModifiedUnit(frame.frame) -- frame:GetModifiedUnit()
 			local guid = unitid and UnitGUID(unitid) or nil
 
 			if old_unit ~= unitid or old_guid ~= guid then
