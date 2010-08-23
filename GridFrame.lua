@@ -473,7 +473,7 @@ function GridFrameClass.prototype:SetBar(value, max)
 		max = 100
 	end
 	self.frame.Bar:SetValue(value / max * 100)
-	self.frame.Bar:GetStatusBarTexture():SetTexCoord(0, value / max, 0, 1) -- don't squish textures!
+	self.frame.Bar:GetStatusBarTexture():SetTexCoord(0, value > 0 and value / max or 1, 0, 1) -- don't squish textures!
 end
 
 function GridFrameClass.prototype:SetHealingBar(value, max)
@@ -481,7 +481,7 @@ function GridFrameClass.prototype:SetHealingBar(value, max)
 		max = 100
 	end
 	self.frame.HealingBar:SetValue(value / max * 100)
-	self.frame.HealingBar:GetStatusBarTexture():SetTexCoord(0, value / max, 0, 1) -- don't squish textures!
+	self.frame.HealingBar:GetStatusBarTexture():SetTexCoord(0, value > 0 and value / max or 1, 0, 1) -- don't squish textures!
 	self:UpdateHealingBarColor()
 end
 
