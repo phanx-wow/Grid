@@ -472,16 +472,33 @@ function GridFrameClass.prototype:SetBar(value, max)
 	if max == nil then
 		max = 100
 	end
-	self.frame.Bar:SetValue(value / max * 100)
-	self.frame.Bar:GetStatusBarTexture():SetTexCoord(0, value > 0 and value / max or 1, 0, 1) -- don't squish textures!
+
+	local perc = value / max
+	self.frame.Bar:SetValue(perc * 100)
+
+	local coord = (perc > 0 and perc <= 1) and perc or 1
+	if GridFrame.db.profile.orientation == "VERTICAL" then
+		self.frame.Bar:GetStatusBarTexture():SetTexCoord(0, coord, 0, 1)
+	else
+		self.frame.Bar:GetStatusBarTexture():SetTexCoord(0, 1, 0, coord)
+	end
 end
 
 function GridFrameClass.prototype:SetHealingBar(value, max)
 	if max == nil then
 		max = 100
 	end
-	self.frame.HealingBar:SetValue(value / max * 100)
-	self.frame.HealingBar:GetStatusBarTexture():SetTexCoord(0, value > 0 and value / max or 1, 0, 1) -- don't squish textures!
+
+	local perc = value / max
+	self.frame.HealingBar:SetValue(perc * 100)
+
+	local coord = (perc > 0 and perc <= 1) and perc or 1
+	if GridFrame.db.profile.orientation == "VERTICAL" then
+		self.frame.HealingBar:GetStatusBarTexture():SetTexCoord(0, coord, 0, 1)
+	else
+		self.frame.HealingBar:GetStatusBarTexture():SetTexCoord(0, 1, 0, coord)
+	end
+
 	self:UpdateHealingBarColor()
 end
 
