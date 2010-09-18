@@ -261,11 +261,12 @@ do
 			if instance_type == "none" and GetZonePVPInfo() == "combat" then
 				return "bg"
 			end
-			local raid_difficulty = GetRaidDifficulty()
-			if raid_difficulty == 2 or raid_difficulty == 4 then
-				return "heroic_raid"
+			if instance_type == "raid" then
+				local _, _, _, _, max_players = GetInstanceInfo()
+				return max_players > 10 and "heroic_raid" or "raid"
 			else
-				return "raid"
+				local raid_difficulty = GetRaidDifficulty()
+				return (raid_difficulty == 2 or raid_difficulty == 4) and "heroic_raid" or "raid"
 			end
 		end
 
