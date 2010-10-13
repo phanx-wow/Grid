@@ -4,8 +4,8 @@
 ----------------------------------------------------------------------]]
 
 if GetLocale() ~= "esMX" then return end
-local _, ns = ...
-ns.L = {
+local _, Grid = ...
+Grid.L = {
 
 --{{{ GridCore
 	["Debugging"] = "Debugging",
@@ -16,10 +16,6 @@ ns.L = {
 	["Configure Grid"] = "Configurar Grid",
 	["Hide minimap icon"] = "Ocultar icono del minimapa",
 	["Grid is disabled: use '/grid standby' to enable."] = "Grid está desactivado: usa '/grid standby' para activarlo.",
---	["Enable dual profile"] = "",
---	["Automatically swap profiles when switching talent specs."] = "",
---	["Dual profile"] = "",
---	["Select the profile to swap with the current profile when switching talent specs."] = "",
 --}}}
 
 --{{{ GridFrame
@@ -38,7 +34,6 @@ ns.L = {
 	["Healing Bar Opacity"] = "Opacidad de la barra de sanación",
 	["Sets the opacity of the healing bar."] = "Establece la opacidad de la barra de sanación.",
 
-	["Indicators"] = "Indicadores",
 	["Border"] = "Borde",
 	["Health Bar"] = "Barra de salud",
 	["Health Bar Color"] = "Color de la barra de salud",
@@ -213,8 +208,8 @@ ns.L = {
 --}}}
 
 --{{{ GridLDB
-	["Click to open the options in a GUI window."] = "Click para abrir las opciones en una ventana GUI",
-	["Right-Click to open the options in a drop-down menu."] = "Click derecho para abrir las opciones en un menú desplegable",
+	["Click to toggle the frame lock."] = "Click para bloquear/desbloquear el movimiento de Grid.",
+	["Right-Click to open the options menu."] = "Click derecho para abrir las opciones.",
 --}}}
 
 --{{{ GridRange
@@ -263,9 +258,6 @@ ns.L = {
 	["Magic"] = "Magia",
 	["Curse"] = "Maldición",
 	["Ghost"] = "Fantasma",
-	["Buffs"] = "Buffos",
-	["Debuff Types"] = "Tipos de Debuff",
-	["Debuffs"] = "Debuffs",
 	["Add new Buff"] = "Añadir nuevo bufo",
 	["Adds a new buff to the status module"] = "Añade un nuevo bufo al módulo de estado",
 	["<buff name>"] = "<nombre del bufo>",
@@ -295,14 +287,6 @@ ns.L = {
 	["Incoming heals"] = "Sanaciones entrantes",
 	["Ignore Self"] = "Ignorar las propias",
 	["Ignore heals cast by you."] = "Ignora las sanaciones lanzadas por ti.",
-	["Heal filter"] = "Filtro de sanaciones",
-	["Show incoming heals for the selected heal types."] = "Muestra las sanaciones entrantes para los siguientes tipos seleccionadas.",
-	["Direct heals"] = "Sanaciones directas",
-	["Include direct heals."] = "Incluye las sanaciones directas.",
-	["Channeled heals"] = "Sanaciones canalizadas",
-	["Include channeled heals."] = "Incluye sanaciones canalizadas.",
-	["HoT heals"] = "Sanaciones en el tiempo",
-	["Include heal over time effects."] = "Incluye efectos de sanación en el tiempo",
 --}}}
 
 --{{{ GridStatusHealth

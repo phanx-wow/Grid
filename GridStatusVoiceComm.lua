@@ -5,10 +5,11 @@
 	http://www.wowace.com/forums/index.php?topic=2525.msg143457#msg143457
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
+local _, Grid = ...
+local L = Grid.L
 
 local GridStatusVoiceComm = Grid:GetModule("GridStatus"):NewModule("GridStatusVoiceComm")
+
 GridStatusVoiceComm.menuName = L["Voice Chat"]
 
 GridStatusVoiceComm.defaultDB = {
@@ -44,7 +45,7 @@ function GridStatusVoiceComm:OnStatusDisable(status)
 	end
 end
 
-function GridStatusVoiceComm:VOICE_START(unitid)
+function GridStatusVoiceComm:VOICE_START(event, unitid)
 	local settings = self.db.profile.alert_voice
 
 	self.core:SendStatusGained(
@@ -59,6 +60,6 @@ function GridStatusVoiceComm:VOICE_START(unitid)
 		settings.icon)
 end
 
-function GridStatusVoiceComm:VOICE_STOP(unitid)
+function GridStatusVoiceComm:VOICE_STOP(event, unitid)
 	self.core:SendStatusLost(UnitGUID(unitid), "alert_voice")
 end

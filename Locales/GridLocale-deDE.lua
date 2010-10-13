@@ -4,8 +4,8 @@
 ----------------------------------------------------------------------]]
 
 if GetLocale() ~= "deDE" then return end
-local _, ns = ...
-ns.L = {
+local _, Grid = ...
+Grid.L = {
 
 --{{{ GridCore
 	["Debugging"] = "Debuggen",
@@ -16,10 +16,6 @@ ns.L = {
 	["Configure Grid"] = "Grid konfigurieren",
 	["Hide minimap icon"] = "Minikarten Button verstecken",
 	["Grid is disabled: use '/grid standby' to enable."] = "Grid ist ausgeschaltet: Tippe '/grid standby' zum einschalten.",
-	["Enable dual profile"] = "Duales Profil aktivieren",
-	["Automatically swap profiles when switching talent specs."] = "Wechselt automatisch das Profil wenn die Talentspezialisierung gewechselt wird.",
-	["Dual profile"] = "Duales Profil",
-	["Select the profile to swap with the current profile when switching talent specs."] = "Wähle das Profil, das aktiviert werden soll wenn die momentane Talentspezialisierung gewechselt wird.",
 --}}}
 
 --{{{ GridFrame
@@ -38,7 +34,6 @@ ns.L = {
 	["Healing Bar Opacity"] = "Heilleistendeckkraft",
 	["Sets the opacity of the healing bar."] = "Verändert die Deckkraft der Heilleiste.",
 
-	["Indicators"] = "Indikatoren",
 	["Border"] = "Rand",
 	["Health Bar"] = "Gesundheitsleiste",
 	["Health Bar Color"] = "Gesundheitsleistenfarbe",
@@ -212,8 +207,8 @@ ns.L = {
 --}}}
 
 --{{{ GridLDB
-	["Click to open the options in a GUI window."] = "Linksklick: GUI Fenster.",
-	["Right-Click to open the options in a drop-down menu."] = "Rechtsklick: Drop-down Menu.",
+--	["Click to toggle the frame lock."] = "",
+--	["Right-Click to open the options menu."] = "",
 --}}}
 
 --{{{ GridRange
@@ -262,9 +257,6 @@ ns.L = {
 	["Magic"] = "Magie",
 	["Curse"] = "Fluch",
 	["Ghost"] = "Geistererscheinung",
-	["Buffs"] = "Stärkungszauber",
-	["Debuff Types"] = "Schwächungszaubertyp",
-	["Debuffs"] = "Schwächungszauber",
 	["Add new Buff"] = "Neuen Stärkungszauber hinzufügen",
 	["Adds a new buff to the status module"] = "Fügt einen neuen Stärkungszauber zum Status Modul hinzu",
 	["<buff name>"] = "<Stärkungszaubername>",
@@ -294,14 +286,6 @@ ns.L = {
 	["Incoming heals"] = "Eingehende Heilungen",
 	["Ignore Self"] = "Sich selbst ignorieren",
 	["Ignore heals cast by you."] = "Ignoriert Heilungen die von Dir gezaubert werden.",
-	["Heal filter"] = "Heilungsfilter",
-	["Show incoming heals for the selected heal types."] = "Zeigt eingehende Heilungen für die ausgewählten Heilungstypen.",
-	["Direct heals"] = "Direkte Heilungen",
-	["Include direct heals."] = "Direkte Heilungen einbeziehen.",
-	["Channeled heals"] = "Kanalisierte Heilungen",
-	["Include channeled heals."] = "Kanalisierte Heilungen einbeziehen.",
-	["HoT heals"] = "HoT Heilungen",
-	["Include heal over time effects."] = "HoT (Heal over Time - Heilung über Zeit) Effekte einbeziehen.",
 --}}}
 
 --{{{ GridStatusHealth

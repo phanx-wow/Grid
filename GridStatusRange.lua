@@ -4,21 +4,18 @@
 	Created by neXter, modified by Pastamancer.
 ----------------------------------------------------------------------]]--
 
-local _, ns = ...
-local L = ns.L
-
+local _, Grid = ...
+local L = Grid.L
 local GridRange = Grid:GetModule("GridRange")
 local GridRoster = Grid:GetModule("GridRoster")
 
-local GridStatusRange = Grid:GetModule("GridStatus"):NewModule("GridStatusRange", "AceEvent-2.0")
+local GridStatusRange = Grid:GetModule("GridStatus"):NewModule("GridStatusRange", "AceTimer-3.0")
 GridStatusRange.menuName = L["Range"]
 
--- ranges to check
-local ranges = {}
--- table, map range to status name
-local ranges_status = {}
--- table, map range to check function
-local ranges_check = {}
+
+local ranges = {}			-- ranges to check
+local ranges_status = {}	-- table, map range to status name
+local ranges_check = {}		-- table, map range to check function
 
 local function statusForRange(range)
     return ("alert_range_%d"):format(range)
@@ -36,7 +33,7 @@ GridStatusRange.extraOptions = {
 		name = L["Range check frequency"],
 		desc = L["Seconds between range checks"],
 		get = function() return GridStatusRange.db.profile.frequency end,
-		set = function(v)
+		set = function(_, v)
 				GridStatusRange.db.profile.frequency = v
 				GridStatusRange:UpdateFrequency()
 			end,
@@ -66,12 +63,12 @@ end
 
 function GridStatusRange:OnEnable()
     self:Grid_RangesUpdated()
-    self:RegisterEvent("Grid_RangesUpdated")
+    self:RegisterMessage("Grid_RangesUpdated")
     self:UpdateFrequency()
 end
 
 function GridStatusRange:OnDisable()
-	self:CancelScheduledEvent("GridStatusRange_RangeCheck")
+	self:CancelTimer(self.RangeCheckTimer, true)
 end
 
 function GridStatusRange:Reset()
@@ -175,10 +172,10 @@ function GridStatusRange:RegisterStatusForRange(range)
 				name = L["Enable"],
 				desc = string.format(L["Enable %s"], status_desc),
 				order = 112,
-				get = function ()
+				get = function()
 						return GridStatusRange.db.profile[status_name].enable
 					end,
-				set = function (v)
+				set = function(_, v)
 						GridStatusRange.db.profile[status_name].enable = v
 						if v then
 							GridStatusRange:EnableRange(range)
@@ -188,15 +185,15 @@ function GridStatusRange:RegisterStatusForRange(range)
 					end,
 			},
 			["text"] = {
-				type = "text",
+				type = "input",
 				name = L["Text"],
 				desc = L["Text to display on text indicators"],
 				order = 113,
 				usage = L["<range>"],
-				get = function ()
+				get = function()
 						return GridStatusRange.db.profile[status_name].text
 					end,
-				set = function (v)
+				set = function(_, v)
 						GridStatusRange.db.profile[status_name].text = v
 					end,
 			},
@@ -280,7 +277,7 @@ function GridStatusRange:RangeCheck()
 end
 
 function GridStatusRange:UpdateFrequency()
-    self:CancelScheduledEvent("GridStatusRange_RangeCheck")
+	self:CancelTimer(self.RangeCheckTimer, true)
 
 	local num_ranges = #ranges
 
@@ -290,13 +287,9 @@ function GridStatusRange:UpdateFrequency()
 		return
 	elseif num_ranges == 1 then
 		self:Debug("Using SimpleRangeCheck")
-		self:ScheduleRepeatingEvent("GridStatusRange_RangeCheck",
-			self.SimpleRangeCheck,
-			self.db.profile.frequency, self)
+		self.RangeCheckTimer = self:ScheduleRepeatingTimer("SimpleRangeCheck", self.db.profile.frequency)
 	else
 		self:Debug("Using RangeCheck")
-		self:ScheduleRepeatingEvent("GridStatusRange_RangeCheck",
-			self.RangeCheck,
-			self.db.profile.frequency, self)
+		self.RangeCheckTimer = self:ScheduleRepeatingTimer("RangeCheck", self.db.profile.frequency)
 	end
 end

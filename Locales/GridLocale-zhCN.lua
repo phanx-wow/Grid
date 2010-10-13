@@ -4,8 +4,8 @@
 ----------------------------------------------------------------------]]
 
 if GetLocale() ~= "zhCN" then return end
-local _, ns = ...
-ns.L = {
+local _, Grid = ...
+Grid.L = {
 
 --{{{ GridCore
 	["Debugging"] = "除错",
@@ -16,10 +16,6 @@ ns.L = {
 	["Configure Grid"] = "配置 Grid",
 	["Hide minimap icon"] = "隐藏迷你地图按钮",
 	["Grid is disabled: use '/grid standby' to enable."] = "Gird 已被禁用：使用“/grid standby”命令启用。",
---	["Enable dual profile"] = "",
---	["Automatically swap profiles when switching talent specs."] = "",
---	["Dual profile"] = "",
---	["Select the profile to swap with the current profile when switching talent specs."] = "",
 --}}}
 
 --{{{ GridFrame
@@ -38,7 +34,6 @@ ns.L = {
 	["Healing Bar Opacity"] = "治疗条透明度",
 	["Sets the opacity of the healing bar."] = "设置治疗条的透明度。",
 
-	["Indicators"] = "提示器",
 	["Border"] = "外框",
 	["Health Bar"] = "生命条",
 	["Health Bar Color"] = "生命条颜色",
@@ -212,8 +207,8 @@ ns.L = {
 --}}}
 
 --{{{ GridLDB
---	["Click to open the options in a GUI window."] = "",
---	["Right-Click to open the options in a drop-down menu."] = "",
+--	["Click to toggle the frame lock."] = "",
+--	["Right-Click to open the options menu."] = "",
 --}}}
 
 --{{{ GridRange
@@ -262,9 +257,6 @@ ns.L = {
 	["Magic"] = "魔法",
 	["Curse"] = "诅咒",
 	["Ghost"] = "幽灵",
-	["Buffs"] = "增益",
-	["Debuff Types"] = "减益类型",
-	["Debuffs"] = "减益",
 	["Add new Buff"] = "增加新的增益",
 	["Adds a new buff to the status module"] = "状态模组添加一个新的增益",
 	["<buff name>"] = "<增益名称>",
@@ -294,14 +286,6 @@ ns.L = {
 	["Incoming heals"] = "正被治疗",
 	["Ignore Self"] = "忽略自己",
 	["Ignore heals cast by you."] = "忽略对自己施放的治疗。",
-	["Heal filter"] = "治疗过滤",
-	["Show incoming heals for the selected heal types."] = "显示承受治疗的治疗类型。",
-	["Direct heals"] = "直接治疗",
-	["Include direct heals."] = "包括直接治疗。",
-	["Channeled heals"] = "通道治疗",
-	["Include channeled heals."] = "包括通道治疗",
-	["HoT heals"] = "HoT 治疗",
-	["Include heal over time effects."] = "包括 HoT 治疗",
 --}}}
 
 --{{{ GridStatusHealth

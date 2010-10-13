@@ -1,11 +1,11 @@
-﻿--[[--------------------------------------------------------------------
+--[[--------------------------------------------------------------------
 	GridLocale-frFR.lua
 	French (Français) localization for Grid.
 ----------------------------------------------------------------------]]
 
 if GetLocale() ~= "frFR" then return end
-local _, ns = ...
-ns.L = {
+local _, Grid = ...
+Grid.L = {
 
 --{{{ GridCore
 	["Debugging"] = "Débogage",
@@ -16,10 +16,6 @@ ns.L = {
 	["Configure Grid"] = "Configure Grid.",
 	["Hide minimap icon"] = "Cacher icône minicarte",
 	["Grid is disabled: use '/grid standby' to enable."] = "Grid est désactivé : utilisez '/grid standby' pour l'activer.",
---	["Enable dual profile"] = "",
---	["Automatically swap profiles when switching talent specs."] = "",
---	["Dual profile"] = "",
---	["Select the profile to swap with the current profile when switching talent specs."] = "",
 --}}}
 
 --{{{ GridFrame
@@ -38,7 +34,6 @@ ns.L = {
 	["Healing Bar Opacity"] = "Opacité de la barre de soins",
 	["Sets the opacity of the healing bar."] = "Définit l'opacité de la barre de soins.",
 
-	["Indicators"] = "Indicateurs",
 	["Border"] = "Bordure",
 	["Health Bar"] = "Barre de vie",
 	["Health Bar Color"] = "Couleur de la barre de vie",
@@ -212,8 +207,8 @@ ns.L = {
 --}}}
 
 --{{{ GridLDB
---	["Click to open the options in a GUI window."] = "",
---	["Right-Click to open the options in a drop-down menu."] = "",
+--	["Click to toggle the frame lock."] = "",
+--	["Right-Click to open the options menu."] = "",
 --}}}
 
 --{{{ GridRange
@@ -262,9 +257,6 @@ ns.L = {
 	["Magic"] = "Magie",
 	["Curse"] = "Malédiction",
 	["Ghost"] = "Fantôme",
-	["Buffs"] = "Buffs",
-	["Debuff Types"] = "Types de débuff",
-	["Debuffs"] = "Débuffs",
 	["Add new Buff"] = "Ajouter un nouveau buff",
 	["Adds a new buff to the status module"] = "Ajoute un nouveau buff au module Statut.",
 	["<buff name>"] = "<nom du buff>",
@@ -294,14 +286,6 @@ ns.L = {
 	["Incoming heals"] = "Soins entrants",
 	["Ignore Self"] = "Vous ignorer",
 	["Ignore heals cast by you."] = "Ignore les soins que vous incantez.",
---	["Heal filter"] = true,
---	["Show incoming heals for the selected heal types."] = true,
---	["Direct heals"] = true,
---	["Include direct heals."] = true,
---	["Channeled heals"] = true,
---	["Include channeled heals."] = true,
---	["HoT heals"] = true,
---	["Include heal over time effects."] = true,
 --}}}
 
 --{{{ GridStatusHealth

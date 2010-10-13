@@ -4,14 +4,14 @@
 	Created by noha, modified by Pastamancer.
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
+local _, Grid = ...
+local L = Grid.L
+
+local cur_target
 
 local GridStatusTarget = Grid:GetModule("GridStatus"):NewModule("GridStatusTarget")
-GridStatusTarget.menuName = L["Target"]
 
--- save the guid of our target here so we can send a StatusLost
-local cur_target
+GridStatusTarget.menuName = L["Target"]
 
 GridStatusTarget.defaultDB = {
 	debug = false,

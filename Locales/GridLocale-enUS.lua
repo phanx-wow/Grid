@@ -4,8 +4,8 @@
 ----------------------------------------------------------------------]]
 
 do return end
-local _, ns = ...
-ns.L = {
+local _, Grid = ...
+Grid.L = {
 
 --{{{ GridCore
 	["Debugging"] = "",
@@ -16,10 +16,6 @@ ns.L = {
 	["Configure Grid"] = "",
 	["Hide minimap icon"] = "",
 	["Grid is disabled: use '/grid standby' to enable."] = "",
-	["Enable dual profile"] = "",
-	["Automatically swap profiles when switching talent specs."] = "",
-	["Dual profile"] = "",
-	["Select the profile to swap with the current profile when switching talent specs."] = "",
 --}}}
 
 --{{{ GridFrame
@@ -38,7 +34,6 @@ ns.L = {
 	["Healing Bar Opacity"] = "",
 	["Sets the opacity of the healing bar."] = "",
 
-	["Indicators"] = "",
 	["Border"] = "",
 	["Health Bar"] = "",
 	["Health Bar Color"] = "",
@@ -212,8 +207,8 @@ ns.L = {
 --}}}
 
 --{{{ GridLDB
-	["Click to open the options in a GUI window."] = "",
-	["Right-Click to open the options in a drop-down menu."] = "",
+	["Click to toggle the frame lock."] = "",
+	["Right-Click to open the options menu."] = "",
 --}}}
 
 --{{{ GridRange
@@ -223,6 +218,7 @@ ns.L = {
 
 --{{{ GridStatus
 	["Status"] = "",
+	["Options for GridStatus."] = "",
 	["Options for %s."] = "",
 	["Reset class colors"] = "",
 	["Reset class colors to defaults."] = "",
@@ -262,9 +258,6 @@ ns.L = {
 	["Magic"] = "",
 	["Curse"] = "",
 	["Ghost"] = "",
-	["Buffs"] = "",
-	["Debuff Types"] = "",
-	["Debuffs"] = "",
 	["Add new Buff"] = "",
 	["Adds a new buff to the status module"] = "",
 	["<buff name>"] = "",
@@ -294,14 +287,6 @@ ns.L = {
 	["Incoming heals"] = "",
 	["Ignore Self"] = "",
 	["Ignore heals cast by you."] = "",
-	["Heal filter"] = "",
-	["Show incoming heals for the selected heal types."] = "",
-	["Direct heals"] = "",
-	["Include direct heals."] = "",
-	["Channeled heals"] = "",
-	["Include channeled heals."] = "",
-	["HoT heals"] = "",
-	["Include heal over time effects."] = "",
 --}}}
 
 --{{{ GridStatusHealth

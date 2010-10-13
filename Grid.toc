@@ -1,45 +1,42 @@
-## Interface: 30300
-## Version: 1.30300.1308
+## Interface: 40000
+## Version: @project-version@
 ## X-ReleaseDate: "$Date$"
 
 ## Title: Grid
-## Notes: A modular, lightweight, and screen-estate saving grid of party/raid unit frames.
+## Notes: A compact grid of party/raid unit frames.
 ## Notes-zhCN: 小巧的轻量级模块化队伍/团队框架。
 ## Notes-zhTW: 精簡的團隊框架功能
 
 ## Author: Pastamancer, Maia
-## Credits: Greltok, Phanx, Jerry
+## Credits: Jerry, Phanx, Greltok
 ## X-Category: UnitFrame
 ## X-Website: http://www.wowace.com/addons/grid/
 ## X-AceForum: 2525
 ## X-WoWI-ID: 5747
 
-## OptionalDeps: Ace2, DewdropLib, LibDataBroker-1.1, LibDBIcon-1.0, LibGratuity-3.0, LibHealComm-4.0, LibSharedMedia-3.0, UTF8, Waterfall-1.0, SharedMedia
+## OptionalDeps: Ace3, LibDBIcon-1.0, LibDualSpec-1.0, LibGratuity-3.0, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, UTF8, Clique, SharedMedia
 ## SavedVariables: GridDB
 
 #@no-lib-strip@
 Libs\LibStub\LibStub.lua
-Libs\AceLibrary\AceLibrary.lua
-Libs\AceOO-2.0\AceOO-2.0.lua
-Libs\AceAddon-2.0\AceAddon-2.0.lua
-Libs\AceConsole-2.0\AceConsole-2.0.lua
-Libs\AceEvent-2.0\AceEvent-2.0.lua
-Libs\AceDB-2.0\AceDB-2.0.lua
-Libs\AceHook-2.1\AceHook-2.1.lua
-Libs\AceLocale-2.2\AceLocale-2.2.lua
-Libs\AceDebug-2.0\AceDebug-2.0.lua
-Libs\AceModuleCore-2.0\AceModuleCore-2.0.lua
-
-Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
-Libs\Dewdrop-2.0\Dewdrop-2.0.lua
-#@end-no-lib-strip@
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\AceAddon-3.0\AceAddon-3.0.lua
+Libs\AceBucket-3.0\AceBucket-3.0.lua
+Libs\AceGUI-3.0\AceGUI-3.0.xml
+Libs\AceConfigRegistry-3.0\AceConfigRegistry-3.0.lua
+Libs\AceConfigDialog-3.0\AceConfigDialog-3.0.lua
+Libs\AceConsole-3.0\AceConsole-3.0.lua
+Libs\AceDB-3.0\AceDB-3.0.lua
+Libs\AceDBOptions-3.0\AceDBOptions-3.0.lua
+Libs\AceEvent-3.0\AceEvent-3.0.lua
+Libs\AceHook-3.0\AceHook-3.0.lua
+Libs\AceTimer-3.0\AceTimer-3.0.lua
 Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
-#@no-lib-strip@
 Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
-Libs\LibGratuity-3.0\lib.xml
-Libs\LibHealComm-4.0\LibHealComm-4.0.xml
+Libs\LibDualSpec-1.0\LibDualSpec-1.0.lua
+Libs\LibGratuity-3.0\LibGratuity-3.0.lua
 Libs\LibSharedMedia-3.0\lib.xml
-Libs\Waterfall-1.0\Waterfall-1.0.lua
+Libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
 #@end-no-lib-strip@
 
 Libs\UTF8\utf8.lua
@@ -54,13 +51,13 @@ Locales\GridLocale-zhCN.lua
 Locales\GridLocale-zhTW.lua
 
 GridCore.lua
-GridLDB.lua
 GridRoster.lua
 GridRange.lua
 GridLayout.lua
 GridLayoutLayouts.lua
 GridFrame.lua
 GridStatus.lua
+GridLDB.lua
 
 GridStatusAggro.lua
 GridStatusAuras.lua

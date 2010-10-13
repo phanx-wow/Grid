@@ -3,9 +3,8 @@
 	GridStatus module for tracking aggro/threat.
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
-
+local _, Grid = ...
+local L = Grid.L
 local GridStatus = Grid:GetModule("GridStatus")
 local GridRoster = Grid:GetModule("GridRoster")
 
@@ -65,8 +64,8 @@ local aggroDynamicOptions = {
         desc = L["Color for High Threat."],
         order = 87,
         hasAlpha = true,
-        get = function () return getstatuscolor(1) end,
-        set = function (r, g, b, a) setstatuscolor(1, r, g, b, a) end,
+        get = function() return getstatuscolor(1) end,
+        set = function(_, r, g, b, a) setstatuscolor(1, r, g, b, a) end,
     },
     [2] = {
         type = "color",
@@ -74,8 +73,8 @@ local aggroDynamicOptions = {
         desc = L["Color for Aggro."],
         order = 88,
         hasAlpha = true,
-        get = function () return getstatuscolor(2) end,
-        set = function (r, g, b, a) setstatuscolor(2, r, g, b, a) end,
+        get = function() return getstatuscolor(2) end,
+        set = function(_, r, g, b, a) setstatuscolor(2, r, g, b, a) end,
     },
     [3] = {
         type = "color",
@@ -83,8 +82,8 @@ local aggroDynamicOptions = {
         desc = L["Color for Tanking."],
         order = 89,
         hasAlpha = true,
-        get = function () return getstatuscolor(3) end,
-        set = function (r, g, b, a) setstatuscolor(3, r, g, b, a) end,
+        get = function() return getstatuscolor(3) end,
+        set = function(_, r, g, b, a) setstatuscolor(3, r, g, b, a) end,
     },
 }
 
@@ -98,14 +97,14 @@ local function setupmenu()
 
 	if threat then
         args.color = nil
-        args[1] = aggroDynamicOptions[1]
-        args[2] = aggroDynamicOptions[2]
-        args[3] = aggroDynamicOptions[3]
+        args["1"] = aggroDynamicOptions[1]
+        args["2"] = aggroDynamicOptions[2]
+        args["3"] = aggroDynamicOptions[3]
     else
         args.color = aggroDynamicOptions.aggroColor
-        args[1] = nil
-        args[2] = nil
-        args[3] = nil
+        args["1"] = nil
+        args["2"] = nil
+        args["3"] = nil
     end
 end
 
@@ -155,11 +154,11 @@ end
 
 function GridStatusAggro:UpdateAllUnits()
 	for guid, unitid in GridRoster:IterateRoster() do
-		self:UpdateUnit(unitid)
+		self:UpdateUnit("UpdateAllUnits", unitid)
 	end
 end
 
-function GridStatusAggro:UpdateUnit(unitid)
+function GridStatusAggro:UpdateUnit(event, unitid)
 	if not unitid then
 		-- because sometimes the unitid can be nil... wtf?
 		return

@@ -4,10 +4,11 @@
 	Created by Greltok.
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
+local _, Grid = ...
+local L = Grid.L
 
-local GridStatusReadyCheck = Grid:GetModule("GridStatus"):NewModule("GridStatusReadyCheck")
+local GridStatusReadyCheck = Grid:GetModule("GridStatus"):NewModule("GridStatusReadyCheck", "AceTimer-3.0")
+
 GridStatusReadyCheck.menuName = L["Ready Check"]
 
 GridStatusReadyCheck.defaultDB = {
@@ -65,56 +66,55 @@ end
 
 local readyCheckOptions = {
 	["waiting"] = {
-		type = "color",
 		name = L["Waiting color"],
 		desc = L["Color for Waiting."],
 		order = 86,
+		type = "color",
 		hasAlpha = true,
-		get = function () return getstatuscolor("waiting") end,
-		set = function (r, g, b, a) setstatuscolor("waiting", r, g, b, a) end,
+		get = function() return getstatuscolor("waiting") end,
+		set = function(_, r, g, b, a) setstatuscolor("waiting", r, g, b, a) end,
 	},
 	["ready"] = {
-		type = "color",
 		name = L["Ready color"],
 		desc = L["Color for Ready."],
 		order = 87,
+		type = "color",
 		hasAlpha = true,
-		get = function () return getstatuscolor("ready") end,
-		set = function (r, g, b, a) setstatuscolor("ready", r, g, b, a) end,
+		get = function() return getstatuscolor("ready") end,
+		set = function(_, r, g, b, a) setstatuscolor("ready", r, g, b, a) end,
 	},
 	["not_ready"] = {
-		type = "color",
 		name = L["Not Ready color"],
 		desc = L["Color for Not Ready."],
 		order = 88,
+		type = "color",
 		hasAlpha = true,
-		get = function () return getstatuscolor("not_ready") end,
-		set = function (r, g, b, a) setstatuscolor("not_ready", r, g, b, a) end,
+		get = function() return getstatuscolor("not_ready") end,
+		set = function(_, r, g, b, a) setstatuscolor("not_ready", r, g, b, a) end,
 	},
 	["afk"] = {
-		type = "color",
 		name = L["AFK color"],
 		desc = L["Color for AFK."],
 		order = 89,
+		type = "color",
 		hasAlpha = true,
-		get = function () return getstatuscolor("afk") end,
-		set = function (r, g, b, a) setstatuscolor("afk", r, g, b, a) end,
+		get = function() return getstatuscolor("afk") end,
+		set = function(_, r, g, b, a) setstatuscolor("afk", r, g, b, a) end,
 	},
 	["delay"] = {
-		type = "range",
 		name = L["Delay"],
 		desc = L["Set the delay until ready check results are cleared."],
-		max = 10,
+		type = "range",
 		min = 0,
+		max = 10,
 		step = 1,
 		get = function()
 			return GridStatusReadyCheck.db.profile.ready_check.delay
 		end,
-		set = function(v)
+		set = function(_, v)
 			GridStatusReadyCheck.db.profile.ready_check.delay = v
 		end,
 	},
-
 	["color"] = false,
 	["range"] = false,
 }
@@ -131,7 +131,7 @@ function GridStatusReadyCheck:OnStatusEnable(status)
 		self:RegisterEvent("READY_CHECK_FINISHED")
 		self:RegisterEvent("PARTY_LEADER_CHANGED")
 		self:RegisterEvent("RAID_ROSTER_UPDATE")
-		self:RegisterEvent("Grid_PartyTransition")
+		self:RegisterMessage("Grid_PartyTransition")
 	end
 end
 
@@ -142,9 +142,9 @@ function GridStatusReadyCheck:OnStatusDisable(status)
 		self:UnregisterEvent("READY_CHECK_FINISHED")
 		self:UnregisterEvent("PARTY_LEADER_CHANGED")
 		self:UnregisterEvent("RAID_ROSTER_UPDATE")
-		self:UnregisterEvent("Grid_PartyTransition")
+		self:UnregisterMessage("Grid_PartyTransition")
 
-		self:CancelScheduledEvent("GridStatusReadyCheck_Clear")
+		self:CancelTimer(self.ClearTimer, true)
 
 		self:ClearStatus()
 	end
@@ -152,7 +152,7 @@ end
 
 function GridStatusReadyCheck:Reset()
 	self.super.Reset(self)
-	self:CancelScheduledEvent("GridStatusReadyCheck_Clear")
+	self:CancelTimer(self.ClearTimer, true)
 	self:ClearStatus()
 end
 
@@ -168,11 +168,11 @@ function GridStatusReadyCheck:GainStatus(guid, key, settings)
 		status.icon)
 end
 
-function GridStatusReadyCheck:READY_CHECK(originator)
+function GridStatusReadyCheck:READY_CHECK(event, originator)
 	local settings = self.db.profile.ready_check
 	if settings.enable and (self.raidAssist or IsPartyLeader()) then
 		local GridRoster = Grid:GetModule("GridRoster")
-		self:CancelScheduledEvent("GridStatusReadyCheck_Clear")
+		self:CancelTimer(self.ClearTimer, true)
 		self.readyChecking = true
 		local originatorguid = GridRoster:GetGUIDByFullName(originator)
 		for guid in GridRoster:IterateRoster() do
@@ -187,7 +187,7 @@ function GridStatusReadyCheck:READY_CHECK(originator)
 	end
 end
 
-function GridStatusReadyCheck:READY_CHECK_CONFIRM(unit, confirm)
+function GridStatusReadyCheck:READY_CHECK_CONFIRM(event, unit, confirm)
 	local settings = self.db.profile.ready_check
 	if settings.enable and self.readyChecking then
 		local guid = UnitGUID(unit)
@@ -199,7 +199,7 @@ function GridStatusReadyCheck:READY_CHECK_CONFIRM(unit, confirm)
 	end
 end
 
-function GridStatusReadyCheck:READY_CHECK_FINISHED()
+function GridStatusReadyCheck:READY_CHECK_FINISHED(event)
 	local settings = self.db.profile.ready_check
 	if settings.enable then
 		local afk = {}
@@ -211,21 +211,23 @@ function GridStatusReadyCheck:READY_CHECK_FINISHED()
 		for guid in pairs(afk) do
 			self:GainStatus(guid, "afk", settings)
 		end
-		self:ScheduleEvent("GridStatusReadyCheck_Clear", self.ClearStatus, settings.delay or 0, self)
+		self:CancelTimer(self.ClearTimer, true)
+		self.ClearTimer = self:ScheduleTimer("ClearStatus", settings.delay or 0)
 	end
 end
 
-function GridStatusReadyCheck:PARTY_LEADER_CHANGED()
+function GridStatusReadyCheck:PARTY_LEADER_CHANGED(event)
 	-- If you change party leader, you may not receive the READY_CHECK_FINISHED event.
 	self:CheckClearStatus()
 end
 
-function GridStatusReadyCheck:RAID_ROSTER_UPDATE()
+function GridStatusReadyCheck:RAID_ROSTER_UPDATE(event)
 	-- If you lose raid assist, you may not receive the READY_CHECK_FINISHED event.
 	if GetNumRaidMembers() > 0 then
 		local newAssist = IsRaidLeader() or IsRaidOfficer()
 		if self.readyChecking and newAssist ~= self.raidAssist then
-			self:ScheduleEvent("GridStatusReadyCheck_Clear", self.ClearStatus, 0, self)
+			self:CancelTimer(self.ClearTimer, true)
+			self.ClearTimer = self:ScheduleTimer("ClearStatus", settings.delay or 0)
 		end
 		self.raidAssist = newAssist
 	else
@@ -233,7 +235,7 @@ function GridStatusReadyCheck:RAID_ROSTER_UPDATE()
 	end
 end
 
-function GridStatusReadyCheck:Grid_PartyTransition(current_state, old_state)
+function GridStatusReadyCheck:Grid_PartyTransition()
 	-- If you leave the group, you may not receive the READY_CHECK_FINISHED event.
 	self:CheckClearStatus()
 end
@@ -241,7 +243,7 @@ end
 function GridStatusReadyCheck:CheckClearStatus()
 	-- Unfortunately, GetReadyCheckTimeLeft() only returns integral values.
 	if self.readyChecking and GetReadyCheckTimeLeft() == 0 then
-		self:ScheduleEvent("GridStatusReadyCheck_Clear", self.ClearStatus, 0, self)
+		self.ClearTimer = self:ScheduleTimer("ClearStatus", settings.delay or 0)
 	end
 end
 

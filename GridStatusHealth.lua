@@ -3,12 +3,12 @@
 	GridStatus module for tracking unit health.
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
-
+local _, Grid = ...
+local L = Grid.L
 local GridRoster = Grid:GetModule("GridRoster")
 
 local GridStatusHealth = Grid:GetModule("GridStatus"):NewModule("GridStatusHealth")
+
 GridStatusHealth.menuName = L["Health"]
 
 GridStatusHealth.defaultDB = {
@@ -63,82 +63,76 @@ GridStatusHealth.defaultDB = {
 }
 
 GridStatusHealth.extraOptions = {
-	["deadAsFullHealth"] = {
-		type = "toggle",
+	deadAsFullHealth = {
+		order = 101,
 		name = L["Show dead as full health"],
 		desc = L["Treat dead units as being full health."],
-		order = 101,
-		get = function ()
-				return GridStatusHealth.db.profile.unit_health.deadAsFullHealth
-			end,
-		set = function (v)
-				GridStatusHealth.db.profile.unit_health.deadAsFullHealth = v
-				GridStatusHealth:UpdateAllUnits()
-			end,
+		type = "toggle",
+		get = function()
+			return GridStatusHealth.db.profile.unit_health.deadAsFullHealth
+		end,
+		set = function(_, v)
+			GridStatusHealth.db.profile.unit_health.deadAsFullHealth = v
+			GridStatusHealth:UpdateAllUnits()
+		end,
 	},
 }
 
 local healthOptions = {
-	["enable"] = false, -- you can't disable this
-	["useClassColors"] = {
-		type = "toggle",
+	enable = false, -- you can't disable this
+	useClassColors = {
 		name = L["Use class color"],
 		desc = L["Color health based on class."],
-		get = function ()
-				return GridStatusHealth.db.profile.unit_health.useClassColors
-			end,
-		set = function (v)
-				GridStatusHealth.db.profile.unit_health.useClassColors = v
-				GridStatusHealth:UpdateAllUnits()
-			end,
+		type = "toggle",
+		get = function()
+			return GridStatusHealth.db.profile.unit_health.useClassColors
+		end,
+		set = function(_, v)
+			GridStatusHealth.db.profile.unit_health.useClassColors = v
+			GridStatusHealth:UpdateAllUnits()
+		end,
 	},
 }
 
 local healthDeficitOptions = {
-	["threshold"] = {
-		type = "range",
+	threshold = {
 		name = L["Health threshold"],
 		desc = L["Only show deficit above % damage."],
-		max = 100,
-		min = 0,
-		step = 1,
-		get = function ()
-				return GridStatusHealth.db.profile.unit_healthDeficit.threshold
-			end,
-		set = function (v)
-				GridStatusHealth.db.profile.unit_healthDeficit.threshold = v
-				GridStatusHealth:UpdateAllUnits()
-			end,
+		type = "range", min = 0, max = 100, step = 1,
+		get = function()
+			return GridStatusHealth.db.profile.unit_healthDeficit.threshold
+		end,
+		set = function(_, v)
+			GridStatusHealth.db.profile.unit_healthDeficit.threshold = v
+			GridStatusHealth:UpdateAllUnits()
+		end,
 	},
-	["useClassColors"] = {
-		type = "toggle",
+	useClassColors = {
 		name = L["Use class color"],
 		desc = L["Color deficit based on class."],
-		get = function ()
-				return GridStatusHealth.db.profile.unit_healthDeficit.useClassColors
-			end,
-		set = function (v)
-				GridStatusHealth.db.profile.unit_healthDeficit.useClassColors = v
-				GridStatusHealth:UpdateAllUnits()
-			end,
+		type = "toggle",
+		get = function()
+			return GridStatusHealth.db.profile.unit_healthDeficit.useClassColors
+		end,
+		set = function(_, v)
+			GridStatusHealth.db.profile.unit_healthDeficit.useClassColors = v
+			GridStatusHealth:UpdateAllUnits()
+		end,
 	},
 }
 
 local low_healthOptions = {
-	["threshold"] = {
-		type = "range",
+	threshold = {
 		name = L["Low HP threshold"],
 		desc = L["Set the HP % for the low HP warning."],
-		max = 100,
-		min = 0,
-		step = 1,
-		get = function ()
-				return GridStatusHealth.db.profile.alert_lowHealth.threshold
-			end,
-		set = function (v)
-				GridStatusHealth.db.profile.alert_lowHealth.threshold = v
-				GridStatusHealth:UpdateAllUnits()
-			end,
+		type = "range", min = 0, max = 100, step = 1,
+		get = function()
+			return GridStatusHealth.db.profile.alert_lowHealth.threshold
+		end,
+		set = function(_, v)
+			GridStatusHealth.db.profile.alert_lowHealth.threshold = v
+			GridStatusHealth:UpdateAllUnits()
+		end,
 	},
 }
 
@@ -155,19 +149,19 @@ end
 
 -- you can't disable the unit_health status, so no need to ever unregister
 function GridStatusHealth:OnEnable()
-	self:RegisterEvent("Grid_UnitJoined")
+	self:RegisterMessage("Grid_UnitJoined")
 
 	self:RegisterEvent("UNIT_HEALTH", "UpdateUnit")
 	self:RegisterEvent("UNIT_MAXHEALTH", "UpdateUnit")
 	self:RegisterEvent("UNIT_AURA", "UpdateUnit")
-
 	self:RegisterEvent("UNIT_NAME_UPDATE", "UpdateUnit")
 
 	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateAllUnits")
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateAllUnits")
 
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
-	self:RegisterEvent("Grid_ColorsChanged", "UpdateAllUnits")
+
+	self:RegisterMessage("Grid_ColorsChanged", "UpdateAllUnits")
 end
 
 function GridStatusHealth:OnStatusEnable(status)
@@ -185,18 +179,18 @@ end
 
 function GridStatusHealth:UpdateAllUnits()
 	for guid, unitid in GridRoster:IterateRoster() do
-		self:Grid_UnitJoined(guid, unitid)
+		self:Grid_UnitJoined("UpdateAllUnits", guid, unitid)
 	end
 end
 
-function GridStatusHealth:Grid_UnitJoined(guid, unitid)
+function GridStatusHealth:Grid_UnitJoined(event, guid, unitid)
 	if unitid then
-		self:UpdateUnit(unitid, true)
-		self:UpdateUnit(unitid)
+		self:UpdateUnit(event, unitid, true)
+		self:UpdateUnit(event, unitid)
 	end
 end
 
-function GridStatusHealth:UpdateUnit(unitid, ignoreRange)
+function GridStatusHealth:UpdateUnit(event, unitid, ignoreRange)
 	local guid = UnitGUID(unitid)
 
 	if not GridRoster:IsGUIDInRaid(guid) then
@@ -301,7 +295,7 @@ function GridStatusHealth:StatusDeath(guid, gained)
 
 	if gained then
 		-- trigger death event for other modules as wow isnt firing a death event
-		self:TriggerEvent("Grid_UnitDeath", guid)
+		self:SendMessage("Grid_UnitDeath", guid)
 		self.core:SendStatusGained(guid, "alert_death",
 			settings.priority,
 			(settings.range and 40),
@@ -344,7 +338,7 @@ function GridStatusHealth:StatusOffline(guid, gained)
 
 	if gained then
 		-- trigger offline event for other modules
-		self:TriggerEvent("Grid_UnitOffline", guid)
+		self:SendMessage("Grid_UnitOffline", guid)
 		self.core:SendStatusGained(guid, "alert_offline",
 			settings.priority,
 			(settings.range and 40),

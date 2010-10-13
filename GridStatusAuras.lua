@@ -3,32 +3,26 @@
 	GridStatus module for tracking buffs/debuffs.
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
-
-local Dewdrop = AceLibrary("Dewdrop-2.0")
+local _, Grid = ...
+local L = Grid.L
 local GridRoster = Grid:GetModule("GridRoster")
 
 local GridStatusAuras = Grid:GetModule("GridStatus"):NewModule("GridStatusAuras")
 GridStatusAuras.menuName = L["Auras"]
 
---{{{ Get Spell Names
 local BS = {
-	["Abolish Disease"] = GetSpellInfo(552),
-	["Abolish Poison"] = GetSpellInfo(2893),
+	["Earth Shield"] = GetSpellInfo(974),
 	["Forbearance"] = GetSpellInfo(25771),
 	["Ghost"] = GetSpellInfo(8326),
+	["Lifebloom"] = GetSpellInfo(33763),
 	["Mortal Strike"] = GetSpellInfo(12294),
 	["Power Word: Shield"] = GetSpellInfo(17),
-	["Lifebloom"] = GetSpellInfo(33763),
 	["Regrowth"] = GetSpellInfo(8936),
 	["Rejuvenation"] = GetSpellInfo(774),
 	["Renew"] = GetSpellInfo(139),
 	["Riptide"] = GetSpellInfo(61295),
 	["Weakened Soul"] = GetSpellInfo(6788),
-	["Earth Shield"] = GetSpellInfo(974),
 }
---}}}
 
 -- data used by aura scanning
 local buff_names = {}
@@ -42,150 +36,139 @@ local debuff_types = {
 	["Curse"] = true,
 }
 
-local abolish_types = {
-	[BS["Abolish Poison"]] = "Poison",
-	[BS["Abolish Disease"]] = "Disease",
-}
-
 function GridStatusAuras.StatusForSpell(spell, isBuff)
-	local prefix = "debuff_"
-
-	if isBuff then
-		prefix = "buff_"
-	end
-
+	local prefix = isBuff and "buff_" or "debuff_"
 	return prefix .. string.gsub(spell, " ", "")
 end
 
 GridStatusAuras.defaultDB = {
 	debug = false,
-	abolish = true,
 	["debuff_poison"] = {
-		["desc"] = string.format(L["Debuff type: %s"], L["Poison"]),
-		["text"] = L["Poison"],
-		["enable"] = true,
-		["priority"] = 90,
-		["range"] = false,
-		["color"] = { r =  0, g = .6, b =  0, a = 1 },
-		["order"] = 25,
+		desc = string.format(L["Debuff type: %s"], L["Poison"]),
+		text = L["Poison"],
+		enable = true,
+		priority = 90,
+		range = false,
+		color = { r =  0, g = .6, b =  0, a = 1 },
+		order = 25,
 	},
 	["debuff_disease"] = {
-		["desc"] = string.format(L["Debuff type: %s"], L["Disease"]),
-		["text"] = L["Disease"],
-		["enable"] = true,
-		["priority"] = 90,
-		["range"] = false,
-		["color"] = { r = .6, g = .4, b =  0, a = 1 },
-		["order"] = 25,
+		desc = string.format(L["Debuff type: %s"], L["Disease"]),
+		text = L["Disease"],
+		enable = true,
+		priority = 90,
+		range = false,
+		color = { r = .6, g = .4, b =  0, a = 1 },
+		order = 25,
 	},
 	["debuff_magic"] = {
-		["desc"] = string.format(L["Debuff type: %s"], L["Magic"]),
-		["text"] = L["Magic"],
-		["enable"] = true,
-		["priority"] = 90,
-		["range"] = false,
-		["color"] = { r = .2, g = .6, b =  1, a = 1 },
-		["order"] = 25,
+		desc = string.format(L["Debuff type: %s"], L["Magic"]),
+		text = L["Magic"],
+		enable = true,
+		priority = 90,
+		range = false,
+		color = { r = .2, g = .6, b =  1, a = 1 },
+		order = 25,
 	},
 	["debuff_curse"] = {
-		["desc"] = string.format(L["Debuff type: %s"], L["Curse"]),
-		["text"] = L["Curse"],
-		["enable"] = true,
-		["priority"] = 90,
-		["range"] = false,
-		["color"] = { r = .6, g =  0, b =  1, a = 1 },
-		["order"] = 25,
+		desc = string.format(L["Debuff type: %s"], L["Curse"]),
+		text = L["Curse"],
+		enable = true,
+		priority = 90,
+		range = false,
+		color = { r = .6, g =  0, b =  1, a = 1 },
+		order = 25,
 	},
 	[GridStatusAuras.StatusForSpell(BS["Ghost"])] = {
-		["desc"] = string.format(L["Debuff: %s"], BS["Ghost"]),
-		["text"] = BS["Ghost"],
-		["enable"] = true,
-		["priority"] = 90,
-		["range"] = false,
-		["color"] = { r = .5, g = .5, b = .5, a = 1 },
+		desc = string.format(L["Debuff: %s"], BS["Ghost"]),
+		text = BS["Ghost"],
+		enable = true,
+		priority = 90,
+		range = false,
+		color = { r = .5, g = .5, b = .5, a = 1 },
 
 	},
 	[GridStatusAuras.StatusForSpell(BS["Mortal Strike"])] = {
-		["desc"] = string.format(L["Debuff: %s"], BS["Mortal Strike"]),
-		["text"] = BS["Mortal Strike"],
-		["enable"] = true,
-		["priority"] = 90,
-		["range"] = false,
-		["color"] = { r = .8, g = .2, b = .2, a = 1 },
+		desc = string.format(L["Debuff: %s"], BS["Mortal Strike"]),
+		text = BS["Mortal Strike"],
+		enable = true,
+		priority = 90,
+		range = false,
+		color = { r = .8, g = .2, b = .2, a = 1 },
 	},
 	[GridStatusAuras.StatusForSpell(BS["Forbearance"])] = {
-		["desc"] = string.format(L["Debuff: %s"], BS["Forbearance"]),
-		["text"] = BS["Forbearance"],
-		["enable"] = true,
-		["priority"] = 90,
-		["range"] = false,
-		["color"] = { r = .5, g = .5, b = .5, a = 1 },
+		desc = string.format(L["Debuff: %s"], BS["Forbearance"]),
+		text = BS["Forbearance"],
+		enable = true,
+		priority = 90,
+		range = false,
+		color = { r = .5, g = .5, b = .5, a = 1 },
 
 	},
 	[GridStatusAuras.StatusForSpell(BS["Weakened Soul"])] = {
-		["desc"] = string.format(L["Debuff: %s"], BS["Weakened Soul"]),
-		["text"] = BS["Weakened Soul"],
-		["enable"] = true,
-		["priority"] = 90,
-		["range"] = false,
-		["color"] = { r = .5, g = .5, b = .5, a = 1 },
+		desc = string.format(L["Debuff: %s"], BS["Weakened Soul"]),
+		text = BS["Weakened Soul"],
+		enable = true,
+		priority = 90,
+		range = false,
+		color = { r = .5, g = .5, b = .5, a = 1 },
 
 	},
 	[GridStatusAuras.StatusForSpell(BS["Power Word: Shield"], true)] = {
-		["desc"] = string.format(L["Buff: %s"], BS["Power Word: Shield"]),
-		["text"] = BS["Power Word: Shield"],
-		["enable"] = true,
-		["priority"] = 91,
-		["range"] = false,
-		["color"] = { r = .8, g = .8, b =  0, a = 1 },
+		desc = string.format(L["Buff: %s"], BS["Power Word: Shield"]),
+		text = BS["Power Word: Shield"],
+		enable = true,
+		priority = 91,
+		range = false,
+		color = { r = .8, g = .8, b =  0, a = 1 },
 	},
 	[GridStatusAuras.StatusForSpell(BS["Renew"], true)] = {
-		["desc"] = string.format(L["Buff: %s"], BS["Renew"]),
-		["text"] = BS["Renew"],
-		["enable"] = true,
-		["priority"] = 90,
-		["range"] = false,
-		["color"] = { r =  0, g = .7, b = .3, a = 1 },
+		desc = string.format(L["Buff: %s"], BS["Renew"]),
+		text = BS["Renew"],
+		enable = true,
+		priority = 90,
+		range = false,
+		color = { r =  0, g = .7, b = .3, a = 1 },
 	},
 	[GridStatusAuras.StatusForSpell(BS["Lifebloom"], true)] = {
-		["desc"] = string.format(L["Buff: %s"], BS["Lifebloom"]),
-		["text"] = BS["Lifebloom"],
-		["enable"] = true,
-		["priority"] = 90,
-		["range"] = false,
-		["color"] = { r =  .3, g = .7, b = 0, a = 1 },
+		desc = string.format(L["Buff: %s"], BS["Lifebloom"]),
+		text = BS["Lifebloom"],
+		enable = true,
+		priority = 90,
+		range = false,
+		color = { r =  .3, g = .7, b = 0, a = 1 },
 	},
 	[GridStatusAuras.StatusForSpell(BS["Regrowth"], true)] = {
-		["desc"] = string.format(L["Buff: %s"], BS["Regrowth"]),
-		["text"] = BS["Regrowth"],
-		["enable"] = true,
-		["priority"] = 90,
-		["range"] = false,
-		["color"] = { r =  1, g = .7, b = .1, a = 1 },
+		desc = string.format(L["Buff: %s"], BS["Regrowth"]),
+		text = BS["Regrowth"],
+		enable = true,
+		priority = 90,
+		range = false,
+		color = { r =  1, g = .7, b = .1, a = 1 },
 	},
 	[GridStatusAuras.StatusForSpell(BS["Rejuvenation"], true)] = {
-		["desc"] = string.format(L["Buff: %s"], BS["Rejuvenation"]),
-		["text"] = BS["Rejuvenation"],
-		["enable"] = true,
-		["priority"] = 90,
-		["range"] = false,
-		["color"] = { r =  0, g = .3, b = .7, a = 1 },
+		desc = string.format(L["Buff: %s"], BS["Rejuvenation"]),
+		text = BS["Rejuvenation"],
+		enable = true,
+		priority = 90,
+		range = false,
+		color = { r =  0, g = .3, b = .7, a = 1 },
 	},
 	[GridStatusAuras.StatusForSpell(BS["Riptide"], true)] = {
-		["desc"] = string.format(L["Buff: %s"], BS["Riptide"]),
-		["text"] = BS["Riptide"],
-		["enable"] = true,
-		["priority"] = 90,
-		["range"] = false,
-		["color"] = { r = .4, g = 0, b = .8, a = 1 },
+		desc = string.format(L["Buff: %s"], BS["Riptide"]),
+		text = BS["Riptide"],
+		enable = true,
+		priority = 90,
+		range = false,
+		color = { r = .4, g = 0, b = .8, a = 1 },
 	},
 	[GridStatusAuras.StatusForSpell(BS["Earth Shield"], true)] = {
-		["desc"] = string.format(L["Buff: %s"], BS["Earth Shield"]),
-		["text"] = BS["Earth Shield"],
-		["enable"] = true,
-		["priority"] = 90,
-		["range"] = false,
-		["color"] = { r = .5, g = 0.7, b = 0.3, a = 1 },
+		desc = string.format(L["Buff: %s"], BS["Earth Shield"]),
+		text = BS["Earth Shield"],
+		enable = true,
+		priority = 90,
+		range = false,
+		color = { r = .5, g = 0.7, b = 0.3, a = 1 },
 	},
 }
 
@@ -195,32 +178,10 @@ GridStatusAuras.extraOptions = {
 		name = L["Buffs"],
 		order = 10,
 	},
-	header_debufftypes_gap = {
-		type = "header",
-		order = 19,
-	},
 	header_debufftypes = {
 		type = "header",
 		name = L["Debuff Types"],
 		order = 20,
-	},
-	header_abolish_gap = {
-		type = "header",
-		order = 27,
-	},
-	abolish = {
-		type = "toggle",
-		name = L["Filter Abolished units"],
-		desc = L["Skip units that have an active Abolish buff."],
-		get = function() return GridStatusAuras.db.profile.abolish end,
-		set = function()
-			GridStatusAuras.db.profile.abolish = not GridStatusAuras.db.profile.abolish
-		end,
-		order = 28
-	},
-	header_debuffs_gap = {
-		type = "header",
-		order = 29,
 	},
 	header_debuffs = {
 		type = "header",
@@ -263,7 +224,7 @@ function GridStatusAuras:EnabledStatusCount()
 end
 
 function GridStatusAuras:OnStatusEnable(status)
-	self:RegisterEvent("Grid_UnitJoined")
+	self:RegisterMessage("Grid_UnitJoined")
 	self:RegisterEvent("UNIT_AURA", "ScanUnitAuras")
 
 	self:UpdateAuraScanList()
@@ -275,7 +236,7 @@ function GridStatusAuras:OnStatusDisable(status)
 	self:UpdateAuraScanList()
 
 	if self:EnabledStatusCount() == 0 then
-		self:UnregisterEvent("Grid_UnitJoined")
+		self:UnregisterMessage("Grid_UnitJoined")
 		self:UnregisterEvent("UNIT_AURA")
 	end
 end
@@ -315,7 +276,7 @@ end
 function GridStatusAuras:OptionsForStatus(status, isBuff)
 	local auraOptions = {
 		["class"] = {
-			type = "group",
+			type = "group", dialogInline = true,
 			name = L["Class Filter"],
 			desc = L["Show status for the selected classes."],
 			order = 111,
@@ -332,7 +293,7 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 			get = function()
 					return GridStatusAuras.db.profile[status][class] ~= false
 				end,
-			set = function(v)
+			set = function(_, v)
 					GridStatusAuras.db.profile[status][class] = v
 					GridStatusAuras:UpdateAllUnitAuras()
 				end,
@@ -348,7 +309,7 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 			get = function()
 					return GridStatusAuras.db.profile[status].mine
 				end,
-			set = function(v)
+			set = function(_, v)
 					GridStatusAuras.db.profile[status].mine = v
 					GridStatusAuras:UpdateAuraScanList()
 					GridStatusAuras:UpdateAllUnitAuras()
@@ -362,7 +323,7 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 			get = function()
 					return GridStatusAuras.db.profile[status].missing
 				end,
-			set = function(v)
+			set = function(_, v)
 					GridStatusAuras.db.profile[status].missing = v
 					GridStatusAuras:UpdateAllUnitAuras()
 				end,
@@ -377,7 +338,7 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 		get = function()
 				return GridStatusAuras.db.profile[status].duration
 			end,
-		set = function(v)
+		set = function(_, v)
 				GridStatusAuras.db.profile[status].duration = v
 				GridStatusAuras:UpdateAllUnitAuras()
 			end,
@@ -392,21 +353,21 @@ function GridStatusAuras:CreateAddRemoveOptions()
 	--	order = 199,
 	--}
 	self.options.args["add_buff"] = {
-		type = "text",
+		type = "input",
 		name = L["Add new Buff"],
 		desc = L["Adds a new buff to the status module"],
 		get = false,
 		usage = L["<buff name>"],
-		set = function(v) self:AddAura(v, true) end,
+		set = function(_, v) self:AddAura(v, true) end,
 		order = 11
 	}
 	self.options.args["add_debuff"] = {
-		type = "text",
+		type = "input",
 		name = L["Add new Debuff"],
 		desc = L["Adds a new debuff to the status module"],
 		get = false,
 		usage = L["<debuff name>"],
-		set = function(v) self:AddAura(v, false) end,
+		set = function(_, v) self:AddAura(v, false) end,
 		order = 31
 	}
 	self.options.args["delete_debuff"] = {
@@ -433,7 +394,6 @@ end
 
 function GridStatusAuras:AddAura(name, isBuff)
 	local status = GridStatusAuras.StatusForSpell(name, isBuff)
-	local desc
 
 	-- status already exists
 	if self.db.profile[status] then
@@ -441,21 +401,17 @@ function GridStatusAuras:AddAura(name, isBuff)
 		return
 	end
 
-	if isBuff then
-		desc = string.format(L["Buff: %s"], name)
-	else
-		desc = string.format(L["Debuff: %s"], name)
-	end
+	local desc = isBuff and string.format(L["Buff: %s"], name) or string.format(L["Debuff: %s"], name)
 
 	self.db.profile[status] = {
-		["text"] = name,
-		["desc"] = desc,
-		["enable"] = true,
-		["priority"] = 90,
-		["range"] = false,
+		text = name,
+		desc = desc,
+		enable = true,
+		priority = 90,
+		range = false,
 		["missing"] = false,
 		["duration"] = false,
-		["color"] = { r = .5, g = .5, b = .5, a = 1 },
+		color = { r = .5, g = .5, b = .5, a = 1 },
 	}
 
 	local order = isBuff and 15 or 35
@@ -475,12 +431,12 @@ end
 
 function GridStatusAuras:UpdateAllUnitAuras()
 	for guid, unitid in GridRoster:IterateRoster() do
-		self:ScanUnitAuras(unitid)
+		self:ScanUnitAuras("UpdateAllUnitAuras", unitid)
 	end
 end
 
-function GridStatusAuras:Grid_UnitJoined(guid, unitid)
-	self:ScanUnitAuras(unitid)
+function GridStatusAuras:Grid_UnitJoined(event, guid, unitid)
+	self:ScanUnitAuras(event, unitid)
 end
 
 -- Unit Aura Driver
@@ -711,8 +667,8 @@ local buff_names_seen = {}
 local player_buff_names_seen = {}
 local debuff_names_seen = {}
 local debuff_types_seen = {}
-local abolish_types_seen = {}
-function GridStatusAuras:ScanUnitAuras(unit)
+
+function GridStatusAuras:ScanUnitAuras(event, unit)
 	local name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable
 
 	local guid = UnitGUID(unit)
@@ -746,17 +702,6 @@ function GridStatusAuras:ScanUnitAuras(unit)
 		end
 	end
 
-	-- scan for abolish buffs so we can hide debuffs that are of the same type that is being abolished
-	if self.db.profile.abolish then
-		for buff_name, debuff_type in pairs(abolish_types) do
-			name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL")
-
-			if name then
-				abolish_types_seen[debuff_type] = true
-			end
-		end
-	end
-
 	-- scan for debuffs
 	local index = 1
 	while true do
@@ -765,15 +710,13 @@ function GridStatusAuras:ScanUnitAuras(unit)
 		if not name then
 			break
 		end
-		if not abolish_types_seen[debuffType] then
-			if debuff_names[name] then
-				debuff_names_seen[name] = true
-				self:UnitGainedDebuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
-			elseif debuff_types[debuffType] then
-				-- elseif so that a named debuff doesn't trigger the type status
-				debuff_types_seen[debuffType] = true
-				self:UnitGainedDebuffType(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
-			end
+		if debuff_names[name] then
+			debuff_names_seen[name] = true
+			self:UnitGainedDebuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
+		elseif debuff_types[debuffType] then
+			-- elseif so that a named debuff doesn't trigger the type status
+			debuff_types_seen[debuffType] = true
+			self:UnitGainedDebuffType(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 		end
 
 		index = index + 1
@@ -794,11 +737,6 @@ function GridStatusAuras:ScanUnitAuras(unit)
 		else
 			player_buff_names_seen[name] = nil
 		end
-	end
-
-	-- cleanup abolish types
-	for debuffType in pairs(abolish_types_seen) do
-		abolish_types_seen[debuffType] = nil
 	end
 
 	-- handle lost debuffs

@@ -3,13 +3,13 @@
 	GridStatus module for showing when a unit is driving a vehicle with a UI.
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
+local _, Grid = ...
+local L = Grid.L
 local GridRoster = Grid:GetModule("GridRoster")
-
 local GridRoster = Grid:GetModule("GridRoster")
 
 local GridStatusVehicle = Grid:GetModule("GridStatus"):NewModule("GridStatusVehicle")
+
 GridStatusVehicle.menuName = L["In Vehicle"]
 
 GridStatusVehicle.defaultDB = {
@@ -52,11 +52,11 @@ end
 
 function GridStatusVehicle:UpdateAllUnits()
 	for guid, unitid in GridRoster:IterateRoster() do
-		self:UpdateUnit(unitid)
+		self:UpdateUnit("UpdateAllUnits", unitid)
 	end
 end
 
-function GridStatusVehicle:UpdateUnit(unitid)
+function GridStatusVehicle:UpdateUnit(event, unitid)
 	local pet_unitid = GridRoster:GetPetUnitidByUnitid(unitid)
 	if not pet_unitid then return end
 

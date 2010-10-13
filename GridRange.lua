@@ -2,12 +2,12 @@
 	GridRange.lua
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
+local _, Grid = ...
+local L = Grid.L
 
-local Gratuity = LibStub:GetLibrary("LibGratuity-3.0")
+local Gratuity = LibStub("LibGratuity-3.0")
 
-local GridRange = Grid:NewModule("GridRange")
+local GridRange = Grid:NewModule("GridRange", "AceBucket-3.0", "AceTimer-3.0")
 
 local ranges, checks, rangelist
 local select = select
@@ -58,36 +58,38 @@ end
 initRanges()
 
 function GridRange:ScanSpellbook()
-	initRanges()
-
 	-- using IsSpellInRange doesn't work for dead players.
 	-- reschedule the spell scanning for when the player is alive
 	if UnitIsDeadOrGhost("player") then
 		self:RegisterEvent("PLAYER_UNGHOST", "ScanSpellbook")
 		self:RegisterEvent("PLAYER_ALIVE", "ScanSpellbook")
-	elseif self:IsEventRegistered("PLAYER_UNGHOST") then
+	else
 		self:UnregisterEvent("PLAYER_UNGHOST")
 		self:UnregisterEvent("PLAYER_ALIVE")
 	end
 
+	initRanges()
+
 	local i = 1
+	local GetSpellBookItemName = _G.GetSpellBookItemName or _G.GetSpellName
+	local SetSpellBookItem = Gratuity.SetSpellBookItem or Gratuity.SetSpell
 	while true do
-		local name, rank = GetSpellName(i, BOOKTYPE_SPELL)
+		local name = GetSpellBookItemName(i, BOOKTYPE_SPELL)
 		if not name then break end
 		-- beneficial spell with a range
 		if not invalidSpells[name] and IsSpellInRange(i, BOOKTYPE_SPELL, "player") then
-			Gratuity:SetSpell(i, BOOKTYPE_SPELL)
+			SetSpellBookItem(Gratuity, i, BOOKTYPE_SPELL)
 			local range = select(3, Gratuity:Find(L["(%d+) yd range"], 2, 2))
 			if range then
 				local index = i -- we have to create an upvalue
 				addRange(tonumber(range), function (unit) return IsSpellInRange(index, BOOKTYPE_SPELL, unit) == 1 end)
-				self:Debug("%d %s (%s) has range %s", i, name, rank, range)
+				self:Debug("%d %s has range %s", i, name, range)
 			end
 		end
 		i = i + 1
 	end
 
-	self:TriggerEvent("Grid_RangesUpdated")
+	self:SendMessage("Grid_RangesUpdated")
 	rangelist = nil
 end
 
@@ -95,9 +97,13 @@ function GridRange:OnEnable()
 	self.super.OnEnable(self)
 
 	self:ScanSpellbook()
-	self:ScheduleEvent("GridRange_ScanSpellbook", self.ScanSpellbook, 1, self)
-	self:RegisterBucketEvent("LEARNED_SPELL_IN_TAB", 2, "ScanSpellbook")
+
+	self:RegisterEvent("PLAYER_TALENT_UPDATE", "ScanSpellbook")
+
 	self:RegisterBucketEvent("CHARACTER_POINTS_CHANGED", 2, "ScanSpellbook")
+	self:RegisterBucketEvent("LEARNED_SPELL_IN_TAB", 2, "ScanSpellbook")
+
+	self:ScheduleTimer("ScanSpellbook", 2)
 end
 
 function GridRange:GetUnitRange(unit)

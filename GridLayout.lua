@@ -2,16 +2,15 @@
 	GridLayout.lua
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
+local _, Grid = ...
+local L = Grid.L
 
-local AceOO = AceLibrary("AceOO-2.0")
 local media = LibStub("LibSharedMedia-3.0", true)
 local GridRoster = Grid:GetModule("GridRoster")
 
-local GridLayout = Grid:NewModule("GridLayout")
+local GridLayout = Grid:NewModule("GridLayout", "AceBucket-3.0", "AceTimer-3.0")
 
---{{{ ConfigMode support
+------------------------------------------------------------------------
 
 local config_mode
 CONFIGMODE_CALLBACKS = CONFIGMODE_CALLBACKS or {}
@@ -24,83 +23,88 @@ CONFIGMODE_CALLBACKS["Grid"] = function(action)
 	GridLayout:UpdateTabVisibility()
 end
 
---}}}
-
---{{{ Frame config function for secure headers
+------------------------------------------------------------------------
 
 function GridLayout_InitialConfigFunction(frame)
 	Grid:GetModule("GridFrame").InitialConfigFunction(frame)
 end
 
---}}}
+------------------------------------------------------------------------
 
---{{{ Class for group headers
+GridLayout.prototype = { }
 
-local GridLayoutHeaderClass = AceOO.Class()
 local NUM_HEADERS = 0
 
-function GridLayoutHeaderClass.prototype:init(isPetGroup)
-	GridLayoutHeaderClass.super.prototype.init(self)
-	self:CreateFrames(isPetGroup)
-	self:Reset()
-	self:SetOrientation()
-end
-
-function GridLayoutHeaderClass.prototype:Reset()
-	self.frame:Hide()
-
-	self.frame:SetAttribute("showPlayer", true)
-	self.frame:SetAttribute("showSolo", true)
-	self.frame:SetAttribute("showParty", true)
-	self.frame:SetAttribute("showRaid", true)
-
-	self.frame:SetAttribute("nameList", nil)
-	self.frame:SetAttribute("groupFilter", nil)
-	self.frame:SetAttribute("strictFiltering", nil)
-	self.frame:SetAttribute("sortMethod", "NAME")
-	self.frame:SetAttribute("sortDir", nil)
-	self.frame:SetAttribute("groupBy", nil)
-	self.frame:SetAttribute("groupingOrder", nil)
-	self.frame:SetAttribute("maxColumns", nil)
-	self.frame:SetAttribute("unitsPerColumn", nil)
-	self.frame:SetAttribute("startingIndex", nil)
-	self.frame:SetAttribute("columnSpacing", nil)
-	self.frame:SetAttribute("columnAnchorPoint", nil)
-
-	self.frame:UnregisterEvent("UNIT_NAME_UPDATE")
-end
-
-function GridLayoutHeaderClass.prototype:CreateFrames(isPetGroup)
+function GridLayout:CreateHeader(isPetGroup)
 	NUM_HEADERS = NUM_HEADERS + 1
+
 	local template = isPetGroup and "SecureGroupPetHeaderTemplate" or "SecureGroupHeaderTemplate"
+	if ClickCastHeader then
+		template = template .. ", ClickCastUnitTemplate"
+	end
 
-	self.frame = CreateFrame("Frame", "GridLayoutHeader"..NUM_HEADERS, GridLayoutFrame, template)
-	self.frame:SetAttribute("template", "SecureUnitButtonTemplate")
-	self.frame.initialConfigFunction = GridLayout_InitialConfigFunction
+	local header = CreateFrame("Frame", "GridLayoutHeader" .. NUM_HEADERS, GridLayoutFrame, template)
+
+	for k, v in pairs(self.prototype) do
+		header[k] = v
+	end
+
+	header:SetAttribute("template", "SecureUnitButtonTemplate")
+
+	SecureHandler_OnLoad(header)
+	if ClickCastHeader then
+		header:SetFrameRef("clickcast_header", ClickCastHeader)
+	end
+
+	function header:Grid_InitialConfigFunction(...)
+		GridLayout_InitialConfigFunction(self[#self])
+	end
+
+	header.initialConfigFunction = GridLayout_InitialConfigFunction
+
+	header:SetAttribute("initialConfigFunction", [[
+		self:GetParent():CallMethod("Grid_InitialConfigFunction")
+		RegisterUnitWatch(self)
+
+		self:SetAttribute("type1", "target")
+		self:SetAttribute("*type1", "target")
+
+		self:SetAttribute("toggleForVehicle", true)
+	]])
+
+	header:Reset()
+	header:SetOrientation()
+
+	return header
 end
 
-function GridLayoutHeaderClass.prototype:GetFrameAttribute(name)
-	return self.frame:GetAttribute(name)
-end
+function GridLayout.prototype:Reset()
+	self:Hide()
 
-function GridLayoutHeaderClass.prototype:SetFrameAttribute(name, value)
-	return self.frame:SetAttribute(name, value)
-end
+	self:SetAttribute("showPlayer", true)
 
-function GridLayoutHeaderClass.prototype:GetFrameWidth()
-	return self.frame:GetWidth()
-end
+	self:SetAttribute("showSolo", true)
+	self:SetAttribute("showParty", true)
+	self:SetAttribute("showRaid", true)
 
-function GridLayoutHeaderClass.prototype:GetFrameHeight()
-	return self.frame:GetHeight()
-end
+	self:SetAttribute("columnSpacing", nil)
+	self:SetAttribute("columnAnchorPoint", nil)
+	self:SetAttribute("groupBy", nil)
+	self:SetAttribute("groupFilter", nil)
+	self:SetAttribute("groupingOrder", nil)
+	self:SetAttribute("maxColumns", nil)
+	self:SetAttribute("nameList", nil)
+	self:SetAttribute("sortDir", nil)
+	self:SetAttribute("sortMethod", "NAME")
+	self:SetAttribute("startingIndex", nil)
+	self:SetAttribute("strictFiltering", nil)
+	self:SetAttribute("unitsPerColumn", nil)
 
-function GridLayoutHeaderClass.prototype:IsFrameVisible()
-	return self.frame:IsVisible()
+	self:UnregisterEvent("UNIT_NAME_UPDATE")
 end
 
 -- nil or false for vertical
-function GridLayoutHeaderClass.prototype:SetOrientation(horizontal)
+function GridLayout.prototype:SetOrientation(horizontal)
 	local layoutSettings = GridLayout.db.profile
 	local groupAnchor = layoutSettings.groupAnchor
 	local padding = layoutSettings.Padding
@@ -129,26 +133,21 @@ function GridLayoutHeaderClass.prototype:SetOrientation(horizontal)
 		end
 	end
 
-	self.frame:SetAttribute("xOffset", xOffset)
-	self.frame:SetAttribute("yOffset", yOffset)
-	self.frame:SetAttribute("point", point)
+	self:SetAttribute("xOffset", xOffset)
+	self:SetAttribute("yOffset", yOffset)
+	self:SetAttribute("point", point)
 end
 
 -- return the number of visible units belonging to the GroupHeader
-function GridLayoutHeaderClass.prototype:GetVisibleUnitCount()
+function GridLayout.prototype:GetVisibleUnitCount()
 	local count = 0
-	while self.frame:GetAttribute("child"..count) do
+	while self:GetAttribute("child"..count) do
 		count = count + 1
 	end
 	return count
 end
 
---}}}
-
---{{{ GridLayout
---{{{  Initialization
-
---{{{  AceDB defaults
+------------------------------------------------------------------------
 
 GridLayout.defaultDB = {
 	debug = false,
@@ -157,8 +156,8 @@ GridLayout.defaultDB = {
 		solo = L["By Group 5"],
 		party = L["By Group 5"],
 		arena = L["By Group 5"],
-		heroic_raid = L["By Group 25"],
-		raid = L["By Group 10"],
+		raid_25 = L["By Group 25"],
+		raid_10 = L["By Group 10"],
 		bg = L["By Group 40"],
 	},
 
@@ -187,112 +186,111 @@ GridLayout.defaultDB = {
 	PosY = -400,
 }
 
---}}}
---{{{  AceOptions table
+------------------------------------------------------------------------
 
 local ORDER_LAYOUT = 20
 local ORDER_DISPLAY = 30
 
 GridLayout.options = {
-	type = "group",
 	name = L["Layout"],
 	desc = L["Options for GridLayout."],
 	disabled = InCombatLockdown,
+	type = "group",
 	args = {
 		-- layouts for SOLO, PARTY, RAID, BG, ARENA
 		["sololayout"] = {
-			type = "text",
+			type = "select",
 			name = L["Solo Layout"],
 			desc = L["Select which layout to use when not in a party."],
 			order = ORDER_LAYOUT + 1,
-			get = function ()
+			values = {},
+			get = function()
 					return GridLayout.db.profile.layouts.solo
 				end,
-			set = function (v)
+			set = function(_, v)
 					GridLayout.db.profile.layouts.solo = v
 					GridLayout:ReloadLayout()
 				end,
-			validate = {},
 		},
 		["partylayout"] = {
-			type = "text",
+			type = "select",
 			name = L["Party Layout"],
 			desc = L["Select which layout to use when in a party."],
 			order = ORDER_LAYOUT + 2,
-			get = function ()
+			get = function()
 					return GridLayout.db.profile.layouts.party
 				end,
-			set = function (v)
+			set = function(_, v)
 					GridLayout.db.profile.layouts.party = v
 					GridLayout:ReloadLayout()
 				end,
-			validate = {},
+			values = {},
 		},
-		["heroic_raidlayout"] = {
-			type = "text",
+		["raid_25layout"] = {
+			type = "select",
 			name = L["25 Player Raid Layout"],
 			desc = L["Select which layout to use when in a 25 player raid."],
 			order = ORDER_LAYOUT + 3,
-			get = function ()
-					return GridLayout.db.profile.layouts.heroic_raid
+			get = function()
+					return GridLayout.db.profile.layouts.raid_25
 				end,
-			set = function (v)
-					GridLayout.db.profile.layouts.heroic_raid = v
+			set = function(_, v)
+					GridLayout.db.profile.layouts.raid_25 = v
 					GridLayout:ReloadLayout()
 				end,
-			validate = {},
+			values = {},
 		},
-		["raidlayout"] = {
-			type = "text",
+		["raid_10layout"] = {
+			type = "select",
 			name = L["10 Player Raid Layout"],
 			desc = L["Select which layout to use when in a 10 player raid."],
 			order = ORDER_LAYOUT + 3,
-			get = function ()
-					return GridLayout.db.profile.layouts.raid
+			get = function()
+					return GridLayout.db.profile.layouts.raid_10
 				end,
-			set = function (v)
-					GridLayout.db.profile.layouts.raid = v
+			set = function(_, v)
+					GridLayout.db.profile.layouts.raid_10 = v
 					GridLayout:ReloadLayout()
 				end,
-			validate = {},
+			values = {},
 		},
 		["bglayout"] = {
-			type = "text",
+			type = "select",
 			name = L["Battleground Layout"],
 			desc = L["Select which layout to use when in a battleground."],
 			order = ORDER_LAYOUT + 4,
-			get = function ()
+			get = function()
 					return GridLayout.db.profile.layouts.bg
 				end,
-			set = function (v)
+			set = function(_, v)
 					GridLayout.db.profile.layouts.bg = v
 					GridLayout:ReloadLayout()
 				end,
-			validate = {},
+			values = {},
 		},
 		["arenalayout"] = {
-			type = "text",
+			type = "select",
 			name = L["Arena Layout"],
 			desc = L["Select which layout to use when in an arena."],
 			order = ORDER_LAYOUT + 5,
-			get = function ()
+			get = function()
 					return GridLayout.db.profile.layouts.arena
 				end,
-			set = function (v)
+			set = function(_, v)
 					GridLayout.db.profile.layouts.arena = v
 					GridLayout:ReloadLayout()
 				end,
-			validate = {},
+			values = {},
 		},
 		["horizontal"] = {
 			type = "toggle",
 			name = L["Horizontal groups"],
 			desc = L["Switch between horzontal/vertical groups."],
 			order = ORDER_LAYOUT + 6,
-			get = function ()
+			get = function()
 					return GridLayout.db.profile.horizontal
 				end,
-			set = function (v)
+			set = function(_, v)
 					GridLayout.db.profile.horizontal = v
 					GridLayout:ReloadLayout()
 				end,
@@ -302,10 +300,10 @@ GridLayout.options = {
 			name = L["Clamped to screen"],
 			desc = L["Toggle whether to permit movement out of screen."],
 			order = ORDER_LAYOUT + 7,
-			get = function ()
+			get = function()
 					return GridLayout.db.profile.clamp
 				end,
-			set = function (v)
+			set = function(_, v)
 					GridLayout.db.profile.clamp = v
 					GridLayout:SetClamp()
 				end,
@@ -316,7 +314,7 @@ GridLayout.options = {
 			desc = L["Locks/unlocks the grid for movement."],
 			order = ORDER_LAYOUT + 8,
 			get = function() return GridLayout.db.profile.FrameLock end,
-			set = function(v)
+			set = function(_, v)
 					GridLayout.db.profile.FrameLock = v
 					GridLayout:UpdateTabVisibility()
 				end,
@@ -325,6 +323,7 @@ GridLayout.options = {
 		["DisplayHeader"] = {
 			type = "header",
 			order = ORDER_DISPLAY,
+			name = "",
 		},
 		["padding"] = {
 			type = "range",
@@ -334,10 +333,10 @@ GridLayout.options = {
 			max = 20,
 			min = 0,
 			step = 1,
-			get = function ()
+			get = function()
 					return GridLayout.db.profile.Padding
 				end,
-			set = function (v)
+			set = function(_, v)
 					GridLayout.db.profile.Padding = v
 					GridLayout:ReloadLayout()
 				end,
@@ -350,10 +349,10 @@ GridLayout.options = {
 			max = 25,
 			min = 0,
 			step = 1,
-			get = function ()
+			get = function()
 					return GridLayout.db.profile.Spacing
 				end,
-			set = function (v)
+			set = function(_, v)
 					GridLayout.db.profile.Spacing = v
 					GridLayout:ReloadLayout()
 				end,
@@ -367,10 +366,10 @@ GridLayout.options = {
 			max = 2.0,
 			step = 0.05,
 			isPercent = true,
-			get = function ()
+			get = function()
 					return GridLayout.db.profile.ScaleSize
 				end,
-			set = function (v)
+			set = function(_, v)
 					GridLayout.db.profile.ScaleSize = v
 					GridLayout:Scale()
 				end,
@@ -380,11 +379,11 @@ GridLayout.options = {
 			name = L["Border"],
 			desc = L["Adjust border color and alpha."],
 			order = ORDER_DISPLAY + 4,
-			get = function ()
+			get = function()
 					local settings = GridLayout.db.profile
 					return settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA
 				end,
-			set = function (r, g, b, a)
+			set = function(_, r, g, b, a)
 					local settings = GridLayout.db.profile
 					settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA = r, g, b, a
 					GridLayout:UpdateColor()
@@ -396,11 +395,11 @@ GridLayout.options = {
 			name = L["Background"],
 			desc = L["Adjust background color and alpha."],
 			order = ORDER_DISPLAY + 5,
-			get = function ()
+			get = function()
 					local settings = GridLayout.db.profile
 					return settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA
 				end,
-			set = function (r, g, b, a)
+			set = function(_, r, g, b, a)
 					local settings = GridLayout.db.profile
 					settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA = r, g, b, a
 					GridLayout:UpdateColor()
@@ -417,77 +416,72 @@ GridLayout.options = {
 					type = "toggle",
 					name = L["Hide tab"],
 					desc = L["Do not show the tab when Grid is unlocked."],
-					get = function () return GridLayout.db.profile.hideTab end,
-					set = function (v)
+					get = function() return GridLayout.db.profile.hideTab end,
+					set = function(_, v)
 							GridLayout.db.profile.hideTab = v
 							GridLayout:UpdateTabVisibility()
 						end,
 				},
 				["layoutanchor"] = {
-					type = "text",
+					type = "select",
 					name = L["Layout Anchor"],
 					desc = L["Sets where Grid is anchored relative to the screen."],
 					order = 1,
-					get = function () return GridLayout.db.profile.anchor end,
-					set = function (v)
+					get = function() return GridLayout.db.profile.anchor end,
+					set = function(_, v)
 							GridLayout.db.profile.anchor = v
 							GridLayout:SavePosition()
 							GridLayout:RestorePosition()
 						end,
-					validate={["CENTER"] = L["Center"], ["TOP"] = L["Top"], ["BOTTOM"] = L["Bottom"], ["LEFT"] = L["Left"], ["RIGHT"] = L["Right"], ["TOPLEFT"] = L["Top Left"], ["TOPRIGHT"] = L["Top Right"], ["BOTTOMLEFT"] = L["Bottom Left"], ["BOTTOMRIGHT"] = L["Bottom Right"] },
+					values={["CENTER"] = L["Center"], ["TOP"] = L["Top"], ["BOTTOM"] = L["Bottom"], ["LEFT"] = L["Left"], ["RIGHT"] = L["Right"], ["TOPLEFT"] = L["Top Left"], ["TOPRIGHT"] = L["Top Right"], ["BOTTOMLEFT"] = L["Bottom Left"], ["BOTTOMRIGHT"] = L["Bottom Right"] },
 				},
 				["groupanchor"] = {
-					type = "text",
+					type = "select",
 					name = L["Group Anchor"],
 					desc = L["Sets where groups are anchored relative to the layout frame."],
 					order = 2,
-					get = function () return GridLayout.db.profile.groupAnchor end,
-					set = function (v)
+					get = function() return GridLayout.db.profile.groupAnchor end,
+					set = function(_, v)
 							GridLayout.db.profile.groupAnchor = v
 							GridLayout:ReloadLayout()
 						end,
-					validate={["TOPLEFT"] = L["Top Left"], ["TOPRIGHT"] = L["Top Right"], ["BOTTOMLEFT"] = L["Bottom Left"], ["BOTTOMRIGHT"] = L["Bottom Right"] },
+					values={["TOPLEFT"] = L["Top Left"], ["TOPRIGHT"] = L["Top Right"], ["BOTTOMLEFT"] = L["Bottom Left"], ["BOTTOMRIGHT"] = L["Bottom Right"] },
 				},
 				["reset"] = {
 					type = "execute",
 					name = L["Reset Position"],
 					desc = L["Resets the layout frame's position and anchor."],
 					order = -1,
-					func = function () GridLayout:ResetPosition() end,
+					func = function() GridLayout:ResetPosition() end,
 				},
 			},
 		},
 	},
 }
 
-local media_borders
 if media then
-	media_borders = media:List(media.MediaType.BORDER)
-	local border_options = {
-		type = "text",
+	GridLayout.options.args.advanced.args.border = {
+		type = "select",
 		name = L["Border Texture"],
 		desc = L["Choose the layout border texture."],
-		validate = media_borders,
-		get = function ()
+		values = media:HashTable("border"),
+		get = function()
 				return GridLayout.db.profile.borderTexture
 			end,
-		set = function (v)
+		set = function(_, v)
 				GridLayout.db.profile.borderTexture = v
 				GridLayout:UpdateColor()
 			end,
 	}
-
-	GridLayout.options.args.advanced.args["border"] = border_options
 end
 
---}}}
---}}}
+------------------------------------------------------------------------
 
 GridLayout.layoutSettings = {}
-GridLayout.layoutHeaderClass = GridLayoutHeaderClass
 
 function GridLayout:OnInitialize()
 	self.super.OnInitialize(self)
+
 	self.layoutGroups = {}
 	self.layoutPetGroups = {}
 end
@@ -501,21 +495,21 @@ function GridLayout:OnEnable()
 	self:UpdateTabVisibility()
 
 	self.forceRaid = true
-	self:ScheduleEvent(self.CombatFix, 1, self)
+	self:ScheduleTimer(self.CombatFix, 1, self)
 
-	self:LoadLayout(self.db.profile.layout or self.db.profile.layouts["heroic_raid"])
+	self:LoadLayout(self.db.profile.layout or self.db.profile.layouts["raid_25"])
 	-- position and scale frame
 	self:RestorePosition()
 	self:Scale()
 
-	self:RegisterEvent("Grid_ReloadLayout", "PartyTypeChanged")
-	self:RegisterEvent("Grid_PartyTransition", "PartyTypeChanged")
+	self:RegisterMessage("Grid_ReloadLayout", "PartyTypeChanged")
+	self:RegisterMessage("Grid_PartyTransition", "PartyTypeChanged")
 
-	self:RegisterBucketEvent("Grid_UpdateLayoutSize", 0.2, "PartyMembersChanged")
-	self:RegisterEvent("Grid_RosterUpdated", "PartyMembersChanged")
+	self:RegisterBucketMessage("Grid_UpdateLayoutSize", 0.2, "PartyMembersChanged")
+	self:RegisterMessage("Grid_RosterUpdated", "PartyMembersChanged")
 
-	self:RegisterEvent("Grid_EnteringCombat", "EnteringOrLeavingCombat")
-	self:RegisterEvent("Grid_LeavingCombat", "EnteringOrLeavingCombat")
+	self:RegisterMessage("Grid_EnteringCombat", "EnteringOrLeavingCombat")
+	self:RegisterMessage("Grid_LeavingCombat", "EnteringOrLeavingCombat")
 
 	self.super.OnEnable(self)
 end
@@ -535,7 +529,7 @@ function GridLayout:Reset()
 	self:UpdateTabVisibility()
 end
 
---{{{ Event handlers
+------------------------------------------------------------------------
 
 local reloadLayoutQueued
 local updateSizeQueued
@@ -572,7 +566,7 @@ function GridLayout:PartyTypeChanged()
 	end
 end
 
---}}}
+------------------------------------------------------------------------
 
 function GridLayout:StartMoveFrame()
 	if config_mode or not self.db.profile.FrameLock then
@@ -762,9 +756,9 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 	local relPoint, xMult, yMult = getRelativePoint(groupAnchor, horizontal)
 
 	if groupNumber == 1 then
-		frame:ClearAllPoints()
-		frame:SetParent(self.frame)
-		frame:SetPoint(groupAnchor, self.frame, groupAnchor, spacing * xMult, spacing * yMult)
+		layoutGroup:ClearAllPoints()
+		layoutGroup:SetParent(self.frame)
+		layoutGroup:SetPoint(groupAnchor, self.frame, groupAnchor, spacing * xMult, spacing * yMult)
 	else
 		if horizontal then
 			xMult = 0
@@ -772,11 +766,11 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 			yMult = 0
 		end
 
-		frame:ClearAllPoints()
-		frame:SetPoint(groupAnchor, previousGroup.frame, relPoint, padding * xMult, padding * yMult)
+		layoutGroup:ClearAllPoints()
+		layoutGroup:SetPoint(groupAnchor, previousGroup, relPoint, padding * xMult, padding * yMult)
 	end
 
-	self:Debug("Placing group", groupNumber, layoutGroup.frame:GetName(), groupAnchor, previousGroup and previousGroup.frame:GetName(), relPoint)
+	self:Debug("Placing group", groupNumber, layoutGroup:GetName(), groupAnchor, previousGroup and previousGroup:GetName(), relPoint)
 
 	previousGroup = layoutGroup
 end
@@ -784,10 +778,10 @@ end
 function GridLayout:AddLayout(layoutName, layout)
 	self.layoutSettings[layoutName] = layout
 	for _, party_type in ipairs(GridRoster.party_states) do
-		local options = self.options.args[party_type .. "layout"]
-		--if options then
-		table.insert(self.options.args[party_type .. "layout"].validate, layoutName)
-		--end
+	--	local options = self.options.args[party_type .. "layout"]
+	--	if options then
+			self.options.args[party_type .. "layout"].values[layoutName] = layoutName
+	--	end
 	end
 end
 
@@ -849,11 +843,11 @@ function GridLayout:LoadLayout(layoutName)
 
 	-- create groups as needed
 	while groupsNeeded > groupsAvailable do
-		table.insert(self.layoutGroups, self.layoutHeaderClass:new(false))
+		table.insert(self.layoutGroups, self:CreateHeader(false))
 		groupsAvailable = groupsAvailable + 1
 	end
 	while petGroupsNeeded > petGroupsAvailable do
-		table.insert(self.layoutPetGroups, self.layoutHeaderClass:new(true))
+		table.insert(self.layoutPetGroups, self:CreateHeader(true))
 		petGroupsAvailable = petGroupsAvailable + 1
 	end
 
@@ -884,11 +878,11 @@ function GridLayout:LoadLayout(layoutName)
 		if defaults then
 			for attr, value in pairs(defaults) do
 				if attr == "unitsPerColumn" then
-					layoutGroup:SetFrameAttribute("unitsPerColumn", value)
-					layoutGroup:SetFrameAttribute("columnSpacing", p.Padding)
-					layoutGroup:SetFrameAttribute("columnAnchorPoint", getColumnAnchorPoint(p.groupAnchor, p.horizontal))
+					layoutGroup:SetAttribute("unitsPerColumn", value)
+					layoutGroup:SetAttribute("columnSpacing", p.Padding)
+					layoutGroup:SetAttribute("columnAnchorPoint", getColumnAnchorPoint(p.groupAnchor, p.horizontal))
 				else
-					layoutGroup:SetFrameAttribute(attr, value)
+					layoutGroup:SetAttribute(attr, value)
 				end
 			end
 		end
@@ -896,18 +890,33 @@ function GridLayout:LoadLayout(layoutName)
 		-- apply settings
 		for attr, value in pairs(l) do
 			if attr == "unitsPerColumn" then
-				layoutGroup:SetFrameAttribute("unitsPerColumn", value)
-				layoutGroup:SetFrameAttribute("columnSpacing", p.Padding)
-				layoutGroup:SetFrameAttribute("columnAnchorPoint",  getColumnAnchorPoint(p.groupAnchor, p.horizontal))
+				layoutGroup:SetAttribute("unitsPerColumn", value)
+				layoutGroup:SetAttribute("columnSpacing", p.Padding)
+				layoutGroup:SetAttribute("columnAnchorPoint",  getColumnAnchorPoint(p.groupAnchor, p.horizontal))
 			elseif attr ~= "isPetGroup" then
-				layoutGroup:SetFrameAttribute(attr, value)
+				layoutGroup:SetAttribute(attr, value)
 			end
+		end
+
+		-- deals with the blizz bug that prevents initializing unit frames in combat
+		-- should be called when each group in a layout is initialized
+		-- http://forums.wowace.com/showpost.php?p=307503&postcount=3163
+
+		local maxColumns = layoutGroup:GetAttribute("maxColumns") or 1
+		local unitsPerColumn = layoutGroup:GetAttribute("unitsPerColumn") or 5
+		local startingIndex = layoutGroup:GetAttribute("startingIndex")
+		local maxUnits = maxColumns * unitsPerColumn
+		if not layoutGroup.UnitFramesCreated or layoutGroup.UnitFramesCreated < maxUnits then
+			layoutGroup.UnitFramesCreated = maxUnits
+			layoutGroup:Show()
+			layoutGroup:SetAttribute("startingIndex", - maxUnits + 1)
+			layoutGroup:SetAttribute("startingIndex", startingIndex)
 		end
 
 		-- place groups
 		layoutGroup:SetOrientation(horizontal)
 		self:PlaceGroup(layoutGroup, i)
-		layoutGroup.frame:Show()
+		layoutGroup:Show()
 	end
 
 	self:UpdateDisplay()
@@ -939,9 +948,9 @@ function GridLayout:UpdateSize()
 	local Padding, Spacing = p.Padding, p.Spacing * 2
 
 	for _, layoutGroup in ipairs(self.layoutGroups) do
-		if layoutGroup:IsFrameVisible() then
+		if layoutGroup:IsVisible() then
 			groupCount = groupCount + 1
-			local width, height = layoutGroup:GetFrameWidth(), layoutGroup:GetFrameHeight()
+			local width, height = layoutGroup:GetWidth(), layoutGroup:GetHeight()
 			curWidth = curWidth + width + Padding
 			curHeight = curHeight + height + Padding
 			if maxWidth < width then maxWidth = width end
@@ -950,9 +959,9 @@ function GridLayout:UpdateSize()
 	end
 
 	for _, layoutGroup in ipairs(self.layoutPetGroups) do
-		if layoutGroup:IsFrameVisible() then
+		if layoutGroup:IsVisible() then
 			groupCount = groupCount + 1
-			local width, height = layoutGroup:GetFrameWidth(), layoutGroup:GetFrameHeight()
+			local width, height = layoutGroup:GetWidth(), layoutGroup:GetHeight()
 			curWidth = curWidth + width + Padding
 			curHeight = curHeight + height + Padding
 			if maxWidth < width then maxWidth = width end
@@ -967,42 +976,6 @@ function GridLayout:UpdateSize()
 		x = curWidth + Spacing
 		y = maxHeight + Spacing
 	end
-
-	self.frame:SetWidth(x)
-	self.frame:SetHeight(y)
-end
-
-local function findVisibleUnitFrame(f)
-	if f:IsVisible() and f:GetAttribute("unit") then
-		return f
-	end
-
-	for i = 1, select('#', f:GetChildren()) do
-		local child = select(i, f:GetChildren())
-		local good = findVisibleUnitFrame(child)
-
-		if good then
-			return good
-		end
-	end
-end
-
-function GridLayout:FakeSize(width, height)
-	local p = self.db.profile
-	local f = findVisibleUnitFrame(self.frame)
-
-	if not f then
-		self:Debug("No suitable frame found.")
-		return
-	else
-		self:Debug(("Using %s"):format(f:GetName()))
-	end
-
-	local frameWidth = f:GetWidth()
-	local frameHeight = f:GetHeight()
-
-	local x = frameWidth * width + (width - 1) * p.Padding + p.Spacing * 2
-	local y = frameHeight * height + (height - 1) * p.Padding + p.Spacing * 2
 
 	self.frame:SetWidth(x)
 	self.frame:SetHeight(y)
@@ -1023,7 +996,6 @@ function GridLayout:UpdateColor()
 	self.frame.texture:SetGradientAlpha("VERTICAL", .1, .1, .1, 0,
 					.2, .2, .2, settings.BackgroundA/2 )
 end
-
 
 function GridLayout:SavePosition()
 	local f = self.frame
@@ -1109,4 +1081,53 @@ function GridLayout:Scale()
 	self:RestorePosition()
 end
 
---}}}
+------------------------------------------------------------------------
+
+local function findVisibleUnitFrame(f)
+	if f:IsVisible() and f:GetAttribute("unit") then
+		return f
+	end
+
+	for i = 1, select('#', f:GetChildren()) do
+		local child = select(i, f:GetChildren())
+		local good = findVisibleUnitFrame(child)
+
+		if good then
+			return good
+		end
+	end
+end
+
+function GridLayout:FakeSize(width, height)
+	local p = self.db.profile
+
+	local f = findVisibleUnitFrame(self.frame)
+
+	if not f then
+		self:Debug("No suitable frame found.")
+		return
+	else
+		self:Debug(("Using %s"):format(f:GetName()))
+	end
+
+	local frameWidth = f:GetWidth()
+	local frameHeight = f:GetHeight()
+
+	local x = frameWidth * width + (width - 1) * p.Padding + p.Spacing * 2
+	local y = frameHeight * height + (height - 1) * p.Padding + p.Spacing * 2
+
+	self.frame:SetWidth(x)
+	self.frame:SetHeight(y)
+end
+
+SLASH_GRIDLAYOUT1 = "/gridlayout"
+
+SlashCmdList.GRIDLAYOUT = function(cmd)
+	local x, y = cmd:match("(%d+) (%d*)")
+	if not x then return end
+	if not y then y = x end
+
+	x, y = tonumber(x), tonumber(y)
+
+	GridLayout:FakeSize(x, y)
+end

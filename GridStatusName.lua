@@ -3,12 +3,12 @@
 	GridStatus module for tracking unit names.
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
-
+local _, Grid = ...
+local L = Grid.L
 local GridRoster = Grid:GetModule("GridRoster")
 
 local GridStatusName = Grid:GetModule("GridStatus"):NewModule("GridStatusName")
+
 GridStatusName.menuName = L["Unit Name"]
 
 GridStatusName.defaultDB = {
@@ -27,9 +27,9 @@ GridStatusName.options = false
 
 local nameOptions = {
 	["class"] = {
-		type = 'toggle',
 		name = L["Use class color"],
 		desc = L["Color by class"],
+		type = 'toggle',
 		get = function() return GridStatusName.db.profile.unit_name.class end,
 		set = function()
 			GridStatusName.db.profile.unit_name.class = not GridStatusName.db.profile.unit_name.class
@@ -50,11 +50,13 @@ function GridStatusName:OnStatusEnable(status)
 		self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateVehicle")
 		self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateVehicle")
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
-		self:RegisterEvent("Grid_UnitJoined", "UpdateGUID")
-		self:RegisterEvent("Grid_UnitChanged", "UpdateGUID")
-		self:RegisterEvent("Grid_UnitLeft", "UpdateGUID")
 
-		self:RegisterEvent("Grid_ColorsChanged", "UpdateAllUnits")
+		self:RegisterMessage("Grid_UnitJoined", "UpdateGUID")
+		self:RegisterMessage("Grid_UnitChanged", "UpdateGUID")
+		self:RegisterMessage("Grid_UnitLeft", "UpdateGUID")
+
+		self:RegisterMessage("Grid_ColorsChanged", "UpdateAllUnits")
+
 		self:UpdateAllUnits()
 	end
 end
@@ -66,10 +68,11 @@ function GridStatusName:OnStatusDisable(status)
 		self:UnregisterEvent("UNIT_ENTERED_VEHICLE")
 		self:UnregisterEvent("UNIT_EXITED_VEHICLE")
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-		self:UnregisterEvent("Grid_UnitJoined")
-		self:UnregisterEvent("Grid_UnitChanged")
-		self:UnregisterEvent("Grid_UnitLeft")
-		self:UnregisterEvent("Grid_ColorsChanged")
+
+		self:UnregisterMessage("Grid_UnitJoined")
+		self:UnregisterMessage("Grid_UnitChanged")
+		self:UnregisterMessage("Grid_UnitLeft")
+		self:UnregisterMessage("Grid_ColorsChanged")
 
 		self.core:SendStatusLostAllUnits("unit_name")
 	end
@@ -80,19 +83,19 @@ function GridStatusName:Reset()
 	self:UpdateAllUnits()
 end
 
-function GridStatusName:UpdateVehicle(unitid)
-	self:UpdateUnit(unitid)
+function GridStatusName:UpdateVehicle(event, unitid)
+	self:UpdateUnit(event, unitid)
 	local pet_unit = unitid .. "pet"
 	if UnitExists(pet_unit) then
-		self:UpdateUnit(pet_unit)
+		self:UpdateUnit(event, pet_unit)
 	end
 end
 
-function GridStatusName:UpdateUnit(unitid)
-	self:UpdateGUID(UnitGUID(unitid))
+function GridStatusName:UpdateUnit(event, unitid)
+	self:UpdateGUID(event, UnitGUID(unitid))
 end
 
-function GridStatusName:UpdateGUID(guid)
+function GridStatusName:UpdateGUID(event, guid)
 	local settings = self.db.profile.unit_name
 
 	local name = GridRoster:GetNameByGUID(guid)
@@ -129,6 +132,6 @@ end
 
 function GridStatusName:UpdateAllUnits()
 	for guid, unitid in GridRoster:IterateRoster() do
-		self:UpdateGUID(guid)
+		self:UpdateGUID("UpdateAllUnits", guid)
 	end
 end

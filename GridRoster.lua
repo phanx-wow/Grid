@@ -9,24 +9,29 @@ GridRoster.defaultDB = {
 	party_state = "solo",
 }
 
---
+------------------------------------------------------------------------
+
 local UnitExists = UnitExists
 local UnitName = UnitName
 local UnitGUID = UnitGUID
 
+local my_realm = GetRealmName()
+
+------------------------------------------------------------------------
+
 -- roster[attribute_name][guid] = value
 local roster = {
-	name = {},
-	realm = {},
-	unitid = {},
-	guid = {},
+	name = { },
+	realm = { },
+	unitid = { },
+	guid = { },
 }
 
 -- for debugging
 GridRoster.roster = roster
 
---
-local my_realm = GetRealmName()
+
+------------------------------------------------------------------------
 
 -- unit tables
 local party_units = {}
@@ -45,17 +50,18 @@ do
 	register_unit(party_units, "player", "pet")
 
 	for i = 1, MAX_PARTY_MEMBERS do
-		register_unit(party_units, ("party%d"):format(i),
-					  ("partypet%d"):format(i))
+		register_unit(party_units, ("party%d"):format(i), ("partypet%d"):format(i))
 	end
 
 	for i = 1, MAX_RAID_MEMBERS do
-		register_unit(raid_units, ("raid%d"):format(i),
-					  ("raidpet%d"):format(i))
+		register_unit(raid_units, ("raid%d"):format(i), ("raidpet%d"):format(i))
 	end
 end
 
+------------------------------------------------------------------------
+
 function GridRoster:OnInitialize()
+	self.super.OnInitialize(self)
 	-- empty roster
 	for attr, attr_tbl in pairs(roster) do
 		for k in pairs(attr_tbl) do
@@ -77,6 +83,8 @@ function GridRoster:OnEnable()
 
 	self:UpdateRoster()
 end
+
+------------------------------------------------------------------------
 
 function GridRoster:GetGUIDByName(name, realm)
 	if realm == my_realm or realm == "" then realm = nil end
@@ -130,6 +138,8 @@ end
 function GridRoster:IterateRoster()
 	return pairs(roster.unitid)
 end
+
+------------------------------------------------------------------------
 
 -- roster updating
 do
@@ -204,7 +214,7 @@ do
 
 		for guid in pairs(units_to_remove) do
 			updated = true
-			self:TriggerEvent("Grid_UnitLeft", guid)
+			self:SendMessage("Grid_UnitLeft", guid)
 
 			for attr, attr_tbl in pairs(roster) do
 				attr_tbl[guid] = nil
@@ -217,31 +227,33 @@ do
 
 		for guid in pairs(units_added) do
 			updated = true
-			self:TriggerEvent("Grid_UnitJoined", guid, roster.unitid[guid])
+			self:SendMessage("Grid_UnitJoined", guid, roster.unitid[guid])
 
 			units_added[guid] = nil
 		end
 
 		for guid in pairs(units_updated) do
 			updated = true
-			self:TriggerEvent("Grid_UnitChanged", guid, roster.unitid[guid])
+			self:SendMessage("Grid_UnitChanged", guid, roster.unitid[guid])
 
 			units_updated[guid] = nil
 		end
 
 		if updated then
-			self:TriggerEvent("Grid_RosterUpdated")
+			self:SendMessage("Grid_RosterUpdated")
 		end
 	end
 end
+
+------------------------------------------------------------------------
 
 -- Party transitions
 do
 	GridRoster.party_states = {
 		'solo',
 		'party',
-		'heroic_raid',
-		'raid',
+		'raid_25',
+		'raid_10',
 		'bg',
 		'arena',
 	}
@@ -263,10 +275,10 @@ do
 			end
 			if instance_type == "raid" then
 				local _, _, _, _, max_players = GetInstanceInfo()
-				return max_players > 10 and "heroic_raid" or "raid"
+				return max_players > 10 and "raid_25" or "raid_10"
 			else
 				local raid_difficulty = GetRaidDifficulty()
-				return (raid_difficulty == 2 or raid_difficulty == 4) and "heroic_raid" or "raid"
+				return (raid_difficulty == 2 or raid_difficulty == 4) and "raid_25" or "raid_10"
 			end
 		end
 
@@ -283,7 +295,7 @@ do
 
 		if current_state ~= old_state then
 			self.db.profile.party_state = current_state
-			self:TriggerEvent("Grid_PartyTransition", current_state, old_state)
+			self:SendMessage("Grid_PartyTransition", current_state, old_state)
 		end
 	end
 

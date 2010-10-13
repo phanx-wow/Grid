@@ -3,9 +3,8 @@
 	GridStatus module for tracking unit mana.
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
-
+local _, Grid = ...
+local L = Grid.L
 local GridRoster = Grid:GetModule("GridRoster")
 local GridStatus = Grid:GetModule("GridStatus")
 
@@ -34,10 +33,10 @@ local low_manaOptions = {
 		max = 100,
 		min = 0,
 		step = 1,
-		get = function ()
+		get = function()
 			      return GridStatusMana.db.profile.alert_lowMana.threshold
 		      end,
-		set = function (v)
+		set = function(_, v)
 			      GridStatusMana.db.profile.alert_lowMana.threshold = v
 		      end,
 	},
@@ -50,40 +49,63 @@ end
 
 function GridStatusMana:OnStatusEnable(status)
 	if status == "alert_lowMana" then
-		self:RegisterEvent("Grid_UnitJoined")
-		self:RegisterEvent("UNIT_MANA", "UpdateUnit")
+		self:RegisterMessage("Grid_UnitJoined")
+		
+		if select(4, GetBuildInfo()) >= 40000 then
+            self:RegisterEvent("UNIT_POWER", "UpdateUnit")
+            self:RegisterEvent("UNIT_MAXPOWER", "UpdateUnit")
+		else
+            self:RegisterEvent("UNIT_MANA", "UpdateUnit")
+            self:RegisterEvent("UNIT_MAXMANA", "UpdateUnit")
+		end
+		
+		self:RegisterEvent("UNIT_DISPLAYPOWER", "UpdateUnit")
 		self:UpdateAllUnits()
 	end
 end
 
 function GridStatusMana:OnStatusDisable(status)
 	if status == "alert_lowMana" then
-		self:UnregisterEvent("Grid_UnitJoined")
-		self:UnregisterEvent("UNIT_MANA")
+		self:UnregisterMessage("Grid_UnitJoined")
+		
+		if select(4, GetBuildInfo()) >= 40000 then
+            self:UnregisterEvent("UNIT_POWER")
+            self:UnregisterEvent("UNIT_MAXPOWER")
+		else
+            self:UnregisterEvent("UNIT_MANA")
+            self:UnregisterEvent("UNIT_MAXMANA")
+		end
+		
+		self:UnregisterEvent("UNIT_DISPLAYPOWER")
 		self.core:SendStatusLostAllUnits("alert_lowMana")
 	end
 end
 
-function GridStatusMana:Grid_UnitJoined(guid, unitid)
+function GridStatusMana:Reset()
+	self.super.Reset(self)
+	self:UpdateAllUnits()
+end
+
+function GridStatusMana:Grid_UnitJoined(event, guid, unitid)
 	if unitid then
-		self:UpdateUnit(unitid)
+		self:UpdateUnit(event, unitid)
 	end
 end
 
 function GridStatusMana:UpdateAllUnits()
 	for guid, unitid in GridRoster:IterateRoster() do
-		self:UpdateUnit(unitid)
+		self:UpdateUnit("UpdateAllUnits", unitid)
 	end
 end
 
-function GridStatusMana:UpdateUnit(unitid)
+function GridStatusMana:UpdateUnit(event, unitid)
 	local guid = UnitGUID(unitid)
 	if not GridRoster:IsGUIDInRaid(guid) then return end
-	local powerType, powerTypeName = UnitPowerType(unitid)
+	local powerType = UnitPowerType(unitid)
 
 	-- mana user and is alive
 	if powerType == 0 and not UnitIsDeadOrGhost(unitid) then
-		local cur, max = UnitMana(unitid), UnitManaMax(unitid)
+		local cur, max = UnitPower(unitid, powerType), UnitPowerMax(unitid, powerType)
 
 		local mana_percent = (cur / max * 100)
 		local threshold = self.db.profile.alert_lowMana.threshold

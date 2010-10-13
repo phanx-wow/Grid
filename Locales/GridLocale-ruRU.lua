@@ -1,11 +1,11 @@
-﻿--[[--------------------------------------------------------------------
+--[[--------------------------------------------------------------------
 	GridLocale-ruRU.lua
 	Russian (Русский) localization for Grid.
 ----------------------------------------------------------------------]]
 
 if GetLocale() ~= "ruRU" then return end
-local _, ns = ...
-ns.L = {
+local _, Grid = ...
+Grid.L = {
 
 --{{{ GridCore
 	["Debugging"] = "Отладка",
@@ -16,10 +16,6 @@ ns.L = {
 	["Configure Grid"] = "Настройка Grid",
 	["Hide minimap icon"] = "Скрыть иконку на миникарте",
 	["Grid is disabled: use '/grid standby' to enable."] = "Grid отключен: для включения введите '/grid standby'",
---	["Enable dual profile"] = "",
---	["Automatically swap profiles when switching talent specs."] = "",
---	["Dual profile"] = "",
---	["Select the profile to swap with the current profile when switching talent specs."] = "",
 --}}}
 
 --{{{ GridFrame
@@ -38,7 +34,6 @@ ns.L = {
 	["Healing Bar Opacity"] = "Прозрачность полосы лечения",
 	["Sets the opacity of the healing bar."] = "Установить прозрачность полосы лечения.",
 
-	["Indicators"] = "Индикаторы",
 	["Border"] = "Граница",
 	["Health Bar"] = "Полоса здоровья",
 	["Health Bar Color"] = "Цвет полосы здоровья",
@@ -212,8 +207,8 @@ ns.L = {
 --}}}
 
 --{{{ GridLDB
---	["Click to open the options in a GUI window."] = "",
---	["Right-Click to open the options in a drop-down menu."] = "",
+--	["Click to toggle the frame lock."] = "",
+--	["Right-Click to open the options menu."] = "",
 --}}}
 
 --{{{ GridRange
@@ -262,9 +257,6 @@ ns.L = {
 	["Magic"] = "Магия",
 	["Curse"] = "Проклятье",
 	["Ghost"] = "Призрак",
-	["Buffs"] = "Баффы",
-	["Debuff Types"] = "Типы дебаффов",
-	["Debuffs"] = "Дебаффы",
 	["Add new Buff"] = "Добавить новый бафф",
 	["Adds a new buff to the status module"] = "Добавляет новый бафф в можуль статуса",
 	["<buff name>"] = "<имя баффа>",
@@ -294,14 +286,6 @@ ns.L = {
 	["Incoming heals"] = "Поступающее лечения",
 	["Ignore Self"] = "Игнорировать себя",
 	["Ignore heals cast by you."] = "Игнорировать свои лечебные заклинания",
-	["Heal filter"] = "Фильтр исцеления",
-	["Show incoming heals for the selected heal types."] = "Показывает входящее исцеления для выбранного типа исцеления.",
-	["Direct heals"] = "Прямое исцеление",
-	["Include direct heals."] = "Включить прямое исцеление.",
-	["Channeled heals"] = "Потоковое исцеление",
-	["Include channeled heals."] = "Включить потоковое исцеление.",
-	["HoT heals"] = "Исцеление за время",
-	["Include heal over time effects."] = "Включить исцеление за время (ХоТы).",
 --}}}
 
 --{{{ GridStatusHealth

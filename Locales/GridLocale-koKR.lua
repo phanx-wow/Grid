@@ -4,8 +4,8 @@
 ----------------------------------------------------------------------]]
 
 if GetLocale() ~= "koKR" then return end
-local _, ns = ...
-ns.L = {
+local _, Grid = ...
+Grid.L = {
 
 --{{{ GridCore
 	["Debugging"] = "디버깅",
@@ -16,10 +16,6 @@ ns.L = {
 	["Configure Grid"] = "Grid 옵션을 설정합니다.",
 	["Hide minimap icon"] = "미니맵 아이콘 숨김",
 	["Grid is disabled: use '/grid standby' to enable."] = "Grid가 비활성화 되었을시: '/grid standby'를 입력하면 활성화 됩니다.",
-	["Enable dual profile"] = "이중 프로필 사용",
-	["Automatically swap profiles when switching talent specs."] = "특성 전환시 자동으로 프로필을 변경합니다.",
-	["Dual profile"] = "이중 프로필",
-	["Select the profile to swap with the current profile when switching talent specs."] = "특성 전환시 현재 프로필과 바꿀 프로필을 선택합니다.",
 --}}}
 
 --{{{ GridFrame
@@ -38,7 +34,6 @@ ns.L = {
 	["Healing Bar Opacity"] = "치유 바 투명도",
 	["Sets the opacity of the healing bar."] = "치유 바의 투명도를 설정합니다.",
 
-	["Indicators"] = "지시기",
 	["Border"] = "테두리",
 	["Health Bar"] = "생명력 바",
 	["Health Bar Color"] = "생명력 바 색상",
@@ -212,8 +207,8 @@ ns.L = {
 --}}}
 
 --{{{ GridLDB
-	["Click to open the options in a GUI window."] = "GUI 창의 옵션을 열려면 클릭하십시오.",
-	["Right-Click to open the options in a drop-down menu."] = "드롭다운 메뉴의 옵션을 열려면 오른쪽 클릭하십시오.",
+--	["Click to toggle the frame lock."] = "",
+--	["Right-Click to open the options menu."] = "",
 --}}}
 
 --{{{ GridRange
@@ -262,9 +257,6 @@ ns.L = {
 	["Magic"] = "마법",
 	["Curse"] = "저주",
 	["Ghost"] = "유령",
-	["Buffs"] = "버프",
-	["Debuff Types"] = "디버프 타입",
-	["Debuffs"] = "디버프",
 	["Add new Buff"] = "새로운 버프 추가",
 	["Adds a new buff to the status module"] = "상태 모듈에 새로운 버프를 추가합니다.",
 	["<buff name>"] = "<버프 이름>",
@@ -294,14 +286,6 @@ ns.L = {
 	["Incoming heals"] = "치유 받음",
 	["Ignore Self"] = "자신 무시",
 	["Ignore heals cast by you."] = "자신의 치유 시전은 무시합니다.",
-	["Heal filter"] = "치유 필터",
-	["Show incoming heals for the selected heal types."] = "치유 받음을 표시할 치유의 타입을 선택합니다.",
-	["Direct heals"] = "직접 치유",
-	["Include direct heals."] = "직접 치유를 표시합니다.",
-	["Channeled heals"] = "정신 집중 치유",
-	["Include channeled heals."] = "정신 집중 치유를 표시합니다.",
-	["HoT heals"] = "지속 치유",
-	["Include heal over time effects."] = "지속 치유 표시합니다.",
 --}}}
 
 --{{{ GridStatusHealth
