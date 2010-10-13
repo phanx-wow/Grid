@@ -1275,7 +1275,7 @@ function GridFrame:UpdateFrameUnits()
 			local guid = unitid and UnitGUID(unitid) or nil
 
 			if old_unit ~= unitid or old_guid ~= guid then
-				print("Updating", frame_name, "to", unitid, guid, "was", old_unit, old_guid)
+				self:Debug("Updating", frame_name, "to", unitid, guid, "was", old_unit, old_guid)
 
 				if unitid then
 					frame.unit = unitid
