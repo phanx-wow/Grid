@@ -173,21 +173,6 @@ GridStatusAuras.defaultDB = {
 }
 
 GridStatusAuras.extraOptions = {
-	header_buffs = {
-		type = "header",
-		name = L["Buffs"],
-		order = 10,
-	},
-	header_debufftypes = {
-		type = "header",
-		name = L["Debuff Types"],
-		order = 20,
-	},
-	header_debuffs = {
-		type = "header",
-		name = L["Debuffs"],
-		order = 30,
-	},
 }
 
 function GridStatusAuras:OnInitialize()

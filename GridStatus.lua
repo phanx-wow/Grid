@@ -277,11 +277,6 @@ GridStatus.options = {
 				},
 			},
 		},
-		["Header"] = {
-			type = "header",
-			name = "",
-			order = 110,
-		},
 	},
 }
 
