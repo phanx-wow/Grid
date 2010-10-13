@@ -38,18 +38,17 @@ local NUM_HEADERS = 0
 function GridLayout:CreateHeader(isPetGroup)
 	NUM_HEADERS = NUM_HEADERS + 1
 
-	local template = isPetGroup and "SecureGroupPetHeaderTemplate" or "SecureGroupHeaderTemplate"
-	if ClickCastHeader then
-		template = template .. ",ClickCastUnitTemplate"
-	end
-
-	local header = CreateFrame("Frame", "GridLayoutHeader" .. NUM_HEADERS, GridLayoutFrame, template)
+	local header = CreateFrame("Frame", "GridLayoutHeader" .. NUM_HEADERS, GridLayoutFrame, ClickCastHeader and "SecureGroupHeaderTemplate,ClickCastUnitTemplate" or "SecureGroupHeaderTemplate")
 
 	for k, v in pairs(self.prototype) do
 		header[k] = v
 	end
 
 	header:SetAttribute("template", "SecureUnitButtonTemplate")
+
+	if isPetGroup then
+		header:SetAttribute("unitsuffix", "pet")
+	end
 
 	if ClickCastHeader then
 		SecureHandler_OnLoad(header)
@@ -63,13 +62,25 @@ function GridLayout:CreateHeader(isPetGroup)
 	header.initialConfigFunction = GridLayout_InitialConfigFunction
 
 	header:SetAttribute("initialConfigFunction", [[
-		self:GetParent():CallMethod("Grid_InitialConfigFunction")
 		RegisterUnitWatch(self)
 
-		self:SetAttribute("type1", "target")
 		self:SetAttribute("*type1", "target")
 
 		self:SetAttribute("toggleForVehicle", true)
+
+		if self:GetParent():GetAttribute("unitsuffix") == "pet" then
+			self:SetAttribute("unitsuffix", "pet")
+		end
+
+		local header = self:GetParent()
+
+		local clickcast_header = header:GetFrameRef("clickcast_header")
+		if clickcast_header then
+			clickcast_header:SetAttribute("clickcast_button", self)
+			clickcast_header:RunAttribute("clickcast_register")
+		end
+
+		header:CallMethod("Grid_InitialConfigFunction")
 	]])
 
 	header:Reset()

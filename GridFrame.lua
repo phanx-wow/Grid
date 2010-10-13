@@ -34,19 +34,6 @@ end
 local function GridFrame_Initialize(self)
 	GridFrame:RegisterFrame(self)
 
-	if self:CanChangeAttribute() then
-		self:SetAttribute("toggleForVehicle", true)
-	end
-
-	if ClickCastHeader then
-		local header = self:GetParent()
-		local clickcast = header.GetFrameRef and header:GetFrameRef("clickcast_header")
-		if clickcast then
-			clickcast:SetAttribute("clickcast_button", self)
-			clickcast:RunAttribute("clickcast_register")
-		end
-	end
-
 	self:SetScript("OnShow", GridFrame_OnShow)
 	self:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
 end
@@ -68,7 +55,6 @@ function GridFrame:InitializeFrame(frame)
 
 	-- set our left-click action
 	if frame:CanChangeAttribute() then
-		frame:SetAttribute("type1", "target")
 		frame:SetAttribute("*type1", "target")
 	end
 
