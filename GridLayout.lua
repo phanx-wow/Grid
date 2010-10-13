@@ -40,7 +40,7 @@ function GridLayout:CreateHeader(isPetGroup)
 
 	local template = isPetGroup and "SecureGroupPetHeaderTemplate" or "SecureGroupHeaderTemplate"
 	if ClickCastHeader then
-		template = template .. ", ClickCastUnitTemplate"
+		template = template .. ",ClickCastUnitTemplate"
 	end
 
 	local header = CreateFrame("Frame", "GridLayoutHeader" .. NUM_HEADERS, GridLayoutFrame, template)
@@ -51,8 +51,8 @@ function GridLayout:CreateHeader(isPetGroup)
 
 	header:SetAttribute("template", "SecureUnitButtonTemplate")
 
-	SecureHandler_OnLoad(header)
 	if ClickCastHeader then
+		SecureHandler_OnLoad(header)
 		header:SetFrameRef("clickcast_header", ClickCastHeader)
 	end
 

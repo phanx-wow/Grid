@@ -12,20 +12,20 @@ if media then media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\
 
 local hasMediaWidgets = media and LibStub("AceGUISharedMediaWidgets-1.0", true)
 
-local GridFrame = Grid:NewModule("GridFrame", "AceTimer-3.0")
+local GridFrame = Grid:NewModule("GridFrame", "AceBucket-3.0", "AceTimer-3.0")
 
 local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
 
 ------------------------------------------------------------------------
 
 local function GridFrame_OnShow(self)
-	GridFrame:UpdateFrameUnits()
+	GridFrame:SendMessage("UpdateFrameUnits")
 	GridFrame:SendMessage("Grid_UpdateLayoutSize")
 end
 
 local function GridFrame_OnAttributeChanged(self, name, value)
 	if name == "unit" then
-		GridFrame:UpdateFrameUnits()
+		GridFrame:SendMessage("UpdateFrameUnits")
 	elseif name == "type1" and (not value or value == "") and self:CanChangeAttribute() then
 		self:SetAttribute("type1", "target")
 	end
@@ -1170,9 +1170,12 @@ function GridFrame:OnEnable()
 	self:RegisterMessage("Grid_ColorsChanged", "UpdateAllFrames")
 
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateFrameUnits")
-	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateFrameUnits")
-	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateFrameUnits")
-	self:RegisterMessage("Grid_RosterUpdated", "UpdateFrameUnits")
+
+	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "SendMessage_UpdateFrameUnits")
+	self:RegisterEvent("UNIT_EXITED_VEHICLE", "SendMessage_UpdateFrameUnits")
+	self:RegisterMessage("Grid_RosterUpdated", "SendMessage_UpdateFrameUnits")
+
+	self:RegisterBucketMessage("UpdateFrameUnits", 0.5)
 
 	if media then
 		media.RegisterCallback(self, "LibSharedMedia_Registered", "LibSharedMedia_Update")
@@ -1182,11 +1185,19 @@ function GridFrame:OnEnable()
 	self:Reset()
 end
 
+function GridFrame:SendMessage_UpdateFrameUnits()
+	self:SendMessage("UpdateFrameUnits")
+end
+
 function GridFrame:LibSharedMedia_Update(callback, type, handle)
  	if type == "font" then
- 		self:WithAllFrames(function(f) f:SetFrameFont(media:Fetch("font", self.db.profile.font), self.db.profile.fontSize, GridFrame.db.profile.fontOutline) end)
+ 		self:WithAllFrames(function(f)
+			f:SetFrameFont(media:Fetch("font", self.db.profile.font), self.db.profile.fontSize, GridFrame.db.profile.fontOutline)
+		end)
  	elseif type == "statusbar" then
- 		self:WithAllFrames(function(f) f:SetFrameTexture(media:Fetch("statusbar", self.db.profile.texture)) end)
+ 		self:WithAllFrames(function(f)
+			f:SetFrameTexture(media:Fetch("statusbar", self.db.profile.texture))
+		end)
 	end
 end
 
@@ -1264,7 +1275,7 @@ function GridFrame:UpdateFrameUnits()
 			local guid = unitid and UnitGUID(unitid) or nil
 
 			if old_unit ~= unitid or old_guid ~= guid then
-				self:Debug("Updating", frame_name, "to", unitid, guid, "was", old_unit, old_guid)
+				print("Updating", frame_name, "to", unitid, guid, "was", old_unit, old_guid)
 
 				if unitid then
 					frame.unit = unitid
