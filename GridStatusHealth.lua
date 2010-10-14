@@ -151,15 +151,15 @@ end
 function GridStatusHealth:OnEnable()
 	self:RegisterMessage("Grid_UnitJoined")
 
+	self:RegisterEvent("UNIT_AURA", "UpdateUnit")
+	self:RegisterEvent("UNIT_CONNECTION", "UpdateUnit")
 	self:RegisterEvent("UNIT_HEALTH", "UpdateUnit")
 	self:RegisterEvent("UNIT_MAXHEALTH", "UpdateUnit")
-	self:RegisterEvent("UNIT_AURA", "UpdateUnit")
 	self:RegisterEvent("UNIT_NAME_UPDATE", "UpdateUnit")
 
-	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateAllUnits")
-	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateAllUnits")
-
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
+	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateAllUnits")
+	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateAllUnits")
 
 	self:RegisterMessage("Grid_ColorsChanged", "UpdateAllUnits")
 end
