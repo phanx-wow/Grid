@@ -38,13 +38,14 @@ local NUM_HEADERS = 0
 function GridLayout:CreateHeader(isPetGroup)
 	NUM_HEADERS = NUM_HEADERS + 1
 
-	local header = CreateFrame("Frame", "GridLayoutHeader" .. NUM_HEADERS, GridLayoutFrame, ClickCastHeader and "SecureGroupHeaderTemplate,ClickCastUnitTemplate" or "SecureGroupHeaderTemplate")
+	local header = CreateFrame("Frame", "GridLayoutHeader" .. NUM_HEADERS, GridLayoutFrame, "SecureGroupHeaderTemplate")
 
 	for k, v in pairs(self.prototype) do
 		header[k] = v
 	end
 
-	header:SetAttribute("template", "SecureUnitButtonTemplate")
+	local template = ClickCastHeader and "ClickCastUnitTemplate,SecureUnitButtonTemplate" or "SecureUnitButtonTemplate"
+	header:SetAttribute("template", template) 
 
 	if isPetGroup then
 		header:SetAttribute("unitsuffix", "pet")

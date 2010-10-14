@@ -186,8 +186,8 @@ function GridFrame:InitializeFrame(frame)
 	frame:Reset()
 
 	-- set up click casting
-	ClickCastFrames = ClickCastFrames or {}
-	ClickCastFrames[frame] = true
+	--ClickCastFrames = ClickCastFrames or {}
+	--ClickCastFrames[frame] = true
 
 	return frame
 end
