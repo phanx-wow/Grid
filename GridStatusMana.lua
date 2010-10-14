@@ -34,11 +34,11 @@ local low_manaOptions = {
 		min = 0,
 		step = 1,
 		get = function()
-			      return GridStatusMana.db.profile.alert_lowMana.threshold
-		      end,
+			return GridStatusMana.db.profile.alert_lowMana.threshold
+		end,
 		set = function(_, v)
-			      GridStatusMana.db.profile.alert_lowMana.threshold = v
-		      end,
+			GridStatusMana.db.profile.alert_lowMana.threshold = v
+		end,
 	},
 }
 
@@ -48,37 +48,27 @@ function GridStatusMana:OnInitialize()
 end
 
 function GridStatusMana:OnStatusEnable(status)
-	if status == "alert_lowMana" then
-		self:RegisterMessage("Grid_UnitJoined")
-		
-		if select(4, GetBuildInfo()) >= 40000 then
-            self:RegisterEvent("UNIT_POWER", "UpdateUnit")
-            self:RegisterEvent("UNIT_MAXPOWER", "UpdateUnit")
-		else
-            self:RegisterEvent("UNIT_MANA", "UpdateUnit")
-            self:RegisterEvent("UNIT_MAXMANA", "UpdateUnit")
-		end
-		
-		self:RegisterEvent("UNIT_DISPLAYPOWER", "UpdateUnit")
-		self:UpdateAllUnits()
-	end
+	if status ~= "alert_lowMana" then return end
+
+	self:RegisterMessage("Grid_UnitJoined")
+
+	self:RegisterEvent("UNIT_POWER", "UpdateUnit")
+	self:RegisterEvent("UNIT_MAXPOWER", "UpdateUnit")
+	self:RegisterEvent("UNIT_DISPLAYPOWER", "UpdateUnit")
+
+	self:UpdateAllUnits()
 end
 
 function GridStatusMana:OnStatusDisable(status)
-	if status == "alert_lowMana" then
-		self:UnregisterMessage("Grid_UnitJoined")
-		
-		if select(4, GetBuildInfo()) >= 40000 then
-            self:UnregisterEvent("UNIT_POWER")
-            self:UnregisterEvent("UNIT_MAXPOWER")
-		else
-            self:UnregisterEvent("UNIT_MANA")
-            self:UnregisterEvent("UNIT_MAXMANA")
-		end
-		
-		self:UnregisterEvent("UNIT_DISPLAYPOWER")
-		self.core:SendStatusLostAllUnits("alert_lowMana")
-	end
+	if status ~= "alert_lowMana" then return end
+
+	self:UnregisterMessage("Grid_UnitJoined")
+
+	self:UnregisterEvent("UNIT_POWER")
+	self:UnregisterEvent("UNIT_MAXPOWER")
+	self:UnregisterEvent("UNIT_DISPLAYPOWER")
+
+	self.core:SendStatusLostAllUnits("alert_lowMana")
 end
 
 function GridStatusMana:Reset()
