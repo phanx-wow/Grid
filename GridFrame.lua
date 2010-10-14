@@ -58,9 +58,9 @@ function GridFrame:InitializeFrame(frame)
 		frame:SetAttribute("*type1", "target")
 	end
 
-	-- tooltip support
-	frame:SetScript("OnEnter", frame.OnEnter)
-	frame:SetScript("OnLeave", frame.OnLeave)
+	-- tooltip support, use HookScript in case our template defined OnEnter/OnLeave
+	frame:HookScript("OnEnter", frame.OnEnter)
+	frame:HookScript("OnLeave", frame.OnLeave)
 
 	-- create border
 	frame:SetBackdrop({
@@ -184,11 +184,6 @@ function GridFrame:InitializeFrame(frame)
 	end
 
 	frame:Reset()
-
-	-- set up click casting
-	--ClickCastFrames = ClickCastFrames or {}
-	--ClickCastFrames[frame] = true
-
 	return frame
 end
 
