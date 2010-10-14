@@ -25,6 +25,7 @@ GridStatusHeals.defaultDB = {
 		priority = 50,
 		range = false,
 		ignore_self = false,
+		minimumValue = 1000,
 		icon = nil,
 	},
 }
@@ -40,6 +41,17 @@ local healsOptions = {
 		set = function(_, v)
 			GridStatusHeals.db.profile.alert_heals.ignore_self = v
 			GridStatusHeals:UpdateAllUnits()
+		end,
+	},
+	minimumValue = {
+		type = "range", min = 0, max = 5000, step = 500,
+		name = L["Minimum Value"],
+		desc = L["Only show incoming heals greater than this amount."],
+		get = function()
+			return GridStatusHeals.db.profile.alert_heals.minimumValue
+		end,
+		set = function(_, v)
+			GridStatusHeals.db.profile.alert_heals.minimumValue = v
 		end,
 	},
 }
@@ -91,7 +103,7 @@ function GridStatusHeals:UpdateUnit(event, unitid)
 		if settings.ignore_self then
 			incoming = incoming - (UnitGetIncomingHeals(unitid, "player") or 0)
 		end
-		if incoming > 0 then
+		if incoming > 0 and incoming > settings.minimumValue then
 			self:SendIncomingHealsStatus(guid, incoming, UnitHealth(unitid) + incoming, UnitHealthMax(unitid))
 		else
 			self.core:SendStatusLost(guid, "alert_heals")
