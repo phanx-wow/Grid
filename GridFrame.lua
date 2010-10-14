@@ -184,6 +184,10 @@ function GridFrame:InitializeFrame(frame)
 	end
 
 	frame:Reset()
+
+	ClickCastFrames = ClickCastFrames or {}
+	ClickCastFrames[frame] = true
+
 	return frame
 end
 

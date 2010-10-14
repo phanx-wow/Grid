@@ -51,11 +51,6 @@ function GridLayout:CreateHeader(isPetGroup)
 		header:SetAttribute("unitsuffix", "pet")
 	end
 
-	if ClickCastHeader then
-		SecureHandler_OnLoad(header)
-		header:SetFrameRef("clickcast_header", ClickCastHeader)
-	end
-
 	function header:Grid_InitialConfigFunction(...)
 		GridLayout_InitialConfigFunction(self[#self])
 	end
@@ -74,12 +69,6 @@ function GridLayout:CreateHeader(isPetGroup)
 		end
 
 		local header = self:GetParent()
-
-		local clickcast_header = header:GetFrameRef("clickcast_header")
-		if clickcast_header then
-			clickcast_header:SetAttribute("clickcast_button", self)
-			clickcast_header:RunAttribute("clickcast_register")
-		end
 
 		header:CallMethod("Grid_InitialConfigFunction")
 	]])
