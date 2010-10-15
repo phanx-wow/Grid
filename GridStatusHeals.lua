@@ -3,8 +3,6 @@
 	GridStatus module for tracking incoming healing spells.
 ----------------------------------------------------------------------]]
 
-if select(4, GetBuildInfo()) < 40000 then return end
-
 local _, Grid = ...
 local L = Grid.L
 local GridRoster = Grid:GetModule("GridRoster")

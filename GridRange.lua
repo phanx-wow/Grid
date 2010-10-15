@@ -71,14 +71,12 @@ function GridRange:ScanSpellbook()
 	initRanges()
 
 	local i = 1
-	local GetSpellBookItemName = _G.GetSpellBookItemName or _G.GetSpellName
-	local SetSpellBookItem = Gratuity.SetSpellBookItem or Gratuity.SetSpell
 	while true do
 		local name = GetSpellBookItemName(i, BOOKTYPE_SPELL)
 		if not name then break end
 		-- beneficial spell with a range
 		if not invalidSpells[name] and IsSpellInRange(i, BOOKTYPE_SPELL, "player") then
-			SetSpellBookItem(Gratuity, i, BOOKTYPE_SPELL)
+			Gratuity:SetSpellBookItem(i, BOOKTYPE_SPELL)
 			local range = select(3, Gratuity:Find(L["(%d+) yd range"], 2, 2))
 			if range then
 				local index = i -- we have to create an upvalue
