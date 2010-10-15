@@ -45,9 +45,12 @@ function GridLayout:CreateHeader(isPetGroup)
 	end
 
 	local template = ClickCastHeader and "ClickCastUnitTemplate,SecureUnitButtonTemplate" or "SecureUnitButtonTemplate"
-	header:SetAttribute("template", template) 
+	header:SetAttribute("template", template)
 
+	-- Fix for bug on the Blizz end when using SecureActionButtonTemplate with SecureGroupPetHeaderTemplate
+	-- http://forums.wowace.com/showpost.php?p=307869&postcount=3216
 	if isPetGroup then
+		header:SetAttribute("useOwnerUnit", true)
 		header:SetAttribute("unitsuffix", "pet")
 	end
 
@@ -64,11 +67,12 @@ function GridLayout:CreateHeader(isPetGroup)
 
 		self:SetAttribute("toggleForVehicle", true)
 
-		if self:GetParent():GetAttribute("unitsuffix") == "pet" then
+		local header = self:GetParent()
+
+		if header:GetAttribute("unitsuffix") == "pet" then
+			self:SetAttribute("useOwnerUnit", true)
 			self:SetAttribute("unitsuffix", "pet")
 		end
-
-		local header = self:GetParent()
 
 		header:CallMethod("Grid_InitialConfigFunction")
 	]])
@@ -882,6 +886,11 @@ function GridLayout:LoadLayout(layoutName)
 					layoutGroup:SetAttribute("unitsPerColumn", value)
 					layoutGroup:SetAttribute("columnSpacing", p.Padding)
 					layoutGroup:SetAttribute("columnAnchorPoint", getColumnAnchorPoint(p.groupAnchor, p.horizontal))
+				elseif attr == "useOwnerUnit" then
+					-- related to fix for using SecureActionButtonTemplate, see GridLayout:CreateHeader()
+					if value == true then
+						layoutGroup:SetAttribute("unitsuffix", nil)
+					end
 				else
 					layoutGroup:SetAttribute(attr, value)
 				end
@@ -894,6 +903,11 @@ function GridLayout:LoadLayout(layoutName)
 				layoutGroup:SetAttribute("unitsPerColumn", value)
 				layoutGroup:SetAttribute("columnSpacing", p.Padding)
 				layoutGroup:SetAttribute("columnAnchorPoint",  getColumnAnchorPoint(p.groupAnchor, p.horizontal))
+			elseif attr == "useOwnerUnit" then
+				-- related to fix for using SecureActionButtonTemplate, see GridLayout:CreateHeader()
+				if value == true then
+					layoutGroup:SetAttribute("unitsuffix", nil)
+				end
 			elseif attr ~= "isPetGroup" then
 				layoutGroup:SetAttribute(attr, value)
 			end

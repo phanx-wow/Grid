@@ -1160,7 +1160,7 @@ function GridFrame:OnEnable()
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "SendMessage_UpdateFrameUnits")
 	self:RegisterMessage("Grid_RosterUpdated", "SendMessage_UpdateFrameUnits")
 
-	self:RegisterBucketMessage("UpdateFrameUnits", 0.5)
+	self:RegisterBucketMessage("UpdateFrameUnits", 0.25)
 
 	if media then
 		media.RegisterCallback(self, "LibSharedMedia_Registered", "LibSharedMedia_Update")
