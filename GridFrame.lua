@@ -129,6 +129,11 @@ function GridFrame:InitializeFrame(frame)
 	frame.Text2:SetPoint("TOP", frame, "CENTER")
 	frame.Text2:Hide()
 
+	if not GridFrame.db.profile.fontShadow then
+		frame.Text:SetShadowOffset(0, 0)
+		frame.Text2:SetShadowOffset(0, 0)
+	end
+
 	-- create icon background/border
 	frame.IconBG = CreateFrame("Frame", nil, frame)
 	frame.IconBG:SetWidth(GridFrame.db.profile.iconSize)
@@ -396,10 +401,21 @@ function GridFrame.prototype:EnableMouseoverHighlight(enabled)
 	self:SetHighlightTexture(enabled and "Interface\\QuestFrame\\UI-QuestTitleHighlight" or nil)
 end
 
-function GridFrame.prototype:SetFrameFont(font, size, outline)
+function GridFrame.prototype:SetFrameFont(font, size, outline, shadow)
 	self.Text:SetFont(font, size, outline)
-	self.Text2:SetFont(font,size, outline)
+	self.Text2:SetFont(font, size, outline)
 	self.IconStackText:SetFont(font, size, "OUTLINE")
+
+	self.Text:SetShadowOffset(0, 0)
+	self.Text2:SetShadowOffset(0, 0)
+
+	-- If you don't set the shadow offset to 0 before setting another value,
+	-- the new value is ignored.
+
+	if shadow then
+		self.Text:SetShadowOffset(1, -1)
+		self.Text2:SetShadowOffset(1, -1)
+	end
 end
 
 function GridFrame.prototype:SetFrameTexture(texture)
@@ -720,9 +736,10 @@ GridFrame.defaultDB = {
 	textorientation = "VERTICAL",
 	enableText2 = false,
 	enableBarColor = false,
+	font = "Friz Quadrata TT",
 	fontSize = 11,
 	fontOutline = "NONE",
-	font = "Friz Quadrata TT",
+	fontShadow = true,
 	texture = "Gradient",
 	iconSize = 16,
 	iconBorderSize = 1,
@@ -1049,7 +1066,7 @@ GridFrame.options = {
 			set = function(_, v)
 				GridFrame.db.profile.fontSize = v
 				local font = media and media:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
-				GridFrame:WithAllFrames(function(f) f:SetFrameFont(font, v, GridFrame.db.profile.fontOutline) end)
+				GridFrame:WithAllFrames(function(f) f:SetFrameFont(font, v, GridFrame.db.profile.fontOutline, GridFrame.db.profile.fontShadow) end)
 			end,
 		},
 		["fontoutline"] = {
@@ -1062,9 +1079,22 @@ GridFrame.options = {
 			set = function(_, v)
 				GridFrame.db.profile.fontOutline = v
 				local font = media and media:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
-				GridFrame:WithAllFrames(function(f) f:SetFrameFont(font, GridFrame.db.profile.fontSize, v) end)
+				GridFrame:WithAllFrames(function(f) f:SetFrameFont(font, GridFrame.db.profile.fontSize, v, GridFrame.db.profile.fontShadow) end)
 			end,
 			values = { ["NONE"] = L["None"], ["OUTLINE"] = L["Thin"], ["THICKOUTLINE"] = L["Thick"] }
+		},
+		["fontshadow"] = {
+			type = "toggle",
+			name = L["Font Shadow"],
+			desc = L["Toggle the font drop shadow effect."],
+			get = function()
+				return GridFrame.db.profile.fontShadow
+			end,
+			set = function(_, v)
+				GridFrame.db.profile.fontShadow = v
+				local font = media and media:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
+				GridFrame:WithAllFrames(function(f) f:SetFrameFont(font, GridFrame.db.profile.fontSize, GridFrame.db.profile.fontOutline, v) end)
+			end,
 		},
 		["orientation"] = {
 			type = "select",
@@ -1101,14 +1131,14 @@ if media then
 		desc = L["Adjust the font settings"],
 		type = "select",
 		values = media:HashTable("font"),
-		dialogControl = hasMediaWidgets and "LSM30_Font" or nil,
+		dialogControl = hasMediaWidgets and "LSM30_Font",
 		get = function()
 			return GridFrame.db.profile.font
 		end,
 		set = function(_, v)
 			GridFrame.db.profile.font = v
 			local font = media:Fetch("font", v)
-			GridFrame:WithAllFrames(function(f) f:SetFrameFont(font, GridFrame.db.profile.fontSize, GridFrame.db.profile.fontOutline) end)
+			GridFrame:WithAllFrames(function(f) f:SetFrameFont(font, GridFrame.db.profile.fontSize, GridFrame.db.profile.fontOutline, GridFrame.db.profile.fontShadow) end)
 		end,
 	}
 	GridFrame.options.args.texture = {
@@ -1116,7 +1146,7 @@ if media then
 		desc = L["Adjust the texture of each unit's frame."],
 		type = "select",
 		values = media:HashTable("statusbar"),
-		dialogControl = hasMediaWidgets and "LSM30_Statusbar" or nil,
+		dialogControl = hasMediaWidgets and "LSM30_Statusbar",
 		get = function()
 			return GridFrame.db.profile.texture
 		end,
@@ -1160,7 +1190,7 @@ function GridFrame:OnEnable()
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "SendMessage_UpdateFrameUnits")
 	self:RegisterMessage("Grid_RosterUpdated", "SendMessage_UpdateFrameUnits")
 
-	self:RegisterBucketMessage("UpdateFrameUnits", 0.25)
+	self:RegisterBucketMessage("UpdateFrameUnits", 0.1)
 
 	if media then
 		media.RegisterCallback(self, "LibSharedMedia_Registered", "LibSharedMedia_Update")
@@ -1177,7 +1207,7 @@ end
 function GridFrame:LibSharedMedia_Update(callback, type, handle)
  	if type == "font" then
  		self:WithAllFrames(function(f)
-			f:SetFrameFont(media:Fetch("font", self.db.profile.font), self.db.profile.fontSize, GridFrame.db.profile.fontOutline)
+			f:SetFrameFont(media:Fetch("font", self.db.profile.font), self.db.profile.fontSize, GridFrame.db.profile.fontOutline, GridFrame.db.profile.fontShadow)
 		end)
  	elseif type == "statusbar" then
  		self:WithAllFrames(function(f)
@@ -1198,7 +1228,7 @@ function GridFrame:Reset()
 	-- Fix for font size not updating on profile change
 	-- Can probably be done better
 	local font = media and media:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
-	GridFrame:WithAllFrames(function(f) f:SetFrameFont(font, GridFrame.db.profile.fontSize, GridFrame.db.profile.fontOutline) end)
+	GridFrame:WithAllFrames(function(f) f:SetFrameFont(font, GridFrame.db.profile.fontSize, GridFrame.db.profile.fontOutline, GridFrame.db.profile.fontShadow) end)
 
 	self:ResetAllFrames()
 	self:UpdateFrameUnits()
