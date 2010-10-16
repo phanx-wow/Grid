@@ -74,6 +74,8 @@ Grid.L = {
 	["Adjust the font size."] = "Die Schriftgröße anpassen.",
 	["Font Outline"] = "Schriftumriss",
 	["Adjust the font outline."] = "Den Schriftumriss anpassen.",
+	["Font Shadow"] = "Schriftschatten",
+	["Toggle the font drop shadow effect."] = "Schriftschatten ein-/ausschalten.",
 	["None"] = "Kein Umriss",
 	["Thin"] = "Dünn",
 	["Thick"] = "Dick",
@@ -191,19 +193,21 @@ Grid.L = {
 
 --{{{ GridLayoutLayouts
 	["None"] = "Ausblenden",
-	["By Group 5"] = "5er Gruppe",
-	["By Group 5 w/Pets"] = "5er Gruppe mit Begleitern",
-	["By Group 10"] = "10er Gruppe",
-	["By Group 10 w/Pets"] = "10er Gruppe mit Begleitern",
-	["By Group 15"] = "15er Gruppe",
-	["By Group 15 w/Pets"] = "15er Gruppe mit Begleitern",
-	["By Group 25"] = "25er Gruppe",
-	["By Group 25 w/Pets"] = "25er Gruppe mit Begleitern",
-	["By Group 25 w/Tanks"] = "25er Gruppe mit Tanks",
-	["By Group 40"] = "40er Gruppe",
-	["By Group 40 w/Pets"] = "40er Gruppe mit Begleitern",
-	["By Class 10 w/Pets"] = "10er Gruppe nach Klasse",
-	["By Class 25 w/Pets"] = "25er Gruppe nach Klasse",
+	["By Group 5"] = " 5er",
+	["By Group 5 w/Pets"] = " 5er mit Begleitern",
+	["By Group 10"] = "10er",
+	["By Group 10 w/Pets"] = "10er mit Begleitern",
+	["By Group 15"] = "15er",
+	["By Group 15 w/Pets"] = "15er mit Begleitern",
+	["By Group 25"] = "25er",
+	["By Group 25 w/Pets"] = "25er mit Begleitern",
+	["By Group 25 w/Tanks"] = "25er mit Tanks",
+	["By Group 40"] = "40er",
+	["By Group 40 w/Pets"] = "40er mit Begleitern",
+	["By Class 10"] = "10er nach Klasse",
+	["By Class 10 w/Pets"] = "10er nach Klasse mit Begleitern",
+	["By Class 25"] = "25er nach Klasse",
+	["By Class 25 w/Pets"] = "25er nach Klasse mit Begleitern",
 --}}}
 
 --{{{ GridLDB
@@ -217,6 +221,7 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatus
+	["Indicators"] = "Indikatoren",
 	["Status"] = "Status",
 	["Options for %s."] = "Optionen für %s.",
 	["Reset class colors"] = "Klassenfarben zurücksetzen",
