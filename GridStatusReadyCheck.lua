@@ -1,11 +1,11 @@
 --[[--------------------------------------------------------------------
 	GridStatusReadyCheck.lua
 	GridStatus module for reporting ready check responses.
-	Created by Greltok.
 ----------------------------------------------------------------------]]
 
 local _, Grid = ...
 local L = Grid.L
+local GridRoster = Grid:GetModule("GridRoster")
 
 local GridStatusReadyCheck = Grid:GetModule("GridStatus"):NewModule("GridStatusReadyCheck", "AceTimer-3.0")
 
@@ -23,7 +23,7 @@ GridStatusReadyCheck.defaultDB = {
 		colors = {
 			waiting = { r = 1, g = 1, b = 0, a = 1, ignore = true },
 			ready = { r = 0, g = 1, b = 0, a = 1, ignore = true },
-			not_ready = { r = 1, g = 0, b = 0, a = 1, ignore = true },
+			notready = { r = 1, g = 0, b = 0, a = 1, ignore = true },
 			afk = { r = 1, g = 0, b = 0, a = 1, ignore = true }
 		},
 	},
@@ -40,7 +40,7 @@ local readystatus = {
 		text = L["R"],
 		icon = READY_CHECK_READY_TEXTURE
 	},
-	not_ready = {
+	notready = {
 		text = L["X"],
 		icon = READY_CHECK_NOT_READY_TEXTURE
 	},
@@ -83,14 +83,14 @@ local readyCheckOptions = {
 		get = function() return getstatuscolor("ready") end,
 		set = function(_, r, g, b, a) setstatuscolor("ready", r, g, b, a) end,
 	},
-	["not_ready"] = {
+	["notready"] = {
 		name = L["Not Ready color"],
 		desc = L["Color for Not Ready."],
 		order = 88,
 		type = "color",
 		hasAlpha = true,
-		get = function() return getstatuscolor("not_ready") end,
-		set = function(_, r, g, b, a) setstatuscolor("not_ready", r, g, b, a) end,
+		get = function() return getstatuscolor("notready") end,
+		set = function(_, r, g, b, a) setstatuscolor("notready", r, g, b, a) end,
 	},
 	["afk"] = {
 		name = L["AFK color"],
@@ -125,35 +125,36 @@ function GridStatusReadyCheck:OnInitialize()
 end
 
 function GridStatusReadyCheck:OnStatusEnable(status)
-	if status == "ready_check" then
-		self:RegisterEvent("READY_CHECK")
-		self:RegisterEvent("READY_CHECK_CONFIRM")
-		self:RegisterEvent("READY_CHECK_FINISHED")
-		self:RegisterEvent("PARTY_LEADER_CHANGED")
-		self:RegisterEvent("RAID_ROSTER_UPDATE")
-		self:RegisterMessage("Grid_PartyTransition")
-	end
+	if status ~= "ready_check" then return end
+
+	self:RegisterEvent("READY_CHECK")
+	self:RegisterEvent("READY_CHECK_CONFIRM")
+	self:RegisterEvent("READY_CHECK_FINISHED")
+	self:RegisterEvent("PARTY_LEADER_CHANGED", "GroupChanged")
+	self:RegisterEvent("RAID_ROSTER_UPDATE", "GroupChanged")
+	self:RegisterMessage("Grid_PartyTransition", "GroupChanged")
+	self:RegisterMessage("Grid_UnitJoined")
 end
 
 function GridStatusReadyCheck:OnStatusDisable(status)
-	if status == "ready_check" then
-		self:UnregisterEvent("READY_CHECK")
-		self:UnregisterEvent("READY_CHECK_CONFIRM")
-		self:UnregisterEvent("READY_CHECK_FINISHED")
-		self:UnregisterEvent("PARTY_LEADER_CHANGED")
-		self:UnregisterEvent("RAID_ROSTER_UPDATE")
-		self:UnregisterMessage("Grid_PartyTransition")
+	if status ~= "ready_check" then return end
 
-		self:CancelTimer(self.ClearTimer, true)
+	self:UnregisterEvent("READY_CHECK")
+	self:UnregisterEvent("READY_CHECK_CONFIRM")
+	self:UnregisterEvent("READY_CHECK_FINISHED")
+	self:UnregisterEvent("PARTY_LEADER_CHANGED")
+	self:UnregisterEvent("RAID_ROSTER_UPDATE")
+	self:UnregisterMessage("Grid_PartyTransition")
+	self:UnregisterMessage("Grid_UnitJoined")
 
-		self:ClearStatus()
-	end
+	self:CancelTimer(self.ClearTimer, true)
+	self.core:SendStatusLostAllUnits("ready_check")
 end
 
 function GridStatusReadyCheck:Reset()
 	self.super.Reset(self)
 	self:CancelTimer(self.ClearTimer, true)
-	self:ClearStatus()
+	self.core:SendStatusLostAllUnits("ready_check")
 end
 
 function GridStatusReadyCheck:GainStatus(guid, key, settings)
@@ -168,44 +169,48 @@ function GridStatusReadyCheck:GainStatus(guid, key, settings)
 		status.icon)
 end
 
-function GridStatusReadyCheck:READY_CHECK(event, originator)
-	local settings = self.db.profile.ready_check
-	if settings.enable and (self.raidAssist or IsPartyLeader()) then
-		local GridRoster = Grid:GetModule("GridRoster")
+function GridStatusReadyCheck:UpdateAllUnits()
+	if GetReadyCheckStatus("player") then
+		for guid, unitid in GridRoster:IterateRoster() do
+			self:UpdateUnit(unitid)
+		end
+	else
 		self:CancelTimer(self.ClearTimer, true)
-		self.readyChecking = true
-		local originatorguid = GridRoster:GetGUIDByFullName(originator)
-		for guid in GridRoster:IterateRoster() do
-			if not GridRoster:GetOwnerUnitidByGUID(guid) then
-				if guid ~= originatorguid then
-					self:GainStatus(guid, "waiting", settings)
-				else
-					self:GainStatus(guid, "ready", settings)
-				end
-			end
-		end
+		self.core:SendStatusLostAllUnits("ready_check")
 	end
 end
 
-function GridStatusReadyCheck:READY_CHECK_CONFIRM(event, unit, confirm)
-	local settings = self.db.profile.ready_check
-	if settings.enable and self.readyChecking then
-		local guid = UnitGUID(unit)
-		if confirm then
-			self:GainStatus(guid, "ready", settings)
-		else
-			self:GainStatus(guid, "not_ready", settings)
-		end
+function GridStatusReadyCheck:UpdateUnit(unitid)
+	local guid = UnitGUID(unitid)
+	local key = GetReadyCheckStatus(unitid)
+	if key then
+		local settings = self.db.profile.ready_check
+		self:GainStatus(guid, key, settings)
+	else
+		self.core:SendStatusLost(guid, "ready_check")
 	end
 end
 
-function GridStatusReadyCheck:READY_CHECK_FINISHED(event)
+function GridStatusReadyCheck:READY_CHECK()
+	if self.db.profile.ready_check.enable then
+		self:CancelTimer(self.ClearTimer, true)
+		self:UpdateAllUnits()
+	end
+end
+
+function GridStatusReadyCheck:READY_CHECK_CONFIRM(event, unitid)
+	if unitid and self.db.profile.ready_check.enable then
+		self:UpdateUnit(unitid)
+	end
+end
+
+function GridStatusReadyCheck:READY_CHECK_FINISHED()
 	local settings = self.db.profile.ready_check
 	if settings.enable then
 		local afk = {}
 		for guid, status, statusTbl in self.core:CachedStatusIterator("ready_check") do
 			if statusTbl.texture == READY_CHECK_WAITING_TEXTURE then
-			   afk[guid] = true
+				afk[guid] = true
 			end
 		end
 		for guid in pairs(afk) do
@@ -216,38 +221,18 @@ function GridStatusReadyCheck:READY_CHECK_FINISHED(event)
 	end
 end
 
-function GridStatusReadyCheck:PARTY_LEADER_CHANGED(event)
-	-- If you change party leader, you may not receive the READY_CHECK_FINISHED event.
-	self:CheckClearStatus()
-end
-
-function GridStatusReadyCheck:RAID_ROSTER_UPDATE(event)
-	-- If you lose raid assist, you may not receive the READY_CHECK_FINISHED event.
-	if GetNumRaidMembers() > 0 then
-		local newAssist = IsRaidLeader() or IsRaidOfficer()
-		if self.readyChecking and newAssist ~= self.raidAssist then
-			self:CancelTimer(self.ClearTimer, true)
-			self.ClearTimer = self:ScheduleTimer("ClearStatus", settings.delay or 0)
-		end
-		self.raidAssist = newAssist
-	else
-		self.raidAssist = nil
+function GridStatusReadyCheck:GroupChanged()
+	if self.db.profile.ready_check.enable then
+		self:UpdateAllUnits()
 	end
 end
 
-function GridStatusReadyCheck:Grid_PartyTransition()
-	-- If you leave the group, you may not receive the READY_CHECK_FINISHED event.
-	self:CheckClearStatus()
-end
-
-function GridStatusReadyCheck:CheckClearStatus()
-	-- Unfortunately, GetReadyCheckTimeLeft() only returns integral values.
-	if self.readyChecking and GetReadyCheckTimeLeft() == 0 then
-		self.ClearTimer = self:ScheduleTimer("ClearStatus", settings.delay or 0)
+function GridStatusReadyCheck:Grid_UnitJoined(event, guid, unitid)
+	if unitid and self.db.profile.ready_check.enable then
+		self:UpdateUnit(unitid)
 	end
 end
 
 function GridStatusReadyCheck:ClearStatus()
-	self.readyChecking = nil
 	self.core:SendStatusLostAllUnits("ready_check")
 end
