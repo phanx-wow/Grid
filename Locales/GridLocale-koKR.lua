@@ -74,6 +74,8 @@ Grid.L = {
 	["Adjust the font size."] = "글꼴 크기를 조정합니다.",
 	["Font Outline"] = "글꼴 외각선",
 	["Adjust the font outline."] = "글꼴 외각선을 조정합니다.",
+	["Font Shadow"] = "글꼴 그림자",
+	["Toggle the font drop shadow effect."] ="글꼴에 그림자 효과를 사용합니다.",
 	["None"] = "없음",
 	["Thin"] = "얇게",
 	["Thick"] = "두껍게",
@@ -125,15 +127,15 @@ Grid.L = {
 	["Click through the Grid Frame"] = "창을 통해 클릭",
 	["Allows mouse click through the Grid Frame."] = "배치 창 위의 마우스 클릭을 허락합니다.",
 
-	["Center"] = "중앙",
-	["Top"] = "상단",
 	["Bottom"] = "하단",
-	["Left"] = "좌측",
-	["Right"] = "우측",
-	["Top Left"] = "좌측 상단",
-	["Top Right"] = "우측 상단",
 	["Bottom Left"] = "좌측 하단",
 	["Bottom Right"] = "우측 하단",
+	["Center"] = "중앙",
+	["Left"] = "좌측",
+	["Right"] = "우측",
+	["Top"] = "상단",
+	["Top Left"] = "좌측 상단",
+	["Top Right"] = "우측 상단",
 
 	-- Display options
 	["Padding"] = "패팅",
@@ -207,8 +209,8 @@ Grid.L = {
 --}}}
 
 --{{{ GridLDB
---	["Click to toggle the frame lock."] = "",
---	["Right-Click to open the options menu."] = "",
+	["Click to toggle the frame lock."] = "창을 잠그려면 왼쪽 버튼을 클릭하십시오.",
+	["Right-Click to open the options menu."] = "옵션 메뉴을 열려면 오른쪽 버튼을 클릭하십시오.",
 --}}}
 
 --{{{ GridRange
@@ -217,6 +219,7 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatus
+	["Indicators"] = "지시기",
 	["Status"] = "상태",
 	["Options for %s."] = "%s|1을;를; 위한 옵션을 설정합니다.",
 	["Reset class colors"] = "직업 색상 초기화",
