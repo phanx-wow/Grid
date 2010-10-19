@@ -1,5 +1,5 @@
 ## Interface: 40000
-## Version: @project-version@
+## Version: 1.40000.@project-version@
 ## X-ReleaseDate: "$Date$"
 
 ## Title: Grid
@@ -36,7 +36,7 @@ Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
 Libs\LibDualSpec-1.0\LibDualSpec-1.0.lua
 Libs\LibGratuity-3.0\LibGratuity-3.0.lua
-Libs\LibSharedMedia-3.0\lib.xml
+Libs\LibSharedMedia-3.0\LibSharedMedia-3.0.lua
 Libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
 #@end-no-lib-strip@
 
