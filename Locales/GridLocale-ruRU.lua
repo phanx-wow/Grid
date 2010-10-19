@@ -207,8 +207,8 @@ Grid.L = {
 --}}}
 
 --{{{ GridLDB
---	["Click to toggle the frame lock."] = "",
---	["Right-Click to open the options menu."] = "",
+	["Click to toggle the frame lock."] = "Клик - вкл/выкл фиксацию фрейма.",
+	["Right-Click to open the options menu."] = "Правый-Клик - открывает окно настроек.",
 --}}}
 
 --{{{ GridRange
@@ -218,6 +218,7 @@ Grid.L = {
 
 --{{{ GridStatus
 	["Status"] = "Статус",
+	["Options for GridStatus."] = "Опции GridStatus",
 	["Options for %s."] = "Опции для %s.",
 	["Reset class colors"] = "Сбросс окраски классов",
 	["Reset class colors to defaults."] = "Сбросить окраску классов на значение по умолчанию.",
