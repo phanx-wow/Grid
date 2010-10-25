@@ -29,7 +29,7 @@ GridStatusRange.defaultDB = {
 
 GridStatusRange.extraOptions = {
     ["frequency"] = {
-		type = 'range',
+		type = 'range', width = "double",
 		name = L["Range check frequency"],
 		desc = L["Seconds between range checks"],
 		get = function() return GridStatusRange.db.profile.frequency end,

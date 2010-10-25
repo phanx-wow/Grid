@@ -64,7 +64,7 @@ GridStatusHealth.defaultDB = {
 
 GridStatusHealth.extraOptions = {
 	deadAsFullHealth = {
-		order = 101,
+		order = 101, width = "double",
 		name = L["Show dead as full health"],
 		desc = L["Treat dead units as being full health."],
 		type = "toggle",
@@ -83,7 +83,7 @@ local healthOptions = {
 	useClassColors = {
 		name = L["Use class color"],
 		desc = L["Color health based on class."],
-		type = "toggle",
+		type = "toggle", width = "double",
 		get = function()
 			return GridStatusHealth.db.profile.unit_health.useClassColors
 		end,
@@ -98,7 +98,7 @@ local healthDeficitOptions = {
 	threshold = {
 		name = L["Health threshold"],
 		desc = L["Only show deficit above % damage."],
-		type = "range", min = 0, max = 100, step = 1,
+		type = "range", min = 0, max = 100, step = 1, width = "double",
 		get = function()
 			return GridStatusHealth.db.profile.unit_healthDeficit.threshold
 		end,
@@ -110,7 +110,7 @@ local healthDeficitOptions = {
 	useClassColors = {
 		name = L["Use class color"],
 		desc = L["Color deficit based on class."],
-		type = "toggle",
+		type = "toggle", width = "double",
 		get = function()
 			return GridStatusHealth.db.profile.unit_healthDeficit.useClassColors
 		end,
@@ -125,7 +125,7 @@ local low_healthOptions = {
 	threshold = {
 		name = L["Low HP threshold"],
 		desc = L["Set the HP % for the low HP warning."],
-		type = "range", min = 0, max = 100, step = 1,
+		type = "range", min = 0, max = 100, step = 1, width = "double",
 		get = function()
 			return GridStatusHealth.db.profile.alert_lowHealth.threshold
 		end,

@@ -204,279 +204,274 @@ GridLayout.options = {
 	args = {
 		-- layouts for SOLO, PARTY, RAID, BG, ARENA
 		["sololayout"] = {
-			type = "select",
 			name = L["Solo Layout"],
 			desc = L["Select which layout to use when not in a party."],
-			order = ORDER_LAYOUT + 1,
+			order = 10,
+			width = "double",
+			type = "select",
 			values = {},
 			get = function()
-					return GridLayout.db.profile.layouts.solo
-				end,
+				return GridLayout.db.profile.layouts.solo
+			end,
 			set = function(_, v)
-					GridLayout.db.profile.layouts.solo = v
-					GridLayout:ReloadLayout()
-				end,
+				GridLayout.db.profile.layouts.solo = v
+				GridLayout:ReloadLayout()
+			end,
 		},
 		["partylayout"] = {
-			type = "select",
 			name = L["Party Layout"],
 			desc = L["Select which layout to use when in a party."],
-			order = ORDER_LAYOUT + 2,
-			get = function()
-					return GridLayout.db.profile.layouts.party
-				end,
-			set = function(_, v)
-					GridLayout.db.profile.layouts.party = v
-					GridLayout:ReloadLayout()
-				end,
-			values = {},
-		},
-		["raid_25layout"] = {
+			order = 20,
+			width = "double",
 			type = "select",
-			name = L["25 Player Raid Layout"],
-			desc = L["Select which layout to use when in a 25 player raid."],
-			order = ORDER_LAYOUT + 3,
-			get = function()
-					return GridLayout.db.profile.layouts.raid_25
-				end,
-			set = function(_, v)
-					GridLayout.db.profile.layouts.raid_25 = v
-					GridLayout:ReloadLayout()
-				end,
 			values = {},
+			get = function()
+				return GridLayout.db.profile.layouts.party
+			end,
+			set = function(_, v)
+				GridLayout.db.profile.layouts.party = v
+				GridLayout:ReloadLayout()
+			end,
 		},
 		["raid_10layout"] = {
-			type = "select",
 			name = L["10 Player Raid Layout"],
 			desc = L["Select which layout to use when in a 10 player raid."],
-			order = ORDER_LAYOUT + 3,
-			get = function()
-					return GridLayout.db.profile.layouts.raid_10
-				end,
-			set = function(_, v)
-					GridLayout.db.profile.layouts.raid_10 = v
-					GridLayout:ReloadLayout()
-				end,
+			order = 30,
+			width = "double",
+			type = "select",
 			values = {},
+			get = function()
+				return GridLayout.db.profile.layouts.raid_10
+			end,
+			set = function(_, v)
+				GridLayout.db.profile.layouts.raid_10 = v
+				GridLayout:ReloadLayout()
+			end,
+		},
+		["raid_25layout"] = {
+			name = L["25 Player Raid Layout"],
+			desc = L["Select which layout to use when in a 25 player raid."],
+			order = 40,
+			width = "double",
+			type = "select",
+			values = {},
+			get = function()
+				return GridLayout.db.profile.layouts.raid_25
+			end,
+			set = function(_, v)
+				GridLayout.db.profile.layouts.raid_25 = v
+				GridLayout:ReloadLayout()
+			end,
 		},
 		["bglayout"] = {
-			type = "select",
 			name = L["Battleground Layout"],
 			desc = L["Select which layout to use when in a battleground."],
-			order = ORDER_LAYOUT + 4,
-			get = function()
-					return GridLayout.db.profile.layouts.bg
-				end,
-			set = function(_, v)
-					GridLayout.db.profile.layouts.bg = v
-					GridLayout:ReloadLayout()
-				end,
+			order = 50,
+			width = "double",
+			type = "select",
 			values = {},
+			get = function()
+				return GridLayout.db.profile.layouts.bg
+			end,
+			set = function(_, v)
+				GridLayout.db.profile.layouts.bg = v
+				GridLayout:ReloadLayout()
+			end,
 		},
 		["arenalayout"] = {
-			type = "select",
 			name = L["Arena Layout"],
 			desc = L["Select which layout to use when in an arena."],
-			order = ORDER_LAYOUT + 5,
-			get = function()
-					return GridLayout.db.profile.layouts.arena
-				end,
-			set = function(_, v)
-					GridLayout.db.profile.layouts.arena = v
-					GridLayout:ReloadLayout()
-				end,
+			order = 60,
+			width = "double",
+			type = "select",
 			values = {},
+			get = function()
+				return GridLayout.db.profile.layouts.arena
+			end,
+			set = function(_, v)
+				GridLayout.db.profile.layouts.arena = v
+				GridLayout:ReloadLayout()
+			end,
 		},
 		["horizontal"] = {
-			type = "toggle",
 			name = L["Horizontal groups"],
 			desc = L["Switch between horzontal/vertical groups."],
-			order = ORDER_LAYOUT + 6,
-			get = function()
-					return GridLayout.db.profile.horizontal
-				end,
-			set = function(_, v)
-					GridLayout.db.profile.horizontal = v
-					GridLayout:ReloadLayout()
-				end,
-		},
-		["clamp"] = {
+			order = 70,
+			width = "double",
 			type = "toggle",
-			name = L["Clamped to screen"],
-			desc = L["Toggle whether to permit movement out of screen."],
-			order = ORDER_LAYOUT + 7,
 			get = function()
-					return GridLayout.db.profile.clamp
-				end,
+				return GridLayout.db.profile.horizontal
+			end,
 			set = function(_, v)
-					GridLayout.db.profile.clamp = v
-					GridLayout:SetClamp()
-				end,
+				GridLayout.db.profile.horizontal = v
+				GridLayout:ReloadLayout()
+			end,
 		},
 		["lock"] = {
-			type = "toggle",
 			name = L["Frame lock"],
 			desc = L["Locks/unlocks the grid for movement."],
-			order = ORDER_LAYOUT + 8,
+			order = 80,
+			width = "double",
+			type = "toggle",
 			get = function() return GridLayout.db.profile.FrameLock end,
 			set = function(_, v)
-					GridLayout.db.profile.FrameLock = v
-					GridLayout:UpdateTabVisibility()
-				end,
+				GridLayout.db.profile.FrameLock = v
+				GridLayout:UpdateTabVisibility()
+			end,
 		},
-
-		["DisplayHeader"] = {
-			type = "header",
-			order = ORDER_DISPLAY,
-			name = "",
+		["clamp"] = {
+			name = L["Clamped to screen"],
+			desc = L["Toggle whether to permit movement out of screen."],
+			order = 90,
+			width = "double",
+			type = "toggle",
+			get = function()
+				return GridLayout.db.profile.clamp
+			end,
+			set = function(_, v)
+				GridLayout.db.profile.clamp = v
+				GridLayout:SetClamp()
+			end,
+		},
+		["layoutanchor"] = {
+			name = L["Layout Anchor"],
+			desc = L["Sets where Grid is anchored relative to the screen."],
+			order = 100,
+			width = "double",
+			type = "select",
+			values = { ["CENTER"] = L["Center"], ["TOP"] = L["Top"], ["BOTTOM"] = L["Bottom"], ["LEFT"] = L["Left"], ["RIGHT"] = L["Right"], ["TOPLEFT"] = L["Top Left"], ["TOPRIGHT"] = L["Top Right"], ["BOTTOMLEFT"] = L["Bottom Left"], ["BOTTOMRIGHT"] = L["Bottom Right"] },
+			get = function() return GridLayout.db.profile.anchor end,
+			set = function(_, v)
+				GridLayout.db.profile.anchor = v
+				GridLayout:SavePosition()
+				GridLayout:RestorePosition()
+			end,
+		},
+		["groupanchor"] = {
+			name = L["Group Anchor"],
+			desc = L["Sets where groups are anchored relative to the layout frame."],
+			order = 110,
+			width = "double",
+			type = "select",
+			values = { ["TOPLEFT"] = L["Top Left"], ["TOPRIGHT"] = L["Top Right"], ["BOTTOMLEFT"] = L["Bottom Left"], ["BOTTOMRIGHT"] = L["Bottom Right"] },
+			get = function() return GridLayout.db.profile.groupAnchor end,
+			set = function(_, v)
+				GridLayout.db.profile.groupAnchor = v
+				GridLayout:ReloadLayout()
+			end,
 		},
 		["padding"] = {
-			type = "range",
 			name = L["Padding"],
 			desc = L["Adjust frame padding."],
-			order = ORDER_DISPLAY + 1,
-			max = 20,
-			min = 0,
-			step = 1,
+			order = 120,
+			width = "double",
+			type = "range", max = 20, min = 0, step = 1,
 			get = function()
-					return GridLayout.db.profile.Padding
-				end,
+				return GridLayout.db.profile.Padding
+			end,
 			set = function(_, v)
-					GridLayout.db.profile.Padding = v
-					GridLayout:ReloadLayout()
-				end,
+				GridLayout.db.profile.Padding = v
+				GridLayout:ReloadLayout()
+			end,
 		},
 		["spacing"] = {
-			type = "range",
 			name = L["Spacing"],
 			desc = L["Adjust frame spacing."],
-			order = ORDER_DISPLAY + 2,
-			max = 25,
-			min = 0,
-			step = 1,
+			order = 130,
+			width = "double",
+			type = "range", min = 0, max = 25, step = 1,
 			get = function()
-					return GridLayout.db.profile.Spacing
-				end,
+				return GridLayout.db.profile.Spacing
+			end,
 			set = function(_, v)
-					GridLayout.db.profile.Spacing = v
-					GridLayout:ReloadLayout()
-				end,
+				GridLayout.db.profile.Spacing = v
+				GridLayout:ReloadLayout()
+			end,
 		},
 		["scale"] = {
-			type = "range",
 			name = L["Scale"],
 			desc = L["Adjust Grid scale."],
-			order = ORDER_DISPLAY + 3,
-			min = 0.5,
-			max = 2.0,
-			step = 0.05,
-			isPercent = true,
+			order = 140,
+			width = "double",
+			type = "range", min = 0.5, max = 2.0, step = 0.05, isPercent = true,
 			get = function()
-					return GridLayout.db.profile.ScaleSize
-				end,
+				return GridLayout.db.profile.ScaleSize
+			end,
 			set = function(_, v)
-					GridLayout.db.profile.ScaleSize = v
-					GridLayout:Scale()
-				end,
+				GridLayout.db.profile.ScaleSize = v
+				GridLayout:Scale()
+			end,
 		},
 		["border"] = {
-			type = "color",
 			name = L["Border"],
 			desc = L["Adjust border color and alpha."],
-			order = ORDER_DISPLAY + 4,
+			order = 150,
+			width = "double",
+			type = "color", hasAlpha = true,
 			get = function()
-					local settings = GridLayout.db.profile
-					return settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA
-				end,
+				local settings = GridLayout.db.profile
+				return settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA
+			end,
 			set = function(_, r, g, b, a)
-					local settings = GridLayout.db.profile
-					settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA = r, g, b, a
-					GridLayout:UpdateColor()
-				end,
-			hasAlpha = true
+				local settings = GridLayout.db.profile
+				settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA = r, g, b, a
+				GridLayout:UpdateColor()
+			end,
 		},
 		["background"] = {
-			type = "color",
 			name = L["Background"],
 			desc = L["Adjust background color and alpha."],
-			order = ORDER_DISPLAY + 5,
+			order = 160,
+			width = "double",
+			type = "color", hasAlpha = true,
 			get = function()
-					local settings = GridLayout.db.profile
-					return settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA
-				end,
+				local settings = GridLayout.db.profile
+				return settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA
+			end,
 			set = function(_, r, g, b, a)
-					local settings = GridLayout.db.profile
-					settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA = r, g, b, a
-					GridLayout:UpdateColor()
-				end,
-			hasAlpha = true
+				local settings = GridLayout.db.profile
+				settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA = r, g, b, a
+				GridLayout:UpdateColor()
+			end,
 		},
-		["advanced"] = {
-			type = "group",
-			name = L["Advanced"],
-			desc = L["Advanced options."],
-			order = -1,
-			args = {
-				["hidetab"] = {
-					type = "toggle",
-					name = L["Hide tab"],
-					desc = L["Do not show the tab when Grid is unlocked."],
-					get = function() return GridLayout.db.profile.hideTab end,
-					set = function(_, v)
-							GridLayout.db.profile.hideTab = v
-							GridLayout:UpdateTabVisibility()
-						end,
-				},
-				["layoutanchor"] = {
-					type = "select",
-					name = L["Layout Anchor"],
-					desc = L["Sets where Grid is anchored relative to the screen."],
-					order = 1,
-					get = function() return GridLayout.db.profile.anchor end,
-					set = function(_, v)
-							GridLayout.db.profile.anchor = v
-							GridLayout:SavePosition()
-							GridLayout:RestorePosition()
-						end,
-					values={["CENTER"] = L["Center"], ["TOP"] = L["Top"], ["BOTTOM"] = L["Bottom"], ["LEFT"] = L["Left"], ["RIGHT"] = L["Right"], ["TOPLEFT"] = L["Top Left"], ["TOPRIGHT"] = L["Top Right"], ["BOTTOMLEFT"] = L["Bottom Left"], ["BOTTOMRIGHT"] = L["Bottom Right"] },
-				},
-				["groupanchor"] = {
-					type = "select",
-					name = L["Group Anchor"],
-					desc = L["Sets where groups are anchored relative to the layout frame."],
-					order = 2,
-					get = function() return GridLayout.db.profile.groupAnchor end,
-					set = function(_, v)
-							GridLayout.db.profile.groupAnchor = v
-							GridLayout:ReloadLayout()
-						end,
-					values={["TOPLEFT"] = L["Top Left"], ["TOPRIGHT"] = L["Top Right"], ["BOTTOMLEFT"] = L["Bottom Left"], ["BOTTOMRIGHT"] = L["Bottom Right"] },
-				},
-				["reset"] = {
-					type = "execute",
-					name = L["Reset Position"],
-					desc = L["Resets the layout frame's position and anchor."],
-					order = -1,
-					func = function() GridLayout:ResetPosition() end,
-				},
-			},
+		["hidetab"] = {
+			name = L["Hide tab"],
+			desc = L["Do not show the tab when Grid is unlocked."],
+			order = 170,
+			width = "double",
+			type = "toggle",
+			get = function() return GridLayout.db.profile.hideTab end,
+			set = function(_, v)
+				GridLayout.db.profile.hideTab = v
+				GridLayout:UpdateTabVisibility()
+			end,
+		},
+		["reset"] = {
+			name = L["Reset Position"],
+			desc = L["Resets the layout frame's position and anchor."],
+			order = 500,
+			width = "double",
+			type = "execute",
+			func = function() GridLayout:ResetPosition() end,
 		},
 	},
 }
 
 if media then
-	GridLayout.options.args.advanced.args.border = {
-		type = "select",
+	GridLayout.options.args.border = {
 		name = L["Border Texture"],
 		desc = L["Choose the layout border texture."],
+		order = 165,
+		width = "double",
+		type = "select",
 		values = media:HashTable("border"),
 		get = function()
-				return GridLayout.db.profile.borderTexture
-			end,
+			return GridLayout.db.profile.borderTexture
+		end,
 		set = function(_, v)
-				GridLayout.db.profile.borderTexture = v
-				GridLayout:UpdateColor()
-			end,
+			GridLayout.db.profile.borderTexture = v
+			GridLayout:UpdateColor()
+		end,
 	}
 end
 
@@ -633,8 +628,7 @@ local function GridLayout_OnEnter(frame)
 end
 
 local function GridLayout_OnLeave(frame)
-	local tip = GameTooltip
-	tip:Hide()
+	GameTooltip:Hide()
 end
 
 function GridLayout:CreateFrames()
@@ -651,10 +645,10 @@ function GridLayout:CreateFrames()
 	-- create background
 	f:SetFrameLevel(0)
 	f:SetBackdrop({
-				bgFile = "Interface\\ChatFrame\\ChatFrameBackground", tile = true, tileSize = 16,
-				edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16,
-				insets = {left = 4, right = 4, top = 4, bottom = 4},
-			})
+		bgFile = "Interface\\ChatFrame\\ChatFrameBackground", tile = true, tileSize = 16,
+		edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16,
+		insets = {left = 4, right = 4, top = 4, bottom = 4},
+	})
 
 	-- create bg texture
 	f.texture = f:CreateTexture(nil, "BORDER")
@@ -684,8 +678,7 @@ function GridLayout:CreateFrames()
 	f.tab:Hide()
 
 	-- Handle/Tab Background
-	f.tabBgLeft = f.tab:CreateTexture("GridLayoutFrameTabBgLeft",
-									"BACKGROUND")
+	f.tabBgLeft = f.tab:CreateTexture("GridLayoutFrameTabBgLeft", "BACKGROUND")
 	f.tabBgLeft:SetTexture("Interface\\ChatFrame\\ChatFrameTab")
 	f.tabBgLeft:SetTexCoord(0, 0.25, 0, 1)
 	f.tabBgLeft:SetAlpha(tab_alpha)
@@ -693,8 +686,7 @@ function GridLayout:CreateFrames()
 	f.tabBgLeft:SetHeight(tab_height + 5)
 	f.tabBgLeft:SetPoint("BOTTOMLEFT", f.tab, "BOTTOMLEFT", 0, 0)
 
-	f.tabBgMiddle = f.tab:CreateTexture("GridLayoutFrameTabBgMiddle",
-										"BACKGROUND")
+	f.tabBgMiddle = f.tab:CreateTexture("GridLayoutFrameTabBgMiddle", "BACKGROUND")
 	f.tabBgMiddle:SetTexture("Interface\\ChatFrame\\ChatFrameTab")
 	f.tabBgMiddle:SetTexCoord(0.25, 0.75, 0, 1)
 	f.tabBgMiddle:SetAlpha(tab_alpha)
@@ -702,8 +694,7 @@ function GridLayout:CreateFrames()
 	f.tabBgMiddle:SetHeight(tab_height + 5)
 	f.tabBgMiddle:SetPoint("LEFT", f.tabBgLeft, "RIGHT", 0, 0)
 
-	f.tabBgRight = f.tab:CreateTexture("GridLayoutFrameTabBgRight",
-									"BACKGROUND")
+	f.tabBgRight = f.tab:CreateTexture("GridLayoutFrameTabBgRight", "BACKGROUND")
 	f.tabBgRight:SetTexture("Interface\\ChatFrame\\ChatFrameTab")
 	f.tabBgRight:SetTexCoord(0.75, 1, 0, 1)
 	f.tabBgRight:SetAlpha(tab_alpha)
@@ -712,8 +703,7 @@ function GridLayout:CreateFrames()
 	f.tabBgRight:SetPoint("LEFT", f.tabBgMiddle, "RIGHT", 0, 0)
 
 	-- Tab Label
-	f.tabText = f.tab:CreateFontString("GridLayoutFrameTabText",
-									"BACKGROUND", "GameFontNormalSmall")
+	f.tabText = f.tab:CreateFontString("GridLayoutFrameTabText", "BACKGROUND", "GameFontNormalSmall")
 	f.tabText:SetText("Grid")
 	f.tabText:SetPoint("TOP", f.tab, "TOP", 0, -5)
 
@@ -1138,11 +1128,13 @@ end
 SLASH_GRIDLAYOUT1 = "/gridlayout"
 
 SlashCmdList.GRIDLAYOUT = function(cmd)
-	local x, y = cmd:match("(%d+) (%d*)")
-	if not x then return end
-	if not y then y = x end
+	local width, height = cmd:match("^(%d+) ?(%d*)$")
+	width, height = tonumber(width), tonumber(height)
 
-	x, y = tonumber(x), tonumber(y)
+	if not width then return end
+	if not height then height = width end
 
-	GridLayout:FakeSize(x, y)
+	print("/gridlayout", width, height)
+
+	GridLayout:FakeSize(width, height)
 end

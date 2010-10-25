@@ -68,7 +68,7 @@ local readyCheckOptions = {
 	["waiting"] = {
 		name = L["Waiting color"],
 		desc = L["Color for Waiting."],
-		order = 86,
+		order = 86, width = "double",
 		type = "color",
 		hasAlpha = true,
 		get = function() return getstatuscolor("waiting") end,
@@ -77,7 +77,7 @@ local readyCheckOptions = {
 	["ready"] = {
 		name = L["Ready color"],
 		desc = L["Color for Ready."],
-		order = 87,
+		order = 87, width = "double",
 		type = "color",
 		hasAlpha = true,
 		get = function() return getstatuscolor("ready") end,
@@ -86,7 +86,7 @@ local readyCheckOptions = {
 	["notready"] = {
 		name = L["Not Ready color"],
 		desc = L["Color for Not Ready."],
-		order = 88,
+		order = 88, width = "double",
 		type = "color",
 		hasAlpha = true,
 		get = function() return getstatuscolor("notready") end,
@@ -95,7 +95,7 @@ local readyCheckOptions = {
 	["afk"] = {
 		name = L["AFK color"],
 		desc = L["Color for AFK."],
-		order = 89,
+		order = 89, width = "double",
 		type = "color",
 		hasAlpha = true,
 		get = function() return getstatuscolor("afk") end,
@@ -104,10 +104,8 @@ local readyCheckOptions = {
 	["delay"] = {
 		name = L["Delay"],
 		desc = L["Set the delay until ready check results are cleared."],
-		type = "range",
-		min = 0,
-		max = 10,
-		step = 1,
+		width = "double",
+		type = "range", min = 0, max = 10, step = 1,
 		get = function()
 			return GridStatusReadyCheck.db.profile.ready_check.delay
 		end,

@@ -27,7 +27,7 @@ GridStatusMana.options = false
 
 local low_manaOptions = {
 	["threshold"] = {
-		type = "range",
+		type = "range", width = "double",
 		name = L["Mana threshold"],
 		desc = L["Set the percentage for the low mana warning."],
 		max = 100,

@@ -887,23 +887,10 @@ GridFrame.options = {
 				GridFrame:WithAllFrames(function(f) f:SetCornerSize(v) end)
 			end,
 		},
-		["mouseoverhighlight"] = {
-			name = string.format(L["Enable Mouseover Highlight"]),
-			desc = L["Toggle mouseover highlight."],
-			order = 50, width = "double",
-			type = "toggle",
-			get = function()
-				return GridFrame.db.profile.enableMouseoverHighlight
-			end,
-			set = function(_, v)
-				GridFrame.db.profile.enableMouseoverHighlight = v
-				GridFrame:WithAllFrames(function(f) f:EnableMouseoverHighlight(v) end)
-			end,
-		},
 		["tooltip"] = {
 			name = L["Show Tooltip"],
 			desc = L["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."],
-			order = 60, width = "double",
+			order = 50, width = "double",
 			type = "select",
 			values = { ["Always"] = L["Always"], ["Never"] = L["Never"], ["OOC"] = L["OOC"] },
 			get = function()
@@ -913,37 +900,10 @@ GridFrame.options = {
 				GridFrame.db.profile.showTooltip = v
 			end,
 		},
-		["barcolor"] = {
-			name = string.format(L["Enable %s indicator"], L["Health Bar Color"]),
-			desc = string.format(L["Toggle the %s indicator."], L["Health Bar Color"]),
-			order = 70, width = "double",
-			type = "toggle",
-			get = function()
-				return GridFrame.db.profile.enableBarColor
-			end,
-			set = function(_, v)
-				GridFrame.db.profile.enableBarColor = v
-				GridFrame:UpdateOptionsMenu()
-			end,
-		},
-		["text2"] = {
-			name = string.format(L["Enable %s indicator"], L["Center Text 2"]),
-			desc = string.format(L["Toggle the %s indicator."], L["Center Text 2"]),
-			order = 80, width = "double",
-			type = "toggle",
-			get = function()
-				return GridFrame.db.profile.enableText2
-			end,
-			set = function(_, v)
-				GridFrame.db.profile.enableText2 = v
-				GridFrame:WithAllFrames(function(f) f:EnableText2(v) end)
-				GridFrame:UpdateOptionsMenu()
-			end,
-		},
 		["orientation"] = {
 			name = L["Orientation of Frame"],
 			desc = L["Set frame orientation."],
-			order = 90, width = "double",
+			order = 60, width = "double",
 			type = "select",
 			values = { ["VERTICAL"] = L["Vertical"], ["HORIZONTAL"] = L["Horizontal"] },
 			get = function()
@@ -957,7 +917,7 @@ GridFrame.options = {
 		["textorientation"] = {
 			name = L["Orientation of Text"],
 			desc = L["Set frame text orientation."],
-			order = 100, width = "double",
+			order = 70, width = "double",
 			type = "select",
 			values = { ["VERTICAL"] = L["Vertical"], ["HORIZONTAL"] = L["Horizontal"] },
 			get = function()
@@ -968,7 +928,47 @@ GridFrame.options = {
 				GridFrame:WithAllFrames(function(f) f:SetTextOrientation(v) end)
 			end,
 		},
-		throttleUpdates = {
+		["mouseoverhighlight"] = {
+			name = string.format(L["Enable Mouseover Highlight"]),
+			desc = L["Toggle mouseover highlight."],
+			order = 80, width = "double",
+			type = "toggle",
+			get = function()
+				return GridFrame.db.profile.enableMouseoverHighlight
+			end,
+			set = function(_, v)
+				GridFrame.db.profile.enableMouseoverHighlight = v
+				GridFrame:WithAllFrames(function(f) f:EnableMouseoverHighlight(v) end)
+			end,
+		},
+		["barcolor"] = {
+			name = string.format(L["Enable %s indicator"], L["Health Bar Color"]),
+			desc = string.format(L["Toggle the %s indicator."], L["Health Bar Color"]),
+			order = 90, width = "double",
+			type = "toggle",
+			get = function()
+				return GridFrame.db.profile.enableBarColor
+			end,
+			set = function(_, v)
+				GridFrame.db.profile.enableBarColor = v
+				GridFrame:UpdateOptionsMenu()
+			end,
+		},
+		["text2"] = {
+			name = string.format(L["Enable %s indicator"], L["Center Text 2"]),
+			desc = string.format(L["Toggle the %s indicator."], L["Center Text 2"]),
+			order = 100, width = "double",
+			type = "toggle",
+			get = function()
+				return GridFrame.db.profile.enableText2
+			end,
+			set = function(_, v)
+				GridFrame.db.profile.enableText2 = v
+				GridFrame:WithAllFrames(function(f) f:EnableText2(v) end)
+				GridFrame:UpdateOptionsMenu()
+			end,
+		},
+		["throttleUpdates"] = {
 			name = L["Throttle Updates"],
 			desc = L["Throttle updates on group changes. This option may cause delays in updating frames, so you should only enable it if you're experiencing temporary freezes or lockups when people join or leave your group."],
 			type = "toggle",
@@ -979,12 +979,12 @@ GridFrame.options = {
 			set = function(_, v)
 				GridFrame.db.profile.throttleUpdates = v
 				if v then
-					self:UnregisterMessage("UpdateFrameUnits")
-					self.bucket_UpdateFrameUnits = self:RegisterBucketMessage("UpdateFrameUnits", 0.1)
+					GridFrame:UnregisterMessage("UpdateFrameUnits")
+					GridFrame.bucket_UpdateFrameUnits = GridFrame:RegisterBucketMessage("UpdateFrameUnits", 0.1)
 				else
-					self:RegisterMessage("UpdateFrameUnits")
-					self:UnregisterBucket(self.bucket_UpdateFrameUnits, true)
-					self.bucket_UpdateFrameUnits = nil
+					GridFrame:RegisterMessage("UpdateFrameUnits")
+					GridFrame:UnregisterBucket(GridFrame.bucket_UpdateFrameUnits, true)
+					GridFrame.bucket_UpdateFrameUnits = nil
 				end
 				GridFrame:UpdateFrameUnits()
 			end,
@@ -1156,7 +1156,7 @@ if media then
 	GridFrame.options.args.text.args.font = {
 		name = L["Font"],
 		desc = L["Adjust the font settings"],
-		order = 10,
+		order = 10, width = "double",
 		type = "select",
 		values = media:HashTable("font"),
 		dialogControl = hasMediaWidgets and "LSM30_Font",
@@ -1172,7 +1172,7 @@ if media then
 	GridFrame.options.args.bar.args.texture = {
 		name = L["Frame Texture"],
 		desc = L["Adjust the texture of each unit's frame."],
-		order = 10,
+		order = 10, width = "double",
 		type = "select",
 		values = media:HashTable("statusbar"),
 		dialogControl = hasMediaWidgets and "LSM30_Statusbar",
@@ -1189,7 +1189,7 @@ end
 
 Grid.options.args["Indicators"] = {
 	name = L["Indicators"],
-	type = "group",
+	type = "group", -- childGroups = "select",
 	args = {
 	}
 }
@@ -1504,7 +1504,7 @@ function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
 		menu[indicator] = {
 			name = name,
 			desc = string.format(L["Options for %s indicator."], name),
-			order = 50 + (order or 1),
+			order = order and (order + 1) or nil,
 			type = "group",
 			args = {
 				["StatusesHeader"] = {
@@ -1541,6 +1541,7 @@ function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
 			indicatorMenu[status] = {
 				name = descr,
 				desc = L["Toggle status display."],
+				width = "double",
 				type = "toggle",
 				get = function()
 					return GridFrame.db.profile.statusmap[indicatorType][statusKey]

@@ -288,7 +288,7 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 
 	if isBuff then
 		auraOptions.mine = {
-			type = "toggle",
+			type = "toggle", width = "double",
 			name = L["Show if mine"],
 			desc = L["Display status only if the buff was cast by you."],
 			order = 110,
@@ -302,7 +302,7 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 				end,
 		}
 		auraOptions.missing = {
-			type = "toggle",
+			type = "toggle", width = "double",
 			name = L["Show if missing"],
 			desc = L["Display status only if the buff is not active."],
 			order = 110,
@@ -318,7 +318,7 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 
 	auraOptions.duration = {
 		type = "toggle",
-		name = L["Show duration"],
+		name = L["Show duration"], width = "double",
 		desc = L["Show the time remaining, for use with the center icon cooldown."],
 		order = 111,
 		get = function()
@@ -334,12 +334,8 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 end
 
 function GridStatusAuras:CreateAddRemoveOptions()
-	--self.options.args["AddRemoveHeader"] = {
-	--	type = "header",
-	--	order = 199,
-	--}
 	self.options.args["add_buff"] = {
-		type = "input",
+		type = "input", width = "double",
 		name = L["Add new Buff"],
 		desc = L["Adds a new buff to the status module"],
 		get = false,
@@ -348,7 +344,7 @@ function GridStatusAuras:CreateAddRemoveOptions()
 		order = 11
 	}
 	self.options.args["add_debuff"] = {
-		type = "input",
+		type = "input", width = "double",
 		name = L["Add new Debuff"],
 		desc = L["Adds a new debuff to the status module"],
 		get = false,
@@ -357,7 +353,7 @@ function GridStatusAuras:CreateAddRemoveOptions()
 		order = 31
 	}
 	self.options.args["delete_debuff"] = {
-		type = "group",
+		type = "group", dialogInline = true,
 		name = L["Delete (De)buff"],
 		desc = L["Deletes an existing debuff from the status module"],
 		args = {},

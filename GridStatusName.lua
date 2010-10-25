@@ -29,7 +29,7 @@ local nameOptions = {
 	["class"] = {
 		name = L["Use class color"],
 		desc = L["Color by class"],
-		type = 'toggle',
+		type = 'toggle', width = "double",
 		get = function() return GridStatusName.db.profile.unit_name.class end,
 		set = function()
 			GridStatusName.db.profile.unit_name.class = not GridStatusName.db.profile.unit_name.class

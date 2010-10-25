@@ -30,7 +30,7 @@ GridStatusHeals.defaultDB = {
 
 local healsOptions = {
 	ignoreSelf = {
-		type = "toggle",
+		type = "toggle", width = "double",
 		name = L["Ignore Self"],
 		desc = L["Ignore heals cast by you."],
 		get = function()
@@ -42,6 +42,7 @@ local healsOptions = {
 		end,
 	},
 	minimumValue = {
+		width = "double",
 		type = "range", min = 0, max = 5000, step = 500,
 		name = L["Minimum Value"],
 		desc = L["Only show incoming heals greater than this amount."],
