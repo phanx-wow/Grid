@@ -28,7 +28,6 @@ local BS = {
 local buff_names = {}
 local player_buff_names = {}
 local debuff_names = {}
-local buff_icons = {}
 
 local debuff_types = {
 	["Poison"] = true,
@@ -456,6 +455,8 @@ function GridStatusAuras:UnitGainedBuff(guid, class, name, rank, icon, count, de
 	local settings = self.db.profile[status]
 	if not settings then return end
 
+	settings.icon = icon
+
 	if settings.enable and not settings.missing and settings[class] ~= false then
 		local start = settings.duration and expirationTime and (expirationTime - duration)
 		self.core:SendStatusGained(guid,
@@ -475,7 +476,7 @@ function GridStatusAuras:UnitGainedBuff(guid, class, name, rank, icon, count, de
 	end
 end
 
-function GridStatusAuras:UnitLostBuff(guid, class, name, icon)
+function GridStatusAuras:UnitLostBuff(guid, class, name)
 	self:Debug("UnitLostBuff", guid, class, name)
 
 	local status = GridStatusAuras.StatusForSpell(name, true)
@@ -491,7 +492,7 @@ function GridStatusAuras:UnitLostBuff(guid, class, name, icon)
 			settings.text,
 			nil,
 			nil,
-			icon)
+			settings.icon)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
@@ -503,6 +504,8 @@ function GridStatusAuras:UnitGainedPlayerBuff(guid, class, name, rank, icon, cou
 	local status = GridStatusAuras.StatusForSpell(name, true)
 	local settings = self.db.profile[status]
 	if not settings then return end
+
+	settings.icon = icon
 
 	if settings.enable and not settings.missing and settings[class] ~= false then
 		local start = settings.duration and expirationTime and (expirationTime - duration)
@@ -523,7 +526,7 @@ function GridStatusAuras:UnitGainedPlayerBuff(guid, class, name, rank, icon, cou
 	end
 end
 
-function GridStatusAuras:UnitLostPlayerBuff(guid, class, name, icon)
+function GridStatusAuras:UnitLostPlayerBuff(guid, class, name)
 	self:Debug("UnitLostPlayerBuff", guid, name)
 
 	local status = GridStatusAuras.StatusForSpell(name, true)
@@ -539,7 +542,7 @@ function GridStatusAuras:UnitLostPlayerBuff(guid, class, name, icon)
 			settings.text,
 			nil,
 			nil,
-			icon)
+			settings.icon)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
@@ -677,7 +680,6 @@ function GridStatusAuras:ScanUnitAuras(event, unit)
 
 		if name then
 			buff_names_seen[name] = true
-			buff_icons[name] = icon
 			self:UnitGainedBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 		end
 	end
@@ -687,7 +689,6 @@ function GridStatusAuras:ScanUnitAuras(event, unit)
 
 		if name then
 			player_buff_names_seen[name] = true
-			buff_icons[name] = icon
 			self:UnitGainedPlayerBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 		end
 	end
@@ -715,7 +716,7 @@ function GridStatusAuras:ScanUnitAuras(event, unit)
 	-- handle lost buffs
 	for name in pairs(buff_names) do
 		if not buff_names_seen[name] then
-			self:UnitLostBuff(guid, class, name, buff_icons[name])
+			self:UnitLostBuff(guid, class, name)
 		else
 			buff_names_seen[name] = nil
 		end
@@ -723,7 +724,7 @@ function GridStatusAuras:ScanUnitAuras(event, unit)
 
 	for name in pairs(player_buff_names) do
 		if not player_buff_names_seen[name] then
-			self:UnitLostPlayerBuff(guid, class, name, buff_icons[name])
+			self:UnitLostPlayerBuff(guid, class, name)
 		else
 			player_buff_names_seen[name] = nil
 		end
