@@ -102,7 +102,7 @@ function GridStatusHeals:UpdateUnit(event, unitid)
 		if settings.ignore_self then
 			incoming = incoming - (UnitGetIncomingHeals(unitid, "player") or 0)
 		end
-		if incoming > 0 and incoming > settings.minimumValue then
+		if incoming > 0 and incoming > (settings.minimumValue or 0) then
 			self:SendIncomingHealsStatus(guid, incoming, UnitHealth(unitid) + incoming, UnitHealthMax(unitid))
 		else
 			self.core:SendStatusLost(guid, "alert_heals")
