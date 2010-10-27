@@ -43,16 +43,11 @@ Grid.options = {
 	type = "group",
 	handler = Grid,
 	args = {
-		["DebugHeader"] = {
-			type = "header",
-			order = 104,
-			name = "",
-		},
 		["debug"] = {
 			type = "group",
 			name = L["Debugging"],
 			desc = L["Module debugging menu."],
-			order = 105,
+			order = -1,
 			args = {},
 		},
 	},
@@ -164,10 +159,11 @@ function Grid:OnInitialize()
 	self.db.RegisterCallback(self, "OnProfileReset", "OnProfileEnable")
 
 	self.options.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
+	self.options.args.profile.order = -2
 
-	local libDualSpec = LibStub("LibDualSpec-1.0")
-	libDualSpec:EnhanceDatabase(self.db, "Grid")
-	libDualSpec:EnhanceOptions(self.options.args.profile, self.db)
+	local LibDualSpec = LibStub("LibDualSpec-1.0")
+	LibDualSpec:EnhanceDatabase(self.db, "Grid")
+	LibDualSpec:EnhanceOptions(self.options.args.profile, self.db)
 
 	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("Grid", self.options)
 
