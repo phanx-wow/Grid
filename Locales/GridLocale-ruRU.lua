@@ -76,8 +76,8 @@ Grid.L = {
 	["None"] = "нету",
 	["Thin"] = "Тонкий",
 	["Thick"] = "Толстый",
---	["Font Shadow"] = "",
---	["Toggle the font drop shadow effect."] = "",
+	["Font Shadow"] = "Тень шрифта",
+	["Toggle the font drop shadow effect."] = "Переключение эффекта тени шрифта.",
 	["Orientation of Frame"] = "Ориентация фреймов",
 	["Set frame orientation."] = "Установить ориеетацию фреймов",
 	["Orientation of Text"] = "Ориентация текста",
@@ -220,7 +220,7 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatus
-	["Indicators"] = "Индикаторов",
+	["Indicators"] = "Индикаторы",
 	["Status"] = "Статус",
 	["Options for %s."] = "Опции для %s.",
 	["Reset class colors"] = "Сбросс окраски классов",
@@ -290,8 +290,8 @@ Grid.L = {
 	["Incoming heals"] = "Поступающее лечения",
 	["Ignore Self"] = "Игнорировать себя",
 	["Ignore heals cast by you."] = "Игнорировать свои лечебные заклинания",
---	["Minimum Value"] = "",
---	["Only show incoming heals greater than this amount."] = "",
+	["Minimum Value"] = "Мин. значение",
+	["Only show incoming heals greater than this amount."] = "Показывать только входящее исцеление которое больше установленного значения.",
 --}}}
 
 --{{{ GridStatusHealth
