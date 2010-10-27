@@ -15,7 +15,6 @@ Grid.L = {
 	["Configure"] =  "Настройка",
 	["Configure Grid"] = "Настройка Grid",
 	["Hide minimap icon"] = "Скрыть иконку на миникарте",
-	["Grid is disabled: use '/grid standby' to enable."] = "Grid отключен: для включения введите '/grid standby'",
 --}}}
 
 --{{{ GridFrame
@@ -77,6 +76,8 @@ Grid.L = {
 	["None"] = "нету",
 	["Thin"] = "Тонкий",
 	["Thick"] = "Толстый",
+--	["Font Shadow"] = "",
+--	["Toggle the font drop shadow effect."] = "",
 	["Orientation of Frame"] = "Ориентация фреймов",
 	["Set frame orientation."] = "Установить ориеетацию фреймов",
 	["Orientation of Text"] = "Ориентация текста",
@@ -117,7 +118,7 @@ Grid.L = {
 	["Arena Layout"] = "Расположение на арене",
 	["Select which layout to use when in an arena."] = "Выбрать какое расположение использовать на арене.",
 	["Horizontal groups"] = "Группы горизонтально",
-	["Switch between horzontal/vertical groups."] = "Переключить между группы вертикально/горизонтально.",
+	["Switch between horizontal/vertical groups."] = "Переключить между группы вертикально/горизонтально.",
 	["Clamped to screen"] = "В пределах экрана",
 	["Toggle whether to permit movement out of screen."] = "Не позволять перемещать окно за пределы экрана",
 	["Frame lock"] = "Закрепить фреймы",
@@ -191,6 +192,10 @@ Grid.L = {
 
 --{{{ GridLayoutLayouts
 	["None"] = "Нет",
+	["By Class 10"] = "По классам из 10 чел",
+	["By Class 10 w/Pets"] = "По классам из 10 чел. с питомцами",
+	["By Class 25"] = "По классам из 25 чел",
+	["By Class 25 w/Pets"] = "По классам из 25 чел. с питомцами",
 	["By Group 5"] = "Для Группы из 5 чел.",
 	["By Group 5 w/Pets"] = "Для Группы из 5 чел. с питомцами",
 	["By Group 10"] = "Для Группы из 10 чел.",
@@ -202,8 +207,6 @@ Grid.L = {
 	["By Group 25 w/Tanks"] = "Для Группы из 25 чел. с танками",
 	["By Group 40"] = "Для Группы из 40 чел.",
 	["By Group 40 w/Pets"] = "Для Группы из 40 чел. с питомцами",
-	["By Class 10 w/Pets"] = "По классам из 10 чел",
-	["By Class 25 w/Pets"] = "По классам из 25 чел",
 --}}}
 
 --{{{ GridLDB
@@ -217,8 +220,8 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatus
+	["Indicators"] = "Индикаторов",
 	["Status"] = "Статус",
-	["Options for GridStatus."] = "Опции GridStatus",
 	["Options for %s."] = "Опции для %s.",
 	["Reset class colors"] = "Сбросс окраски классов",
 	["Reset class colors to defaults."] = "Сбросить окраску классов на значение по умолчанию.",
@@ -287,6 +290,8 @@ Grid.L = {
 	["Incoming heals"] = "Поступающее лечения",
 	["Ignore Self"] = "Игнорировать себя",
 	["Ignore heals cast by you."] = "Игнорировать свои лечебные заклинания",
+--	["Minimum Value"] = "",
+--	["Only show incoming heals greater than this amount."] = "",
 --}}}
 
 --{{{ GridStatusHealth

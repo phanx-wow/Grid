@@ -15,7 +15,6 @@ Grid.L = {
 	["Configure"] = "",
 	["Configure Grid"] = "",
 	["Hide minimap icon"] = "",
-	["Grid is disabled: use '/grid standby' to enable."] = "",
 --}}}
 
 --{{{ GridFrame
@@ -77,6 +76,8 @@ Grid.L = {
 	["None"] = "",
 	["Thin"] = "",
 	["Thick"] = "",
+	["Font Shadow"] = "",
+	["Toggle the font drop shadow effect."] = "",
 	["Orientation of Frame"] = "",
 	["Set frame orientation."] = "",
 	["Orientation of Text"] = "",
@@ -117,7 +118,7 @@ Grid.L = {
 	["Arena Layout"] = "",
 	["Select which layout to use when in an arena."] = "",
 	["Horizontal groups"] = "",
-	["Switch between horzontal/vertical groups."] = "",
+	["Switch between horizontal/vertical groups."] = "",
 	["Clamped to screen"] = "",
 	["Toggle whether to permit movement out of screen."] = "",
 	["Frame lock"] = "",
@@ -191,6 +192,10 @@ Grid.L = {
 
 --{{{ GridLayoutLayouts
 	["None"] = "",
+	["By Class 10"] = "",
+	["By Class 10 w/Pets"] = "",
+	["By Class 25"] = "",
+	["By Class 25 w/Pets"] = "",
 	["By Group 5"] = "",
 	["By Group 5 w/Pets"] = "",
 	["By Group 10"] = "",
@@ -202,10 +207,6 @@ Grid.L = {
 	["By Group 25 w/Tanks"] = "",
 	["By Group 40"] = "",
 	["By Group 40 w/Pets"] = "",
-	["By Class 10"] = "",
-	["By Class 10 w/Pets"] = "",
-	["By Class 25"] = "",
-	["By Class 25 w/Pets"] = "",
 --}}}
 
 --{{{ GridLDB
@@ -219,8 +220,8 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatus
+	["Indicators"] = "",
 	["Status"] = "",
-	["Options for GridStatus."] = "",
 	["Options for %s."] = "",
 	["Reset class colors"] = "",
 	["Reset class colors to defaults."] = "",
@@ -289,6 +290,8 @@ Grid.L = {
 	["Incoming heals"] = "",
 	["Ignore Self"] = "",
 	["Ignore heals cast by you."] = "",
+	["Minimum Value"] = "",
+	["Only show incoming heals greater than this amount."] = "",
 --}}}
 
 --{{{ GridStatusHealth

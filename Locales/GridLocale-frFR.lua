@@ -15,7 +15,6 @@ Grid.L = {
 	["Configure"] = "Configurer",
 	["Configure Grid"] = "Configure Grid.",
 	["Hide minimap icon"] = "Cacher icône minicarte",
-	["Grid is disabled: use '/grid standby' to enable."] = "Grid est désactivé : utilisez '/grid standby' pour l'activer.",
 --}}}
 
 --{{{ GridFrame
@@ -77,6 +76,8 @@ Grid.L = {
 	["None"] = "Aucun",
 	["Thin"] = "Mince",
 	["Thick"] = "Épais",
+--	["Font Shadow"] = "",
+--	["Toggle the font drop shadow effect."] = "",
 	["Orientation of Frame"] = "Orientation de la grille",
 	["Set frame orientation."] = "Détermine l'orientation de la grille.",
 	["Orientation of Text"] = "Orientation du texte",
@@ -117,7 +118,7 @@ Grid.L = {
 	["Arena Layout"] = "Disposition en arène",
 	["Select which layout to use when in an arena."] = "Sélectionnez la disposition à utiliser quand vous êtes dans dans une arène.",
 	["Horizontal groups"] = "Disposition horizontale",
-	["Switch between horzontal/vertical groups."] = "Dispose les groupes horizontalement si coché.",
+	["Switch between horizontal/vertical groups."] = "Dispose les groupes horizontalement si coché.",
 	["Clamped to screen"] = "Garder à l'écran",
 	["Toggle whether to permit movement out of screen."] = "Permet ou non de déplacer la grille hors de l'écran.",
 	["Frame lock"] = "Verrouiller",
@@ -191,6 +192,10 @@ Grid.L = {
 
 --{{{ GridLayoutLayouts
 	["None"] = "Aucun",
+	["By Class 10"] = "Groupe de 10 par classe",
+	["By Class 10 w/Pets"] = "Groupe de 10 par classe avec familiers",
+	["By Class 25"] = "Groupe de 25 par classe",
+	["By Class 25 w/Pets"] = "Groupe de 25 par classe avec familiers",
 	["By Group 5"] = "Groupe de 5",
 	["By Group 5 w/Pets"] = "Groupe de 5 avec familiers",
 	["By Group 10"] = "Raid de 10",
@@ -202,10 +207,6 @@ Grid.L = {
 	["By Group 25 w/Tanks"] = "Raid de 25 avec tanks",
 	["By Group 40"] = "Raid de 40",
 	["By Group 40 w/Pets"] = "Raid de 40 avec familiers",
-	["By Class 10"] = "Groupe de 10 par classe",
-	["By Class 10 w/Pets"] = "Groupe de 10 par classe avec familiers",
-	["By Class 25"] = "Groupe de 25 par classe",
-	["By Class 25 w/Pets"] = "Groupe de 25 par classe avec familiers",
 --}}}
 
 --{{{ GridLDB
@@ -219,6 +220,7 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatus
+	["Indicators"] = "Indicateurs",
 	["Status"] = "Statut",
 	["Options for %s."] = "Options concernant %s.",
 	["Reset class colors"] = "Réinitialisez la couleur des classes",
@@ -288,6 +290,8 @@ Grid.L = {
 	["Incoming heals"] = "Soins entrants",
 	["Ignore Self"] = "Vous ignorer",
 	["Ignore heals cast by you."] = "Ignore les soins que vous incantez.",
+--	["Minimum Value"] = "",
+--	["Only show incoming heals greater than this amount."] = "",
 --}}}
 
 --{{{ GridStatusHealth

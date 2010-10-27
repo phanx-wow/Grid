@@ -15,7 +15,6 @@ Grid.L = {
 	["Configure"] = "配置",
 	["Configure Grid"] = "配置 Grid",
 	["Hide minimap icon"] = "隐藏迷你地图按钮",
-	["Grid is disabled: use '/grid standby' to enable."] = "Gird 已被禁用：使用“/grid standby”命令启用。",
 --}}}
 
 --{{{ GridFrame
@@ -77,6 +76,8 @@ Grid.L = {
 	["None"] = "无",
 	["Thin"] = "细",
 	["Thick"] = "粗",
+--	["Font Shadow"] = "",
+--	["Toggle the font drop shadow effect."] = "",
 	["Orientation of Frame"] = "框架方向",
 	["Set frame orientation."] = "设置框架方向。",
 	["Orientation of Text"] = "文字方向",
@@ -117,7 +118,7 @@ Grid.L = {
 	["Arena Layout"] = "竞技场布局",
 	["Select which layout to use when in an arena."] = "在竞技场时所选择使用的布局。",
 	["Horizontal groups"] = "横向排列队伍",
-	["Switch between horzontal/vertical groups."] = "选择横向/竖向显示队伍。",
+	["Switch between horizontal/vertical groups."] = "选择横向/竖向显示队伍。",
 	["Clamped to screen"] = "保持在屏幕上",
 	["Toggle whether to permit movement out of screen."] = "打开/关闭是否允许把窗口移到超出屏幕的位置。",
 	["Frame lock"] = "锁定框架",
@@ -191,6 +192,10 @@ Grid.L = {
 
 --{{{ GridLayoutLayouts
 	["None"] = "无",
+	["By Class 10 w/Pets"] = "10人职业",
+	["By Class 10"] = "10人职业以及宠物",
+	["By Class 25 w/Pets"] = "25人职业",
+	["By Class 25"] = "25人职业以及宠物",
 	["By Group 5"] = "5人小队",
 	["By Group 5 w/Pets"] = "5人小队以及宠物",
 	["By Group 10"] = "10人团队",
@@ -202,8 +207,6 @@ Grid.L = {
 	["By Group 25 w/Tanks"] = "25人团队及坦克",
 	["By Group 40"] = "40人团队",
 	["By Group 40 w/Pets"] = "40人团队以及宠物",
-	["By Class 10 w/Pets"] = "10人职业",
-	["By Class 25 w/Pets"] = "25人职业",
 --}}}
 
 --{{{ GridLDB
@@ -217,6 +220,7 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatus
+--	["Indicators"] = "",
 	["Status"] = "状态",
 	["Options for %s."] = "%s状态的选项。",
 	["Reset class colors"] = "重置职业颜色",
@@ -286,6 +290,8 @@ Grid.L = {
 	["Incoming heals"] = "正被治疗",
 	["Ignore Self"] = "忽略自己",
 	["Ignore heals cast by you."] = "忽略对自己施放的治疗。",
+--	["Minimum Value"] = "",
+--	["Only show incoming heals greater than this amount."] = "",
 --}}}
 
 --{{{ GridStatusHealth

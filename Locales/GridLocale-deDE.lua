@@ -15,7 +15,6 @@ Grid.L = {
 	["Configure"] = "Konfigurieren",
 	["Configure Grid"] = "Grid konfigurieren",
 	["Hide minimap icon"] = "Minikarten Button verstecken",
-	["Grid is disabled: use '/grid standby' to enable."] = "Grid ist ausgeschaltet: Tippe '/grid standby' zum einschalten.",
 --}}}
 
 --{{{ GridFrame
@@ -74,17 +73,17 @@ Grid.L = {
 	["Adjust the font size."] = "Die Schriftgröße anpassen.",
 	["Font Outline"] = "Schriftumriss",
 	["Adjust the font outline."] = "Den Schriftumriss anpassen.",
-	["Font Shadow"] = "Schriftschatten",
-	["Toggle the font drop shadow effect."] = "Schriftschatten ein-/ausschalten.",
 	["None"] = "Kein Umriss",
 	["Thin"] = "Dünn",
 	["Thick"] = "Dick",
+	["Font Shadow"] = "Schriftschatten",
+	["Toggle the font drop shadow effect."] = "Schriftschatten ein-/ausschalten.",
 	["Orientation of Frame"] = "Ausrichtung der Statusleiste",
 	["Set frame orientation."] = "Ausrichtung der Statusleiste festlegen.",
 	["Orientation of Text"] = "Ausrichtung des Texts",
 	["Set frame text orientation."] = "Text Ausrichtung festlegen.",
 	["Vertical"] = "Vertikal",
-	["Horziontal"] = "Horizontal",
+	["Horizontal"] = "Horizontal",
 	["Icon Size"] = "Symbolgröße",
 	["Adjust the size of the center icon."] = "Die Größe des Symbols im Zentrum anpassen.",
 	["Icon Border Size"] = "Symbolrandbreite",
@@ -119,7 +118,7 @@ Grid.L = {
 	["Arena Layout"] = "Arena Layout",
 	["Select which layout to use when in an arena."] = "Wähle welches Arena Layout benutzt werden soll.",
 	["Horizontal groups"] = "Horizontal gruppieren",
-	["Switch between horzontal/vertical groups."] = "Wechselt zwischen horizontaler/vertikaler Gruppierung.",
+	["Switch between horizontal/vertical groups."] = "Wechselt zwischen horizontaler/vertikaler Gruppierung.",
 	["Clamped to screen"] = "Im Bildschirm lassen",
 	["Toggle whether to permit movement out of screen."] = "Legt fest ob der Grid-Rahmen im Bildschirm bleiben soll.",
 	["Frame lock"] = "Grid sperren",
@@ -193,6 +192,10 @@ Grid.L = {
 
 --{{{ GridLayoutLayouts
 	["None"] = "Ausblenden",
+	["By Class 10"] = "10er nach Klasse",
+	["By Class 10 w/Pets"] = "10er nach Klasse mit Begleitern",
+	["By Class 25"] = "25er nach Klasse",
+	["By Class 25 w/Pets"] = "25er nach Klasse mit Begleitern",
 	["By Group 5"] = " 5er",
 	["By Group 5 w/Pets"] = " 5er mit Begleitern",
 	["By Group 10"] = "10er",
@@ -204,10 +207,6 @@ Grid.L = {
 	["By Group 25 w/Tanks"] = "25er mit Tanks",
 	["By Group 40"] = "40er",
 	["By Group 40 w/Pets"] = "40er mit Begleitern",
-	["By Class 10"] = "10er nach Klasse",
-	["By Class 10 w/Pets"] = "10er nach Klasse mit Begleitern",
-	["By Class 25"] = "25er nach Klasse",
-	["By Class 25 w/Pets"] = "25er nach Klasse mit Begleitern",
 --}}}
 
 --{{{ GridLDB
@@ -291,6 +290,8 @@ Grid.L = {
 	["Incoming heals"] = "Eingehende Heilungen",
 	["Ignore Self"] = "Sich selbst ignorieren",
 	["Ignore heals cast by you."] = "Ignoriert Heilungen die von Dir gezaubert werden.",
+--	["Minimum Value"] = "",
+--	["Only show incoming heals greater than this amount."] = "",
 --}}}
 
 --{{{ GridStatusHealth

@@ -15,7 +15,6 @@ Grid.L = {
 	["Configure"] = "Configurar",
 	["Configure Grid"] = "Configurar Grid",
 	["Hide minimap icon"] = "Ocultar icono del minimapa",
-	["Grid is disabled: use '/grid standby' to enable."] = "Grid está desactivado: usa '/grid standby' para activarlo.",
 --}}}
 
 --{{{ GridFrame
@@ -77,6 +76,8 @@ Grid.L = {
 	["None"] = "Ninguno",
 	["Thin"] = "Fino",
 	["Thick"] = "Grueso",
+--	["Font Shadow"] = "",
+--	["Toggle the font drop shadow effect."] = "",
 	["Orientation of Frame"] = "Orientación de la fuente",
 	["Set frame orientation."] = "Establece la orientación de la fuente.",
 	["Orientation of Text"] = "Orientación del texto",
@@ -117,7 +118,7 @@ Grid.L = {
 	["Arena Layout"] = "Diseño - Arena",
 	["Select which layout to use when in an arena."] = "Selecciona qué diseño quieres usar cuando estás en arena.",
 	["Horizontal groups"] = "Grupos horizontales",
-	["Switch between horzontal/vertical groups."] = "Cambia entre grupos horizontales/verticales",
+	["Switch between horizontal/vertical groups."] = "Cambia entre grupos horizontales/verticales",
 	["Clamped to screen"] = "Bloqueado a la pantalla",
 	["Toggle whether to permit movement out of screen."] = "Permite o no, moverlo fuera de la pantalla.",
 	["Frame lock"] = "Bloquear celdas",
@@ -191,7 +192,10 @@ Grid.L = {
 
 --{{{ GridLayoutLayouts
 	["None"] = "Ninguno",
-
+	["By Class 10"] = "Grupo de 10 por clases",
+	["By Class 10 w/Pets"] = "Grupo de 10 por clases con mascotas",
+	["By Class 25"] = "Grupo de 25 por clases",
+	["By Class 25 w/Pets"] = "Grupo de 25 por clases con mascotas",
 	["By Group 5"] = "Grupo de 5",
 	["By Group 5 w/Pets"] = "Grupo de 5 con mascotas",
 	["By Group 10"] = "Grupo de 10",
@@ -203,8 +207,6 @@ Grid.L = {
 	["By Group 25 w/tanks"] = "Grupo de 25 con tanques",
 	["By Group 40"] = "Grupo de 40",
 	["By Group 40 w/Pets"] = "Grupo de 40 con mascotas",
-	["By Class 10 w/Pets"] = "Grupo de 10 por clases",
-	["By Class 25 w/Pets"] = "Grupo de 25 por clases",
 --}}}
 
 --{{{ GridLDB
@@ -218,6 +220,7 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatus
+	["Indicators"] = "Indicadores",
 	["Status"] = "Estado",
 	["Options for %s."] = "Opciones para %s",
 	["Reset class colors"] = "Restaurar colores de clase",
@@ -287,6 +290,8 @@ Grid.L = {
 	["Incoming heals"] = "Sanaciones entrantes",
 	["Ignore Self"] = "Ignorar las propias",
 	["Ignore heals cast by you."] = "Ignora las sanaciones lanzadas por ti.",
+--	["Minimum Value"] = "",
+--	["Only show incoming heals greater than this amount."] = "",
 --}}}
 
 --{{{ GridStatusHealth

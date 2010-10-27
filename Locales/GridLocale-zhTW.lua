@@ -15,7 +15,6 @@ Grid.L = {
 	["Configure"] = "設定",
 	["Configure Grid"] = "設定 Grid",
 	["Hide minimap icon"] = "隱藏小地圖按鈕",
-	["Grid is disabled: use '/grid standby' to enable."] = "Grid 已被禁用：輸入'/grid standby'的指令啟用。",
 --}}}
 
 --{{{ GridFrame
@@ -77,6 +76,8 @@ Grid.L = {
 --	["None"] = "",
 --	["Thin"] = "",
 --	["Thick"] = "",
+--	["Font Shadow"] = "",
+--	["Toggle the font drop shadow effect."] = "",
 	["Orientation of Frame"] = "框架排列方式",
 	["Set frame orientation."] = "設定框架排列方式。",
 	["Orientation of Text"] = "文字排列方式",
@@ -117,7 +118,7 @@ Grid.L = {
 	["Arena Layout"] = "競技場版面編排",
 	["Select which layout to use when in an arena."] = "選擇競技場版面編排方式。",
 	["Horizontal groups"] = "橫向顯示小組",
-	["Switch between horzontal/vertical groups."] = "轉換橫向/垂直顯示小組。",
+	["Switch between horizontal/vertical groups."] = "轉換橫向/垂直顯示小組。",
 	["Clamped to screen"] = "限制框架於視窗內",
 	["Toggle whether to permit movement out of screen."] = "啟用/禁用框架於視窗內限制，避免拖曳出視窗外。",
 	["Frame lock"] = "鎖定框架",
@@ -191,6 +192,10 @@ Grid.L = {
 
 --{{{ GridLayoutLayouts
 	["None"] = "無",
+--	["By Class 10"] = "",
+	["By Class 10 w/Pets"] = "10人以職業排列",
+--	["By Class 25"] = "",
+	["By Class 25 w/Pets"] = "25人以職業排列",
 	["By Group 5"] = "5人團隊",
 	["By Group 5 w/Pets"] = "5人團隊及寵物",
 	["By Group 10"] = "10人團隊",
@@ -202,8 +207,6 @@ Grid.L = {
 	["By Group 25 w/Tanks"] = "25人團隊及坦克",
 	["By Group 40"] = "40人團隊",
 	["By Group 40 w/Pets"] = "40人團隊及寵物",
-	["By Class 10 w/Pets"] = "10人以職業排列",
-	["By Class 25 w/Pets"] = "25人以職業排列",
 --}}}
 
 --{{{ GridLDB
@@ -217,6 +220,7 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatus
+--	["Indicators"] = "",
 	["Status"] = "狀態",
 	["Options for %s."] = "%s 設定選項。",
 	["Reset class colors"] = "重置職業顔色",
@@ -286,6 +290,8 @@ Grid.L = {
 	["Incoming heals"] = "治療中",
 	["Ignore Self"] = "忽略自己",
 	["Ignore heals cast by you."] = "忽略自己施放的治療法術。",
+--	["Minimum Value"] = "",
+--	["Only show incoming heals greater than this amount."] = "",
 --}}}
 
 --{{{ GridStatusHealth

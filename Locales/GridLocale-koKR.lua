@@ -15,7 +15,6 @@ Grid.L = {
 	["Configure"] = "설정",
 	["Configure Grid"] = "Grid 옵션을 설정합니다.",
 	["Hide minimap icon"] = "미니맵 아이콘 숨김",
-	["Grid is disabled: use '/grid standby' to enable."] = "Grid가 비활성화 되었을시: '/grid standby'를 입력하면 활성화 됩니다.",
 --}}}
 
 --{{{ GridFrame
@@ -74,11 +73,11 @@ Grid.L = {
 	["Adjust the font size."] = "글꼴 크기를 조정합니다.",
 	["Font Outline"] = "글꼴 외각선",
 	["Adjust the font outline."] = "글꼴 외각선을 조정합니다.",
-	["Font Shadow"] = "글꼴 그림자",
-	["Toggle the font drop shadow effect."] ="글꼴에 그림자 효과를 사용합니다.",
 	["None"] = "없음",
 	["Thin"] = "얇게",
 	["Thick"] = "두껍게",
+	["Font Shadow"] = "글꼴 그림자",
+	["Toggle the font drop shadow effect."] ="글꼴에 그림자 효과를 사용합니다.",
 	["Orientation of Frame"] = "프레임의 방향",
 	["Set frame orientation."] = "프레임의 방향을 설정합니다.",
 	["Orientation of Text"] = "문자의 방향",
@@ -119,7 +118,7 @@ Grid.L = {
 	["Arena Layout"] = "투기장 배치",
 	["Select which layout to use when in an arena."] = "투기장에서 사용할 배치를 선택합니다.",
 	["Horizontal groups"] = "그룹 정렬",
-	["Switch between horzontal/vertical groups."] = "그룹 표시 방법을 가로/세로로 변경합니다.",
+	["Switch between horizontal/vertical groups."] = "그룹 표시 방법을 가로/세로로 변경합니다.",
 	["Clamped to screen"] = "화면에 고정",
 	["Toggle whether to permit movement out of screen."] = "화면 밖으로 창이 나가지 않도록 사용합니다.",
 	["Frame lock"] = "창 잠금",
@@ -193,6 +192,10 @@ Grid.L = {
 
 --{{{ GridLayoutLayouts
 	["None"] = "없음",
+	["By Class 10"] = "10인 공격대",
+	["By Class 10 w/Pets"] = "10인 공격대, 직업별",
+	["By Class 25"] = "25인 공격대",
+	["By Class 25 w/Pets"] = "25인 공격대, 직업별",
 	["By Group 5"] = "5인 공격대",
 	["By Group 5 w/Pets"] = "5인 공격대, 소환수",
 	["By Group 10"] = "10인 공격대",
@@ -204,8 +207,6 @@ Grid.L = {
 	["By Group 25 w/Tanks"] = "25인 공격대, 방어전담",
 	["By Group 40"] = "40인 공격대",
 	["By Group 40 w/Pets"] = "40인 공격대, 소환수",
-	["By Class 10 w/Pets"] = "10인 공격대, 직업별",
-	["By Class 25 w/Pets"] = "25인 공격대, 직업별",
 --}}}
 
 --{{{ GridLDB
@@ -289,6 +290,8 @@ Grid.L = {
 	["Incoming heals"] = "치유 받음",
 	["Ignore Self"] = "자신 무시",
 	["Ignore heals cast by you."] = "자신의 치유 시전은 무시합니다.",
+--	["Minimum Value"] = "",
+--	["Only show incoming heals greater than this amount."] = "",
 --}}}
 
 --{{{ GridStatusHealth
