@@ -202,13 +202,15 @@ Grid.L = {
 	["By Group 25 w/Tanks"] = "Raid de 25 avec tanks",
 	["By Group 40"] = "Raid de 40",
 	["By Group 40 w/Pets"] = "Raid de 40 avec familiers",
-	["By Class 10 w/Pets"] = "Groupe de 10 par classe",
-	["By Class 25 w/Pets"] = "Groupe de 25 par classe",
+	["By Class 10"] = "Groupe de 10 par classe",
+	["By Class 10 w/Pets"] = "Groupe de 10 par classe avec familiers",
+	["By Class 25"] = "Groupe de 25 par classe",
+	["By Class 25 w/Pets"] = "Groupe de 25 par classe avec familiers",
 --}}}
 
 --{{{ GridLDB
---	["Click to toggle the frame lock."] = "",
---	["Right-Click to open the options menu."] = "",
+	["Click to toggle the frame lock."] = "Clic gauche pour vérouiller/dévérouiller la grille.",
+	["Right-Click to open the options menu."] = "Clic droit pour afficher la fenêtre d'options.",
 --}}}
 
 --{{{ GridRange

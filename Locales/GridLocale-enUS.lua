@@ -202,7 +202,9 @@ Grid.L = {
 	["By Group 25 w/Tanks"] = "",
 	["By Group 40"] = "",
 	["By Group 40 w/Pets"] = "",
+	["By Class 10"] = "",
 	["By Class 10 w/Pets"] = "",
+	["By Class 25"] = "",
 	["By Class 25 w/Pets"] = "",
 --}}}
 
