@@ -1,5 +1,5 @@
 ## Interface: 40000
-## Version: 1.40000.@project-version@
+## Version: @project-version@
 ## X-ReleaseDate: "$Date$"
 
 ## Title: Grid
