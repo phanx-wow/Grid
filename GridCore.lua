@@ -62,8 +62,9 @@ Grid.defaults = {
 ------------------------------------------------------------------------
 
 Grid.modulePrototype = {
-	core  = Grid,
+	core = Grid,
 	Debug = Grid.Debug,
+	registeredModules = { },
 }
 
 function Grid.modulePrototype:OnInitialize()
@@ -83,6 +84,10 @@ function Grid.modulePrototype:OnInitialize()
 end
 
 function Grid.modulePrototype:OnEnable()
+	for name, module in self:IterateModules() do
+		self:RegisterModule(name, module)
+	end
+
 	self:EnableModules()
 end
 
@@ -101,6 +106,8 @@ function Grid.modulePrototype:OnModuleCreated(module)
 end
 
 function Grid.modulePrototype:RegisterModule(name, module)
+	if self.registeredModules[module] then return end
+
 	self:Debug("Registering", name)
 
 	if not module.db then
@@ -124,6 +131,8 @@ function Grid.modulePrototype:RegisterModule(name, module)
 	end
 
 	self.core:AddModuleDebugMenu(module)
+
+	self.registeredModules[module] = true
 end
 
 function Grid.modulePrototype:EnableModules()
@@ -190,6 +199,10 @@ end
 
 function Grid:OnEnable()
 	self:Debug("OnEnable")
+
+	for name, module in self:IterateModules() do
+		self:RegisterModule(name, module)
+	end
 
 	self:EnableModules()
 
