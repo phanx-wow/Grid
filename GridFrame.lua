@@ -1189,6 +1189,7 @@ end
 
 Grid.options.args["Indicators"] = {
 	name = L["Indicators"],
+	desc = L["Options for assigning statuses to indicators."],
 	type = "group", -- childGroups = "select",
 	args = {
 	}
@@ -1196,8 +1197,7 @@ Grid.options.args["Indicators"] = {
 
 ------------------------------------------------------------------------
 
-function GridFrame:OnInitialize()
-	self.super.OnInitialize(self)
+function GridFrame:PostInitialize()
 	self.debugging = self.db.profile.debug
 
 	self.frames = {}
@@ -1254,8 +1254,7 @@ function GridFrame:OnDisable()
 	-- should probably disable and hide all of our frames here
 end
 
-function GridFrame:Reset()
-	self.super.Reset(self)
+function GridFrame:PostReset()
 	self:UpdateOptionsMenu()
 
 	-- Fix for font size not updating on profile change

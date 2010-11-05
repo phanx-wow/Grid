@@ -8,7 +8,7 @@ local L = Grid.L
 local GridRoster = Grid:GetModule("GridRoster")
 local GridRoster = Grid:GetModule("GridRoster")
 
-local GridStatusVehicle = Grid:GetModule("GridStatus"):NewModule("GridStatusVehicle")
+local GridStatusVehicle = Grid:NewStatusModule("GridStatusVehicle")
 
 GridStatusVehicle.menuName = L["In Vehicle"]
 
@@ -25,29 +25,28 @@ GridStatusVehicle.defaultDB = {
 
 GridStatusVehicle.options = false
 
-function GridStatusVehicle:OnInitialize()
-	self.super.OnInitialize(self)
+function GridStatusVehicle:PostInitialize()
 	self:RegisterStatus("alert_vehicleui", L["In Vehicle"], nil, true)
 end
 
 function GridStatusVehicle:OnStatusEnable(status)
-	if status == "alert_vehicleui" then
-		self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
-		self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateUnit")
-		self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateUnit")
+	if status == "alert_vehicleui" then return end
 
-		self:UpdateAllUnits()
-	end
+	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
+	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateUnit")
+	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateUnit")
+
+	self:UpdateAllUnits()
 end
 
 function GridStatusVehicle:OnStatusDisable(status)
-	if status == "alert_vehicleui" then
-		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-		self:UnregisterEvent("UNIT_ENTERED_VEHICLE")
-		self:UnregisterEvent("UNIT_EXITED_VEHICLE")
+	if status ~= "alert_vehicleui" then return end
 
-		self.core:SendStatusLostAllUnits("alert_vehicleui")
-	end
+	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	self:UnregisterEvent("UNIT_ENTERED_VEHICLE")
+	self:UnregisterEvent("UNIT_EXITED_VEHICLE")
+
+	self.core:SendStatusLostAllUnits("alert_vehicleui")
 end
 
 function GridStatusVehicle:UpdateAllUnits()

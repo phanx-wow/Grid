@@ -22,6 +22,10 @@ function GridStatus.modulePrototype:OnInitialize()
 
 	self.debugFrame = GridStatus.debugFrame
 	self.debugging = self.db.profile.debug
+
+	if type(self.PostInitialize) == "function" then
+		self:PostInitialize()
+	end
 end
 
 function GridStatus.modulePrototype:OnEnable()
@@ -31,6 +35,10 @@ function GridStatus.modulePrototype:OnEnable()
 				self:OnStatusEnable(status)
 			end
 		end
+	end
+
+	if type(self.PostEnable) == "function" then
+		self:PostEnable()
 	end
 end
 
@@ -42,11 +50,19 @@ function GridStatus.modulePrototype:OnDisable()
 			end
 		end
 	end
+
+	if type(self.PostDisable) == "function" then
+		self:PostDisable()
+	end
 end
 
 function GridStatus.modulePrototype:Reset()
 	self.debugging = self.db.profile.debug
 	self:Debug("Reset")
+
+	if type(self.PostReset) == "function" then
+		self:PostReset()
+	end
 end
 
 function GridStatus.modulePrototype:InitializeOptions()
@@ -172,8 +188,24 @@ function GridStatus.modulePrototype:UnregisterStatus(status)
 	GridStatus:UnregisterStatus(status, (self.moduleName or true))
 end
 
+function GridStatus.modulePrototype:SendStatusGained(...)
+	return GridStatus:SendStatusGained(...)
+end
+
+function GridStatus.modulePrototype:SendStatusLost(...)
+	return GridStatus:SendStatusLost(...)
+end
+
+function GridStatus.modulePrototype:SendStatusLostAllUnits(...)
+	return GridStatus:SendStatusLostAllUnits(...)
+end
+
 GridStatus:SetDefaultModulePrototype(GridStatus.modulePrototype)
 GridStatus:SetDefaultModuleLibraries("AceEvent-3.0")
+
+function Grid:NewStatusModule(name, ...)
+	return GridStatus:NewModule(name, ...)
+end
 
 ------------------------------------------------------------------------
 

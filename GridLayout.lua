@@ -479,18 +479,17 @@ end
 
 GridLayout.layoutSettings = {}
 
-function GridLayout:OnInitialize()
-	self.super.OnInitialize(self)
-
+function GridLayout:PostInitialize()
 	self.layoutGroups = {}
 	self.layoutPetGroups = {}
-end
 
-function GridLayout:OnEnable()
-	self:Debug("OnEnable")
 	if not self.frame then
 		self:CreateFrames()
 	end
+end
+
+function GridLayout:PostEnable()
+	self:Debug("OnEnable")
 
 	self:UpdateTabVisibility()
 
@@ -510,18 +509,13 @@ function GridLayout:OnEnable()
 
 	self:RegisterMessage("Grid_EnteringCombat", "EnteringOrLeavingCombat")
 	self:RegisterMessage("Grid_LeavingCombat", "EnteringOrLeavingCombat")
-
-	self.super.OnEnable(self)
 end
 
-function GridLayout:OnDisable()
+function GridLayout:PostDisable()
 	self.frame:Hide()
-	self.super.OnDisable(self)
 end
 
-function GridLayout:Reset()
-	self.super.Reset(self)
-
+function GridLayout:PostReset()
 	self:ReloadLayout()
 	-- position and scale frame
 	self:RestorePosition()

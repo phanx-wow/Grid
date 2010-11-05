@@ -9,7 +9,7 @@ local L = Grid.L
 local GridRange = Grid:GetModule("GridRange")
 local GridRoster = Grid:GetModule("GridRoster")
 
-local GridStatusRange = Grid:GetModule("GridStatus"):NewModule("GridStatusRange", "AceTimer-3.0")
+local GridStatusRange = Grid:NewStatusModule("GridStatusRange", "AceTimer-3.0")
 GridStatusRange.menuName = L["Range"]
 
 
@@ -44,10 +44,6 @@ GridStatusRange.extraOptions = {
 		order = -1,
     },
 }
-
-function GridStatusRange:OnInitialize()
-    self.super.OnInitialize(self)
-end
 
 function GridStatusRange:EnabledStatusCount()
 	local enable_count = 0

@@ -7,7 +7,7 @@ local _, Grid = ...
 local L = Grid.L
 local GridRoster = Grid:GetModule("GridRoster")
 
-local GridStatusAuras = Grid:GetModule("GridStatus"):NewModule("GridStatusAuras")
+local GridStatusAuras = Grid:NewStatusModule("GridStatusAuras")
 GridStatusAuras.menuName = L["Auras"]
 
 local BS = {
@@ -175,21 +175,15 @@ GridStatusAuras.defaultDB = {
 GridStatusAuras.extraOptions = {
 }
 
-function GridStatusAuras:OnInitialize()
-	self.super.OnInitialize(self)
-
+function GridStatusAuras:PostInitialize()
 	self:RegisterStatuses()
 end
 
-function GridStatusAuras:OnEnable()
+function GridStatusAuras:PostEnable()
 	self:CreateAddRemoveOptions()
-
-	self.super.OnEnable(self)
 end
 
-function GridStatusAuras:Reset()
-	self.super.Reset(self)
-
+function GridStatusAuras:PostReset()
 	self:UnregisterStatuses()
 	self:RegisterStatuses()
 	self:CreateAddRemoveOptions()

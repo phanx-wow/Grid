@@ -7,7 +7,7 @@ local _, Grid = ...
 local L = Grid.L
 local GridRoster = Grid:GetModule("GridRoster")
 
-local GridStatusHealth = Grid:GetModule("GridStatus"):NewModule("GridStatusHealth")
+local GridStatusHealth = Grid:NewStatusModule("GridStatusHealth")
 
 GridStatusHealth.menuName = L["Health"]
 
@@ -136,9 +136,7 @@ local low_healthOptions = {
 	},
 }
 
-function GridStatusHealth:OnInitialize()
-	self.super.OnInitialize(self)
-
+function GridStatusHealth:PostInitialize()
 	self:RegisterStatus("unit_health", L["Unit health"], healthOptions)
 	self:RegisterStatus("unit_healthDeficit", L["Health deficit"], healthDeficitOptions)
 	self:RegisterStatus("alert_lowHealth", L["Low HP warning"], low_healthOptions)
@@ -148,7 +146,7 @@ function GridStatusHealth:OnInitialize()
 end
 
 -- you can't disable the unit_health status, so no need to ever unregister
-function GridStatusHealth:OnEnable()
+function GridStatusHealth:PostEnable()
 	self:RegisterMessage("Grid_UnitJoined")
 
 	self:RegisterEvent("UNIT_AURA", "UpdateUnit")
@@ -172,8 +170,7 @@ function GridStatusHealth:OnStatusDisable(status)
 	self.core:SendStatusLostAllUnits(status)
 end
 
-function GridStatusHealth:Reset()
-	self.super.Reset(self)
+function GridStatusHealth:PostReset()
 	self:UpdateAllUnits()
 end
 

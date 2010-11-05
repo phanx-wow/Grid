@@ -60,9 +60,7 @@ end
 
 ------------------------------------------------------------------------
 
-function GridRoster:OnInitialize()
-	self.super.OnInitialize(self)
-	-- empty roster
+function GridRoster:PostInitialize()
 	for attr, attr_tbl in pairs(roster) do
 		for k in pairs(attr_tbl) do
 			attr_tbl[k] = nil

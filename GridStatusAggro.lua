@@ -8,7 +8,7 @@ local L = Grid.L
 local GridStatus = Grid:GetModule("GridStatus")
 local GridRoster = Grid:GetModule("GridRoster")
 
-local GridStatusAggro = GridStatus:NewModule("GridStatusAggro")
+local GridStatusAggro = Grid:NewStatusModule("GridStatusAggro")
 GridStatusAggro.menuName = L["Aggro"]
 
 local function getthreatcolor(status)
@@ -124,8 +124,7 @@ local aggroOptions = {
 }
 --}}}
 
-function GridStatusAggro:OnInitialize()
-	self.super.OnInitialize(self)
+function GridStatusAggro:PostInitialize()
 	self:RegisterStatus("alert_aggro", L["Aggro alert"], aggroOptions, true)
 	setupmenu()
 end
@@ -146,8 +145,7 @@ function GridStatusAggro:OnStatusDisable(status)
 	end
 end
 
-function GridStatusAggro:Reset()
-	self.super.Reset(self)
+function GridStatusAggro:PostReset()
 	self:UpdateAllUnits()
 	setupmenu()
 end

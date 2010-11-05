@@ -9,7 +9,7 @@ local GridRoster = Grid:GetModule("GridRoster")
 
 local settings
 
-local GridStatusHeals = Grid:GetModule("GridStatus"):NewModule("GridStatusHeals")
+local GridStatusHeals = Grid:NewStatusModule("GridStatusHeals")
 
 GridStatusHeals.menuName = L["Heals"]
 GridStatusHeals.options = false
@@ -55,8 +55,7 @@ local healsOptions = {
 	},
 }
 
-function GridStatusHeals:OnInitialize()
-	self.super.OnInitialize(self)
+function GridStatusHeals:PostInitialize()
 	settings = GridStatusHeals.db.profile.alert_heals
 	self:RegisterStatus("alert_heals", L["Incoming heals"], healsOptions, true)
 end
@@ -79,9 +78,8 @@ function GridStatusHeals:OnStatusDisable(status)
 	end
 end
 
-function GridStatusHeals:Reset()
+function GridStatusHeals:PostReset()
 	settings = GridStatusHeals.db.profile.alert_heals
-	self.super.Reset(self)
 	self:UpdateAllUnits()
 end
 

@@ -7,7 +7,7 @@ local _, Grid = ...
 local L = Grid.L
 local GridRoster = Grid:GetModule("GridRoster")
 
-local GridStatusReadyCheck = Grid:GetModule("GridStatus"):NewModule("GridStatusReadyCheck", "AceTimer-3.0")
+local GridStatusReadyCheck = Grid:NewStatusModule("GridStatusReadyCheck", "AceTimer-3.0")
 
 GridStatusReadyCheck.menuName = L["Ready Check"]
 
@@ -117,8 +117,7 @@ local readyCheckOptions = {
 	["range"] = false,
 }
 
-function GridStatusReadyCheck:OnInitialize()
-	self.super.OnInitialize(self)
+function GridStatusReadyCheck:PostInitialize()
 	self:RegisterStatus("ready_check", L["Ready Check"], readyCheckOptions, true)
 end
 
@@ -149,8 +148,7 @@ function GridStatusReadyCheck:OnStatusDisable(status)
 	self.core:SendStatusLostAllUnits("ready_check")
 end
 
-function GridStatusReadyCheck:Reset()
-	self.super.Reset(self)
+function GridStatusReadyCheck:PostReset()
 	self:CancelTimer(self.ClearTimer, true)
 	self.core:SendStatusLostAllUnits("ready_check")
 end

@@ -40,8 +40,8 @@ end
 ------------------------------------------------------------------------
 
 Grid.options = {
-	type = "group",
 	handler = Grid,
+	type = "group", childGroups = "tab",
 	args = {
 		["debug"] = {
 			type = "group",
@@ -81,6 +81,10 @@ function Grid.modulePrototype:OnInitialize()
 	for name, module in self:IterateModules() do
 		self:RegisterModule(name, module)
 	end
+
+	if type(self.PostInitialize) == "function" then
+		self:PostInitialize()
+	end
 end
 
 function Grid.modulePrototype:OnEnable()
@@ -89,16 +93,28 @@ function Grid.modulePrototype:OnEnable()
 	end
 
 	self:EnableModules()
+
+	if type(self.PostEnable) == "function" then
+		self:PostEnable()
+	end
 end
 
 function Grid.modulePrototype:OnDisable()
 	self:DisableModules()
+
+	if type(self.PostDisable) == "function" then
+		self:PostDisable()
+	end
 end
 
 function Grid.modulePrototype:Reset()
 	self.debugging = self.db.profile.debug
 	self:Debug("Reset")
 	self:ResetModules()
+
+	if type(self.PostReset) == "function" then
+		self:PostReset()
+	end
 end
 
 function Grid.modulePrototype:OnModuleCreated(module)
@@ -176,12 +192,34 @@ function Grid:OnInitialize()
 
 	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("Grid", self.options)
 
+	local AceConfigCmd = LibStub("AceConfigCmd-3.0")
+	local AceConfigDialog = LibStub("AceConfigDialog-3.0")
+
+	local status = AceConfigDialog:GetStatusTable("Grid")
+	status.width = 777 -- 685
+	status.height = 486 -- 530
+
+	local child1 = AceConfigDialog:GetStatusTable("Grid", { "Indicators" })
+	child1.groups = child1.groups or { }
+	child1.groups.treewidth = 220
+
+	local child2 = AceConfigDialog:GetStatusTable("Grid", { "GridStatus" })
+	child2.groups = child2.groups or { }
+	child2.groups["GridStatusAuras"] = true
+	child2.groups["GridStatusHealth"] = true
+	child2.groups["GridStatusRange"] = true
+	child2.groups.treewidth = 260
+
 	self:RegisterChatCommand("grid", function(input)
 		if not input or input:trim() == "" then
-			LibStub("AceConfigDialog-3.0"):Open("Grid")
+			AceConfigDialog:Open("Grid")
 		else
-			LibStub("AceConfigCmd-3.0").HandleCommand(Grid, "grid", "Grid", input)
+			AceConfigCmd.HandleCommand(Grid, "grid", "Grid", input)
 		end
+	end)
+
+	InterfaceOptionsFrame:HookScript("OnShow", function()
+		AceConfigDialog:Close("Grid")
 	end)
 
 	-- we need to save debugging state over sessions :(
@@ -259,7 +297,7 @@ function Grid:AddModuleDebugMenu(module)
 	debugMenu.args[module.moduleName or module.name] = {
 		name = module.moduleName or module.name,
 		desc = string.format(L["Toggle debugging for %s."], module.moduleName or module.name),
-		type = "toggle",
+		type = "toggle", width = "double",
 		get = function()
 			return module.db.profile.debug
 		end,

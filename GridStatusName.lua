@@ -7,7 +7,7 @@ local _, Grid = ...
 local L = Grid.L
 local GridRoster = Grid:GetModule("GridRoster")
 
-local GridStatusName = Grid:GetModule("GridStatus"):NewModule("GridStatusName")
+local GridStatusName = Grid:NewStatusModule("GridStatusName")
 
 GridStatusName.menuName = L["Unit Name"]
 
@@ -38,48 +38,46 @@ local nameOptions = {
 	},
 }
 
-function GridStatusName:OnInitialize()
-	self.super.OnInitialize(self)
+function GridStatusName:PostInitialize()
 	self:RegisterStatus("unit_name", L["Unit Name"], nameOptions, true)
 end
 
 function GridStatusName:OnStatusEnable(status)
-	if status == "unit_name" then
-		self:RegisterEvent("UNIT_NAME_UPDATE", "UpdateUnit")
-		self:RegisterEvent("UNIT_PORTRAIT_UPDATE", "UpdateUnit")
-		self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateVehicle")
-		self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateVehicle")
-		self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
+	if status ~= "unit_name" then return end
 
-		self:RegisterMessage("Grid_UnitJoined", "UpdateGUID")
-		self:RegisterMessage("Grid_UnitChanged", "UpdateGUID")
-		self:RegisterMessage("Grid_UnitLeft", "UpdateGUID")
+	self:RegisterEvent("UNIT_NAME_UPDATE", "UpdateUnit")
+	self:RegisterEvent("UNIT_PORTRAIT_UPDATE", "UpdateUnit")
+	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateVehicle")
+	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateVehicle")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
 
-		self:RegisterMessage("Grid_ColorsChanged", "UpdateAllUnits")
+	self:RegisterMessage("Grid_UnitJoined", "UpdateGUID")
+	self:RegisterMessage("Grid_UnitChanged", "UpdateGUID")
+	self:RegisterMessage("Grid_UnitLeft", "UpdateGUID")
 
-		self:UpdateAllUnits()
-	end
+	self:RegisterMessage("Grid_ColorsChanged", "UpdateAllUnits")
+
+	self:UpdateAllUnits()
 end
 
 function GridStatusName:OnStatusDisable(status)
-	if status == "unit_name" then
-		self:UnregisterEvent("UNIT_NAME_UPDATE")
-		self:UnregisterEvent("UNIT_PORTRAIT_UPDATE")
-		self:UnregisterEvent("UNIT_ENTERED_VEHICLE")
-		self:UnregisterEvent("UNIT_EXITED_VEHICLE")
-		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	if status ~= "unit_name" then return end
 
-		self:UnregisterMessage("Grid_UnitJoined")
-		self:UnregisterMessage("Grid_UnitChanged")
-		self:UnregisterMessage("Grid_UnitLeft")
-		self:UnregisterMessage("Grid_ColorsChanged")
+	self:UnregisterEvent("UNIT_NAME_UPDATE")
+	self:UnregisterEvent("UNIT_PORTRAIT_UPDATE")
+	self:UnregisterEvent("UNIT_ENTERED_VEHICLE")
+	self:UnregisterEvent("UNIT_EXITED_VEHICLE")
+	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 
-		self.core:SendStatusLostAllUnits("unit_name")
-	end
+	self:UnregisterMessage("Grid_UnitJoined")
+	self:UnregisterMessage("Grid_UnitChanged")
+	self:UnregisterMessage("Grid_UnitLeft")
+	self:UnregisterMessage("Grid_ColorsChanged")
+
+	self.core:SendStatusLostAllUnits("unit_name")
 end
 
-function GridStatusName:Reset()
-	self.super.Reset(self)
+function GridStatusName:PostReset()
 	self:UpdateAllUnits()
 end
 

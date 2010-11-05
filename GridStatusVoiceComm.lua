@@ -8,7 +8,7 @@
 local _, Grid = ...
 local L = Grid.L
 
-local GridStatusVoiceComm = Grid:GetModule("GridStatus"):NewModule("GridStatusVoiceComm")
+local GridStatusVoiceComm = Grid:NewStatusModule("GridStatusVoiceComm")
 
 GridStatusVoiceComm.menuName = L["Voice Chat"]
 
@@ -25,8 +25,7 @@ GridStatusVoiceComm.defaultDB = {
 
 GridStatusVoiceComm.options = false
 
-function GridStatusVoiceComm:OnInitialize()
-	self.super.OnInitialize(self)
+function GridStatusVoiceComm:PostInitialize()
 	self:RegisterStatus("alert_voice", L["Voice Chat"], nil, true)
 end
 

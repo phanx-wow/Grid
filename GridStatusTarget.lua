@@ -9,7 +9,7 @@ local L = Grid.L
 
 local cur_target
 
-local GridStatusTarget = Grid:GetModule("GridStatus"):NewModule("GridStatusTarget")
+local GridStatusTarget = Grid:NewStatusModule("GridStatusTarget")
 
 GridStatusTarget.menuName = L["Target"]
 
@@ -26,8 +26,7 @@ GridStatusTarget.defaultDB = {
 
 GridStatusTarget.options = false
 
-function GridStatusTarget:OnInitialize()
-	self.super.OnInitialize(self)
+function GridStatusTarget:PostInitialize()
 	self:RegisterStatus('player_target', L["Your Target"], nil, true)
 end
 

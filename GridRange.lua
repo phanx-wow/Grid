@@ -91,9 +91,7 @@ function GridRange:ScanSpellbook()
 	rangelist = nil
 end
 
-function GridRange:OnEnable()
-	self.super.OnEnable(self)
-
+function GridRange:PostEnable()
 	self:ScanSpellbook()
 
 	self:RegisterEvent("PLAYER_TALENT_UPDATE", "ScanSpellbook")

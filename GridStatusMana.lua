@@ -42,8 +42,7 @@ local low_manaOptions = {
 	},
 }
 
-function GridStatusMana:OnInitialize()
-	self.super.OnInitialize(self)
+function GridStatusMana:PostInitialize()
 	self:RegisterStatus("alert_lowMana", L["Low Mana warning"], low_manaOptions, true)
 end
 
@@ -71,8 +70,7 @@ function GridStatusMana:OnStatusDisable(status)
 	self.core:SendStatusLostAllUnits("alert_lowMana")
 end
 
-function GridStatusMana:Reset()
-	self.super.Reset(self)
+function GridStatusMana:PostReset()
 	self:UpdateAllUnits()
 end
 
