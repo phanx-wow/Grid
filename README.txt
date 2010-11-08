@@ -29,18 +29,18 @@ This is by Blizzard design, and is out of Grid's control. Use the Minimum Value 
 
 #### **Plugins won't work without an update.**
 
-Grid no longer uses the outdated and unsupported Ace2 framework. All plugins will need to be converted to use Ace3. ([more info](http://forums.wowace.com/showpost.php?p=306954&postcount=3126))
+Grid no longer uses the outdated and unsupported Ace2 framework. All plugins will need to be updated. ([more info](http://forums.wowace.com/showpost.php?p=306954&postcount=3126))
 
 
 ## **How to report a bug in Grid**
 
 Before reporting a bug, please:
 
-1. ...double-check that you have the latest version of Grid.
-2. ...verify that the problem still happens when all other addons (including Grid plugins) are disabled.
-3. ...make sure you have Lua error display enabled under Interface Options > Help, or an error handling addon like BugSack.
+1. Double-check that you have the latest version of Grid.
+2. Disable all other addons (including Grid plugins) and see if the problem still happens.
+3. Enable "Display Lua Errors" under Interface Options > Help, or install an error handling addon like [BugSack](http://www.wowinterface.com/downloads/info5995-BugSack.html).
 
-Then, [submit a bug report](http://www.wowace.com/addons/grid/tickets/?status=+) in the ticket tracker. Be sure to include as much of the information requested in the ticket form as you can.
+Then, [submit a bug report](http://www.wowace.com/addons/grid/tickets/?status=+) in the ticket tracker. Be sure to include as much of the information requested in the ticket template as you can.
 
 Finally, remember to check on your ticket after a few days. If a ticket is waiting on a response from you for more than 10 days, we will assume you've solved the problem yourself, and close your ticket.
 

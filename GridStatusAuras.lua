@@ -254,11 +254,25 @@ end
 
 function GridStatusAuras:OptionsForStatus(status, isBuff)
 	local auraOptions = {
-		["class"] = {
-			type = "group", dialogInline = true,
+		duration = {
+			name = L["Show duration"],
+			desc = L["Show the time remaining, for use with the center icon cooldown."],
+			order = 80,
+			width = "double",
+			type = "toggle",
+			get = function()
+					return GridStatusAuras.db.profile[status].duration
+				end,
+			set = function(_, v)
+					GridStatusAuras.db.profile[status].duration = v
+					GridStatusAuras:UpdateAllUnitAuras()
+				end,
+		},
+		class = {
 			name = L["Class Filter"],
 			desc = L["Show status for the selected classes."],
-			order = 111,
+			order = 90,
+			type = "group", dialogInline = true,
 			args = {},
 		},
 	}
@@ -281,10 +295,11 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 
 	if isBuff then
 		auraOptions.mine = {
-			type = "toggle", width = "double",
 			name = L["Show if mine"],
 			desc = L["Display status only if the buff was cast by you."],
-			order = 110,
+			order = 60,
+			width = "double",
+			type = "toggle",
 			get = function()
 					return GridStatusAuras.db.profile[status].mine
 				end,
@@ -295,10 +310,11 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 				end,
 		}
 		auraOptions.missing = {
-			type = "toggle", width = "double",
 			name = L["Show if missing"],
 			desc = L["Display status only if the buff is not active."],
-			order = 110,
+			order = 70,
+			width = "double",
+			type = "toggle",
 			get = function()
 					return GridStatusAuras.db.profile[status].missing
 				end,
@@ -308,20 +324,6 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 				end,
 		}
 	end
-
-	auraOptions.duration = {
-		type = "toggle",
-		name = L["Show duration"], width = "double",
-		desc = L["Show the time remaining, for use with the center icon cooldown."],
-		order = 111,
-		get = function()
-				return GridStatusAuras.db.profile[status].duration
-			end,
-		set = function(_, v)
-				GridStatusAuras.db.profile[status].duration = v
-				GridStatusAuras:UpdateAllUnitAuras()
-			end,
-	}
 
 	return auraOptions
 end
@@ -358,10 +360,11 @@ function GridStatusAuras:CreateAddRemoveOptions()
 		if type(statusTbl) == "table" and statusTbl.text and not self.defaultDB[status] then
 			local debuffName = (statusTbl.desc or statusTbl.text)
 			self.options.args["delete_debuff"].args[status] = {
-				type = "execute",
 				name = debuffName,
 				desc = string.format(L["Remove %s from the menu"], debuffName),
-				func = function() return self:DeleteAura(status) end
+				width = "double",
+				type = "execute",
+				func = function() return self:DeleteAura(status) end,
 			}
 		end
 	end

@@ -99,59 +99,16 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 	local module = self
 	if not optionMenu[status] then
 		optionMenu[status] = {
-			type = "group",
 			name = desc,
 			desc = string.format(L["Status: %s"], desc),
 			order = inMainMenu and 111 or order,
+			type = "group",
 			args = {
-				["color"] = {
-					type = "color",
-					name = L["Color"],
-					desc = string.format(L["Color for %s"], desc),
-					order = 90,
-					hasAlpha = true,
-					get = function()
-						local color = module.db.profile[status].color
-						return color.r, color.g, color.b, color.a
-					end,
-					set = function(_, r, g, b, a)
-						local color = module.db.profile[status].color
-						color.r = r
-						color.g = g
-						color.b = b
-						color.a = a or 1
-					end,
-				},
-				["priority"] = {
-					type = "range",
-					name = L["Priority"],
-					desc = string.format(L["Priority for %s"], desc),
-					order = 91,
-					max = 99,
-					min = 0,
-					step = 1,
-					get = function()
-						return module.db.profile[status].priority
-					end,
-					set = function(_, v)
-						module.db.profile[status].priority = v
-					end,
-				},
-				["range"] = {
-					type = "toggle",
-					name = L["Range filter"],
-					desc = string.format(L["Range filter for %s"], desc),
-					order = 111,
-					get = function() return module.db.profile[status].range end,
-					set = function()
-						module.db.profile[status].range = not module.db.profile[status].range
-					end,
-				},
 				["enable"] = {
-					type = "toggle",
 					name = L["Enable"],
 					desc = string.format(L["Enable %s"], desc),
-					order = 112,
+					order = 10,
+					type = "toggle",
 					get = function()
 						return module.db.profile[status].enable
 					end,
@@ -166,6 +123,46 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 									module:OnStatusDisable(status)
 								end
 							end
+					end,
+				},
+				["range"] = {
+					name = L["Range filter"],
+					desc = string.format(L["Range filter for %s"], desc),
+					order = 20,
+					type = "toggle",
+					get = function() return module.db.profile[status].range end,
+					set = function()
+						module.db.profile[status].range = not module.db.profile[status].range
+					end,
+				},
+				["color"] = {
+					name = L["Color"],
+					desc = string.format(L["Color for %s"], desc),
+					order = 30,
+					type = "color",
+					hasAlpha = true,
+					get = function()
+						local color = module.db.profile[status].color
+						return color.r, color.g, color.b, color.a
+					end,
+					set = function(_, r, g, b, a)
+						local color = module.db.profile[status].color
+						color.r = r
+						color.g = g
+						color.b = b
+						color.a = a or 1
+					end,
+				},
+				["priority"] = {
+					name = L["Priority"],
+					desc = string.format(L["Priority for %s"], desc),
+					order = 40,
+					type = "range", max = 99, min = 0, step = 1,
+					get = function()
+						return module.db.profile[status].priority
+					end,
+					set = function(_, v)
+						module.db.profile[status].priority = v
 					end,
 				},
 			},
