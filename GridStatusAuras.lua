@@ -681,12 +681,14 @@ function GridStatusAuras:ScanUnitAuras(event, unit)
 		end
 	end
 
-	for buff_name in pairs(player_buff_names) do
-		name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL|PLAYER")
+	if UnitIsVisible(unit) then
+		for buff_name in pairs(player_buff_names) do
+			name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL|PLAYER")
 
-		if name then
-			player_buff_names_seen[name] = true
-			self:UnitGainedPlayerBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
+			if name then
+				player_buff_names_seen[name] = true
+				self:UnitGainedPlayerBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
+			end
 		end
 	end
 
