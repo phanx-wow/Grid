@@ -12,8 +12,6 @@ Grid.L = {
 	["Module debugging menu."] = "Menu du module de débogage.",
 	["Debug"] = "Déboger",
 	["Toggle debugging for %s."] = "Active ou non le débogage pour %s.",
-	["Configure"] = "Configurer",
-	["Configure Grid"] = "Configure Grid.",
 	["Hide minimap icon"] = "Cacher icône minicarte",
 --}}}
 
@@ -50,9 +48,6 @@ Grid.L = {
 	["Statuses"] = "Statut",
 	["Toggle status display."] = "Active ou non l'affichage de ce statut.",
 
-	-- Advanced options
-	["Advanced"] = "Avancé",
-	["Advanced options."] = "Options avancées.",
 	["Enable %s indicator"] = "Activer l'indicateur %s",
 	["Toggle the %s indicator."] = "Active ou non l'indicateur %s.",
 	["Frame Width"] = "Longueur des cellules",
@@ -92,6 +87,16 @@ Grid.L = {
 	["Toggle center icon's stack count text."] = "Active ou non le texte indiquant le cumul sur l'icône centrale.",
 	["Icon Cooldown Frame"] = "Texte du temps de recharge sur l'icône",
 	["Toggle center icon's cooldown frame."] = "Active ou non le texte indiquant le temps de recharge sur l'icône centrale.",
+
+--	["Throttle Updates"] = "",
+--	["Throttle updates on group changes. This option may cause delays in updating frames, so you should only enable it if you're experiencing temporary freezes or lockups when people join or leave your group."] = "",
+
+--	["Bar Options"] = "Leistenoptionen",
+--	["Options related to bar indicators."] = "",
+--	["Icon Options"] = "",
+--	["Options related to icon indicators."] = "",
+--	["Text Options"] = "",
+--	["Options related to text indicators."] = "",
 --}}}
 
 --{{{ GridLayout
@@ -221,6 +226,7 @@ Grid.L = {
 
 --{{{ GridStatus
 	["Indicators"] = "Indicateurs",
+--	["Options for assigning statuses to indicators."] = "",
 	["Status"] = "Statut",
 	["Options for %s."] = "Options concernant %s.",
 	["Reset class colors"] = "Réinitialisez la couleur des classes",

@@ -46,6 +46,7 @@ hooksecurefunc(Grid, "OnInitialize", function(self)
 		order = -3,
 		name = L["Hide minimap icon"],
 		desc = L["Hide minimap icon"],
+		width = "double",
 		type = "toggle",
 		get = function()
 			return self.db.profile.minimap.hide

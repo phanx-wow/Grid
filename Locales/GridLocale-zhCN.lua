@@ -12,8 +12,6 @@ Grid.L = {
 	["Module debugging menu."] = "除错模块配置。",
 	["Debug"] = "除错",
 	["Toggle debugging for %s."] = "打开/关闭%s的除错。",
-	["Configure"] = "配置",
-	["Configure Grid"] = "配置 Grid",
 	["Hide minimap icon"] = "隐藏迷你地图按钮",
 --}}}
 
@@ -50,9 +48,6 @@ Grid.L = {
 	["Statuses"] = "状态",
 	["Toggle status display."] = "打开/关闭显示状态。",
 
-	-- Advanced options
-	["Advanced"] = "高级",
-	["Advanced options."] = "高级选项。",
 	["Enable %s indicator"] = "启用%s指示",
 	["Toggle the %s indicator."] = "打开/关闭%s指示。",
 	["Frame Width"] = "框架宽度",
@@ -92,6 +87,16 @@ Grid.L = {
 	["Toggle center icon's stack count text."] = "打开/关闭中心图标的堆叠计数文字。",
 	["Icon Cooldown Frame"] = "图标冷却时间框架",
 	["Toggle center icon's cooldown frame."] = "打开/关闭中心图标的冷却时间框架。",
+
+--	["Throttle Updates"] = "",
+--	["Throttle updates on group changes. This option may cause delays in updating frames, so you should only enable it if you're experiencing temporary freezes or lockups when people join or leave your group."] = "",
+
+--	["Bar Options"] = "Leistenoptionen",
+--	["Options related to bar indicators."] = "",
+--	["Icon Options"] = "",
+--	["Options related to icon indicators."] = "",
+--	["Text Options"] = "",
+--	["Options related to text indicators."] = "",
 --}}}
 
 --{{{ GridLayout
@@ -221,6 +226,7 @@ Grid.L = {
 
 --{{{ GridStatus
 --	["Indicators"] = "",
+--	["Options for assigning statuses to indicators."] = "",
 	["Status"] = "状态",
 	["Options for %s."] = "%s状态的选项。",
 	["Reset class colors"] = "重置职业颜色",

@@ -295,7 +295,7 @@ GridLayout.options = {
 		},
 		["horizontal"] = {
 			name = L["Horizontal groups"],
-			desc = L["Switch between horzontal/vertical groups."],
+			desc = L["Switch between horizontal/vertical groups."],
 			order = 70,
 			width = "double",
 			type = "toggle",

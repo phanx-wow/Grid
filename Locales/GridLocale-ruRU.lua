@@ -12,8 +12,6 @@ Grid.L = {
 	["Module debugging menu."] = "Меню модуля отладки",
 	["Debug"] = "Отладка",
 	["Toggle debugging for %s."] = "Показать отладку для  %s.",
-	["Configure"] =  "Настройка",
-	["Configure Grid"] = "Настройка Grid",
 	["Hide minimap icon"] = "Скрыть иконку на миникарте",
 --}}}
 
@@ -50,9 +48,6 @@ Grid.L = {
 	["Statuses"] = "Статусы",
 	["Toggle status display."] = "Переключить статус на дисплее.",
 
-	-- Advanced options
-	["Advanced"] = "Дополнительно",
-	["Advanced options."] = "Дополнительные опции",
 	["Enable %s indicator"] = "Включить %s индикатор",
 	["Toggle the %s indicator."] = "Показать %s индикатор.",
 	["Frame Width"] = "Ширина Фреймов",
@@ -92,6 +87,16 @@ Grid.L = {
 	["Toggle center icon's stack count text."] = "Показывать количество значков в множестве",
 	["Icon Cooldown Frame"] = "Фрейм перерыва (cooldown) значка",
 	["Toggle center icon's cooldown frame."] = "Показывать фрейм перерыва значка в центре",
+
+--	["Throttle Updates"] = "",
+--	["Throttle updates on group changes. This option may cause delays in updating frames, so you should only enable it if you're experiencing temporary freezes or lockups when people join or leave your group."] = "",
+
+--	["Bar Options"] = "Leistenoptionen",
+--	["Options related to bar indicators."] = "",
+--	["Icon Options"] = "",
+--	["Options related to icon indicators."] = "",
+--	["Text Options"] = "",
+--	["Options related to text indicators."] = "",
 --}}}
 
 --{{{ GridLayout
@@ -221,6 +226,7 @@ Grid.L = {
 
 --{{{ GridStatus
 	["Indicators"] = "Индикаторы",
+--	["Options for assigning statuses to indicators."] = "",
 	["Status"] = "Статус",
 	["Options for %s."] = "Опции для %s.",
 	["Reset class colors"] = "Сбросс окраски классов",

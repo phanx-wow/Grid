@@ -9,11 +9,9 @@ Grid.L = {
 
 --{{{ GridCore
 	["Debugging"] = "Debuggen",
-	["Module debugging menu."] = "Debug-Menü",
+	["Module debugging menu."] = "Debug-Menü.",
 	["Debug"] = "Debug",
 	["Toggle debugging for %s."] = "Aktiviere das Debuggen für %s.",
-	["Configure"] = "Konfigurieren",
-	["Configure Grid"] = "Grid konfigurieren",
 	["Hide minimap icon"] = "Minikarten Button verstecken",
 --}}}
 
@@ -27,7 +25,7 @@ Grid.L = {
 	["Never"] = "Nie",
 	["OOC"] = "Außerhalb des Kampfes",
 	["Center Text Length"] = "Länge des mittleren Textes",
-	["Number of characters to show on Center Text indicator."] = "Anzahl der Buchstaben des mittleren Textes",
+	["Number of characters to show on Center Text indicator."] = "Anzahl der Buchstaben der Indikatoren 'Text im Zentrum 1/2'.",
 	["Invert Bar Color"] = "Invertiere die Leistenfarbe",
 	["Swap foreground/background colors on bars."] = "Tausche die Vordergrund-/Hintergrundfarbe der Leisten.",
 	["Healing Bar Opacity"] = "Heilleistendeckkraft",
@@ -37,8 +35,8 @@ Grid.L = {
 	["Health Bar"] = "Gesundheitsleiste",
 	["Health Bar Color"] = "Gesundheitsleistenfarbe",
 	["Healing Bar"] = "Heilleiste",
-	["Center Text"] = "Text in der Mitte",
-	["Center Text 2"] = "2. Text in der Mitte",
+	["Center Text"] = "Text im Zentrum 1",
+	["Center Text 2"] = "Text im Zentrum 2",
 	["Center Icon"] = "Symbol im Zentrum",
 	["Top Left Corner"] = "Obere linke Ecke",
 	["Top Right Corner"] = "Obere rechte Ecke",
@@ -46,15 +44,12 @@ Grid.L = {
 	["Bottom Right Corner"] = "Untere rechte Ecke",
 	["Frame Alpha"] = "Rahmentransparenz",
 
-	["Options for %s indicator."] = "Optionen für den %s Indikator.",
-	["Statuses"] = "Zustände",
-	["Toggle status display."] = "Aktiviert die Anzeige des Zustands.",
+	["Options for %s indicator."] = "Optionen für den Indikator: %s.",
+	["Statuses"] = "Status",
+	["Toggle status display."] = "Aktiviert die Anzeige dieses Status.",
 
-	-- Advanced options
-	["Advanced"] = "Erweitert",
-	["Advanced options."] = "Erweiterte Einstellungen.",
-	["Enable %s indicator"] = "Indikator für %s ",
-	["Toggle the %s indicator."] = "Aktiviert den %s Indikator.",
+	["Enable %s indicator"] = "Indikator: %s",
+	["Toggle the %s indicator."] = "Aktiviert den Indikator: %s.",
 	["Frame Width"] = "Rahmenbreite",
 	["Adjust the width of each unit's frame."] = "Die Breite von jedem Einheitenfenster anpassen.",
 	["Frame Height"] = "Rahmenhöhe",
@@ -81,7 +76,7 @@ Grid.L = {
 	["Orientation of Frame"] = "Ausrichtung der Statusleiste",
 	["Set frame orientation."] = "Ausrichtung der Statusleiste festlegen.",
 	["Orientation of Text"] = "Ausrichtung des Texts",
-	["Set frame text orientation."] = "Text Ausrichtung festlegen.",
+	["Set frame text orientation."] = "Textausrichtung festlegen.",
 	["Vertical"] = "Vertikal",
 	["Horizontal"] = "Horizontal",
 	["Icon Size"] = "Symbolgröße",
@@ -92,6 +87,16 @@ Grid.L = {
 	["Toggle center icon's stack count text."] = "Stack-Text für Symbol im Zentrum ein-/ausblenden.",
 	["Icon Cooldown Frame"] = "Symbol Cooldown-Rahmen",
 	["Toggle center icon's cooldown frame."] = "Cooldown-Rahmen für Symbol im Zentrum ein-/ausblenden.",
+
+	["Throttle Updates"] = "Aktualisierung drosseln",
+	["Throttle updates on group changes. This option may cause delays in updating frames, so you should only enable it if you're experiencing temporary freezes or lockups when people join or leave your group."] = "Drosselt die Aktualisiersrate bei Gruppenänderungen auf 0,1 Sekunden (Standard: sofort).\nACHTUNG:\nDiese Option kann Verzögerungen bei der Rahmenaktualisierung verursachen. Deshalb sollte man diese Option nur aktivieren, wenn man temporäre Lags oder 'Hänger' hat, wenn Spieler der Gruppe beitreten oder sie verlassen.",
+
+	["Bar Options"] = "Leistenoptionen",
+	["Options related to bar indicators."] = "Optionen für Leistenindikatoren.",
+	["Icon Options"] = "Symboloptionen",
+	["Options related to icon indicators."] = "Optionen für Symbolindikatoren.",
+	["Text Options"] = "Textoptionen",
+	["Options related to text indicators."] = "Optionen für Textindikatoren.",
 --}}}
 
 --{{{ GridLayout
@@ -210,8 +215,8 @@ Grid.L = {
 --}}}
 
 --{{{ GridLDB
---	["Click to toggle the frame lock."] = "",
---	["Right-Click to open the options menu."] = "",
+	["Click to toggle the frame lock."] = "Linksklick um Grid zu entsperren.",
+	["Right-Click to open the options menu."] = "Rechtsklick für Optionen.",
 --}}}
 
 --{{{ GridRange
@@ -221,6 +226,7 @@ Grid.L = {
 
 --{{{ GridStatus
 	["Indicators"] = "Indikatoren",
+	["Options for assigning statuses to indicators."] = "Optionen für die Status-Indikatorzuordnung.",
 	["Status"] = "Status",
 	["Options for %s."] = "Optionen für %s.",
 	["Reset class colors"] = "Klassenfarben zurücksetzen",
@@ -267,7 +273,7 @@ Grid.L = {
 	["Add new Debuff"] = "Neuen Debuff hinzufügen",
 	["Adds a new debuff to the status module"] = "Fügt einen neuen Debuff zum Status Modul hinzu",
 	["<debuff name>"] = "<Debuffname>",
-	["Delete (De)buff"] = "Lösche Schwächungs-/Buff",
+	["Delete (De)buff"] = "Lösche Debuff/Buff",
 	["Deletes an existing debuff from the status module"] = "Löscht einen Debuff vom Status Modul",
 	["Remove %s from the menu"] = "Entfernt %s vom Menü",
 	["Debuff: %s"] = "Debuff: %s",
@@ -290,8 +296,8 @@ Grid.L = {
 	["Incoming heals"] = "Eingehende Heilungen",
 	["Ignore Self"] = "Sich selbst ignorieren",
 	["Ignore heals cast by you."] = "Ignoriert Heilungen die von Dir gezaubert werden.",
---	["Minimum Value"] = "",
---	["Only show incoming heals greater than this amount."] = "",
+	["Minimum Value"] = "Mindestwert",
+	["Only show incoming heals greater than this amount."] = "Nur eingehende Heilungen anzeigen, die grösser als dieser Wert sind.",
 --}}}
 
 --{{{ GridStatusHealth

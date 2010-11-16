@@ -12,8 +12,6 @@ Grid.L = {
 	["Module debugging menu."] = "모듈 디버깅 메뉴를 설정합니다.",
 	["Debug"] = "디버그",
 	["Toggle debugging for %s."] = "%s|1을;를; 위해 디버깅을 사용합니다.",
-	["Configure"] = "설정",
-	["Configure Grid"] = "Grid 옵션을 설정합니다.",
 	["Hide minimap icon"] = "미니맵 아이콘 숨김",
 --}}}
 
@@ -50,9 +48,6 @@ Grid.L = {
 	["Statuses"] = "상태",
 	["Toggle status display."] = "상태 표시 사용",
 
-	-- Advanced options
-	["Advanced"] = "고급",
-	["Advanced options."] = "고급 옵션을 설정합니다.",
 	["Enable %s indicator"] = "%s 지시기 사용",
 	["Toggle the %s indicator."] = "%s 지시기를 사용합니다.",
 	["Frame Width"] = "창 너비",
@@ -92,6 +87,16 @@ Grid.L = {
 	["Toggle center icon's stack count text."] = "중앙 아이콘에 중첩 갯수 문자를 표시합니다.",
 	["Icon Cooldown Frame"] = "아이콘 재사용 창",
 	["Toggle center icon's cooldown frame."] = "중앙 아이콘에 재사용 창을 표시합니다.",
+
+--	["Throttle Updates"] = "",
+--	["Throttle updates on group changes. This option may cause delays in updating frames, so you should only enable it if you're experiencing temporary freezes or lockups when people join or leave your group."] = "",
+
+--	["Bar Options"] = "Leistenoptionen",
+--	["Options related to bar indicators."] = "",
+--	["Icon Options"] = "",
+--	["Options related to icon indicators."] = "",
+--	["Text Options"] = "",
+--	["Options related to text indicators."] = "",
 --}}}
 
 --{{{ GridLayout
@@ -126,15 +131,15 @@ Grid.L = {
 	["Click through the Grid Frame"] = "창을 통해 클릭",
 	["Allows mouse click through the Grid Frame."] = "배치 창 위의 마우스 클릭을 허락합니다.",
 
-	["Bottom"] = "하단",
-	["Bottom Left"] = "좌측 하단",
-	["Bottom Right"] = "우측 하단",
 	["Center"] = "중앙",
+	["Top"] = "상단",
+	["Bottom"] = "하단",
 	["Left"] = "좌측",
 	["Right"] = "우측",
-	["Top"] = "상단",
 	["Top Left"] = "좌측 상단",
 	["Top Right"] = "우측 상단",
+	["Bottom Left"] = "좌측 하단",
+	["Bottom Right"] = "우측 하단",
 
 	-- Display options
 	["Padding"] = "패팅",
@@ -221,6 +226,7 @@ Grid.L = {
 
 --{{{ GridStatus
 	["Indicators"] = "지시기",
+--	["Options for assigning statuses to indicators."] = "",
 	["Status"] = "상태",
 	["Options for %s."] = "%s|1을;를; 위한 옵션을 설정합니다.",
 	["Reset class colors"] = "직업 색상 초기화",
