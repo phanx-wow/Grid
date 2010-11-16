@@ -12,6 +12,8 @@ Grid.L = {
 	["Module debugging menu."] = "Меню модуля отладки",
 	["Debug"] = "Отладка",
 	["Toggle debugging for %s."] = "Показать отладку для  %s.",
+	["Configure"] = "Настройка",
+	["Configure Grid"] = "Настройка Gridа",
 	["Hide minimap icon"] = "Скрыть иконку на миникарте",
 --}}}
 
@@ -48,6 +50,9 @@ Grid.L = {
 	["Statuses"] = "Статусы",
 	["Toggle status display."] = "Переключить статус на дисплее.",
 
+	-- Advanced options
+--["Advanced"] = "Дополнительно",
+--["Advanced options."] = "Дополнительные настройки.",
 	["Enable %s indicator"] = "Включить %s индикатор",
 	["Toggle the %s indicator."] = "Показать %s индикатор.",
 	["Frame Width"] = "Ширина Фреймов",
@@ -87,18 +92,18 @@ Grid.L = {
 	["Toggle center icon's stack count text."] = "Показывать количество значков в множестве",
 	["Icon Cooldown Frame"] = "Фрейм перерыва (cooldown) значка",
 	["Toggle center icon's cooldown frame."] = "Показывать фрейм перерыва значка в центре",
-
+--}}}
+	
 --	["Throttle Updates"] = "",
 --	["Throttle updates on group changes. This option may cause delays in updating frames, so you should only enable it if you're experiencing temporary freezes or lockups when people join or leave your group."] = "",
 
---	["Bar Options"] = "Leistenoptionen",
---	["Options related to bar indicators."] = "",
---	["Icon Options"] = "",
---	["Options related to icon indicators."] = "",
---	["Text Options"] = "",
---	["Options related to text indicators."] = "",
---}}}
-
+	["Bar Options"] = "Настройки панели",
+	["Options related to bar indicators."] = "Настройки связанные с индикатором панели.",
+	["Icon Options"] = "Настройки иконки",
+	["Options related to icon indicators."] = "Настройки связанные с индикатором иконки.",
+	["Text Options"] = "Настройки текста",
+	["Options related to text indicators."] = "Настройки связанные с индикатором текста.",
+	
 --{{{ GridLayout
 	["Layout"] = "Расположение",
 	["Options for GridLayout."] = "Опции для GridLayout",
@@ -131,15 +136,15 @@ Grid.L = {
 	["Click through the Grid Frame"] = "Выбирать через окно Grid",
 	["Allows mouse click through the Grid Frame."] = "Разрешает мышкой кликать сквозь окно Grid",
 
-	["Center"] = "Центр",
-	["Top"] = "Вверху",
 	["Bottom"] = "Внизу",
-	["Left"] = "Слева",
-	["Right"] = "Справа",
-	["Top Left"] = "Вверху Слева",
-	["Top Right"] = "Вверху Справа",
 	["Bottom Left"] = "Внизу Слева",
 	["Bottom Right"] = "Внизу Справа",
+	["Center"] = "Центр",
+	["Left"] = "Слева",
+	["Right"] = "Справа",
+	["Top"] = "Вверху",
+	["Top Left"] = "Вверху Слева",
+	["Top Right"] = "Вверху Справа",
 
 	-- Display options
 	["Padding"] = "Заполнение",
@@ -226,7 +231,7 @@ Grid.L = {
 
 --{{{ GridStatus
 	["Indicators"] = "Индикаторы",
---	["Options for assigning statuses to indicators."] = "",
+--	["Options for assigning statuses to indicators."] = "Настройки для присвоения статусов к индикаторам.",
 	["Status"] = "Статус",
 	["Options for %s."] = "Опции для %s.",
 	["Reset class colors"] = "Сбросс окраски классов",
