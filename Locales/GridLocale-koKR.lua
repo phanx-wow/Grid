@@ -138,8 +138,8 @@ Grid.L = {
 	["Right"] = "우측",
 	["Top Left"] = "좌측 상단",
 	["Top Right"] = "우측 상단",
-	["Bottom Left"] = "좌측 상단",
-	["Bottom Right"] = "우측 상단",
+	["Bottom Left"] = "좌측 하단",
+	["Bottom Right"] = "우측 하단",
 
 	-- Display options
 	["Padding"] = "패팅",
