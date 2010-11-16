@@ -74,7 +74,7 @@ Grid.L = {
 	["Font Shadow"] = "글꼴 그림자",
 	["Toggle the font drop shadow effect."] ="글꼴에 그림자 효과를 사용합니다.",
 	["Orientation of Frame"] = "프레임의 방향",
-	["Set frame orientation."] = "프레임의 방향을 설정합니다.",
+	["Set frame orientation."] = "생명력 결손량의 프레임 방향을 설정합니다.",
 	["Orientation of Text"] = "문자의 방향",
 	["Set frame text orientation."] = "프레임 문자의 방향을 설정합니다.",
 	["Vertical"] = "세로",
@@ -88,15 +88,15 @@ Grid.L = {
 	["Icon Cooldown Frame"] = "아이콘 재사용 창",
 	["Toggle center icon's cooldown frame."] = "중앙 아이콘에 재사용 창을 표시합니다.",
 
---	["Throttle Updates"] = "",
+	["Throttle Updates"] = "조절판 업데이트",
 --	["Throttle updates on group changes. This option may cause delays in updating frames, so you should only enable it if you're experiencing temporary freezes or lockups when people join or leave your group."] = "",
 
---	["Bar Options"] = "Leistenoptionen",
---	["Options related to bar indicators."] = "",
---	["Icon Options"] = "",
---	["Options related to icon indicators."] = "",
---	["Text Options"] = "",
---	["Options related to text indicators."] = "",
+	["Bar Options"] = "바 옵션",
+	["Options related to bar indicators."] = "바 지시기 관련 옵션을 설정합니다.",
+	["Icon Options"] = "아이콘 옵션",
+	["Options related to icon indicators."] = "아이콘 지시기 관련 옵션을 설정합니다.",
+	["Text Options"] = "문자 옵션",
+	["Options related to text indicators."] = "문자 지시기 관련 옵션을 설정합니다.",
 --}}}
 
 --{{{ GridLayout
@@ -138,8 +138,8 @@ Grid.L = {
 	["Right"] = "우측",
 	["Top Left"] = "좌측 상단",
 	["Top Right"] = "우측 상단",
-	["Bottom Left"] = "좌측 하단",
-	["Bottom Right"] = "우측 하단",
+	["Bottom Left"] = "좌측 상단",
+	["Bottom Right"] = "우측 상단",
 
 	-- Display options
 	["Padding"] = "패팅",
@@ -197,10 +197,10 @@ Grid.L = {
 
 --{{{ GridLayoutLayouts
 	["None"] = "없음",
-	["By Class 10"] = "10인 공격대",
-	["By Class 10 w/Pets"] = "10인 공격대, 직업별",
-	["By Class 25"] = "25인 공격대",
-	["By Class 25 w/Pets"] = "25인 공격대, 직업별",
+	["By Class 10"] = "10인 직업별",
+	["By Class 10 w/Pets"] = "10인 직업별, 소환수",
+	["By Class 25"] = "25인 직업별",
+	["By Class 25 w/Pets"] = "25인 직업별, 소환수",
 	["By Group 5"] = "5인 공격대",
 	["By Group 5 w/Pets"] = "5인 공격대, 소환수",
 	["By Group 10"] = "10인 공격대",
@@ -226,7 +226,7 @@ Grid.L = {
 
 --{{{ GridStatus
 	["Indicators"] = "지시기",
---	["Options for assigning statuses to indicators."] = "",
+	["Options for assigning statuses to indicators."] = "지시기를 위한 옵션을 설정합니다.",
 	["Status"] = "상태",
 	["Options for %s."] = "%s|1을;를; 위한 옵션을 설정합니다.",
 	["Reset class colors"] = "직업 색상 초기화",
@@ -296,8 +296,8 @@ Grid.L = {
 	["Incoming heals"] = "치유 받음",
 	["Ignore Self"] = "자신 무시",
 	["Ignore heals cast by you."] = "자신의 치유 시전은 무시합니다.",
---	["Minimum Value"] = "",
---	["Only show incoming heals greater than this amount."] = "",
+	["Minimum Value"] = "최소값",
+	["Only show incoming heals greater than this amount."] = "받는 치유가 이 값보다 클 경우만 표시합니다.",
 --}}}
 
 --{{{ GridStatusHealth
