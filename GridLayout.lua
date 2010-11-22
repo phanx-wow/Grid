@@ -465,6 +465,7 @@ if media then
 		width = "double",
 		type = "select",
 		values = media:HashTable("border"),
+		dialogControl = LibStub("LibSharedMediaWidgets-3.0", true) and "LSM30_Border" or nil,
 		get = function()
 			return GridLayout.db.profile.borderTexture
 		end,

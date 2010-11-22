@@ -1159,7 +1159,7 @@ if media then
 		order = 10, width = "double",
 		type = "select",
 		values = media:HashTable("font"),
-		dialogControl = hasMediaWidgets and "LSM30_Font",
+		dialogControl = hasMediaWidgets and "LSM30_Font" or nil,
 		get = function()
 			return GridFrame.db.profile.font
 		end,
@@ -1175,7 +1175,7 @@ if media then
 		order = 10, width = "double",
 		type = "select",
 		values = media:HashTable("statusbar"),
-		dialogControl = hasMediaWidgets and "LSM30_Statusbar",
+		dialogControl = hasMediaWidgets and "LSM30_Statusbar" or nil,
 		get = function()
 			return GridFrame.db.profile.texture
 		end,
