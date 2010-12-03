@@ -38,6 +38,20 @@ local function GridFrame_Initialize(self)
 	self:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
 end
 
+local function GridFrame_OnClearAllPoints(self)
+	-- print( self:GetName(), "ClearAllPoints" )
+	self.clearedPoints = true
+end
+
+local function GridFrame_OnSetPoint(self, p1, p, p2, x, y)
+	-- print( self:GetName(), self.clearedPoints and "CLEAR" or "CONFLICT", "SetPoint", p1 or "nil", type(p) == "table" and p.GetName and p:GetName() or "nil", p2 or "nil", x or "nil", y or "nil" )
+	if not self.clearedPoints and not InCombatLockdown() then
+		self:ClearAllPoints()
+		self:SetPoint(p1, p, p2, x, y)
+	end
+	self.clearedPoints = nil
+end
+
 ------------------------------------------------------------------------
 
 GridFrame.prototype = { }
@@ -192,6 +206,10 @@ function GridFrame:InitializeFrame(frame)
 
 	ClickCastFrames = ClickCastFrames or {}
 	ClickCastFrames[frame] = true
+
+	self.clearedPoints = true
+	hooksecurefunc(frame, "ClearAllPoints", GridFrame_OnClearAllPoints)
+	hooksecurefunc(frame, "SetPoint", GridFrame_OnSetPoint)
 
 	return frame
 end

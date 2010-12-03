@@ -69,9 +69,9 @@ function GridStatus.modulePrototype:InitializeOptions()
 	GridStatus:Debug("InitializeOptions", self.moduleName)
 	if not self.options then
 		self.options = {
-			type = "group",
 			name = self.menuName or self.moduleName,
 			desc = string.format(L["Options for %s."], self.moduleName),
+			type = "group",
 			args = {},
 		}
 	end

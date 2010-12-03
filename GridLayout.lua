@@ -44,8 +44,7 @@ function GridLayout:CreateHeader(isPetGroup)
 		header[k] = v
 	end
 
-	local template = ClickCastHeader and "ClickCastUnitTemplate,SecureUnitButtonTemplate" or "SecureUnitButtonTemplate"
-	header:SetAttribute("template", template)
+	header:SetAttribute("template", ClickCastHeader and "ClickCastUnitTemplate,SecureUnitButtonTemplate" or "SecureUnitButtonTemplate")
 
 	-- Fix for bug on the Blizz end when using SecureActionButtonTemplate with SecureGroupPetHeaderTemplate
 	-- http://forums.wowace.com/showpost.php?p=307869&postcount=3216
@@ -78,7 +77,7 @@ function GridLayout:CreateHeader(isPetGroup)
 	]])
 
 	header:Reset()
-	header:SetOrientation()
+	-- header:SetOrientation()
 
 	return header
 end
@@ -99,20 +98,23 @@ function GridLayout.prototype:Reset()
 	self:SetAttribute("groupingOrder", nil)
 	self:SetAttribute("maxColumns", nil)
 	self:SetAttribute("nameList", nil)
+	self:SetAttribute("point", nil)
 	self:SetAttribute("sortDir", nil)
 	self:SetAttribute("sortMethod", "NAME")
 	self:SetAttribute("startingIndex", nil)
 	self:SetAttribute("strictFiltering", nil)
 	self:SetAttribute("unitsPerColumn", nil)
+	self:SetAttribute("xOffset", nil)
+	self:SetAttribute("yOffset", nil)
 
 	self:UnregisterEvent("UNIT_NAME_UPDATE")
 end
 
 -- nil or false for vertical
 function GridLayout.prototype:SetOrientation(horizontal)
-	local layoutSettings = GridLayout.db.profile
-	local groupAnchor = layoutSettings.groupAnchor
-	local padding = layoutSettings.Padding
+	local p = GridLayout.db.profile
+	local groupAnchor = p.groupAnchor
+	local padding = p.Padding
 
 	local xOffset, yOffset, point
 
@@ -122,14 +124,14 @@ function GridLayout.prototype:SetOrientation(horizontal)
 			yOffset = 0
 			point = "LEFT"
 		else
-			xOffset = 0-padding
+			xOffset = -padding
 			yOffset = 0
 			point = "RIGHT"
 		end
 	else
 		if groupAnchor == "TOPLEFT" or groupAnchor == "TOPRIGHT" then
 			xOffset = 0
-			yOffset = 0-padding
+			yOffset = -padding
 			point = "TOP"
 		else
 			xOffset = 0
@@ -146,7 +148,7 @@ end
 -- return the number of visible units belonging to the GroupHeader
 function GridLayout.prototype:GetVisibleUnitCount()
 	local count = 0
-	while self:GetAttribute("child"..count) do
+	while self:GetAttribute("child" .. count) do
 		count = count + 1
 	end
 	return count
@@ -745,9 +747,9 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 
 	local relPoint, xMult, yMult = getRelativePoint(groupAnchor, horizontal)
 
+	layoutGroup:ClearAllPoints()
+	layoutGroup:SetParent(self.frame)
 	if groupNumber == 1 then
-		layoutGroup:ClearAllPoints()
-		layoutGroup:SetParent(self.frame)
 		layoutGroup:SetPoint(groupAnchor, self.frame, groupAnchor, spacing * xMult, spacing * yMult)
 	else
 		if horizontal then
@@ -755,12 +757,10 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 		else
 			yMult = 0
 		end
-
-		layoutGroup:ClearAllPoints()
 		layoutGroup:SetPoint(groupAnchor, previousGroup, relPoint, padding * xMult, padding * yMult)
 	end
 
-	self:Debug("Placing group", groupNumber, layoutGroup:GetName(), groupAnchor, previousGroup and previousGroup:GetName(), relPoint)
+	self:Debug("Placing group", groupNumber, layoutGroup:GetName(), groupNumber == 1 and self.frame:GetName() or groupAnchor, previousGroup and previousGroup:GetName(), relPoint)
 
 	previousGroup = layoutGroup
 end
@@ -808,7 +808,6 @@ function GridLayout:LoadLayout(layoutName)
 		return
 	end
 	local p = self.db.profile
-	local horizontal = p.horizontal
 	local layout = self.layoutSettings[layoutName]
 
 	self:Debug("LoadLayout", layoutName)
@@ -820,8 +819,7 @@ function GridLayout:LoadLayout(layoutName)
 		return
 	end
 
-	local groupsNeeded, groupsAvailable, petGroupsNeeded, petGroupsAvailable =
-		0, #self.layoutGroups, 0, #self.layoutPetGroups
+	local groupsNeeded, groupsAvailable, petGroupsNeeded, petGroupsAvailable = 0, #self.layoutGroups, 0, #self.layoutPetGroups
 
 	for _, l in ipairs(layout) do
 		if l.isPetGroup then
@@ -887,7 +885,7 @@ function GridLayout:LoadLayout(layoutName)
 			if attr == "unitsPerColumn" then
 				layoutGroup:SetAttribute("unitsPerColumn", value)
 				layoutGroup:SetAttribute("columnSpacing", p.Padding)
-				layoutGroup:SetAttribute("columnAnchorPoint",  getColumnAnchorPoint(p.groupAnchor, p.horizontal))
+				layoutGroup:SetAttribute("columnAnchorPoint", getColumnAnchorPoint(p.groupAnchor, p.horizontal))
 			elseif attr == "useOwnerUnit" then
 				-- related to fix for using SecureActionButtonTemplate, see GridLayout:CreateHeader()
 				if value == true then
@@ -906,15 +904,16 @@ function GridLayout:LoadLayout(layoutName)
 		local unitsPerColumn = layoutGroup:GetAttribute("unitsPerColumn") or 5
 		local startingIndex = layoutGroup:GetAttribute("startingIndex")
 		local maxUnits = maxColumns * unitsPerColumn
+		self:Debug("maxColumns", maxColumns, "unitsPerColumn", unitsPerColumn, "startingIndex", startingIndex, "maxUnits", maxUnits)
 		if not layoutGroup.UnitFramesCreated or layoutGroup.UnitFramesCreated < maxUnits then
 			layoutGroup.UnitFramesCreated = maxUnits
 			layoutGroup:Show()
-			layoutGroup:SetAttribute("startingIndex", - maxUnits + 1)
+			layoutGroup:SetAttribute("startingIndex", -maxUnits + 1)
 			layoutGroup:SetAttribute("startingIndex", startingIndex)
 		end
 
 		-- place groups
-		layoutGroup:SetOrientation(horizontal)
+		layoutGroup:SetOrientation(p.horizontal)
 		self:PlaceGroup(layoutGroup, i)
 		layoutGroup:Show()
 	end
@@ -1129,7 +1128,7 @@ SlashCmdList.GRIDLAYOUT = function(cmd)
 	if not width then return end
 	if not height then height = width end
 
-	print("/gridlayout", width, height)
+	GridLayout:Debug("/gridlayout", width, height)
 
 	GridLayout:FakeSize(width, height)
 end
