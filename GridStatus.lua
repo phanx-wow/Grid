@@ -462,7 +462,7 @@ end
 
 ------------------------------------------------------------------------
 
-function GridStatus:SendStatusGained(guid, status, priority, range, color, text, value, maxValue, texture, start, duration, stack)
+function GridStatus:SendStatusGained(guid, status, priority, range, color, text, value, maxValue, texture, start, duration, stack, texCoords)
 	self:Debug("GridStatus", "SendStatusGained", guid, status, text, value, maxValue)
 	if not guid then return end
 
@@ -475,6 +475,10 @@ function GridStatus:SendStatusGained(guid, status, priority, range, color, text,
 
 	if range and type(range) ~= "number" then
 		self:Debug("Range is not a number for", status)
+	end
+
+	if type(texture) == "string" and coords and type(coords) ~= "table" then
+		coords = nil
 	end
 
 	if text == nil then
@@ -493,18 +497,19 @@ function GridStatus:SendStatusGained(guid, status, priority, range, color, text,
 	cached = cache[guid][status]
 
 	-- if no changes were made, return rather than triggering an event
-	if cached and
-		cached.priority == priority and
-		cached.range == range and
-		cached.color == color and
-		cached.text == text and
-		cached.value == value and
-		cached.maxValue == maxValue and
-		cached.texture == texture and
-		cached.start == start and
-		cached.duration == duration and
-		cached.stack == stack then
-
+	if cached
+		and cached.priority == priority
+		and cached.range == range
+		and cached.color == color
+		and cached.text == text
+		and cached.value == value
+		and cached.maxValue == maxValue
+		and cached.texture == texture
+		and cached.start == start
+		and cached.duration == duration
+		and cached.stack == stack
+		and cached.texCoords == texCoords
+	then
 		return
 	end
 
@@ -519,8 +524,9 @@ function GridStatus:SendStatusGained(guid, status, priority, range, color, text,
 	cached.start = start
 	cached.duration = duration
 	cached.stack = stack
+	cached.texCoords = texCoords
 
-	self:SendMessage("Grid_StatusGained", guid, status, priority, range, color, text, value, maxValue, texture, start, duration, stack)
+	self:SendMessage("Grid_StatusGained", guid, status, priority, range, color, text, value, maxValue, texture, start, duration, stack, texCoords)
 end
 
 function GridStatus:SendStatusLost(guid, status)

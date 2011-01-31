@@ -5,12 +5,13 @@
 local _, Grid = ...
 local L = Grid.L
 
-local GridRange = Grid:GetModule("GridRange")
+local GridRange
+local GridStatus
 
 local media = LibStub("LibSharedMedia-3.0", true)
 if media then media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32") end
 
-local hasMediaWidgets = media and LibStub("AceGUISharedMediaWidgets-1.0", true)
+local hasMediaWidgets = media and LibStub("AceGUISharedMediaWidgets-3.0", true)
 
 local GridFrame = Grid:NewModule("GridFrame", "AceBucket-3.0", "AceTimer-3.0")
 
@@ -612,9 +613,14 @@ function GridFrame.prototype:PositionAllIndicators()
 end
 
 local COLOR_WHITE = { r = 1, g = 1, b = 1, a = 1 }
-function GridFrame.prototype:SetIndicator(indicator, color, text, value, maxValue, texture, start, duration, stack)
+local COORDS_FULL = { left = 0, right = 1, top = 0, bottom = 1 }
+
+function GridFrame.prototype:SetIndicator(indicator, color, text, value, maxValue, texture, start, duration, stack, texCoords)
 	if not color then
 		color = COLOR_WHITE
+	end
+	if texture and not texCoords then
+		texCoords = COORDS_FULL
 	end
 
 	if indicator == "border" then
@@ -660,6 +666,8 @@ function GridFrame.prototype:SetIndicator(indicator, color, text, value, maxValu
 			else
 				self.Icon:SetTexture(texture)
 			end
+
+			self.Icon:SetTexCoord(texCoords.left, texCoords.right, texCoords.top, texCoords.bottom)
 
 			if type(color) == "table" then
 				if not color.ignore then
@@ -730,7 +738,8 @@ function GridFrame.prototype:ClearIndicator(indicator)
 	elseif indicator == "healingBar" then
 		self:SetHealingBar(0)
 	elseif indicator == "icon" then
-		self.Icon:SetTexture(1,1,1,0)
+		self.Icon:SetTexture(1, 1, 1, 0)
+		self.Icon:SetTexCoord(0, 1, 0, 1)
 		self.IconText:SetText("")
 		self.IconText:SetTextColor(1, 1, 1, 1)
 		self.IconBG:Hide()
@@ -1216,6 +1225,9 @@ Grid.options.args["Indicators"] = {
 ------------------------------------------------------------------------
 
 function GridFrame:PostInitialize()
+	GridRange = Grid:GetModule("GridRange")
+	GridStatus = Grid:GetModule("GridStatus")
+
 	self.debugging = self.db.profile.debug
 
 	self.frames = {}
@@ -1401,7 +1413,11 @@ function GridFrame:UpdateIndicator(frame, indicator)
 			status.texture,
 			status.start,
 			status.duration,
-			status.stack)
+			status.stack,
+			status.x1,
+			status.x2,
+			status.y1,
+			status.y2)
 	else
 		-- self:Debug("Clearing indicator", indicator, "for", name)
 		frame:ClearIndicator(indicator)
@@ -1415,7 +1431,7 @@ function GridFrame:StatusForIndicator(unitid, guid, indicator)
 
 	-- self.statusmap[indicator][status]
 	for statusName, enabled in pairs(statusmap) do
-		local status = enabled and Grid:GetModule("GridStatus"):GetCachedStatus(guid, statusName)
+		local status = enabled and GridStatus:GetCachedStatus(guid, statusName)
 		if status then
 			local valid = true
 
