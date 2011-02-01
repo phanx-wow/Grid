@@ -6,7 +6,6 @@
 
 local _, Grid = ...
 local L = Grid.L
-local GridRange = Grid:GetModule("GridRange")
 local GridRoster = Grid:GetModule("GridRoster")
 
 local GridStatusRange = Grid:NewStatusModule("GridStatusRange", "AceTimer-3.0")
@@ -83,17 +82,17 @@ do
 	end
 end
 
+function GridStatusRange:UnitInRange(unitid)
+	if resSpell and UnitIsDead(unitid) then
+		return IsSpellInRange(resSpell, unitid)
+	else
+		return UnitInRange(unitid)
+	end
+end
+
 function GridStatusRange:RangeCheck()
 	for guid, unitid in GridRoster:IterateRoster() do
-		local inRange
-
-		if resSpell and UnitIsDead(unitid) then
-			inRange = IsSpellInRange(resSpell, unitid)
-		else
-			inRange = UnitInRange(unitid)
-		end
-
-		if inRange then
+		if self:UnitInRange(unitid) then
 			self.core:SendStatusLost(guid, status_name)
 		else
 			self.core:SendStatusGained(guid, status_name,

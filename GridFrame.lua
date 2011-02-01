@@ -5,7 +5,6 @@
 local _, Grid = ...
 local L = Grid.L
 
-local GridRange
 local GridStatus
 
 local media = LibStub("LibSharedMedia-3.0", true)
@@ -1225,7 +1224,6 @@ Grid.options.args["Indicators"] = {
 ------------------------------------------------------------------------
 
 function GridFrame:PostInitialize()
-	GridRange = Grid:GetModule("GridRange")
 	GridStatus = Grid:GetModule("GridStatus")
 
 	self.debugging = self.db.profile.debug
@@ -1470,11 +1468,15 @@ function GridFrame:StatusForIndicator(unitid, guid, indicator)
 	return topStatus
 end
 
+local GridStatusRange
 function GridFrame:UnitInRange(id, yrds)
 	if not id or not UnitExists(id) then return false end
 
-	local range = GridRange:GetUnitRange(id)
-	return range and yrds >= range
+	if not GridStatusRange then
+		GridStatusRange = Grid:GetModule("GridStatus"):GetModule("GridStatusRange")
+	end
+
+	return GridStatusRange and GridStatusRange:UnitInRange(id) or UnitInRange(id)
 end
 
 ------------------------------------------------------------------------
