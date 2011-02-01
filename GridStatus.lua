@@ -108,6 +108,7 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 					name = L["Enable"],
 					desc = string.format(L["Enable %s"], desc),
 					order = 10,
+					width = "full",
 					type = "toggle",
 					get = function()
 						return module.db.profile[status].enable
