@@ -1122,7 +1122,7 @@ end
 SLASH_GRIDLAYOUT1 = "/gridlayout"
 
 SlashCmdList.GRIDLAYOUT = function(cmd)
-	local width, height = cmd:match("^(%d+) ?(%d*)$")
+	local width, height = cmd:trim():match("^(%d+) ?(%d*)$")
 	width, height = tonumber(width), tonumber(height)
 
 	if not width then return end

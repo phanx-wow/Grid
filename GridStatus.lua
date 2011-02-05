@@ -475,11 +475,12 @@ function GridStatus:SendStatusGained(guid, status, priority, range, color, text,
 	end
 
 	if range and type(range) ~= "number" then
-		self:Debug("Range is not a number for", status)
+		self:Debug("range is not a number for", status)
 	end
 
-	if type(texture) == "string" and coords and type(coords) ~= "table" then
-		coords = nil
+	if type(texture) == "string" and texCoords and type(texCoords) ~= "table" then
+		self:Debug("texCoords is not a table for", status)
+		texCoords = nil
 	end
 
 	if text == nil then
@@ -497,11 +498,28 @@ function GridStatus:SendStatusGained(guid, status, priority, range, color, text,
 
 	cached = cache[guid][status]
 
+	local colorIdentical = true
+	if type(color) == "table" and type(cached.color) == "table" then
+		colorIdentical = cached.color.r == color.r
+			and cached.color.g == color.g
+			and cached.color.b == color.b
+			and cached.color.a == color.a
+			and cached.color.ignore == color.ignore
+	end
+
+	local texCoordsIdentical = true
+	if texCoords and type(cached.texCoords) == "table" then
+		texCoordsIdentical = cached.texCoords.left == texCoords.left
+			and cached.texCoords.right == texCoords.right
+			and cached.texCoords.top == texCoords.top
+			and cached.texCoords.bottom == texCoords.bottom
+	end
+
 	-- if no changes were made, return rather than triggering an event
 	if cached
 		and cached.priority == priority
 		and cached.range == range
-		and cached.color == color
+		and colorIdentical
 		and cached.text == text
 		and cached.value == value
 		and cached.maxValue == maxValue
@@ -509,7 +527,7 @@ function GridStatus:SendStatusGained(guid, status, priority, range, color, text,
 		and cached.start == start
 		and cached.duration == duration
 		and cached.stack == stack
-		and cached.texCoords == texCoords
+		and texCoordsIdentical
 	then
 		return
 	end
