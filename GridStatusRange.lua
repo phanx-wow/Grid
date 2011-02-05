@@ -31,11 +31,12 @@ local extraOptions = {
 		width = "double",
 		type = "range", min = 0.1, max = 5, step = 0.1,
 		get = function()
-			return GridStatusRange.db.profile.frequency
+			return GridStatusRange.db.profile.alert_range.frequency
 		end,
 		set = function(_, v)
-			GridStatusRange.db.profile.frequency = v
-			GridStatusRange:UpdateFrequency()
+			GridStatusRange.db.profile.alert_range.frequency = v
+			GridStatusRange:OnStatusDisable("alert_range")
+			GridStatusRange:OnStatusEnable("alert_range")
 		end,
 	},
 	text = {
