@@ -445,6 +445,8 @@ end
 --   keep track of each debuff type seen and information about the last debuff
 --   of that type seen.
 
+local texCoords = { left = 0.06, right = 0.94, top = 0.06, bottom = 0.94 }
+
 function GridStatusAuras:UnitGainedBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 	self:Debug("UnitGainedBuff", guid, class, name)
 
@@ -467,7 +469,8 @@ function GridStatusAuras:UnitGainedBuff(guid, class, name, rank, icon, count, de
 			icon,
 			start,
 			duration,
-			count)
+			count,
+			texCoords)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
@@ -517,7 +520,8 @@ function GridStatusAuras:UnitGainedPlayerBuff(guid, class, name, rank, icon, cou
 			icon,
 			start,
 			duration,
-			count)
+			count,
+			texCoords)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
@@ -565,7 +569,8 @@ function GridStatusAuras:UnitGainedDebuff(guid, class, name, rank, icon, count, 
 			icon,
 			start,
 			duration,
-			count)
+			count,
+			texCoords)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
@@ -600,7 +605,8 @@ function GridStatusAuras:UnitGainedDebuffType(guid, class, name, rank, icon, cou
 			icon,
 			start,
 			duration,
-			count)
+			count,
+			texCoords)
 	else
 		self.core:SendStatusLost(guid, status)
 	end

@@ -389,17 +389,16 @@ function GridFrame.prototype:SetIconSize(size, borderSize)
 		borderSize = GridFrame.db.profile.iconBorderSize
 	end
 
-	local backdrop = self.IconBG:GetBackdrop()
+	local r, g, b, a = self.IconBG:GetBackdropBorderColor()
 
+	local backdrop = self.IconBG:GetBackdrop()
 	backdrop.edgeSize = borderSize
 	backdrop.insets.left = borderSize
 	backdrop.insets.right = borderSize
 	backdrop.insets.top = borderSize
 	backdrop.insets.bottom = borderSize
-
-	local r, g, b, a = self.IconBG:GetBackdropBorderColor()
-
 	self.IconBG:SetBackdrop(backdrop)
+
 	if borderSize == 0 then
 		self.IconBG:SetBackdropBorderColor(0, 0, 0, 0)
 	else
@@ -1081,6 +1080,7 @@ GridFrame.options = {
 						GridFrame.db.profile.iconBorderSize = v
 						local iconSize = GridFrame.db.profile.iconSize
 						GridFrame:WithAllFrames(function(f) f:SetIconSize(iconSize, v) end)
+						GridFrame:UpdateAllFrames()
 					end,
 				},
 				["cooldown"] = {
