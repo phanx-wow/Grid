@@ -4,6 +4,8 @@
 
 ## Title: Grid
 ## Notes: A compact grid of party/raid unit frames.
+## Notes-esES: Cuadrícula compacta de celdas de unidad para tu grupo o banda.
+## Notes-esMX: Cuadrícula compacta de celdas de unidad para tu grupo o banda.
 ## Notes-zhCN: 小巧的轻量级模块化队伍/团队框架。
 ## Notes-zhTW: 精簡的團隊框架功能
 
@@ -14,7 +16,7 @@
 ## X-AceForum: 2525
 ## X-WoWI-ID: 5747
 
-## OptionalDeps: Ace3, LibDBIcon-1.0, LibDualSpec-1.0, LibGratuity-3.0, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, UTF8, Clique, SharedMedia
+## OptionalDeps: Ace3, LibDBIcon-1.0, LibDualSpec-1.0, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, UTF8, Clique, SharedMedia
 ## SavedVariables: GridDB
 
 #@no-lib-strip@
@@ -35,7 +37,6 @@ Libs\AceTimer-3.0\AceTimer-3.0.lua
 Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
 Libs\LibDualSpec-1.0\LibDualSpec-1.0.lua
-Libs\LibGratuity-3.0\LibGratuity-3.0.lua
 Libs\LibSharedMedia-3.0\LibSharedMedia-3.0.lua
 Libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
 #@end-no-lib-strip@
@@ -53,7 +54,6 @@ Locales\GridLocale-zhTW.lua
 
 GridCore.lua
 GridRoster.lua
-GridRange.lua
 GridLayout.lua
 GridLayoutLayouts.lua
 GridFrame.lua

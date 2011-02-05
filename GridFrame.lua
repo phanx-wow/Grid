@@ -1412,10 +1412,7 @@ function GridFrame:UpdateIndicator(frame, indicator)
 			status.start,
 			status.duration,
 			status.stack,
-			status.x1,
-			status.x2,
-			status.y1,
-			status.y2)
+			status.texCoords)
 	else
 		-- self:Debug("Clearing indicator", indicator, "for", name)
 		frame:ClearIndicator(indicator)
