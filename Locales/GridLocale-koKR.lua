@@ -89,7 +89,7 @@ Grid.L = {
 	["Toggle center icon's cooldown frame."] = "중앙 아이콘에 재사용 창을 표시합니다.",
 
 	["Throttle Updates"] = "조절판 업데이트",
---	["Throttle updates on group changes. This option may cause delays in updating frames, so you should only enable it if you're experiencing temporary freezes or lockups when people join or leave your group."] = "",
+	["Throttle updates on group changes. This option may cause delays in updating frames, so you should only enable it if you're experiencing temporary freezes or lockups when people join or leave your group."] = "그룹 변경에 대한 업데이트 시간(초)를 설정합니다.",
 
 	["Bar Options"] = "바 옵션",
 	["Options related to bar indicators."] = "바 지시기 관련 옵션을 설정합니다.",
@@ -148,11 +148,11 @@ Grid.L = {
 	["Adjust frame spacing."] = "창 간격을 조정합니다.",
 	["Scale"] = "크기",
 	["Adjust Grid scale."] = "Grid 크기를 조정합니다.",
-	["Border color"] = "테두리",
+	["Border color"] = "테두리 색상",
 	["Adjust border color and alpha."] = "테두리의 색상과 투명도를 조정합니다.",
 	["Border Texture"] = "테두리 무늬",
 	["Choose the layout border texture."] = "배치 테두리의 무늬를 선택합니다.",
-	["Background color"] = "배경",
+	["Background color"] = "배경 색상",
 	["Adjust background color and alpha."] = "배경의 색상과 투명도를 조정합니다.",
 	["Pet color"] = "소환수 색상",
 	["Set the color of pet units."] = "소환수 유닛의 색상을 설정합니다.",
@@ -332,7 +332,7 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatusRange
---	["Out of Range"] = "",
+	["Out of Range"] = "사정거리",
 	["Text"] = "문자",
 	["Text to display on text indicators"] = "문자 지시기 위에 표시할 문자.",
 	["Range"] = "거리",
