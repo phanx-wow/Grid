@@ -10,8 +10,6 @@ local GridStatus
 local media = LibStub("LibSharedMedia-3.0", true)
 if media then media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32") end
 
-local hasMediaWidgets = media and LibStub("AceGUISharedMediaWidgets-3.0", true)
-
 local GridFrame = Grid:NewModule("GridFrame", "AceBucket-3.0", "AceTimer-3.0")
 
 local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
@@ -1179,13 +1177,15 @@ GridFrame.options = {
 }
 
 if media then
+	local mediaWidgets = media and LibStub("AceGUISharedMediaWidgets-1.0", true)
+
 	GridFrame.options.args.text.args.font = {
 		name = L["Font"],
 		desc = L["Adjust the font settings"],
 		order = 10, width = "double",
 		type = "select",
 		values = media:HashTable("font"),
-		dialogControl = hasMediaWidgets and "LSM30_Font" or nil,
+		dialogControl = mediaWidgets and "LSM30_Font" or nil,
 		get = function()
 			return GridFrame.db.profile.font
 		end,
@@ -1201,7 +1201,7 @@ if media then
 		order = 10, width = "double",
 		type = "select",
 		values = media:HashTable("statusbar"),
-		dialogControl = hasMediaWidgets and "LSM30_Statusbar" or nil,
+		dialogControl = mediaWidgets and "LSM30_Statusbar" or nil,
 		get = function()
 			return GridFrame.db.profile.texture
 		end,

@@ -2,6 +2,8 @@
 
 **Comments are disabled.** If you need to report a problem, see the "How to report a bug in Grid" section below. If you have a general question, you can post in the [WowAce forum thread](http://forums.wowace.com/showthread.php?t=18716).
 
+**Alpha versions are development snapshots, and are not supported.** If you are not comfortable running unstable and untested code that may erase your settings or not work at all, do not use alpha versions. Stick with beta and release versions, which are actually tested prior to being tagged as "ready to go".
+
 ## **What is Grid?**
 
 **Grid is a party/raid unit frame addon.** A compact grid of units lets you select a group member quickly, while retaining a good overview of the whole group. Its aim is to display as much information as possible without overloading the user. It allows you to customize what information you see, and how that information is displayed.

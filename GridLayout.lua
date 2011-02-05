@@ -335,6 +335,18 @@ GridLayout.options = {
 				GridLayout:SetClamp()
 			end,
 		},
+		["hidetab"] = {
+			name = L["Hide tab"],
+			desc = L["Do not show the tab when Grid is unlocked."],
+			order = 95,
+			width = "double",
+			type = "toggle",
+			get = function() return GridLayout.db.profile.hideTab end,
+			set = function(_, v)
+				GridLayout.db.profile.hideTab = v
+				GridLayout:UpdateTabVisibility()
+			end,
+		},
 		["layoutanchor"] = {
 			name = L["Layout Anchor"],
 			desc = L["Sets where Grid is anchored relative to the screen."],
@@ -405,7 +417,7 @@ GridLayout.options = {
 			end,
 		},
 		["border"] = {
-			name = L["Border"],
+			name = L["Border color"],
 			desc = L["Adjust border color and alpha."],
 			order = 150,
 			width = "double",
@@ -421,7 +433,7 @@ GridLayout.options = {
 			end,
 		},
 		["background"] = {
-			name = L["Background"],
+			name = L["Background color"],
 			desc = L["Adjust background color and alpha."],
 			order = 160,
 			width = "double",
@@ -436,22 +448,10 @@ GridLayout.options = {
 				GridLayout:UpdateColor()
 			end,
 		},
-		["hidetab"] = {
-			name = L["Hide tab"],
-			desc = L["Do not show the tab when Grid is unlocked."],
-			order = 170,
-			width = "double",
-			type = "toggle",
-			get = function() return GridLayout.db.profile.hideTab end,
-			set = function(_, v)
-				GridLayout.db.profile.hideTab = v
-				GridLayout:UpdateTabVisibility()
-			end,
-		},
 		["reset"] = {
 			name = L["Reset Position"],
 			desc = L["Resets the layout frame's position and anchor."],
-			order = 500,
+			order = -1,
 			width = "double",
 			type = "execute",
 			func = function() GridLayout:ResetPosition() end,
@@ -460,14 +460,16 @@ GridLayout.options = {
 }
 
 if media then
-	GridLayout.options.args.border = {
+	local mediaWidgets = media and LibStub("AceGUISharedMediaWidgets-1.0", true)
+
+	GridLayout.options.args.borderTexture = {
 		name = L["Border Texture"],
 		desc = L["Choose the layout border texture."],
-		order = 165,
+		order = 145,
 		width = "double",
 		type = "select",
 		values = media:HashTable("border"),
-		dialogControl = LibStub("LibSharedMediaWidgets-3.0", true) and "LSM30_Border" or nil,
+		dialogControl = mediaWidgets and "LSM30_Border" or nil,
 		get = function()
 			return GridLayout.db.profile.borderTexture
 		end,
