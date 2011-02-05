@@ -148,11 +148,11 @@ Grid.L = {
 	["Adjust frame spacing."] = "调整框架空隙。",
 	["Scale"] = "大小比率",
 	["Adjust Grid scale."] = "调整框架大小比率。",
-	["Border"] = "外框",
+	["Border color"] = "外框",
 	["Adjust border color and alpha."] = "调整外框的颜色和透明度。",
 	["Border Texture"] = "外框材质",
 	["Choose the layout border texture."] = "选择外框材质布局。",
-	["Background"] = "背景",
+	["Background color"] = "背景",
 	["Adjust background color and alpha."] = "调整背景颜色和透明度。",
 	["Pet color"] = "宠物颜色",
 	["Set the color of pet units."] = "设定宠物的颜色。",
@@ -217,11 +217,6 @@ Grid.L = {
 --{{{ GridLDB
 --	["Click to toggle the frame lock."] = "",
 --	["Right-Click to open the options menu."] = "",
---}}}
-
---{{{ GridRange
-	-- used for getting spell range from tooltip
-	["(%d+) yd range"] = "(%d+)码射程", -- changed from 码距离 as per hehehillman (ticket #166)
 --}}}
 
 --{{{ GridStatus
@@ -337,13 +332,20 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatusRange
+--	["Out of Range"] = "",
+	["Text"] = "文字",
+	["Text to display on text indicators"] = "在文字提示器上显示文字",
 	["Range"] = "距离",
 	["Range check frequency"] = "距离检测的频率",
 	["Seconds between range checks"] = "多少秒检测一次距离",
+
+	["Range"] = "",
+	["Range check frequency"] = "",
+	["Seconds between range checks"] = "",
 	["More than %d yards away"] = "距离超过%d码",
 	["%d yards"] = "%d码",
-	["Text"] = "文字",
-	["Text to display on text indicators"] = "在文字提示器上显示文字",
+	["Text"] = "",
+	["Text to display on text indicators"] = "",
 	["<range>"] = "<距离>",
 --}}}
 

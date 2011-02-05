@@ -1,9 +1,9 @@
 --[[--------------------------------------------------------------------
 	GridLocale-esES.lua
-	Spanish (Español - EU) localization for Grid.
+	Spanish (Español) localization for Grid.
 ----------------------------------------------------------------------]]
 
-if GetLocale() ~= "esES" then return end
+if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 local _, Grid = ...
 Grid.L = {
 
@@ -148,11 +148,11 @@ Grid.L = {
 	["Adjust frame spacing."] = "Ajusta el espaciamiento de celdas.",
 	["Scale"] = "Escala",
 	["Adjust Grid scale."] = "Ajusta la escala de Grid.",
-	["Border"] = "Borde",
+	["Border color"] = "Color de borde",
 	["Adjust border color and alpha."] = "Ajusta el color de borde y la transparencia.",
 	["Border Texture"] = "Textura del borde",
 	["Choose the layout border texture."] = "Escoge el diseño de textura del borde.",
-	["Background"] = "Fondo",
+	["Background color"] = "Color de fondo",
 	["Adjust background color and alpha."] = "Ajusta el color de fondo y el Alfa",
 	["Pet color"] = "Color de mascota",
 	["Set the color of pet units."] = "Establece el color de las celdas de mascota.",
@@ -217,11 +217,6 @@ Grid.L = {
 --{{{ GridLDB
 	["Click to toggle the frame lock."] = "Click para bloquear/desbloquear el movimiento de Grid.",
 	["Right-Click to open the options menu."] = "Click derecho para abrir las opciones.",
---}}}
-
---{{{ GridRange
-	-- used for getting spell range from tooltip
-	["(%d+) yd range"] = "Alcance de (%d+) m",
 --}}}
 
 --{{{ GridStatus
@@ -337,14 +332,12 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatusRange
-	["Range"] = "Rango",
-	["Range check frequency"] = "Frecuencia de revisión de rango",
-	["Seconds between range checks"] = "Segundos entre revisión de rango",
-	["More than %d yards away"] = "Más de %d metros",
-	["%d yards"] = "%d metros",
+	["Out of Range"] = "Fuera de alcance",
 	["Text"] = "Texto",
 	["Text to display on text indicators"] = "Texto para mostrar en el indicador de texto",
-	["<range>"] = "<rango>",
+	["Range"] = "Rango",
+	["Range check frequency"] = "Frecuencia",
+	["Seconds between range checks"] = "Segundos entre revisión de rango",
 --}}}
 
 --{{{ GridStatusReadyCheck

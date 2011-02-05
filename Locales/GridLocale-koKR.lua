@@ -148,11 +148,11 @@ Grid.L = {
 	["Adjust frame spacing."] = "창 간격을 조정합니다.",
 	["Scale"] = "크기",
 	["Adjust Grid scale."] = "Grid 크기를 조정합니다.",
-	["Border"] = "테두리",
+	["Border color"] = "테두리",
 	["Adjust border color and alpha."] = "테두리의 색상과 투명도를 조정합니다.",
 	["Border Texture"] = "테두리 무늬",
 	["Choose the layout border texture."] = "배치 테두리의 무늬를 선택합니다.",
-	["Background"] = "배경",
+	["Background color"] = "배경",
 	["Adjust background color and alpha."] = "배경의 색상과 투명도를 조정합니다.",
 	["Pet color"] = "소환수 색상",
 	["Set the color of pet units."] = "소환수 유닛의 색상을 설정합니다.",
@@ -217,11 +217,6 @@ Grid.L = {
 --{{{ GridLDB
 	["Click to toggle the frame lock."] = "창을 잠그려면 왼쪽 버튼을 클릭하십시오.",
 	["Right-Click to open the options menu."] = "옵션 메뉴을 열려면 오른쪽 버튼을 클릭하십시오.",
---}}}
-
---{{{ GridRange
-	-- used for getting spell range from tooltip
-	["(%d+) yd range"] = "(%d+)미터",
 --}}}
 
 --{{{ GridStatus
@@ -337,14 +332,12 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatusRange
+--	["Out of Range"] = "",
+	["Text"] = "문자",
+	["Text to display on text indicators"] = "문자 지시기 위에 표시할 문자.",
 	["Range"] = "거리",
 	["Range check frequency"] = "거리 체크 빈도",
 	["Seconds between range checks"] = "거리 체크의 시간(초)를 설정합니다.",
-	["More than %d yards away"] = "%d 미터 이상",
-	["%d yards"] = "%d 미터",
-	["Text"] = "문자",
-	["Text to display on text indicators"] = "문자 지시기 위에 표시할 문자",
-	["<range>"] = "<범위>",
 --}}}
 
 --{{{ GridStatusReadyCheck

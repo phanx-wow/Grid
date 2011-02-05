@@ -148,11 +148,11 @@ Grid.L = {
 	["Adjust frame spacing."] = "調整外框架空間。",
 	["Scale"] = "縮放比例",
 	["Adjust Grid scale."] = "調整 Grid 縮放比例。",
-	["Border"] = "邊框",
+	["Border color"] = "邊框",
 	["Adjust border color and alpha."] = "調整邊框顏色與透明度。",
 	["Border Texture"] = "邊框材質",
 	["Choose the layout border texture."] = "選擇版面編排的邊框材質",
-	["Background"] = "背景",
+	["Background color"] = "背景",
 	["Adjust background color and alpha."] = "調整背景顏色與透明度。",
 	["Pet color"] = "寵物顏色",
 	["Set the color of pet units."] = "設定寵物使用的顏色",
@@ -217,11 +217,6 @@ Grid.L = {
 --{{{ GridLDB
 --	["Click to toggle the frame lock."] = "",
 --	["Right-Click to open the options menu."] = "",
---}}}
-
---{{{ GridRange
-	-- used for getting spell range from tooltip
-	["(%d+) yd range"] = "(%d+)碼距離",
 --}}}
 
 --{{{ GridStatus
@@ -337,14 +332,12 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatusRange
+	["Out of Range"] = "超出射程",
+	["Text"] = "文字",
+	["Text to display on text indicators"] = "顯示文字於文字提示器上",
 	["Range"] = "距離",
 	["Range check frequency"] = "距離檢測頻率",
 	["Seconds between range checks"] = "設定程式多少秒檢測一次距離",
-	["More than %d yards away"] = "距離超過%d碼",
-	["%d yards"] = "%d 碼",
-	["Text"] = "文字",
-	["Text to display on text indicators"] = "顯示文字於文字提示器上",
-	["<range>"] = "<距離>",
 --}}}
 
 --{{{ GridStatusReadyCheck

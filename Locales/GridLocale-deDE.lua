@@ -148,11 +148,11 @@ Grid.L = {
 	["Adjust frame spacing."] = "Abstand anpassen.",
 	["Scale"] = "Skalierung",
 	["Adjust Grid scale."] = "Skalierung anpassen.",
-	["Border"] = "Rand",
+	["Border color"] = "Rand",
 	["Adjust border color and alpha."] = "Anpassen der Rahmenfarbe und Transparenz.",
 	["Border Texture"] = "Randtextur",
 	["Choose the layout border texture."] = "Layout Randtextur auswählen.",
-	["Background"] = "Hintergrund",
+	["Background color"] = "Hintergrund",
 	["Adjust background color and alpha."] = "Anpassen der Hintergrundfarbe und Transparenz.",
 	["Pet color"] = "Begleiterfarbe",
 	["Set the color of pet units."] = "Legt die Begleiterfarbe fest.",
@@ -217,11 +217,6 @@ Grid.L = {
 --{{{ GridLDB
 	["Click to toggle the frame lock."] = "Linksklick um Grid zu entsperren.",
 	["Right-Click to open the options menu."] = "Rechtsklick für Optionen.",
---}}}
-
---{{{ GridRange
-	-- used for getting spell range from tooltip
-	["(%d+) yd range"] = "(%d+) Meter Reichweite",
 --}}}
 
 --{{{ GridStatus
@@ -337,14 +332,12 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatusRange
-	["Range"] = "Entfernung",
-	["Range check frequency"] = "Häufigkeit der Reichweitenmessung",
-	["Seconds between range checks"] = "Sekunden zwischen den Reichweitenmessungen",
-	["More than %d yards away"] = "Mehr als %d meter entfernt",
-	["%d yards"] = "%d meter",
+	["Out of Range"] = "Außer Reichweite",
 	["Text"] = "Text",
 	["Text to display on text indicators"] = "Text, der in einem Textindikator angezeigt wird",
-	["<range>"] = "<entfernung>",
+	["Range"] = "Rango",
+	["Range check frequency"] = "Häufigkeit der Reichweitenmessung",
+	["Seconds between range checks"] = "Sekunden zwischen den Reichweitenmessungen",
 --}}}
 
 --{{{ GridStatusReadyCheck

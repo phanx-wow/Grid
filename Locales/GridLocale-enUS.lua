@@ -12,8 +12,6 @@ Grid.L = {
 	["Module debugging menu."] = "",
 	["Debug"] = "",
 	["Toggle debugging for %s."] = "",
-	["Configure"] = "",
-	["Configure Grid"] = "",
 	["Hide minimap icon"] = "",
 --}}}
 
@@ -50,9 +48,6 @@ Grid.L = {
 	["Statuses"] = "",
 	["Toggle status display."] = "",
 
-	-- Advanced options
-	["Advanced"] = "",
-	["Advanced options."] = "",
 	["Enable %s indicator"] = "",
 	["Toggle the %s indicator."] = "",
 	["Frame Width"] = "",
@@ -92,6 +87,16 @@ Grid.L = {
 	["Toggle center icon's stack count text."] = "",
 	["Icon Cooldown Frame"] = "",
 	["Toggle center icon's cooldown frame."] = "",
+
+	["Throttle Updates"] = "",
+	["Throttle updates on group changes. This option may cause delays in updating frames, so you should only enable it if you're experiencing temporary freezes or lockups when people join or leave your group."] = "",
+
+	["Bar Options"] = "Leistenoptionen",
+	["Options related to bar indicators."] = "",
+	["Icon Options"] = "",
+	["Options related to icon indicators."] = "",
+	["Text Options"] = "",
+	["Options related to text indicators."] = "",
 --}}}
 
 --{{{ GridLayout
@@ -143,11 +148,11 @@ Grid.L = {
 	["Adjust frame spacing."] = "",
 	["Scale"] = "",
 	["Adjust Grid scale."] = "",
-	["Border"] = "",
+	["Border color"] = "",
 	["Adjust border color and alpha."] = "",
 	["Border Texture"] = "",
 	["Choose the layout border texture."] = "",
-	["Background"] = "",
+	["Background color"] = "",
 	["Adjust background color and alpha."] = "",
 	["Pet color"] = "",
 	["Set the color of pet units."] = "",
@@ -214,13 +219,9 @@ Grid.L = {
 	["Right-Click to open the options menu."] = "",
 --}}}
 
---{{{ GridRange
-	-- used for getting spell range from tooltip
-	["(%d+) yd range"] = "",
---}}}
-
 --{{{ GridStatus
 	["Indicators"] = "",
+	["Options for assigning statuses to indicators."] = "",
 	["Status"] = "",
 	["Options for %s."] = "",
 	["Reset class colors"] = "",
@@ -331,14 +332,12 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatusRange
+	["Out of Range"] = "",
+	["Text"] = "",
+	["Text to display on text indicators"] = "",
 	["Range"] = "",
 	["Range check frequency"] = "",
 	["Seconds between range checks"] = "",
-	["More than %d yards away"] = "",
-	["%d yards"] = "",
-	["Text"] = "",
-	["Text to display on text indicators"] = "",
-	["<range>"] = "",
 --}}}
 
 --{{{ GridStatusReadyCheck

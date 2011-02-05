@@ -148,11 +148,11 @@ Grid.L = {
 	["Adjust frame spacing."] = "Modifie l'espacement entre les cellules et la bordure.",
 	["Scale"] = "Échelle",
 	["Adjust Grid scale."] = "Modifie l'échelle de Grid.",
-	["Border"] = "Bordure",
+	["Border color"] = "Bordure",
 	["Adjust border color and alpha."] = "Modifie la transparence et la couleur de la bordure.",
 	["Border Texture"] = "Texture de la bordure",
 	["Choose the layout border texture."] = "Détermine la disposition de la texture de la bordure",
-	["Background"] = "Arrière-plan",
+	["Background color"] = "Arrière-plan",
 	["Adjust background color and alpha."] = "Modifie la transparence et la couleur de l'arrière-plan.",
 	["Pet color"] = "Couleur des familiers",
 	["Set the color of pet units."] = "Ajuster la couleur des familiers",
@@ -217,11 +217,6 @@ Grid.L = {
 --{{{ GridLDB
 	["Click to toggle the frame lock."] = "Clic gauche pour vérouiller/dévérouiller la grille.",
 	["Right-Click to open the options menu."] = "Clic droit pour afficher la fenêtre d'options.",
---}}}
-
---{{{ GridRange
-	-- used for getting spell range from tooltip
-	["(%d+) yd range"] = "(%d+) m de portée",
 --}}}
 
 --{{{ GridStatus
@@ -337,14 +332,12 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatusRange
+	["Out of Range"] = "Hors de portée",
+	["Text"] = "Texte",
+	["Text to display on text indicators"] = "Le texte à afficher sur les indicateurs textuels.",
 	["Range"] = "Portée",
 	["Range check frequency"] = "Fréquence des vérifications",
 	["Seconds between range checks"] = "Le nombre de secondes entre chaque vérification de portée.",
-	["More than %d yards away"] = "À plus de %d mètres",
-	["%d yards"] = "%d mètres",
-	["Text"] = "Texte",
-	["Text to display on text indicators"] = "Le texte à afficher sur les indicateurs textuels.",
-	["<range>"] = "<portée>",
 --}}}
 
 --{{{ GridStatusReadyCheck

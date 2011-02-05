@@ -12,8 +12,6 @@ Grid.L = {
 	["Module debugging menu."] = "Меню модуля отладки",
 	["Debug"] = "Отладка",
 	["Toggle debugging for %s."] = "Показать отладку для  %s.",
-	["Configure"] = "Настройка",
-	["Configure Grid"] = "Настройка Gridа",
 	["Hide minimap icon"] = "Скрыть иконку на миникарте",
 --}}}
 
@@ -50,9 +48,6 @@ Grid.L = {
 	["Statuses"] = "Статусы",
 	["Toggle status display."] = "Переключить статус на дисплее.",
 
-	-- Advanced options
---["Advanced"] = "Дополнительно",
---["Advanced options."] = "Дополнительные настройки.",
 	["Enable %s indicator"] = "Включить %s индикатор",
 	["Toggle the %s indicator."] = "Показать %s индикатор.",
 	["Frame Width"] = "Ширина Фреймов",
@@ -93,7 +88,7 @@ Grid.L = {
 	["Icon Cooldown Frame"] = "Фрейм перерыва (cooldown) значка",
 	["Toggle center icon's cooldown frame."] = "Показывать фрейм перерыва значка в центре",
 --}}}
-	
+
 --	["Throttle Updates"] = "",
 --	["Throttle updates on group changes. This option may cause delays in updating frames, so you should only enable it if you're experiencing temporary freezes or lockups when people join or leave your group."] = "",
 
@@ -103,7 +98,7 @@ Grid.L = {
 	["Options related to icon indicators."] = "Настройки связанные с индикатором иконки.",
 	["Text Options"] = "Настройки текста",
 	["Options related to text indicators."] = "Настройки связанные с индикатором текста.",
-	
+
 --{{{ GridLayout
 	["Layout"] = "Расположение",
 	["Options for GridLayout."] = "Опции для GridLayout",
@@ -153,11 +148,11 @@ Grid.L = {
 	["Adjust frame spacing."] = "Настроить интервалы между фреймами",
 	["Scale"] = "Масштаб",
 	["Adjust Grid scale."] = "Настроиь масштаб Grid",
-	["Border"] = "Граница",
+	["Border color"] = "Граница",
 	["Adjust border color and alpha."] = "Настроить цвет границы и прозрачность",
 	["Border Texture"] = "Текстуры границы",
 	["Choose the layout border texture."] = "Выбор текстуры границы.",
-	["Background"] = "Фон",
+	["Background color"] = "Фон",
 	["Adjust background color and alpha."] = "Настроить цвет фона и прозрачность",
 	["Pet color"] = "Цвет питомцев",
 	["Set the color of pet units."] = "Установить цвет питомцев.",
@@ -222,11 +217,6 @@ Grid.L = {
 --{{{ GridLDB
 	["Click to toggle the frame lock."] = "Клик - вкл/выкл фиксацию фрейма.",
 	["Right-Click to open the options menu."] = "Правый-Клик - открывает окно настроек.",
---}}}
-
---{{{ GridRange
-	-- used for getting spell range from tooltip
-	["(%d+) yd range"] = "Радиус действия: (%d+) м",
 --}}}
 
 --{{{ GridStatus
@@ -342,14 +332,12 @@ Grid.L = {
 --}}}
 
 --{{{ GridStatusRange
+	["Out of Range"] = "Слишком далеко",
+	["Text"] = "Текст",
+	["Text to display on text indicators"] = "Отображаемый текст в индикаторе",
 	["Range"] = "Расстояние",
 	["Range check frequency"] = "Частота проверки растояния",
 	["Seconds between range checks"] = "Частота проверки в секундах",
-	["More than %d yards away"] = "Дальше чем %d м.",
-	["%d yards"] = "%d м.",
-	["Text"] = "Текст",
-	["Text to display on text indicators"] = "Отображаемый текст в индикаторе",
-	["<range>"] = "<range>",
 --}}}
 
 --{{{ GridStatusReadyCheck

@@ -15,7 +15,7 @@ GridStatusRange.defaultDB = {
 	debug = false,
 	alert_range = {
 		enable = true,
-		text = L["OOR"],
+		text = L["Range"],
 		color = { r = 0.8, g = 0.2, b = 0.2, a = 0.5 },
 		priority = 84,
 		range = false,
@@ -54,7 +54,7 @@ local extraOptions = {
 }
 
 function GridStatusRange:PostInitialize()
-	self:RegisterStatus("alert_range", L["Out Of Range"], extraOptions, true)
+	self:RegisterStatus("alert_range", L["Out of Range"], extraOptions, true)
 end
 
 function GridStatusRange:OnStatusEnable(status)
