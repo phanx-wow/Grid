@@ -17,9 +17,9 @@ GridStatusRange.defaultDB = {
 		enable = true,
 		text = L["Range"],
 		color = { r = 0.8, g = 0.2, b = 0.2, a = 0.5 },
-		priority = 84,
+		priority = 80,
 		range = false,
-		frequency = 0.5,
+		frequency = 0.2,
 	}
 }
 
@@ -80,10 +80,10 @@ do
 end
 
 function GridStatusRange:UnitInRange(unit)
-	if resSpell and UnitIsDead(unit) and not UnitIsDead("player") then
+	if UnitIsUnit(unit, "player") then
+		return true
+	elseif resSpell and UnitIsDead(unit) and not UnitIsDead("player") then
 		return IsSpellInRange(resSpell, unit)
-	elseif not UnitCanAssist("player", unit) then
-		return CheckInteractDistance(unit, 4)
 	else
 		return UnitInRange(unit)
 	end
@@ -93,13 +93,13 @@ function GridStatusRange:CheckRange()
 	local settings = self.db.profile.alert_range
 	for guid, unit in GridRoster:IterateRoster() do
 		if not self:UnitInRange(unit) then
+			self.core:SendStatusLost(guid, "alert_range")
+		else
 			self.core:SendStatusGained(guid, "alert_range",
 				settings.priority,
 				false,
 				settings.color,
 				settings.text)
-		else
-			self.core:SendStatusLost(guid, "alert_range")
 		end
 	end
 end
