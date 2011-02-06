@@ -92,7 +92,7 @@ end
 function GridStatusRange:CheckRange()
 	local settings = self.db.profile.alert_range
 	for guid, unit in GridRoster:IterateRoster() do
-		if self:UnitInRange(unit) then
+		if not self:UnitInRange(unit) then
 			self.core:SendStatusGained(guid, "alert_range",
 				settings.priority,
 				false,
