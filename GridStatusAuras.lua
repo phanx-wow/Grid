@@ -328,22 +328,23 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 	return auraOptions
 end
 
+local hasAuraEditBox = type(LibStub("AceGUI-3.0").WidgetVersions["Aura_EditBox"]) == "number"
 function GridStatusAuras:CreateAddRemoveOptions()
 	self.options.args["add_buff"] = {
-		type = "input", width = "double",
 		name = L["Add new Buff"],
 		desc = L["Adds a new buff to the status module"],
+		width = "double",
+		type = "input", usage = L["<buff name>"], dialogControl = hasAuraEditBox and "Aura_EditBox",
 		get = false,
-		usage = L["<buff name>"],
 		set = function(_, v) self:AddAura(v, true) end,
 		order = 11
 	}
 	self.options.args["add_debuff"] = {
-		type = "input", width = "double",
 		name = L["Add new Debuff"],
 		desc = L["Adds a new debuff to the status module"],
+		width = "double",
+		type = "input", usage = L["<debuff name>"], dialogControl = hasAuraEditBox and "Aura_EditBox",
 		get = false,
-		usage = L["<debuff name>"],
 		set = function(_, v) self:AddAura(v, false) end,
 		order = 31
 	}

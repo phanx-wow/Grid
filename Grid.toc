@@ -16,7 +16,7 @@
 ## X-AceForum: 2525
 ## X-WoWI-ID: 5747
 
-## OptionalDeps: Ace3, LibDBIcon-1.0, LibDualSpec-1.0, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, UTF8, Clique, SharedMedia
+## OptionalDeps: Ace3, LibDBIcon-1.0, LibDualSpec-1.0, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, AceGUI-3.0-Spell-EditBox, UTF8, Clique, SharedMedia
 ## SavedVariables: GridDB
 
 #@no-lib-strip@
@@ -39,6 +39,7 @@ Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
 Libs\LibDualSpec-1.0\LibDualSpec-1.0.lua
 Libs\LibSharedMedia-3.0\LibSharedMedia-3.0.lua
 Libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
+Libs\AceGUI-3.0-Spell-EditBox\AceGUI-3.0-Spell-EditBox.xml
 #@end-no-lib-strip@
 
 Libs\UTF8\utf8.lua
