@@ -1,55 +1,50 @@
-## **Need help?**
+== **Need help?
 
-**Comments are disabled.** If you need to report a problem, see the "How to report a bug in Grid" section below. If you have a general question, you can post in the [WowAce forum thread](http://forums.wowace.com/showthread.php?t=18716).
+**Comments are closed.** If you need to report a problem, see the "How to report a bug in Grid" section below. If you have a general question or comment, you can post in the [[http://forums.wowace.com/showthread.php?t=18716|WowAce forum thread]].
 
-**Alpha versions are development snapshots, and are not supported.** If you are not comfortable running unstable and untested code that may erase your settings or not work at all, do not use alpha versions. Stick with beta and release versions, which are actually tested prior to being tagged as "ready to go".
 
-## **What is Grid?**
+== **What is Grid?**
 
-**Grid is a party/raid unit frame addon.** A compact grid of units lets you select a group member quickly, while retaining a good overview of the whole group. Its aim is to display as much information as possible without overloading the user. It allows you to customize what information you see, and how that information is displayed.
+**Grid is a party/raid unit frame addon.** The compact grid of units lets you select a group member quickly, while retaining a good overview of the whole group. Its aim is to display as much information as possible without overloading the user. It allows you to customize what information you see, and how that information is displayed.
 
 Type "/grid" to open the configuration UI, or right-click the minimap button or DataBroker launcher.
 
-Grid includes status modules for health, mana, incoming heals, aggro/threat, buffs and debuffs, range, and ready checks. Statuses can be displayed on any of two center texts, a center icon, the frame border, the frame color, the frame opacity, and a colored square in each of the four corners. More statuses, indicators, and features can be added by installing any of the many [third-party plugins](http://www.wowace.com/addons/grid/pages/list-of-grid-plugins/) available.
+By default, Grid includes status modules for health, mana, incoming heals, aggro/threat, buffs and debuffs, range, and ready checks. Statuses can be displayed on any of two center texts, a center icon, the frame border, the frame color, the frame opacity, and a colored square in each of the four corners. More statuses, indicators, and features can be added by installing any of the many [[http://www.wowace.com/addons/grid/pages/list-of-grid-plugins/|third-party plugins]] available.
 
-Due to its flexible design, Grid has a fairly daunting configuration menu. We recommend taking a few minutes to look through the configuration and familiarize yourself with the options available to you. There is also a small [User's Guide](http://www.wowace.com/projects/grid/pages/users-guide/) which you may find helpful, and a [forum thread](http://forums.wowace.com/showthread.php?t=18716) for discussion.
-
-
-## **Known issues in Patch 4.0.1**
-
-Please don't submit new bug reports about these issues. We already know about them; that's why they're on this list!
-
-#### **Incoming heals often show inaccurate values, or no values.**
-
-It's a Blizzard bug, not a Grid bug. Incoming heal data is now retreived from the game client, and does not require everyone in your group to install a third-party library to monitor and communicate healing spell casts. However, it's somewhat buggy at the moment. Presumably Blizzard is still working on it, but if you have questions/complaints, post them on the Blizzard forums, not here.
-
-If you're not seeing any incoming heals, check the Minimum Value setting for the Incoming Heals status, and make sure it's not set too high for your level and gear.
-
-#### **Incoming heals include HoT ticks.**
-
-This is by Blizzard design, and is out of Grid's control. Use the Minimum Value setting for the Incoming Heals status to hide smaller amounts of healing, such as HoT ticks.
-
-#### **Plugins won't work without an update.**
-
-Grid no longer uses the outdated and unsupported Ace2 framework. All plugins will need to be updated. ([more info](http://forums.wowace.com/showpost.php?p=306954&postcount=3126))
+Due to its flexible design, Grid has a fairly daunting configuration menu. We recommend taking a few minutes to look through the configuration and familiarize yourself with the options available to you. There is also a small [[http://www.wowace.com/projects/grid/pages/users-guide/|User's Guide]] which you may find helpful, and a [[http://forums.wowace.com/showthread.php?t=18716|forum thread]] for discussion.
 
 
-## **How to report a bug in Grid**
+== **How to report a bug in Grid**
 
 Before reporting a bug, please:
 
-1. Double-check that you have the latest version of Grid.
-2. Disable all other addons (including Grid plugins) and see if the problem still happens.
-3. Enable "Display Lua Errors" under Interface Options > Help, or install an error handling addon like [BugSack](http://www.wowinterface.com/downloads/info5995-BugSack.html).
+# Double-check that you have the latest Release or Beta version of Grid.
+# Disable all other addons (//including// all Grid plugins) and see if the problem still happens.
+# Enable "Display Lua Errors" under Interface Options > Help, or install an error-catching addon like [[http://www.wowinterface.com/downloads/info5995-BugSack.html|BugSack]].
 
-Then, [submit a bug report](http://www.wowace.com/addons/grid/tickets/?status=+) in the ticket tracker. Be sure to include as much of the information requested in the ticket template as you can.
-
-Finally, remember to check on your ticket after a few days. If a ticket is waiting on a response from you for more than 10 days, we will assume you've solved the problem yourself, and close your ticket.
-
-*If you're having a problem with a plugin, report it to the plugin's author, not to us! Tickets posted here about plugins will be deleted.*
+Then, [[http://www.wowace.com/addons/grid/tickets/?status=+|submit a bug report]] in the ticket tracker. Check for existing tickets about your bug first, and fill in as much of the requested information in the ticket template as you can. If you didn't try something, or don't understand a question, please say so, and don't just make something up. Finally, remember to check back on your ticket after a few days in case we need more information from you.
 
 
-## **Credits**
+== **Known issues as of Patch 4.0.6**
+
+Please don't submit new bug reports about these issues. We already know about them; that's why they're on this list!
+
+; **I'm using version r1234 and it's broken!**
+: Version numbers that follow the "r1234" pattern indicate //Alpha versions//. These versions are snapshots of the current development process, and may be unstable, may not work at all, and may cause you to lose your settings. //No support// is provided for Alpha versions. If you wish to follow the development process, feel free to check the [[http://forums.wowace.com/showthread.php?t=18716|forum thread]]. If you are not comfortable running //experimental and often untested// code, please stick with Release and Beta versions, whose numbers follow the "4.0.3.1234" or "4.0.3.1234-beta" pattern.
+
+; **The Frame tab in the options window is broken!**
+: This is not a bug in Grid. This is caused by running outdated plugins. Ask the plugin author to update, or temporarily disable the plugin while you change settings in the Frame tab.
+
+; **Groups are sometimes not aligned correctly.**
+: Please see [[http://wow.curseforge.com/addons/grid/tickets/447-groups-not-correctly-aligned/|this ticket]] and post a comment with **(a)** the name of the layout you are using, **(b)** the current size and type of your group, **(c)** whether you have the Horizontal Groups option checked, **(d)** what value you have selected for the Group Anchor setting, **(e)** what value you have selected for the Layout Anchor setting, and **(f)** a detailed description of which groups are out of alignment, or a screenshot.
+
+; **Incoming heals aren't always accurate, and include HoT ticks.**
+: Incoming heal values now come from the game client itself, instead of requiring everyone in your group to install a third-party library to communicate about their healing spells. Grid has no control over the accuracy of incoming heal values; feel free to report such issues to Blizzard.
+: Grid also has no way to filter out HoT ticks specifically. Use the Minimum Value setting for the Incoming Heals status to hide smaller amounts of healing, such as HoT ticks.
+: If you don't see any incoming heals at all, check the Minimum Value setting and make sure it's set appropriately for your level and gear.
+
+
+== **Credits**
 
 * Pastamancer: core, complete conversion to OO, modules
 * Maia: initial concept, UI design, status modules
