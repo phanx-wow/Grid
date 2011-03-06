@@ -2,22 +2,53 @@
 	GridCore.lua
 ----------------------------------------------------------------------]]
 
-local _, Grid = ...
+local GRID, Grid = ...
+_G.Grid = LibStub("AceAddon-3.0"):NewAddon(Grid, GRID, "AceConsole-3.0", "AceEvent-3.0")
 
 ------------------------------------------------------------------------
 
-if not Grid.L then Grid.L = { } end
-
-local L = setmetatable(Grid.L, {
+local LOCALE = GetLocale()
+local L = setmetatable({ }, {
 	__index = function(t, k)
 		t[k] = k
 		return k
 	end
 })
+Grid.L, Grid.LOCALE = L, LOCALE
 
-------------------------------------------------------------------------
+if Grid.LOCALE == "deDE" then
 
-_G.Grid = LibStub("AceAddon-3.0"):NewAddon(Grid, "Grid", "AceConsole-3.0", "AceEvent-3.0")
+-- @localization(locale="deDE", format="lua_additive_table", table-name="	L", namespace="GridCore")@
+
+elseif Grid.LOCALE == "deDE" then
+
+-- @localization(locale="esES", format="lua_additive_table", table-name="	L", namespace="GridCore")@
+
+elseif Grid.LOCALE == "esMX" then
+
+-- @localization(locale="esMX", format="lua_additive_table", table-name="	L", namespace="GridCore")@
+
+elseif Grid.LOCALE == "frFR" then
+
+-- @localization(locale="frFR", format="lua_additive_table", table-name="	L", namespace="GridCore")@
+
+elseif Grid.LOCALE == "ruRU" then
+
+-- @localization(locale="ruRU", format="lua_additive_table", table-name="	L", namespace="GridCore")@
+
+elseif Grid.LOCALE == "koKR" then
+
+-- @localization(locale="koKR", format="lua_additive_table", table-name="	L", namespace="GridCore")@
+
+elseif Grid.LOCALE == "zhCN" then
+
+-- @localization(locale="zhCN", format="lua_additive_table", table-name="	L", namespace="GridCore")@
+
+elseif Grid.LOCALE == "zhTW" then
+
+-- @localization(locale="zhTW", format="lua_additive_table", table-name="	L", namespace="GridCore")@
+
+end
 
 ------------------------------------------------------------------------
 
