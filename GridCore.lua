@@ -18,35 +18,35 @@ Grid.L, Grid.LOCALE = L, LOCALE
 
 if Grid.LOCALE == "deDE" then
 
---@localization(locale="deDE", format="lua_additive_table", table-name="	L", namespace="GridCore")@
+--@localization(locale="deDE", format="lua_additive_table", namespace="GridCore")@
 
 elseif Grid.LOCALE == "deDE" then
 
---@localization(locale="esES", format="lua_additive_table", table-name="	L", namespace="GridCore")@
+--@localization(locale="esES", format="lua_additive_table", namespace="GridCore")@
 
 elseif Grid.LOCALE == "esMX" then
 
---@localization(locale="esMX", format="lua_additive_table", table-name="	L", namespace="GridCore")@
+--@localization(locale="esMX", format="lua_additive_table", namespace="GridCore")@
 
 elseif Grid.LOCALE == "frFR" then
 
---@localization(locale="frFR", format="lua_additive_table", table-name="	L", namespace="GridCore")@
+--@localization(locale="frFR", format="lua_additive_table", namespace="GridCore")@
 
 elseif Grid.LOCALE == "ruRU" then
 
---@localization(locale="ruRU", format="lua_additive_table", table-name="	L", namespace="GridCore")@
+--@localization(locale="ruRU", format="lua_additive_table", namespace="GridCore")@
 
 elseif Grid.LOCALE == "koKR" then
 
---@localization(locale="koKR", format="lua_additive_table", table-name="	L", namespace="GridCore")@
+--@localization(locale="koKR", format="lua_additive_table", namespace="GridCore")@
 
 elseif Grid.LOCALE == "zhCN" then
 
---@localization(locale="zhCN", format="lua_additive_table", table-name="	L", namespace="GridCore")@
+--@localization(locale="zhCN", format="lua_additive_table", namespace="GridCore")@
 
 elseif Grid.LOCALE == "zhTW" then
 
---@localization(locale="zhTW", format="lua_additive_table", table-name="	L", namespace="GridCore")@
+--@localization(locale="zhTW", format="lua_additive_table", namespace="GridCore")@
 
 end
 
