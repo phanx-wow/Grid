@@ -3,32 +3,12 @@
 ----------------------------------------------------------------------]]
 
 local GRID, Grid = ...
-
-local L, LOCALE = Grid.L, Grid.LOCALE
-if LOCALE == "deDE" then
---@localization(locale="deDE", namespace="GridLayout", format="lua_additive_table")@
-elseif LOCALE == "deDE" then
---@localization(locale="esES", namespace="GridLayout", format="lua_additive_table")@
-elseif LOCALE == "esMX" then
---@localization(locale="esMX", namespace="GridLayout", format="lua_additive_table")@
-elseif LOCALE == "frFR" then
---@localization(locale="frFR", namespace="GridLayout", format="lua_additive_table")@
-elseif LOCALE == "ruRU" then
---@localization(locale="ruRU", namespace="GridLayout", format="lua_additive_table")@
-elseif LOCALE == "koKR" then
---@localization(locale="koKR", namespace="GridLayout", format="lua_additive_table")@
-elseif LOCALE == "zhCN" then
---@localization(locale="zhCN", namespace="GridLayout", format="lua_additive_table")@
-elseif LOCALE == "zhTW" then
---@localization(locale="zhTW", namespace="GridLayout", format="lua_additive_table")@
-end
-
-------------------------------------------------------------------------
-
-local GridLayout = Grid:NewModule("GridLayout", "AceBucket-3.0", "AceTimer-3.0")
+local L = Grid.L
 
 local GridRoster = Grid:GetModule("GridRoster")
 local media = LibStub("LibSharedMedia-3.0", true)
+
+local GridLayout = Grid:NewModule("GridLayout", "AceBucket-3.0", "AceTimer-3.0")
 
 ------------------------------------------------------------------------
 

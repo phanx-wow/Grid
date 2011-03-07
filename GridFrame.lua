@@ -3,39 +3,18 @@
 ----------------------------------------------------------------------]]
 
 local GRID, Grid = ...
+local L = Grid.L
 
-local L, LOCALE = Grid.L, Grid.LOCALE
-if LOCALE == "deDE" then
---@localization(locale="deDE", namespace="GridFrame", format="lua_additive_table")@
-elseif LOCALE == "deDE" then
---@localization(locale="esES", namespace="GridFrame", format="lua_additive_table")@
-elseif LOCALE == "esMX" then
---@localization(locale="esMX", namespace="GridFrame", format="lua_additive_table")@
-elseif LOCALE == "frFR" then
---@localization(locale="frFR", namespace="GridFrame", format="lua_additive_table")@
-elseif LOCALE == "ruRU" then
---@localization(locale="ruRU", namespace="GridFrame", format="lua_additive_table")@
-elseif LOCALE == "koKR" then
---@localization(locale="koKR", namespace="GridFrame", format="lua_additive_table")@
-elseif LOCALE == "zhCN" then
---@localization(locale="zhCN", namespace="GridFrame", format="lua_additive_table")@
-elseif LOCALE == "zhTW" then
---@localization(locale="zhTW", namespace="GridFrame", format="lua_additive_table")@
-end
+local GridStatus
 
-------------------------------------------------------------------------
+local media = LibStub("LibSharedMedia-3.0", true)
+if media then media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32") end
 
 local GridFrame = Grid:NewModule("GridFrame", "AceBucket-3.0", "AceTimer-3.0")
 
-local GridStatus
-local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
-
-local media = LibStub("LibSharedMedia-3.0", true)
-if media then
-	media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32")
-end
-
 ------------------------------------------------------------------------
+
+local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
 
 local function GridFrame_OnShow(self)
 	GridFrame:SendMessage("UpdateFrameUnits")
@@ -869,8 +848,8 @@ end
 
 GridFrame.options = {
 	type = "group",
-	name = L["Frame"],
-	desc = L["Options for GridFrame."],
+	name = L["Frames"],
+	desc = L["Options for Grid frames."],
 	disabled = InCombatLockdown,
 	args = {
 		["framewidth"] = {
@@ -1230,8 +1209,8 @@ if media then
 	}
 end
 
-Grid.options.args["Indicators"] = {
-	name = L["Indicators"],
+Grid.options.args["Indicator"] = {
+	name = L["Indicator"],
 	desc = L["Options for assigning statuses to indicators."],
 	type = "group", -- childGroups = "select",
 	args = {

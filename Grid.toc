@@ -45,6 +45,14 @@ Libs\AceGUI-3.0-Spell-EditBox\AceGUI-3.0-Spell-EditBox.xml
 #@end-no-lib-strip@
 Libs\UTF8\utf8.lua
 
+Locales\GridLocale-deDE.lua
+Locales\GridLocale-esES.lua
+Locales\GridLocale-frFR.lua
+Locales\GridLocale-ruRU.lua
+Locales\GridLocale-koKR.lua
+Locales\GridLocale-zhCN.lua
+Locales\GridLocale-zhTW.lua
+
 GridCore.lua
 GridRoster.lua
 GridLayout.lua
@@ -53,14 +61,14 @@ GridFrame.lua
 GridStatus.lua
 GridLDB.lua
 
-GridStatusAggro.lua
-GridStatusAuras.lua
-GridStatusHeals.lua
-GridStatusHealth.lua
-GridStatusMana.lua
-GridStatusName.lua
-GridStatusRange.lua
-GridStatusReadyCheck.lua
-GridStatusTarget.lua
-GridStatusVehicle.lua
-GridStatusVoiceComm.lua
+Statuses\GridStatusAggro.lua
+Statuses\GridStatusAuras.lua
+Statuses\GridStatusHeals.lua
+Statuses\GridStatusHealth.lua
+Statuses\GridStatusMana.lua
+Statuses\GridStatusName.lua
+Statuses\GridStatusRange.lua
+Statuses\GridStatusReadyCheck.lua
+Statuses\GridStatusTarget.lua
+Statuses\GridStatusVehicle.lua
+Statuses\GridStatusVoiceComm.lua

@@ -2,38 +2,19 @@
 	GridCore.lua
 ----------------------------------------------------------------------]]
 
-local GRID, Grid = ...
+local _, Grid = ...
 
-local LOCALE = GetLocale()
-local L = setmetatable({ }, {
+if not Grid.L then Grid.L = { } end
+local L = setmetatable( Grid.L, {
 	__index = function(t, k)
 		t[k] = k
 		return k
 	end
 })
-Grid.L, Grid.LOCALE = L, LOCALE
 
-if LOCALE == "deDE" then
---@localization(locale="deDE", format="lua_additive_table", namespace="GridCore")@
-elseif LOCALE == "deDE" then
---@localization(locale="esES", format="lua_additive_table", namespace="GridCore")@
-elseif LOCALE == "esMX" then
---@localization(locale="esMX", format="lua_additive_table", namespace="GridCore")@
-elseif LOCALE == "frFR" then
---@localization(locale="frFR", format="lua_additive_table", namespace="GridCore")@
-elseif LOCALE == "ruRU" then
---@localization(locale="ruRU", format="lua_additive_table", namespace="GridCore")@
-elseif LOCALE == "koKR" then
---@localization(locale="koKR", format="lua_additive_table", namespace="GridCore")@
-elseif LOCALE == "zhCN" then
---@localization(locale="zhCN", format="lua_additive_table", namespace="GridCore")@
-elseif LOCALE == "zhTW" then
---@localization(locale="zhTW", format="lua_additive_table", namespace="GridCore")@
-end
+_G.Grid = LibStub("AceAddon-3.0"):NewAddon(Grid, "Grid", "AceConsole-3.0", "AceEvent-3.0")
 
 ------------------------------------------------------------------------
-
-_G.Grid = LibStub("AceAddon-3.0"):NewAddon(Grid, GRID, "AceConsole-3.0", "AceEvent-3.0")
 
 Grid.debugFrame = ChatFrame1
 
@@ -201,39 +182,39 @@ function Grid:OnInitialize()
 	self.options.args.profile.order = -2
 
 	local LibDualSpec = LibStub("LibDualSpec-1.0")
-	LibDualSpec:EnhanceDatabase(self.db, GRID)
+	LibDualSpec:EnhanceDatabase(self.db, "Grid")
 	LibDualSpec:EnhanceOptions(self.options.args.profile, self.db)
 
-	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(GRID, self.options)
+	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("Grid", self.options)
 
 	local AceConfigCmd = LibStub("AceConfigCmd-3.0")
 	local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 
-	local status = AceConfigDialog:GetStatusTable(GRID)
+	local status = AceConfigDialog:GetStatusTable("Grid")
 	status.width = 777 -- 685
 	status.height = 486 -- 530
 
-	local child1 = AceConfigDialog:GetStatusTable(GRID, { "Indicators" })
+	local child1 = AceConfigDialog:GetStatusTable("Grid", { "Indicators" })
 	child1.groups = child1.groups or { }
 	child1.groups.treewidth = 220
 
-	local child2 = AceConfigDialog:GetStatusTable(GRID, { "GridStatus" })
+	local child2 = AceConfigDialog:GetStatusTable("Grid", { "GridStatus" })
 	child2.groups = child2.groups or { }
 	child2.groups["GridStatusAuras"] = true
 	child2.groups["GridStatusHealth"] = true
 	child2.groups["GridStatusRange"] = true
 	child2.groups.treewidth = 260
 
-	self:RegisterChatCommand(GRID, function(input)
+	self:RegisterChatCommand("grid", function(input)
 		if not input or input:trim() == "" then
-			AceConfigDialog:Open(GRID)
+			AceConfigDialog:Open("Grid")
 		else
-			AceConfigCmd.HandleCommand(Grid, GRID, GRID, input)
+			AceConfigCmd.HandleCommand(Grid, "grid", "Grid", input)
 		end
 	end)
 
 	InterfaceOptionsFrame:HookScript("OnShow", function()
-		AceConfigDialog:Close(GRID)
+		AceConfigDialog:Close("Grid")
 	end)
 
 	-- we need to save debugging state over sessions :(

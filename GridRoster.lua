@@ -4,27 +4,7 @@
 ----------------------------------------------------------------------]]
 
 local GRID, Grid = ...
-
-local L, LOCALE = Grid.L, Grid.LOCALE
-if LOCALE == "deDE" then
---@localization(locale="deDE", namespace="GridRoster", format="lua_additive_table")@
-elseif LOCALE == "deDE" then
---@localization(locale="esES", namespace="GridRoster", format="lua_additive_table")@
-elseif LOCALE == "esMX" then
---@localization(locale="esMX", namespace="GridRoster", format="lua_additive_table")@
-elseif LOCALE == "frFR" then
---@localization(locale="frFR", namespace="GridRoster", format="lua_additive_table")@
-elseif LOCALE == "ruRU" then
---@localization(locale="ruRU", namespace="GridRoster", format="lua_additive_table")@
-elseif LOCALE == "koKR" then
---@localization(locale="koKR", namespace="GridRoster", format="lua_additive_table")@
-elseif LOCALE == "zhCN" then
---@localization(locale="zhCN", namespace="GridRoster", format="lua_additive_table")@
-elseif LOCALE == "zhTW" then
---@localization(locale="zhTW", namespace="GridRoster", format="lua_additive_table")@
-end
-
-------------------------------------------------------------------------
+local L = Grid.L
 
 local GridRoster = Grid:NewModule("GridRoster")
 
