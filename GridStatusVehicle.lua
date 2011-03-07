@@ -3,12 +3,33 @@
 	GridStatus module for showing when a unit is driving a vehicle with a UI.
 ----------------------------------------------------------------------]]
 
-local _, Grid = ...
-local L = Grid.L
-local GridRoster = Grid:GetModule("GridRoster")
-local GridRoster = Grid:GetModule("GridRoster")
+local GRID, Grid = ...
+
+local L, LOCALE = Grid.L, Grid.LOCALE
+if LOCALE == "deDE" then
+--@localization(locale="deDE", namespace="GridStatusVehicle", format="lua_additive_table")@
+elseif LOCALE == "deDE" then
+--@localization(locale="esES", namespace="GridStatusVehicle", format="lua_additive_table")@
+elseif LOCALE == "esMX" then
+--@localization(locale="esMX", namespace="GridStatusVehicle", format="lua_additive_table")@
+elseif LOCALE == "frFR" then
+--@localization(locale="frFR", namespace="GridStatusVehicle", format="lua_additive_table")@
+elseif LOCALE == "ruRU" then
+--@localization(locale="ruRU", namespace="GridStatusVehicle", format="lua_additive_table")@
+elseif LOCALE == "koKR" then
+--@localization(locale="koKR", namespace="GridStatusVehicle", format="lua_additive_table")@
+elseif LOCALE == "zhCN" then
+--@localization(locale="zhCN", namespace="GridStatusVehicle", format="lua_additive_table")@
+elseif LOCALE == "zhTW" then
+--@localization(locale="zhTW", namespace="GridStatusVehicle", format="lua_additive_table")@
+end
+
+------------------------------------------------------------------------
 
 local GridStatusVehicle = Grid:NewStatusModule("GridStatusVehicle")
+
+local GridRoster = Grid:GetModule("GridRoster")
+local GridRoster = Grid:GetModule("GridRoster")
 
 GridStatusVehicle.menuName = L["In Vehicle"]
 

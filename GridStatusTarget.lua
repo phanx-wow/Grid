@@ -4,8 +4,28 @@
 	Created by noha, modified by Pastamancer.
 ----------------------------------------------------------------------]]
 
-local _, Grid = ...
-local L = Grid.L
+local GRID, Grid = ...
+
+local L, LOCALE = Grid.L, Grid.LOCALE
+if LOCALE == "deDE" then
+--@localization(locale="deDE", namespace="GridStatusTarget", format="lua_additive_table")@
+elseif LOCALE == "deDE" then
+--@localization(locale="esES", namespace="GridStatusTarget", format="lua_additive_table")@
+elseif LOCALE == "esMX" then
+--@localization(locale="esMX", namespace="GridStatusTarget", format="lua_additive_table")@
+elseif LOCALE == "frFR" then
+--@localization(locale="frFR", namespace="GridStatusTarget", format="lua_additive_table")@
+elseif LOCALE == "ruRU" then
+--@localization(locale="ruRU", namespace="GridStatusTarget", format="lua_additive_table")@
+elseif LOCALE == "koKR" then
+--@localization(locale="koKR", namespace="GridStatusTarget", format="lua_additive_table")@
+elseif LOCALE == "zhCN" then
+--@localization(locale="zhCN", namespace="GridStatusTarget", format="lua_additive_table")@
+elseif LOCALE == "zhTW" then
+--@localization(locale="zhTW", namespace="GridStatusTarget", format="lua_additive_table")@
+end
+
+------------------------------------------------------------------------
 
 local cur_target
 

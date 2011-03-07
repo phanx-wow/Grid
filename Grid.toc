@@ -4,14 +4,16 @@
 
 ## Title: Grid
 ## Notes: A compact grid of party/raid unit frames.
-## Notes-esES: Cuadrícula compacta de celdas de unidad para tu grupo o banda.
-## Notes-esMX: Cuadrícula compacta de celdas de unidad para tu grupo o banda.
+## Notes-esES: Una cuadrícula compacta de marcos de unidades para tu grupo o banda.
+## Notes-esMX: Una cuadrícula compacta de marcos de unidades para tu grupo o banda.
 ## Notes-zhCN: 小巧的轻量级模块化队伍/团队框架。
 ## Notes-zhTW: 精簡的團隊框架功能
 
 ## Author: Pastamancer, Maia
 ## Credits: Jerry, Phanx, Greltok
 ## X-Category: UnitFrame
+## X-CompatibleLocales: enUS, deDE, esES, esMX, frFR, koKR, ruRU, zhTW
+## X-Localizations: enUS, deDE, esES, esMX, frFR, koKR, ruRU, zhCN, zhTW
 ## X-Website: http://www.wowace.com/addons/grid/
 ## X-AceForum: 2525
 ## X-WoWI-ID: 5747
@@ -41,17 +43,7 @@ Libs\LibSharedMedia-3.0\LibSharedMedia-3.0.lua
 Libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
 Libs\AceGUI-3.0-Spell-EditBox\AceGUI-3.0-Spell-EditBox.xml
 #@end-no-lib-strip@
-
 Libs\UTF8\utf8.lua
-
-Locales\GridLocale-deDE.lua
-Locales\GridLocale-esES.lua
-Locales\GridLocale-esMX.lua
-Locales\GridLocale-frFR.lua
-Locales\GridLocale-koKR.lua
-Locales\GridLocale-ruRU.lua
-Locales\GridLocale-zhCN.lua
-Locales\GridLocale-zhTW.lua
 
 GridCore.lua
 GridRoster.lua

@@ -3,8 +3,28 @@
 	Registers some layouts with GridLayout.
 ----------------------------------------------------------------------]]
 
-local _, ns = ...
-local L = ns.L
+local GRID, Grid = ...
+
+local L, LOCALE = Grid.L, Grid.LOCALE
+if LOCALE == "deDE" then
+--@localization(locale="deDE", namespace="GridLayoutLayouts", format="lua_additive_table")@
+elseif LOCALE == "deDE" then
+--@localization(locale="esES", namespace="GridLayoutLayouts", format="lua_additive_table")@
+elseif LOCALE == "esMX" then
+--@localization(locale="esMX", namespace="GridLayoutLayouts", format="lua_additive_table")@
+elseif LOCALE == "frFR" then
+--@localization(locale="frFR", namespace="GridLayoutLayouts", format="lua_additive_table")@
+elseif LOCALE == "ruRU" then
+--@localization(locale="ruRU", namespace="GridLayoutLayouts", format="lua_additive_table")@
+elseif LOCALE == "koKR" then
+--@localization(locale="koKR", namespace="GridLayoutLayouts", format="lua_additive_table")@
+elseif LOCALE == "zhCN" then
+--@localization(locale="zhCN", namespace="GridLayoutLayouts", format="lua_additive_table")@
+elseif LOCALE == "zhTW" then
+--@localization(locale="zhTW", namespace="GridLayoutLayouts", format="lua_additive_table")@
+end
+
+------------------------------------------------------------------------
 
 local GridLayout = Grid:GetModule("GridLayout")
 

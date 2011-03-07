@@ -4,8 +4,28 @@
 	Created by neXter, modified by Pastamancer, modified by Phanx.
 ----------------------------------------------------------------------]]
 
-local _, Grid = ...
-local L = Grid.L
+local GRID, Grid = ...
+
+local L, LOCALE = Grid.L, Grid.LOCALE
+if LOCALE == "deDE" then
+--@localization(locale="deDE", namespace="GridStatusRange", format="lua_additive_table")@
+elseif LOCALE == "deDE" then
+--@localization(locale="esES", namespace="GridStatusRange", format="lua_additive_table")@
+elseif LOCALE == "esMX" then
+--@localization(locale="esMX", namespace="GridStatusRange", format="lua_additive_table")@
+elseif LOCALE == "frFR" then
+--@localization(locale="frFR", namespace="GridStatusRange", format="lua_additive_table")@
+elseif LOCALE == "ruRU" then
+--@localization(locale="ruRU", namespace="GridStatusRange", format="lua_additive_table")@
+elseif LOCALE == "koKR" then
+--@localization(locale="koKR", namespace="GridStatusRange", format="lua_additive_table")@
+elseif LOCALE == "zhCN" then
+--@localization(locale="zhCN", namespace="GridStatusRange", format="lua_additive_table")@
+elseif LOCALE == "zhTW" then
+--@localization(locale="zhTW", namespace="GridStatusRange", format="lua_additive_table")@
+end
+
+------------------------------------------------------------------------
 
 local GridRoster = Grid:GetModule("GridRoster")
 

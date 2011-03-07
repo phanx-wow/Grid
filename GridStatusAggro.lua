@@ -3,8 +3,29 @@
 	GridStatus module for tracking aggro/threat.
 ----------------------------------------------------------------------]]
 
-local _, Grid = ...
-local L = Grid.L
+local GRID, Grid = ...
+
+local L, LOCALE = Grid.L, Grid.LOCALE
+if LOCALE == "deDE" then
+--@localization(locale="deDE", namespace="GridStatusAggro", format="lua_additive_table")@
+elseif LOCALE == "deDE" then
+--@localization(locale="esES", namespace="GridStatusAggro", format="lua_additive_table")@
+elseif LOCALE == "esMX" then
+--@localization(locale="esMX", namespace="GridStatusAggro", format="lua_additive_table")@
+elseif LOCALE == "frFR" then
+--@localization(locale="frFR", namespace="GridStatusAggro", format="lua_additive_table")@
+elseif LOCALE == "ruRU" then
+--@localization(locale="ruRU", namespace="GridStatusAggro", format="lua_additive_table")@
+elseif LOCALE == "koKR" then
+--@localization(locale="koKR", namespace="GridStatusAggro", format="lua_additive_table")@
+elseif LOCALE == "zhCN" then
+--@localization(locale="zhCN", namespace="GridStatusAggro", format="lua_additive_table")@
+elseif LOCALE == "zhTW" then
+--@localization(locale="zhTW", namespace="GridStatusAggro", format="lua_additive_table")@
+end
+
+------------------------------------------------------------------------
+
 local GridStatus = Grid:GetModule("GridStatus")
 local GridRoster = Grid:GetModule("GridRoster")
 

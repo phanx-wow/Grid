@@ -3,8 +3,29 @@
 	GridStatus module for tracking unit mana.
 ----------------------------------------------------------------------]]
 
-local _, Grid = ...
-local L = Grid.L
+local GRID, Grid = ...
+
+local L, LOCALE = Grid.L, Grid.LOCALE
+if LOCALE == "deDE" then
+--@localization(locale="deDE", namespace="GridStatusMana", format="lua_additive_table")@
+elseif LOCALE == "deDE" then
+--@localization(locale="esES", namespace="GridStatusMana", format="lua_additive_table")@
+elseif LOCALE == "esMX" then
+--@localization(locale="esMX", namespace="GridStatusMana", format="lua_additive_table")@
+elseif LOCALE == "frFR" then
+--@localization(locale="frFR", namespace="GridStatusMana", format="lua_additive_table")@
+elseif LOCALE == "ruRU" then
+--@localization(locale="ruRU", namespace="GridStatusMana", format="lua_additive_table")@
+elseif LOCALE == "koKR" then
+--@localization(locale="koKR", namespace="GridStatusMana", format="lua_additive_table")@
+elseif LOCALE == "zhCN" then
+--@localization(locale="zhCN", namespace="GridStatusMana", format="lua_additive_table")@
+elseif LOCALE == "zhTW" then
+--@localization(locale="zhTW", namespace="GridStatusMana", format="lua_additive_table")@
+end
+
+------------------------------------------------------------------------
+
 local GridRoster = Grid:GetModule("GridRoster")
 local GridStatus = Grid:GetModule("GridStatus")
 

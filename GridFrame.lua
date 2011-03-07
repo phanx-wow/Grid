@@ -2,16 +2,37 @@
 	GridFrame.lua
 ----------------------------------------------------------------------]]
 
-local _, Grid = ...
-local L = Grid.L
+local GRID, Grid = ...
 
-local GridStatus
+local L, LOCALE = Grid.L, Grid.LOCALE
+if LOCALE == "deDE" then
+--@localization(locale="deDE", namespace="GridFrame", format="lua_additive_table")@
+elseif LOCALE == "deDE" then
+--@localization(locale="esES", namespace="GridFrame", format="lua_additive_table")@
+elseif LOCALE == "esMX" then
+--@localization(locale="esMX", namespace="GridFrame", format="lua_additive_table")@
+elseif LOCALE == "frFR" then
+--@localization(locale="frFR", namespace="GridFrame", format="lua_additive_table")@
+elseif LOCALE == "ruRU" then
+--@localization(locale="ruRU", namespace="GridFrame", format="lua_additive_table")@
+elseif LOCALE == "koKR" then
+--@localization(locale="koKR", namespace="GridFrame", format="lua_additive_table")@
+elseif LOCALE == "zhCN" then
+--@localization(locale="zhCN", namespace="GridFrame", format="lua_additive_table")@
+elseif LOCALE == "zhTW" then
+--@localization(locale="zhTW", namespace="GridFrame", format="lua_additive_table")@
+end
 
-local media = LibStub("LibSharedMedia-3.0", true)
-if media then media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32") end
+------------------------------------------------------------------------
 
 local GridFrame = Grid:NewModule("GridFrame", "AceBucket-3.0", "AceTimer-3.0")
 
+local media = LibStub("LibSharedMedia-3.0", true)
+if media then
+	media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32")
+end
+
+local GridStatus
 local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
 
 ------------------------------------------------------------------------
@@ -813,11 +834,7 @@ GridFrame.defaultDB = {
 		["frameAlpha"] = {
 			alert_death = true,
 			alert_offline = true,
-			alert_range_10 = true,
-			alert_range_28 = true,
-			alert_range_30 = true,
-			alert_range_40 = true,
-			alert_range_100 = true,
+			alert_range = true,
 		},
 		["bar"] = {
 			alert_death = true,
