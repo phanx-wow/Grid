@@ -848,8 +848,8 @@ end
 
 GridFrame.options = {
 	type = "group",
-	name = L["Frames"],
-	desc = L["Options for Grid frames."],
+	name = L["Frame"],
+	desc = L["Options for GridFrame."],
 	disabled = InCombatLockdown,
 	args = {
 		["framewidth"] = {
@@ -1209,8 +1209,8 @@ if media then
 	}
 end
 
-Grid.options.args["Indicator"] = {
-	name = L["Indicator"],
+Grid.options.args["Indicators"] = {
+	name = L["Indicators"],
 	desc = L["Options for assigning statuses to indicators."],
 	type = "group", -- childGroups = "select",
 	args = {
