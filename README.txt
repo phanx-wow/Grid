@@ -1,4 +1,4 @@
-== **Need help?
+﻿== **Need help?
 
 **Comments are closed.** If you need to report a problem, see the "How to report a bug in Grid" section below. If you have a general question or comment, you can post in the [[http://forums.wowace.com/showthread.php?t=18716|WowAce forum thread]].
 
@@ -43,6 +43,12 @@ Please don't submit new bug reports about these issues. We already know about th
 : Grid also has no way to filter out HoT ticks specifically. Use the Minimum Value setting for the Incoming Heals status to hide smaller amounts of healing, such as HoT ticks.
 : If you don't see any incoming heals at all, check the Minimum Value setting and make sure it's set appropriately for your level and gear.
 
+
+== **Localization**
+
+* Grid is //compatible with// English, Deutsch, Español, Français, Русский, 한국어, and 正體中文 game clients.
+* Grid is //translated into// English, Deutsch, Español, Français, Русский, 한국어, 简体中文, and 正體中文.
+* To add or update translations, please use the [WowAce localization system](http://wow.curseforge.com/addons/grid/localization/).
 
 == **Credits**
 
