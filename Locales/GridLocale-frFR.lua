@@ -6,7 +6,8 @@
 if GetLocale() ~= "frFR" then return end
 
 local _, Grid = ...
-Grid.L = { }
+local L = { }
+Grid.L = L
 
 ------------------------------------------------------------------------
 --	GridCore
@@ -52,6 +53,14 @@ Grid.L = { }
 --	GridStatusHealth
 
 --@localization(locale="frFR", namespace="GridStatusHealth", format="lua_additive_table")@
+------------------------------------------------------------------------
+--	GridStatusMana
+
+--@localization(locale="frFR", namespace="GridStatusMana", format="lua_additive_table")@
+------------------------------------------------------------------------
+--	GridStatusName
+
+--@localization(locale="frFR", namespace="GridStatusName", format="lua_additive_table")@
 ------------------------------------------------------------------------
 --	GridStatusRange
 
