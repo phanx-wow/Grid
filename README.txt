@@ -1,4 +1,4 @@
-﻿== **Need help?
+== **Need help?**
 
 **Comments are closed.** If you need to report a problem, see the "How to report a bug in Grid" section below. If you have a general question or comment, you can post in the [[http://forums.wowace.com/showthread.php?t=18716|WowAce forum thread]].
 
