@@ -27,13 +27,13 @@ end
 
 local GridFrame = Grid:NewModule("GridFrame", "AceBucket-3.0", "AceTimer-3.0")
 
+local GridStatus
+local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
+
 local media = LibStub("LibSharedMedia-3.0", true)
 if media then
 	media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32")
 end
-
-local GridStatus
-local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
 
 ------------------------------------------------------------------------
 

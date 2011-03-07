@@ -48,7 +48,7 @@ Please don't submit new bug reports about these issues. We already know about th
 
 * Grid is //compatible with// English, Deutsch, Español, Français, Русский, 한국어, and 正體中文 game clients.
 * Grid is //translated into// English, Deutsch, Español, Français, Русский, 한국어, 简体中文, and 正體中文.
-* To add or update translations, please use the [WowAce localization system](http://wow.curseforge.com/addons/grid/localization/).
+* To add or update translations, please use the [[http://wow.curseforge.com/addons/grid/localization/|WowAce localization system]].
 
 == **Credits**
 
