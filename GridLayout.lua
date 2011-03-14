@@ -604,12 +604,20 @@ function GridLayout:UpdateTabVisibility()
 end
 
 local function GridLayout_OnMouseDown(frame, button)
-	if button == "LeftButton" and IsAltKeyDown() then
-		GridLayout.db.profile.hideTab = true
-		GridLayout:UpdateTabVisibility()
-	end
-	if button == "LeftButton" and not IsModifierKeyDown() then
-		GridLayout:StartMoveFrame()
+	if button == "LeftButton" then
+		if IsAltKeyDown() then
+			GridLayout.db.profile.hideTab = true
+			GridLayout:UpdateTabVisibility()
+		else
+			GridLayout:StartMoveFrame()
+		end
+	elseif button == "RightButton" then
+		local dialog = LibStub("AceConfigDialog-3.0")
+		if dialog.OpenFrames["Grid"] then
+			dialog:Close("Grid")
+		else
+			dialog:Open("Grid")
+		end
 	end
 end
 
@@ -623,6 +631,7 @@ local function GridLayout_OnEnter(frame)
 	tip:SetText(L["Drag this tab to move Grid."])
 	tip:AddLine(L["Lock Grid to hide this tab."])
 	tip:AddLine(L["Alt-Click to permanantly hide this tab."])
+	tip:AddLine(L["Right-Click for more options."])
 	tip:Show()
 end
 

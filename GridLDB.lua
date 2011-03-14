@@ -15,7 +15,12 @@ local GridLDB = DataBroker:NewDataObject("Grid", {
 	icon = "Interface\\AddOns\\Grid\\icon",
 	OnClick = function(self, button)
 		if button == "RightButton" then
-			LibStub("AceConfigDialog-3.0"):Open("Grid")
+			local dialog = LibStub("AceConfigDialog-3.0")
+			if dialog.OpenFrames["Grid"] then
+				dialog:Close("Grid")
+			else
+				dialog:Open("Grid")
+			end
 		elseif not InCombatLockdown() then
 			local GridLayout = Grid:GetModule("GridLayout")
 			GridLayout.db.profile.FrameLock = not GridLayout.db.profile.FrameLock
@@ -24,13 +29,13 @@ local GridLDB = DataBroker:NewDataObject("Grid", {
 		end
 	end,
 	OnTooltipShow = function(tooltip)
-		tooltip:AddLine("Grid")
+		tooltip:AddLine("Grid", 1, 1, 1)
 		if InCombatLockdown() then
 			tooltip:AddLine(L["Click to toggle the frame lock."], 0.5, 0.5, 0.5)
 		else
-			tooltip:AddLine(L["Click to toggle the frame lock."], 0.2, 1, 0.2)
+			tooltip:AddLine(L["Click to toggle the frame lock."])
 		end
-		tooltip:AddLine(L["Right-Click to open the options menu."], 0.2, 1, 0.2)
+		tooltip:AddLine(L["Right-Click for more options."])
 	end,
 })
 
