@@ -12,7 +12,7 @@
 ## Author: Pastamancer, Maia
 ## Credits: Jerry, Phanx, Greltok
 ## X-Category: UnitFrame
-## X-CompatibleLocales: enUS, deDE, esES, esMX, frFR, koKR, ruRU, zhTW
+## X-CompatibleLocales: enUS, deDE, esES, esMX, frFR, koKR, ruRU, zhCN, zhTW
 ## X-Localizations: enUS, deDE, esES, esMX, frFR, koKR, ruRU, zhCN, zhTW
 ## X-Website: http://www.wowace.com/addons/grid/
 ## X-AceForum: 2525
