@@ -20,15 +20,14 @@ Grid.debugFrame = ChatFrame1
 
 function Grid:Debug(str, ...)
 	if not self.debugging then return end
-
-	if not str or str:len() == 0 then
-		str = "nil"
-	elseif str:find("%%") and select("#", ...) > 0 then
-		str = str:format(...)
-	elseif select("#", ...) > 0 then
-		str = string.join(" ", str, tostringall(...))
+	if not str or str:len() == 0 then return end
+	if (...) then
+		if str:find("%%[dfs%d%.]") then
+			str = str:format(...))
+		else
+			str = strjoin(" ", str, tostringall(...))
+		end
 	end
-
 	self.debugFrame:AddMessage("|cffff9933Grid:|r " .. str)
 end
 

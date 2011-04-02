@@ -22,26 +22,25 @@ Before reporting a bug, please:
 # Disable all other addons (//including// all Grid plugins) and see if the problem still happens.
 # Enable "Display Lua Errors" under Interface Options > Help, or install an error-catching addon like [[http://www.wowinterface.com/downloads/info5995-BugSack.html|BugSack]].
 
-Then, [[http://www.wowace.com/addons/grid/tickets/?status=+|submit a bug report]] in the ticket tracker. Check for existing tickets about your bug first, and fill in as much of the requested information in the ticket template as you can. If you didn't try something, or don't understand a question, please say so, and don't just make something up. Finally, remember to check back on your ticket after a few days in case we need more information from you.
+Then, [[http://www.wowace.com/addons/grid/tickets/?status=+|submit a bug report]] in the ticket tracker. Check for existing tickets about your bug first, and fill in as much of the requested information in the ticket template as you can. Finally, remember to check back on your ticket after a few days in case we need more information from you.
 
 
 == **Known issues as of Patch 4.0.6**
 
 Please don't submit new bug reports about these issues. We already know about them; that's why they're on this list!
 
-; **I'm using version r1234 and it's broken!**
-: Version numbers that follow the "r1234" pattern indicate //Alpha versions//. These versions are snapshots of the current development process, and may be unstable, may not work at all, and may cause you to lose your settings. //No support// is provided for Alpha versions. If you wish to follow the development process, feel free to check the [[http://forums.wowace.com/showthread.php?t=18716|forum thread]]. If you are not comfortable running //experimental and often untested// code, please stick with Release and Beta versions, whose numbers follow the "4.0.3.1234" or "4.0.3.1234-beta" pattern.
+; **Incoming heals are showing the wrong amount!**
+: Incoming heal values now come from the game client itself, instead of requiring everyone in your group to install a third-party library to communicate about their healing spells. Grid has no control over the accuracy of incoming heal values; feel free to report such issues to Blizzard.
+: If you don't see any incoming heals at all, check the Minimum Value setting and make sure it's set appropriately for your level and gear.
+
+; **Incoming heals are showing HoT ticks!**
+: Grid also has no way to filter out HoT ticks specifically. Use the Minimum Value setting for the Incoming Heals status to hide smaller amounts of healing, such as HoT ticks.
 
 ; **The Frame tab in the options window is broken!**
-: This is not a bug in Grid. This is caused by running outdated plugins. Ask the plugin author to update, or temporarily disable the plugin while you change settings in the Frame tab.
+: This is not a bug in Grid. This is caused by outdated plugins that try to add options directly to the Grid window. Ask the plugin author to update, or temporarily disable the plugin while you change settings in the Frame tab.
 
-; **Groups are sometimes not aligned correctly.**
-: Please see [[http://wow.curseforge.com/addons/grid/tickets/447-groups-not-correctly-aligned/|this ticket]] and post a comment with **(a)** the name of the layout you are using, **(b)** the current size and type of your group, **(c)** whether you have the Horizontal Groups option checked, **(d)** what value you have selected for the Group Anchor setting, **(e)** what value you have selected for the Layout Anchor setting, and **(f)** a detailed description of which groups are out of alignment, or a screenshot.
-
-; **Incoming heals aren't always accurate, and include HoT ticks.**
-: Incoming heal values now come from the game client itself, instead of requiring everyone in your group to install a third-party library to communicate about their healing spells. Grid has no control over the accuracy of incoming heal values; feel free to report such issues to Blizzard.
-: Grid also has no way to filter out HoT ticks specifically. Use the Minimum Value setting for the Incoming Heals status to hide smaller amounts of healing, such as HoT ticks.
-: If you don't see any incoming heals at all, check the Minimum Value setting and make sure it's set appropriately for your level and gear.
+; **I'm using version r1234 and it's broken!**
+: Version numbers that follow the "r1234" pattern indicate Alpha versions. These versions are snapshots of the current development process. They are not supported, may be unstable or not work at all, and may cause you to lose your settings. If you are not comfortable running experimental code, please stick with Release and Beta versions, whose numbers follow the "4.0.3.1234" or "4.0.3.1234-beta" pattern.
 
 
 == **Localization**
@@ -49,6 +48,7 @@ Please don't submit new bug reports about these issues. We already know about th
 * Grid is //compatible with// English, Deutsch, Español, Français, Русский, 한국어, and 正體中文 game clients.
 * Grid is //translated into// English, Deutsch, Español, Français, Русский, 한국어, 简体中文, and 正體中文.
 * To add or update translations, please use the [[http://wow.curseforge.com/addons/grid/localization/|WowAce localization system]].
+
 
 == **Credits**
 
