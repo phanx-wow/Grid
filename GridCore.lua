@@ -23,7 +23,7 @@ function Grid:Debug(str, ...)
 	if not str or str:len() == 0 then return end
 	if (...) then
 		if str:find("%%[dfs%d%.]") then
-			str = str:format(...))
+			str = str:format(...)
 		else
 			str = strjoin(" ", str, tostringall(...))
 		end
