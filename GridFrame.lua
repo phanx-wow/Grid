@@ -211,8 +211,8 @@ GridFrame.prototype.indicators = {
 }
 
 function GridFrame.prototype:Reset()
-	for _,indicator in ipairs(self.indicators) do
-		self:ClearIndicator(indicator.type)
+	for i = 1, #self.indicators do
+		self:ClearIndicator(self.indicators[i].type)
 	end
 	self:SetBorderSize(GridFrame.db.profile.borderSize)
 	self:SetOrientation(GridFrame.db.profile.orientation)
@@ -1473,7 +1473,8 @@ end
 function GridFrame:UpdateOptionsMenu()
 	self:Debug("UpdateOptionsMenu()")
 
-	for _, indicator in ipairs(self.prototype.indicators) do
+	for i = 1, #self.prototype.indicators do
+		local indicator = self.prototype.indicators[i]
 		self:UpdateOptionsForIndicator(indicator.type, indicator.name, indicator.order)
 	end
 end

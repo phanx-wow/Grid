@@ -200,7 +200,8 @@ do
 			units = raid_units
 		end
 
-		for _, unit in ipairs(units) do
+		for i = 1, #units do
+			local unit = units[i]
 			if unit and UnitExists(unit) then
 				UpdateUnit(unit)
 

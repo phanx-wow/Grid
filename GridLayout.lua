@@ -627,6 +627,7 @@ local function GridLayout_OnMouseDown(frame, button)
 			GridLayout:StartMoveFrame()
 		end
 	elseif button == "RightButton" then
+	elseif button == "RightButton" and frame == GridLayoutFrameTab then
 		local dialog = LibStub("AceConfigDialog-3.0")
 		if dialog.OpenFrames["Grid"] then
 			dialog:Close("Grid")
@@ -793,10 +794,11 @@ end
 
 function GridLayout:AddLayout(layoutName, layout)
 	self.layoutSettings[layoutName] = layout
-	for _, party_type in ipairs(GridRoster.party_states) do
-	--	local options = self.options.args[party_type .. "layout"]
+	for i = 1, #GridRoster.party_states do
+		local party_type_layout = GridRoster.party_states[i] .. "layout"
+	--	local options = self.options.args[party_type_layout]
 	--	if options then
-			self.options.args[party_type .. "layout"].values[layoutName] = layoutName
+			self.options.args[party_type_layout].values[layoutName] = layoutName
 	--	end
 	end
 end
@@ -847,8 +849,8 @@ function GridLayout:LoadLayout(layoutName)
 
 	local groupsNeeded, groupsAvailable, petGroupsNeeded, petGroupsAvailable = 0, #self.layoutGroups, 0, #self.layoutPetGroups
 
-	for _, l in ipairs(layout) do
-		if l.isPetGroup then
+	for i = 1, #layout do
+		if layout[i].isPetGroup then
 			petGroupsNeeded = petGroupsNeeded + 1
 		else
 			groupsNeeded = groupsNeeded + 1
@@ -876,7 +878,9 @@ function GridLayout:LoadLayout(layoutName)
 	local defaults = layout.defaults
 	local iGroup, iPetGroup = 1, 1
 	-- configure groups
-	for i, l in ipairs(layout) do
+	for i = 1, #layout do
+		local l = layout[i]
+
 		local layoutGroup
 		if l.isPetGroup then
 			layoutGroup = self.layoutPetGroups[iPetGroup]
@@ -972,7 +976,8 @@ function GridLayout:UpdateSize()
 
 	local Padding, Spacing = p.Padding, p.Spacing * 2
 
-	for _, layoutGroup in ipairs(self.layoutGroups) do
+	for i = 1, #self.layoutGroups do
+		local layoutGroup = self.layoutGroups[i]
 		if layoutGroup:IsVisible() then
 			groupCount = groupCount + 1
 			local width, height = layoutGroup:GetWidth(), layoutGroup:GetHeight()
@@ -983,7 +988,8 @@ function GridLayout:UpdateSize()
 		end
 	end
 
-	for _, layoutGroup in ipairs(self.layoutPetGroups) do
+	for i = 1, #self.layoutPetGroups do
+		local layoutGroup = self.layoutPetGroups[i]
 		if layoutGroup:IsVisible() then
 			groupCount = groupCount + 1
 			local width, height = layoutGroup:GetWidth(), layoutGroup:GetHeight()

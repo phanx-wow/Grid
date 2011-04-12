@@ -310,6 +310,8 @@ GridStatus.options = {
 
 ------------------------------------------------------------------------
 
+local creatureTypes = { L["Beast"], L["Demon"], L["Humanoid"], L["Undead"], L["Dragonkin"], L["Elemental"], L["Not specified"] }
+
 function GridStatus:FillColorOptions(options)
 	local classEnglishToLocal = {}
 	FillLocalizedClassList(classEnglishToLocal, false)
@@ -354,8 +356,8 @@ function GridStatus:FillColorOptions(options)
 		func = function() GridStatus:ResetClassColors() end,
 	}
 
-	-- wtf, this is ugly... refactor!
-	for _, class in ipairs{ L["Beast"], L["Demon"], L["Humanoid"], L["Undead"], L["Dragonkin"], L["Elemental"], L["Not specified"] } do
+	for i = 1, #creatureTypes do
+		local class = creatureTypes[i]
 		options.args.creaturetype.args[class] = {
 			type = "color",
 			name = class,
