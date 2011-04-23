@@ -335,7 +335,7 @@ function GridStatusAuras:CreateAddRemoveOptions()
 		name = L["Add new Buff"],
 		desc = L["Adds a new buff to the status module"],
 		width = "double",
-		type = "input", usage = L["<buff name>"], dialogControl = hasAuraEditBox and "Aura_EditBox",
+		type = "input", usage = L["<buff name>"], dialogControl = hasAuraEditBox and "Aura_EditBox" or nil,
 		get = false,
 		set = function(_, v) self:AddAura(v, true) end,
 		order = 11
@@ -344,7 +344,7 @@ function GridStatusAuras:CreateAddRemoveOptions()
 		name = L["Add new Debuff"],
 		desc = L["Adds a new debuff to the status module"],
 		width = "double",
-		type = "input", usage = L["<debuff name>"], dialogControl = hasAuraEditBox and "Aura_EditBox",
+		type = "input", usage = L["<debuff name>"], dialogControl = hasAuraEditBox and "Aura_EditBox" or nil,
 		get = false,
 		set = function(_, v) self:AddAura(v, false) end,
 		order = 31
