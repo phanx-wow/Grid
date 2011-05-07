@@ -90,8 +90,9 @@ function GridStatusName:UpdateVehicle(event, unitid)
 end
 
 function GridStatusName:UpdateUnit(event, unitid)
-    if UnitExists(unitid) then
-        self:UpdateGUID(event, UnitGUID(unitid))
+	local guid = unitid and UnitGUID(unitid)
+    if guid then
+        self:UpdateGUID(event, guid)
     end
 end
 
