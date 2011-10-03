@@ -164,6 +164,7 @@ function GridFrame:InitializeFrame(frame)
 	-- create icon cooldown
 	frame.IconCD = CreateFrame("Cooldown", nil, frame.IconBG, "CooldownFrameTemplate")
 	frame.IconCD:SetAllPoints(frame.Icon)
+	frame.IconCD:SetReverse(true)
 	frame.IconCD:SetScript("OnHide", function()
 		frame.IconStackText:SetParent(frame.IconBG)
 		frame.IconStackText:SetPoint("BOTTOMRIGHT", frame.IconBG, 2, -2)
