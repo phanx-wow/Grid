@@ -256,11 +256,10 @@ end
 function GridStatusAuras:OptionsForStatus(status, isBuff)
 	local auraOptions = {
 		duration = {
+			order = 80,
 			name = L["Show duration"],
 			desc = L["Show the time remaining, for use with the center icon cooldown."],
-			order = 80,
-			width = "double",
-			type = "toggle",
+			type = "toggle", width = "double",
 			get = function()
 					return GridStatusAuras.db.profile[status].duration
 				end,
@@ -270,20 +269,34 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 				end,
 		},
 		class = {
+			order = 90,
 			name = L["Class Filter"],
 			desc = L["Show status for the selected classes."],
-			order = 90,
 			type = "group", dialogInline = true,
-			args = {},
+			args = {
+				pet = {
+					order = -1,
+					name = L["Pet"],
+					desc = L["Show on pets and vehicles."],
+					type = "toggle",
+					get = function()
+							return GridStatusAuras.db.profile[status].pet ~= false
+						end,
+					set = function(_, v)
+							GridStatusAuras.db.profile[status].pet = v
+							GridStatusAuras:UpdateAllUnitAuras()
+						end,
+				},
+			},
 		},
 	}
 
 	for class, name in pairs(classes) do
-		local class, name = class,name
+		local class, name = class, name
 		auraOptions.class.args[class] = {
-			type = "toggle",
 			name = name,
 			desc = string.format(L["Show on %s."], name),
+			type = "toggle",
 			get = function()
 					return GridStatusAuras.db.profile[status][class] ~= false
 				end,
@@ -672,9 +685,14 @@ function GridStatusAuras:ScanUnitAuras(event, unit)
 		return
 	end
 
-	local _, class = UnitClass(unit)
-	if class then
-		class = strlower(class)
+	local _, class
+	if UnitIsPlayer(unit) then
+		_, class = UnitClass(unit)
+		if class then
+			class = class:lower()
+		end
+	else
+		class = "pet" -- should catch pets, vehicles, and anything else
 	end
 
 	self:Debug("UNIT_AURA", unit, guid)
