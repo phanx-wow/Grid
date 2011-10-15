@@ -211,7 +211,7 @@ function GridStatusHealth:UpdateUnit(event, unitid, ignoreRange)
 	else
 		self:StatusDeath(guid, false)
 		self:StatusFeignDeath(guid, UnitIsFeignDeath(unitid))
-		self:StatusLowHealth(guid, self:IsLowHealth(cur, max))
+		self:StatusLowHealth(guid, (cur / max * 100) <= self.db.profile.alert_lowHealth.threshold)
 	end
 
 	self:StatusOffline(guid, not UnitIsConnected(unitid))
