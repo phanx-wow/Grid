@@ -95,6 +95,10 @@ function GridStatusMana:UpdateUnit(event, unitid)
 	-- mana user and is alive
 	if powerType == 0 and not UnitIsDeadOrGhost(unitid) then
 		local cur, max = UnitPower(unitid, powerType), UnitPowerMax(unitid, powerType)
+		if max == 0 then
+			-- fix for 4.3 division by zero
+			cur, max = 100, 100
+		end
 
 		local mana_percent = (cur / max * 100)
 		local threshold = self.db.profile.alert_lowMana.threshold

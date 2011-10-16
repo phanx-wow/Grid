@@ -195,6 +195,10 @@ function GridStatusHealth:UpdateUnit(event, unitid, ignoreRange)
 	end
 
 	local cur, max = UnitHealth(unitid), UnitHealthMax(unitid)
+	if max == 0 then
+		-- fix for 4.3 division by zero
+		cur, max = 100, 100
+	end
 
 	local healthSettings = self.db.profile.unit_health
 	local deficitSettings = self.db.profile.unit_healthDeficit
