@@ -128,8 +128,7 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 					name = L["Color"],
 					desc = string.format(L["Color for %s"], desc),
 					order = 20,
-					type = "color",
-					hasAlpha = true,
+					type = "color", hasAlpha = true,
 					get = function()
 						local color = module.db.profile[status].color
 						return color.r, color.g, color.b, color.a
@@ -146,6 +145,7 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 					name = L["Priority"],
 					desc = string.format(L["Priority for %s"], desc),
 					order = 30,
+					width = "double",
 					type = "range", max = 99, min = 0, step = 1,
 					get = function()
 						return module.db.profile[status].priority
@@ -159,6 +159,7 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 					desc = string.format(L["Range filter for %s"], desc),
 					order = 40,
 					type = "toggle",
+					width = "double",
 					get = function() return module.db.profile[status].range end,
 					set = function()
 						module.db.profile[status].range = not module.db.profile[status].range
