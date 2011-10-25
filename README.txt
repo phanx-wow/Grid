@@ -56,5 +56,5 @@ Please don't submit new bug reports about these issues. They are either not actu
 * kaybe: german localization
 * JoshBorke: API documentation
 * Jerry: pet support
-* Jlam: advanced aura options
+* jlam: advanced aura options
 * Julith: HealComm usage
