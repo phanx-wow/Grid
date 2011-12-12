@@ -128,7 +128,8 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 					name = L["Color"],
 					desc = string.format(L["Color for %s"], desc),
 					order = 20,
-					type = "color", hasAlpha = true,
+					type = "color",
+					hasAlpha = true,
 					get = function()
 						local color = module.db.profile[status].color
 						return color.r, color.g, color.b, color.a
@@ -145,7 +146,6 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 					name = L["Priority"],
 					desc = string.format(L["Priority for %s"], desc),
 					order = 30,
-					width = "double",
 					type = "range", max = 99, min = 0, step = 1,
 					get = function()
 						return module.db.profile[status].priority
@@ -159,7 +159,6 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 					desc = string.format(L["Range filter for %s"], desc),
 					order = 40,
 					type = "toggle",
-					width = "double",
 					get = function() return module.db.profile[status].range end,
 					set = function()
 						module.db.profile[status].range = not module.db.profile[status].range
@@ -232,21 +231,68 @@ GridStatus.options = {
 	desc = L["Options for GridStatus."],
 	args = {
 		["color"] = {
-			type = "group",
+			order = -1,
 			name = L["Colors"],
 			desc = L["Color options for class and pets."],
-			order = -1,
+			type = "group",
 			args = {
+				["class"] = {
+					order = 100,
+					name = L["Class colors"],
+					desc = L["Color of player unit classes."],
+					type = "group", inline = true,
+					args = {
+						br = {
+							order = 120,
+							name = "",
+							type = "header",
+						},
+						reset = {
+							order = 130,
+							name = L["Reset class colors"],
+							desc = L["Reset class colors to defaults."],
+							type = "execute", width = "double",
+							func = function() GridStatus:ResetClassColors() end,
+						}
+					},
+				},
+				["petcolortype"] = {
+					order = 200,
+					name = L["Pet coloring"],
+					desc = L["Set the coloring strategy of pet units."],
+					type = "select", width = "double",
+					values = {
+						["By Owner Class"] = L["By Owner Class"],
+						["By Creature Type"] = L["By Creature Type"],
+						["Using Fallback color"] = L["Using Fallback color"],
+					},
+					get = function()
+							return GridStatus.db.profile.colors.PetColorType
+						end,
+					set = function(_, v)
+							GridStatus.db.profile.colors.PetColorType = v
+							GridStatus:SendMessage("Grid_ColorsChanged")
+						end,
+				},
+				["creaturetype"] = {
+					order = 300,
+					name = L["Creature type colors"],
+					desc = L["Color of pet unit creature types."],
+					type = "group", inline = true,
+					args = {
+					},
+				},
 				["fallback"] = {
-					type = "group",
+					order = 400,
 					name = L["Fallback colors"],
 					desc = L["Color of unknown units or pets."],
+					type = "group", inline = true,
 					args = {
 						["unit"] = {
 							type = "color",
 							name = L["Unknown Unit"],
 							desc = L["The color of unknown units."],
-							order = 100,
+							order = 410,
 							get = function()
 									local c = GridStatus.db.profile.colors.UNKNOWN_UNIT
 									return c.r, c.g, c.b, c.a
@@ -262,7 +308,7 @@ GridStatus.options = {
 							type = "color",
 							name = L["Unknown Pet"],
 							desc = L["The color of unknown pets."],
-							order = 100,
+							order = 420,
 							get = function()
 									local c = GridStatus.db.profile.colors.UNKNOWN_PET
 									return c.r, c.g, c.b, c.a
@@ -275,34 +321,6 @@ GridStatus.options = {
 							hasAlpha = false,
 						},
 					},
-				},
-				["class"] = {
-					type = "group",
-					name = L["Class colors"],
-					desc = L["Color of player unit classes."],
-					args = {
-					},
-				},
-				["creaturetype"] = {
-					type = "group",
-					name = L["Creature type colors"],
-					desc = L["Color of pet unit creature types."],
-					args = {
-					},
-				},
-				["petcolortype"] = {
-					type = "select",
-					name = L["Pet coloring"],
-					desc = L["Set the coloring strategy of pet units."],
-					order = 200,
-					get = function()
-							return GridStatus.db.profile.colors.PetColorType
-						end,
-					set = function(_, v)
-							GridStatus.db.profile.colors.PetColorType = v
-							GridStatus:SendMessage("Grid_ColorsChanged")
-						end,
-					values = {["By Owner Class"] = L["By Owner Class"], ["By Creature Type"] = L["By Creature Type"], ["Using Fallback color"] = L["Using Fallback color"]},
 				},
 			},
 		},
@@ -343,19 +361,6 @@ function GridStatus:FillColorOptions(options)
 			end,
 		}
 	end
-
-	options.args.class.args["Header"] = {
-		type = "header",
-		name = "",
-		order = 110,
-	}
-	options.args.class.args["resetclasscolors"] = {
-		type = "execute",
-		name = L["Reset class colors"],
-		desc = L["Reset class colors to defaults."],
-		order = 111,
-		func = function() GridStatus:ResetClassColors() end,
-	}
 
 	for i = 1, #creatureTypes do
 		local class = creatureTypes[i]

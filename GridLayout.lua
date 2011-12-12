@@ -674,12 +674,12 @@ function GridLayout:CreateFrames()
 	})
 
 	-- create bg texture
-	f.texture = f:CreateTexture(nil, "BORDER")
-	f.texture:SetTexture("Interface\\ChatFrame\\ChatFrameBackground")
-	f.texture:SetPoint("TOPLEFT", f, "TOPLEFT", 4, -4)
-	f.texture:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -4, 4)
-	f.texture:SetBlendMode("ADD")
-	f.texture:SetGradientAlpha("VERTICAL", .1, .1, .1, 0, .2, .2, .2, 0.5)
+	-- f.texture = f:CreateTexture(nil, "BORDER")
+	-- f.texture:SetTexture("Interface\\ChatFrame\\ChatFrameBackground")
+	-- f.texture:SetPoint("TOPLEFT", f, "TOPLEFT", 4, -4)
+	-- f.texture:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -4, 4)
+	-- f.texture:SetBlendMode("ADD")
+	-- f.texture:SetGradientAlpha("VERTICAL", .1, .1, .1, 0, .2, .2, .2, 0.5)
 
 	local tab_width = 33
 	local tab_side_width = 16
@@ -1023,8 +1023,7 @@ function GridLayout:UpdateColor()
 
 	self.frame:SetBackdropBorderColor(settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA)
 	self.frame:SetBackdropColor(settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA)
-	self.frame.texture:SetGradientAlpha("VERTICAL", .1, .1, .1, 0,
-					.2, .2, .2, settings.BackgroundA/2 )
+	-- self.frame.texture:SetGradientAlpha("VERTICAL", .1, .1, .1, 0, .2, .2, .2, settings.BackgroundA/2 )
 end
 
 function GridLayout:SavePosition()

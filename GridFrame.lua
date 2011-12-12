@@ -109,7 +109,6 @@ function GridFrame:InitializeFrame(frame)
 	frame.Bar:SetStatusBarColor(0,0,0,0.8)
 	frame.Bar:SetPoint("TOPLEFT", frame.HealingBar, "TOPLEFT")
 	frame.Bar:SetPoint("BOTTOMRIGHT", frame.HealingBar, "BOTTOMRIGHT")
-	frame.Bar:SetFrameLevel(frame.HealingBar:GetFrameLevel() + 1)
 
 	-- create center text
 	frame.Text = frame.Bar:CreateFontString(nil, "ARTWORK")
@@ -470,6 +469,8 @@ function GridFrame.prototype:SetHealingBar(value, max)
 	else
 		self.Bar:GetStatusBarTexture():SetTexCoord(0, coord, 0, 1)
 	end
+
+	self:UpdateHealingBarColor()
 end
 
 function GridFrame.prototype:SetBarColor(r, g, b, a)
@@ -480,15 +481,12 @@ function GridFrame.prototype:SetBarColor(r, g, b, a)
 		self.Bar:SetStatusBarColor(0, 0, 0, 0.8)
 		self.BarBG:SetVertexColor(r, g, b, a)
 	end
-	if not GridFrame.db.profile.healingBar_statusColor then
-		self:SetHealingBarColor(r, g, b, a)
-	end
+
+	self:UpdateHealingBarColor()
 end
 
-function GridFrame.prototype:SetHealingBarColor(r, g, b, a)
-	if GridFrame.db.profile.healingBar_statusColor then
-		self.HealingBar:SetStatusBarColor(r, g, b, a * GridFrame.db.profile.healingBar_intensity)
-	elseif GridFrame.db.profile.invertBarColor then
+function GridFrame.prototype:UpdateHealingBarColor()
+	if GridFrame.db.profile.invertBarColor then
 		local r, g, b, a = self.Bar:GetStatusBarColor()
 		self.HealingBar:SetStatusBarColor(r, g, b, a * GridFrame.db.profile.healingBar_intensity)
 	elseif self.HealingBar:GetValue() > 0 then
@@ -639,9 +637,6 @@ function GridFrame.prototype:SetIndicator(indicator, color, text, value, maxValu
 	elseif indicator == "healingBar" then
 		if value and maxValue then
 			self:SetHealingBar(value, maxValue)
-			if GridFrame.db.profile.healingBar_statusColor and type(color) == "table" then
-				self:SetHealingBarColor(color.r, color.g, color.b, color.a or 1)
-			end
 		end
 	elseif indicator == "icon" then
 		if texture then
@@ -758,7 +753,6 @@ GridFrame.defaultDB = {
 	showTooltip = "OOC",
 	textlength = 4,
 	healingBar_intensity = 0.5,
-	healingBar_statusColor = false,
 	throttleUpdates = false,
 	statusmap = {
 		["text"] = {
@@ -1009,18 +1003,9 @@ GridFrame.options = {
 					end,
 					set = function(_, v)
 						GridFrame.db.profile.healingBar_intensity = v
-					end,
-				},
-				["healingBar_statusColor"] = {
-					name = L["Healing Bar Uses Status Color"],
-					desc = L["Color the healing bar using the active status color instead of the health bar color."],
-					order = 25, width = "double",
-					type = "toggle",
-					get = function()
-						return GridFrame.db.profile.healingBar_statusColor
-					end,
-					set = function(_, v)
-						GridFrame.db.profile.healingBar_statusColor = v
+						GridFrame:WithAllFrames(function(f)
+							f:UpdateHealingBarColor()
+						end)
 					end,
 				},
 				["invert"] = {
