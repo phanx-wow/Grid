@@ -1,4 +1,4 @@
-## Interface: 40200
+## Interface: 40300
 ## Version: @project-version@
 ## X-ReleaseDate: "$Date$"
 
