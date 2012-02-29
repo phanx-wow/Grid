@@ -258,9 +258,9 @@ GridStatusAuras.defaultDB = {
 
 local defaultDebuffs = { }
 do
-	for status, statusTbl in pairs(GridStatusAuras.defaultDB) do
-		if type(statusTbl) == "table" and statusTbl.text then
-			GridStatusAuras:CopyDefaults(statusTbl, statusDefaultDB)
+	for status, settings in pairs(GridStatusAuras.defaultDB) do
+		if type(settings) == "table" and settings.text then
+			GridStatusAuras:CopyDefaults(settings, statusDefaultDB)
 			defaultDebuffs[status] = true
 		end
 	end
@@ -358,19 +358,19 @@ function GridStatusAuras:OnStatusDisable(status)
 end
 
 function GridStatusAuras:RegisterStatuses()
-	for status, statusTbl in pairs(self.db.profile) do
-		if type(statusTbl) == "table" and statusTbl.text then
-			local name = statusTbl.text
-			local desc = statusTbl.desc or name
+	for status, settings in pairs(self.db.profile) do
+		if type(settings) == "table" and settings.text then
+			local name = settings.text
+			local desc = settings.desc or name
 			local isBuff = GridStatusAuras.StatusForSpell(name, true) == status
-			local order = statusTbl.order or (isBuff and 15 or 35)
+			local order = settings.order or (isBuff and 15 or 35)
 
 			self:Debug("registering", status, desc)
 			if not self.defaultDB[status] then
 				self.defaultDB[status] = { }
 				self:CopyDefaults(self.defaultDB[status], statusDefaultDB)
 			end
-			self:CopyDefaults(statusTbl, self.defaultDB[status])
+			self:CopyDefaults(settings, self.defaultDB[status])
 			self:RegisterStatus(status, desc, self:OptionsForStatus(status, isBuff), false, order)
 		end
 	end
@@ -694,10 +694,10 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 end
 
 function GridStatusAuras:CreateRemoveOptions()
-	for status, statusTbl in pairs(self.db.profile) do
+	for status, settings in pairs(self.db.profile) do
 		local status = status
-		if type(statusTbl) == "table" and statusTbl.text and not defaultDebuffs[status] then
-			local debuffName = (statusTbl.desc or statusTbl.text)
+		if type(settings) == "table" and settings.text and not defaultDebuffs[status] then
+			local debuffName = settings.desc or settings.text
 			self.options.args["delete_debuff"].args[status] = {
 				name = debuffName,
 				desc = string.format(L["Remove %s from the menu"], debuffName),
