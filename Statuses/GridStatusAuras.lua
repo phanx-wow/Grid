@@ -709,7 +709,7 @@ function GridStatusAuras:CreateRemoveOptions()
 	end
 end
 
-function GridStatusAuras:AddAura(name, isBuff) print("AddAura", name, tostring(isBuff))
+function GridStatusAuras:AddAura(name, isBuff)
 	local status = GridStatusAuras.StatusForSpell(name, isBuff)
 
 	-- status already exists
@@ -745,7 +745,7 @@ function GridStatusAuras:AddAura(name, isBuff) print("AddAura", name, tostring(i
 	self:OnStatusEnable(status)
 end
 
-function GridStatusAuras:DeleteAura(status) print("DeleteAura", status)
+function GridStatusAuras:DeleteAura(status)
 	self:UnregisterStatus(status)
 	self.options.args[status] = nil
 	self.options.args["delete_debuff"].args[status] = nil
