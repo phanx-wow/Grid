@@ -324,6 +324,7 @@ function GridStatusAuras:PostReset()
 	self:UnregisterStatuses()
 	self:RegisterStatuses()
 	self:CreateRemoveOptions()
+	self:ResetDurationStatuses()
 	self:UpdateAuraScanList()
 end
 
@@ -343,12 +344,14 @@ function GridStatusAuras:OnStatusEnable(status)
 	self:RegisterMessage("Grid_UnitJoined")
 	self:RegisterEvent("UNIT_AURA", "ScanUnitAuras")
 
+	self:DeleteDurationStatus(status)
 	self:UpdateAuraScanList()
 	self:UpdateAllUnitAuras()
 end
 
 function GridStatusAuras:OnStatusDisable(status)
 	self.core:SendStatusLostAllUnits(status)
+	self:DeleteDurationStatus(status)
 	self:UpdateAuraScanList()
 
 	if self:EnabledStatusCount() == 0 then
@@ -670,6 +673,7 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 				end,
 			set = function(_, v)
 					GridStatusAuras.db.profile[status].mine = v
+					GridStatusAuras:DeleteDurationStatus(status)
 					GridStatusAuras:UpdateAuraScanList()
 					GridStatusAuras:UpdateAllUnitAuras()
 				end,
@@ -753,6 +757,7 @@ function GridStatusAuras:DeleteAura(status)
 	for indicator, indicatorTbl in pairs(GridFrame.db.profile.statusmap) do
 		indicatorTbl[status] = nil
 	end
+	self:DeleteDurationStatus(status)
 	self:UpdateAuraScanList()
 end
 
@@ -802,11 +807,53 @@ GridStatusAuras.durationTimer = {
 	minRefresh = nil,
 }
 
-local durationThreshold = 60
 local GetTime = GetTime
 local now = GetTime()
 
 local texCoords = { left = 0.06, right = 0.94, top = 0.06, bottom = 0.94 }
+
+-- Simple resource pool implemented as a singly-linked list.
+local Pool = {
+	pool = nil,
+	new = function(self, obj) -- create new Pool object
+		obj = obj or {}
+		setmetatable(obj, self)
+		self.__index = self
+		return obj
+	end,
+	get = function(self) -- get a wiped item from the pool
+		if not self.pool then self.pool = { nextPoolItem = self.pool } end
+		local item = self.pool
+		self.pool = self.pool.nextPoolItem
+		item.nextPoolItem = nil
+		if self.wipe then
+			self:wipe(item)
+		end
+		return item
+	end,
+	put = function(self, item) -- put an item back into the pool; caller shall remove references to item
+		item.nextPoolItem = self.pool
+		self.pool = item
+	end,
+	wipe = nil, -- called in Pool:new() to return a "wiped" pool item
+	empty = function(self) -- empty the pool
+		while self.pool do
+			local l = self.pool
+			self.pool = self.pool.nextPoolItem
+			l = nil
+		end
+	end,
+}
+
+-- durationAuraPool is a Pool of tables used by durationAuras[status][guid]
+local durationAuraPool = Pool:new(
+	{
+		wipe = function(self, item)
+			item.duration = nil
+			item.expirationTime = nil
+		end
+	}
+)
 
 function GridStatusAuras:UnitGainedDurationStatus(status, guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 	local timer = self.durationTimer
@@ -816,6 +863,9 @@ function GridStatusAuras:UnitGainedDurationStatus(status, guid, class, name, ran
 	if settings.enable and (settings.statusText == "duration" or settings.statusColor == "duration") then
 		if not self.durationAuras[status] then
 			self.durationAuras[status] = {}
+		end
+		if not self.durationAuras[status][guid] then
+			self.durationAuras[status][guid] = durationAuraPool:get()
 		end
 		self.durationAuras[status][guid] = {
 			class = class,
@@ -831,24 +881,39 @@ function GridStatusAuras:UnitGainedDurationStatus(status, guid, class, name, ran
 			timer.minRefresh = settings.refresh
 		end
 	else
-		if self.durationAuras[status] then
-			self.durationAuras[status][guid] = nil
-		end
+		self:UnitLostDurationStatus(status, guid, class, name)
 	end
 end
 
 function GridStatusAuras:UnitLostDurationStatus(status, guid, class, name)
-	if self.durationAuras[status] and self.durationAuras[status][guid] then
-		if self.durationAuras[status][guid].expirationTime > now then
-			self.durationAuras[status][guid].expirationTime = now
-		end
+	local auras = self.durationAuras[status]
+	if auras and auras[guid] then
+		durationAuraPool:put(auras[guid])
+		auras[guid] = nil
 	end
 end
 
+function GridStatusAuras:DeleteDurationStatus(status)
+	local auras = self.durationAuras[status]
+	if not auras then return end
+	for guid in auras do
+		durationAuraPool:put(auras[guid])
+		auras[guid] = nil
+	end
+	self.durationAuras[status] = nil
+end
+
+function GridStatusAuras:ResetDurationStatuses()
+	for status in pairs(self.durationAuras) do
+		self:DeleteDurationStatus(status)
+	end
+	durationAuraPool.empty()
+end
+
 function GridStatusAuras:HasActiveDurations()
-	for status, statusTbl in pairs(self.durationAuras) do
-		for guid, guidTbl in pairs(statusTbl) do
-			if guidTbl then return true end
+	for status, auras in pairs(self.durationAuras) do
+		for guid in pairs(auras) do
+			return true
 		end
 	end
 	return false
@@ -915,6 +980,39 @@ function GridStatusAuras:StatusTextColor(settings, count, timeLeft)
 	end
 
 	return text, color
+end
+
+function GridStatusAuras:RefreshActiveDurations()
+	now = GetTime()
+
+	self:Debug("RefreshActiveDurations", now)
+
+	for status, auras in pairs(self.durationAuras) do
+		local settings = self.db.profile[status]
+		if settings and settings.enable and not settings.missing and settings[class] ~= false then
+			for guid, aura in pairs(auras) do
+				local count, duration, expirationTime, icon = aura.count, aura.duration, aura.expirationTime, aura.icon
+				local start = expirationTime and (expirationTime - duration)
+				local timeLeft = expirationTime and expirationTime > now and (expirationTime - now) or 0
+				local text, color = self:StatusTextColor(settings, count, timeLeft)
+				self.core:SendStatusGained(guid,
+					status,
+					settings.priority,
+					(settings.range and 40),
+					color,
+					text,
+					count,
+					nil,
+					icon,
+					start,
+					duration,
+					count,
+					texCoords)
+			end
+		else
+			self.core:SendStatusLost(guid, status)
+		end
+	end
 end
 
 function GridStatusAuras:UnitGainedBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
@@ -1180,8 +1278,11 @@ function GridStatusAuras:ScanUnitAuras(event, unit)
 
 	now = GetTime()
 
-	for status, statusTbl in pairs(self.durationAuras) do
-		statusTbl[guid] = nil
+	for status, auras in pairs(self.durationAuras) do
+		if auras[guid] then
+			durationAuraPool:put(auras[guid])
+			auras[guid] = nil
+		end
 	end
 
 	-- scan for buffs
@@ -1260,59 +1361,4 @@ function GridStatusAuras:ScanUnitAuras(event, unit)
 	end
 
 	self:ResetDurationTimer(self:HasActiveDurations())
-end
-
-function GridStatusAuras:RefreshActiveDurations()
-	local class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable
-	local isBuff, settings
-	local hasActiveDurations = false
-
-	now = GetTime()
-
-	self:Debug("RefreshActiveDurations", now)
-
-	for status, statusTbl in pairs(self.durationAuras) do
-		local gcStatus = true
-		settings = self.db.profile[status]
-		if settings then
-			for guid, guidTbl in pairs(statusTbl) do
-				class = guidTbl.class
-				name = settings.text
-				rank = guidTbl.rank
-				icon = settings.icon
-				count = guidTbl.count
-				debuffType = guidTbl.debuffType
-				duration = guidTbl.duration
-				expirationTime = guidTbl.expirationTime
-				caster = guidTbl.caster
-				isStealable = guidTbl.isStealable
-
-				if expirationTime > now then
-					gcStatus = false
-					hasActiveDurations = true
-					isBuff = self.StatusForSpell(name, true) == status
-					if isBuff then
-						if buff_names[name] then
-							self:UnitGainedBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
-						elseif player_buff_names[name] then
-							self:UnitGainedPlayerBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
-						end
-					elseif debuff_names[name] then
-						self:UnitGainedDebuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
-					elseif debuff_types[debuffType] then
-						self:UnitGainedDebuffType(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
-					end
-				elseif now - expirationTime > durationThreshold then
-					self.durationAuras[status][guid] = nil
-				else
-					gcStatus = false
-				end
-			end
-		end
-		if gcStatus then
-			self.durationAuras[status] = nil
-		end
-	end
-
-	self:ResetDurationTimer(hasActiveDurations)
 end
