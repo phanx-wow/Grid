@@ -821,13 +821,13 @@ local Pool = {
 		self.__index = self
 		return obj
 	end,
-	get = function(self) -- get a wiped item from the pool
+	get = function(self) -- get a cleaned item from the pool
 		if not self.pool then self.pool = { nextPoolItem = self.pool } end
 		local item = self.pool
 		self.pool = self.pool.nextPoolItem
 		item.nextPoolItem = nil
-		if self.wipe then
-			self:wipe(item)
+		if self.clean then
+			self:clean(item)
 		end
 		return item
 	end,
@@ -835,7 +835,7 @@ local Pool = {
 		item.nextPoolItem = self.pool
 		self.pool = item
 	end,
-	wipe = nil, -- called in Pool:new() to return a "wiped" pool item
+	clean = nil, -- called in Pool:new() to return a "cleaned" pool item
 	empty = function(self) -- empty the pool
 		while self.pool do
 			local l = self.pool
@@ -848,7 +848,7 @@ local Pool = {
 -- durationAuraPool is a Pool of tables used by durationAuras[status][guid]
 local durationAuraPool = Pool:new(
 	{
-		wipe = function(self, item)
+		clean = function(self, item)
 			item.duration = nil
 			item.expirationTime = nil
 		end
