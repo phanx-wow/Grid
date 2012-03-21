@@ -907,7 +907,7 @@ function GridStatusAuras:ResetDurationStatuses()
 	for status in pairs(self.durationAuras) do
 		self:DeleteDurationStatus(status)
 	end
-	durationAuraPool.empty()
+	durationAuraPool:empty()
 end
 
 function GridStatusAuras:HasActiveDurations()
