@@ -78,6 +78,7 @@ function GridFrame:InitializeFrame(frame)
 
 	-- create healing bar
 	frame.HealingBar = CreateFrame("StatusBar", nil, frame)
+	frame.HealingBar:SetFrameLevel(frame:GetFrameLevel() + 1)
 	frame.HealingBar:SetStatusBarTexture(texture)
 
 	local bar_texture = frame.HealingBar:GetStatusBarTexture()
@@ -95,6 +96,7 @@ function GridFrame:InitializeFrame(frame)
 
 	-- create bar
 	frame.Bar = CreateFrame("StatusBar", nil, frame)
+	frame.Bar:SetFrameLevel(frame:GetFrameLevel() + 2)
 	frame.Bar:SetStatusBarTexture(texture)
 
 	bar_texture = frame.Bar:GetStatusBarTexture()
@@ -444,8 +446,11 @@ function GridFrame.prototype:SetBar(value, max)
 		max = 100
 	end
 
+	self.Bar:SetMinMaxValues(0, max)
+	self.Bar:SetValue(value)
+
 	local perc = value / max
-	self.Bar:SetValue(perc * 100)
+	--print("SetBar", math.floor(perc * 100))
 
 	local coord = (perc > 0 and perc <= 1) and perc or 1
 	if GridFrame.db.profile.orientation == "VERTICAL" then
@@ -460,8 +465,11 @@ function GridFrame.prototype:SetHealingBar(value, max)
 		max = 100
 	end
 
+	self.HealingBar:SetMinMaxValues(0, max)
+	self.HealingBar:SetValue(value)
+
 	local perc = value / max
-	self.HealingBar:SetValue(perc * 100)
+	--print("SetHealingBar", math.floor(perc * 100))
 
 	local coord = (perc > 0 and perc <= 1) and perc or 1
 	if GridFrame.db.profile.orientation == "VERTICAL" then
@@ -469,45 +477,68 @@ function GridFrame.prototype:SetHealingBar(value, max)
 	else
 		self.Bar:GetStatusBarTexture():SetTexCoord(0, coord, 0, 1)
 	end
-
-	self:UpdateHealingBarColor()
 end
 
 function GridFrame.prototype:SetBarColor(r, g, b, a)
+	--print("SetBarColor", math.floor(r*100)/100, math.floor(g*100)/100, math.floor(g*100)/100)
 	if GridFrame.db.profile.invertBarColor then
-		self.Bar:SetStatusBarColor(r, g, b, a)
+		self.Bar:SetStatusBarColor(r, g, b, 1)
 		self.BarBG:SetVertexColor(r * 0.2, g * 0.2, b * 0.2, 1)
 	else
-		self.Bar:SetStatusBarColor(0, 0, 0, 0.8)
-		self.BarBG:SetVertexColor(r, g, b, a)
+		self.Bar:SetStatusBarColor(r * 0.2, g * 0.2, b * 0.2, 1)
+		self.BarBG:SetVertexColor(r, g, b, 1)
 	end
-
-	self:UpdateHealingBarColor()
 end
 
-function GridFrame.prototype:UpdateHealingBarColor()
+function GridFrame.prototype:SetHealingBarColor(r, g, b, a)
+	--print("SetHealingBarColor", math.floor(r*100)/100, math.floor(g*100)/100, math.floor(g*100)/100, GridFrame.db.profile.healingBar_intensity)
 	if GridFrame.db.profile.invertBarColor then
-		local r, g, b, a = self.Bar:GetStatusBarColor()
-		self.HealingBar:SetStatusBarColor(r, g, b, a * GridFrame.db.profile.healingBar_intensity)
-	elseif self.HealingBar:GetValue() > 0 then
-		local alpha = 0.8
-		local healingBar_alpha = GridFrame.db.profile.healingBar_intensity * alpha
-		local bar_alpha = 1 - (1 - alpha) / (1 - healingBar_alpha)
-		self.Bar:SetStatusBarColor(0, 0, 0, bar_alpha)
-		self.HealingBar:SetStatusBarColor(0, 0, 0, healingBar_alpha)
+		self.HealingBar:SetStatusBarColor(r, g, b, GridFrame.db.profile.healingBar_intensity)
 	else
-		self.Bar:SetStatusBarColor(0, 0, 0, 0.8)
+		local int = GridFrame.db.profile.healingBar_intensity
+		self.HealingBar:SetStatusBarColor(r * int, g * int, b * int, int)
 	end
 end
 
 function GridFrame.prototype:InvertBarColor()
-	local r, g, b, a
 	if GridFrame.db.profile.invertBarColor then
-		r, g, b, a = self.BarBG:GetVertexColor()
+		self:SetBarColor(self.BarBG:GetVertexColor())
+
+		local r, g, b = self.HealingBar:GetStatusBarColor()
+		local int = GridFrame.db.profile.healingBar_intensity
+		self:SetHealingBarColor(r / int, g / int, b / int)
+		
+		if GridFrame.db.profile.invertTextColor then
+			r, g, b = self.Text:GetTextColor()
+			self.Text:SetTextColor(r * 0.2, g * 0.2, b * 0.2)
+
+			r, g, b = self.Text2:GetTextColor()
+			self.Text2:SetTextColor(r * 0.2, g * 0.2, b * 0.2)
+		end
 	else
-		r, g, b, a = self.Bar:GetStatusBarColor()
+		self:SetBarColor(self.Bar:GetStatusBarColor())
+		
+		if GridFrame.db.profile.invertTextColor then
+			local r, g, b = self.Text:GetTextColor()
+			self.Text:SetTextColor(r / 0.2, g / 0.2, b / 0.2)
+
+			r, g, b = self.Text2:GetTextColor()
+			self.Text2:SetTextColor(r / 0.2, g / 0.2, b / 0.2)
+		end
 	end
-	self:SetBarColor(r, g, b, a)
+end
+
+function GridFrame.prototype:InvertTextColor()
+	local r, g, b
+	if GridFrame.db.profile.invertTextColor then
+		r, g, b = self.Text:GetTextColor()
+		self.Text:SetTextColor(r * 0.2, g * 0.2, b * 0.2)
+
+		r, g, b = self.Text2:GetTextColor()
+		self.Text2:SetTextColor(r * 0.2, g * 0.2, b * 0.2)
+	else
+		
+	end
 end
 
 function GridFrame.prototype:SetText(text, color)
@@ -523,7 +554,11 @@ function GridFrame.prototype:SetText(text, color)
 		self.Text:Hide()
 	end
 	if color then
-		self.Text:SetTextColor(color.r, color.g, color.b, color.a or 1)
+		if GridFrame.db.profile.invertBarColor and GridFrame.db.profile.invertTextColor then
+			self.Text:SetTextColor(color.r * 0.2, color.g * 0.2, color.b * 0.2, color.a or 1)
+		else
+			self.Text:SetTextColor(color.r, color.g, color.b, color.a or 1)
+		end
 	end
 end
 
@@ -629,14 +664,23 @@ function GridFrame.prototype:SetIndicator(indicator, color, text, value, maxValu
 		end
 		if not GridFrame.db.profile.enableBarColor and type(color) == "table" then
 			self:SetBarColor(color.r, color.g, color.b, color.a or 1)
+			if not GridFrame.db.profile.healingBar_useStatusColor then
+				self:SetHealingBarColor(color.r, color.g, color.b, color.a or 1)
+			end
 		end
 	elseif indicator == "barcolor" then
 		if GridFrame.db.profile.enableBarColor and type(color) == "table" then
 			self:SetBarColor(color.r, color.g, color.b, color.a or 1)
+			if not GridFrame.db.profile.healingBar_useStatusColor then
+				self:SetHealingBarColor(color.r, color.g, color.b, color.a or 1)
+			end
 		end
 	elseif indicator == "healingBar" then
 		if value and maxValue then
 			self:SetHealingBar(value, maxValue)
+		end
+		if GridFrame.db.profile.healingBar_useStatusColor and type(color) == "table" then
+			self:SetHealingBarColor(color.r, color.g, color.b, color.a or 1)
 		end
 	elseif indicator == "icon" then
 		if texture then
@@ -750,9 +794,11 @@ GridFrame.defaultDB = {
 	enableMouseoverHighlight = true,
 	debug = false,
 	invertBarColor = false,
+	invertTextColor = false,
 	showTooltip = "OOC",
 	textlength = 4,
 	healingBar_intensity = 0.5,
+	healingBar_useStatusColor = false,
 	throttleUpdates = false,
 	statusmap = {
 		["text"] = {
@@ -939,19 +985,6 @@ GridFrame.options = {
 				GridFrame:WithAllFrames(function(f) f:EnableMouseoverHighlight(v) end)
 			end,
 		},
-		["barcolor"] = {
-			name = string.format(L["Enable %s indicator"], L["Health Bar Color"]),
-			desc = string.format(L["Toggle the %s indicator."], L["Health Bar Color"]),
-			order = 90, width = "double",
-			type = "toggle",
-			get = function()
-				return GridFrame.db.profile.enableBarColor
-			end,
-			set = function(_, v)
-				GridFrame.db.profile.enableBarColor = v
-				GridFrame:UpdateOptionsMenu()
-			end,
-		},
 		["text2"] = {
 			name = string.format(L["Enable %s indicator"], L["Center Text 2"]),
 			desc = string.format(L["Toggle the %s indicator."], L["Center Text 2"]),
@@ -1003,15 +1036,39 @@ GridFrame.options = {
 					end,
 					set = function(_, v)
 						GridFrame.db.profile.healingBar_intensity = v
-						GridFrame:WithAllFrames(function(f)
-							f:UpdateHealingBarColor()
-						end)
+						GridFrame:UpdateAllFrames()
 					end,
 				},
-				["invert"] = {
+				["healingBar_useStatusColor"] = {
+					name = L["Healing Bar Uses Status Color"],
+					desc = L["Make the healing bar use the status color instead of the health bar color."],
+					order = 40, width = "double",
+					type = "toggle",
+					get = function()
+						return GridFrame.db.profile.healingBar_useStatusColor
+					end,
+					set = function(_, v)
+						GridFrame.db.profile.healingBar_useStatusColor = v
+						GridFrame:UpdateAllFrames()
+					end,
+				},
+				["barcolor"] = {
+					name = string.format(L["Enable %s indicator"], L["Health Bar Color"]),
+					desc = string.format(L["Toggle the %s indicator."], L["Health Bar Color"]),
+					order = 30, width = "double",
+					type = "toggle",
+					get = function()
+						return GridFrame.db.profile.enableBarColor
+					end,
+					set = function(_, v)
+						GridFrame.db.profile.enableBarColor = v
+						GridFrame:UpdateOptionsMenu()
+					end,
+				},
+				["invertBarColor"] = {
 					name = L["Invert Bar Color"],
 					desc = L["Swap foreground/background colors on bars."],
-					order = 30, width = "double",
+					order = 50, width = "double",
 					type = "toggle",
 					get = function()
 						return GridFrame.db.profile.invertBarColor
@@ -1019,6 +1076,25 @@ GridFrame.options = {
 					set = function(_, v)
 						GridFrame.db.profile.invertBarColor = v
 						GridFrame:InvertBarColor()
+					end,
+				},
+				["invertTextColor"] = {
+					name = L["Invert Text Color"],
+					desc = L["Darken the text color to match the inverted bar."],
+					order = 50, width = "double",
+					type = "toggle",
+					get = function()
+						return GridFrame.db.profile.invertTextColor
+					end,
+					set = function(_, v)
+						GridFrame.db.profile.invertTextColor = v
+						GridFrame:InvertTextColor()
+					end,
+					disabled = function()
+						return not GridFrame.db.profile.invertBarColor
+					end,
+					hidden = function()
+						return not GridFrame.db.profile.invertBarColor
 					end,
 				},
 			},
@@ -1310,6 +1386,12 @@ end
 function GridFrame:InvertBarColor()
 	self:WithAllFrames(function(f)
 		f:InvertBarColor()
+	end)
+end
+
+function GridFrame:InvertTextColor()
+	self:WithAllFrames(function(f)
+		f:InvertTextColor()
 	end)
 end
 
