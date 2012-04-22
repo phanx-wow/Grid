@@ -71,12 +71,16 @@ end
 local resSpell
 do
 	local _, class = UnitClass("player")
-	if class == "PALADIN" then
-		resSpell = GetSpellInfo(7328)
+	if class == "DEATHKNIGHT" then
+		resSpell = GetSpellInfo(61999) -- Raise Ally
+	elseif class == "DRUID" then
+		resSpell = GetSpellInfo(50769) -- Revive
+	elseif class == "PALADIN" then
+		resSpell = GetSpellInfo(7328)  -- Redemption
 	elseif class == "PRIEST" then
-		resSpell = GetSpellInfo(2006)
+		resSpell = GetSpellInfo(2006)  -- Resurrection
 	elseif class == "SHAMAN" then
-		resSpell = GetSpellInfo(2008)
+		resSpell = GetSpellInfo(2008)  -- Ancestral Spirit
 	end
 end
 
@@ -84,7 +88,7 @@ function GridStatusRange:UnitInRange(unit)
 	if UnitIsUnit(unit, "player") then
 		return true
 	elseif resSpell and UnitIsDead(unit) and not UnitIsDead("player") then
-		return IsSpellInRange(resSpell, unit)
+		return IsSpellInRange(resSpell, unit) == 1
 	else
 		return UnitInRange(unit)
 	end
