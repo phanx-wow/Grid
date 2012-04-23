@@ -7,8 +7,8 @@
 ## Notes-esES: Una cuadrícula compacta de marcos de unidades para tu grupo o banda.
 ## Notes-esMX: Una cuadrícula compacta de marcos de unidades para tu grupo o banda.
 ## Notes-ptBR: Uma grade compacta de quadros das unidades do grupo ou banda.
-## Notes-zhCN: 小巧的轻量级模块化队伍/团队框架。
-## Notes-zhTW: 精簡的團隊框架功能
+## Notes-zhCN: 紧凑方格队伍/团队框架。
+## Notes-zhTW: 緊湊方格隊伍/團隊框架。
 
 ## Author: Pastamancer, Maia
 ## Credits: Jerry, Phanx, Greltok
