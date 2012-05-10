@@ -507,7 +507,7 @@ function GridFrame.prototype:InvertBarColor()
 		local r, g, b = self.HealingBar:GetStatusBarColor()
 		local int = GridFrame.db.profile.healingBar_intensity
 		self:SetHealingBarColor(r / int, g / int, b / int)
-		
+
 		if GridFrame.db.profile.invertTextColor then
 			r, g, b = self.Text:GetTextColor()
 			self.Text:SetTextColor(r * 0.2, g * 0.2, b * 0.2)
@@ -517,7 +517,7 @@ function GridFrame.prototype:InvertBarColor()
 		end
 	else
 		self:SetBarColor(self.Bar:GetStatusBarColor())
-		
+
 		if GridFrame.db.profile.invertTextColor then
 			local r, g, b = self.Text:GetTextColor()
 			self.Text:SetTextColor(r / 0.2, g / 0.2, b / 0.2)
@@ -537,7 +537,7 @@ function GridFrame.prototype:InvertTextColor()
 		r, g, b = self.Text2:GetTextColor()
 		self.Text2:SetTextColor(r * 0.2, g * 0.2, b * 0.2)
 	else
-		
+
 	end
 end
 
@@ -882,10 +882,10 @@ GridFrame.options = {
 			desc = L["Adjust the width of each unit's frame."],
 			order = 10, width = "double",
 			type = "range", min = 10, max = 100, step = 1,
-			get = function()
+			get = function(info)
 				return GridFrame.db.profile.frameWidth
 			end,
-			set = function(_, v)
+			set = function(info, v)
 				GridFrame.db.profile.frameWidth = v
 				GridFrame:ResizeAllFrames()
 				GridFrame:ScheduleTimer("Grid_ReloadLayout", 0.5)
@@ -1228,15 +1228,13 @@ GridFrame.options = {
 }
 
 if media then
-	local mediaWidgets = media and LibStub("AceGUISharedMediaWidgets-1.0", true)
-
 	GridFrame.options.args.text.args.font = {
 		name = L["Font"],
 		desc = L["Adjust the font settings"],
 		order = 10, width = "double",
 		type = "select",
 		values = media:HashTable("font"),
-		dialogControl = mediaWidgets and "LSM30_Font" or nil,
+		dialogControl = "LSM30_Font",
 		get = function()
 			return GridFrame.db.profile.font
 		end,
@@ -1252,7 +1250,7 @@ if media then
 		order = 10, width = "double",
 		type = "select",
 		values = media:HashTable("statusbar"),
-		dialogControl = mediaWidgets and "LSM30_Statusbar" or nil,
+		dialogControl = "LSM30_Statusbar",
 		get = function()
 			return GridFrame.db.profile.texture
 		end,
@@ -1344,6 +1342,10 @@ function GridFrame:PostReset()
 	self:ResetAllFrames()
 	self:UpdateFrameUnits()
 	self:UpdateAllFrames()
+
+	-- different fix for ticket #556, maybe fixes #603 too
+	self:ResizeAllFrames()
+	self:ScheduleTimer("Grid_ReloadLayout", 0.1)
 end
 
 ------------------------------------------------------------------------

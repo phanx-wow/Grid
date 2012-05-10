@@ -686,24 +686,10 @@ function GridLayout:CreateFrames()
 		insets = {left = 4, right = 4, top = 4, bottom = 4},
 	})
 
-	-- create bg texture
-	-- f.texture = f:CreateTexture(nil, "BORDER")
-	-- f.texture:SetTexture("Interface\\ChatFrame\\ChatFrameBackground")
-	-- f.texture:SetPoint("TOPLEFT", f, "TOPLEFT", 4, -4)
-	-- f.texture:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -4, 4)
-	-- f.texture:SetBlendMode("ADD")
-	-- f.texture:SetGradientAlpha("VERTICAL", .1, .1, .1, 0, .2, .2, .2, 0.5)
-
-	local tab_width = 33
-	local tab_side_width = 16
-	local tab_middle_width = tab_width - tab_side_width * 2
-	local tab_height = 18
-	local tab_alpha = 0.9
-
 	-- create drag handle
-	f.tab = CreateFrame("Frame", "GridLayoutFrameTab", f)
-	f.tab:SetWidth(tab_width)
-	f.tab:SetHeight(tab_height)
+	f.tab = CreateFrame("Frame", nil, f)
+	f.tab:SetWidth(48)
+	f.tab:SetHeight(24)
 	f.tab:EnableMouse(true)
 	f.tab:RegisterForDrag("LeftButton")
 	f.tab:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 1, -4)
@@ -713,35 +699,35 @@ function GridLayout:CreateFrames()
 	f.tab:SetScript("OnLeave", GridLayout_OnLeave)
 	f.tab:Hide()
 
-	-- Handle/Tab Background
-	f.tabBgLeft = f.tab:CreateTexture("GridLayoutFrameTabBgLeft", "BACKGROUND")
+	-- Tab Background
+	f.tabBgLeft = f.tab:CreateTexture(nil, "BACKGROUND")
 	f.tabBgLeft:SetTexture("Interface\\ChatFrame\\ChatFrameTab")
 	f.tabBgLeft:SetTexCoord(0, 0.25, 0, 1)
-	f.tabBgLeft:SetAlpha(tab_alpha)
-	f.tabBgLeft:SetWidth(tab_side_width)
-	f.tabBgLeft:SetHeight(tab_height + 5)
+	f.tabBgLeft:SetPoint("TOPLEFT", f.tab, "TOPLEFT", 0, 5)
 	f.tabBgLeft:SetPoint("BOTTOMLEFT", f.tab, "BOTTOMLEFT", 0, 0)
+	f.tabBgLeft:SetWidth(16)
+	f.tabBgLeft:SetAlpha(0.9)
 
-	f.tabBgMiddle = f.tab:CreateTexture("GridLayoutFrameTabBgMiddle", "BACKGROUND")
-	f.tabBgMiddle:SetTexture("Interface\\ChatFrame\\ChatFrameTab")
-	f.tabBgMiddle:SetTexCoord(0.25, 0.75, 0, 1)
-	f.tabBgMiddle:SetAlpha(tab_alpha)
-	f.tabBgMiddle:SetWidth(tab_middle_width)
-	f.tabBgMiddle:SetHeight(tab_height + 5)
-	f.tabBgMiddle:SetPoint("LEFT", f.tabBgLeft, "RIGHT", 0, 0)
-
-	f.tabBgRight = f.tab:CreateTexture("GridLayoutFrameTabBgRight", "BACKGROUND")
+	f.tabBgRight = f.tab:CreateTexture(nil, "BACKGROUND")
 	f.tabBgRight:SetTexture("Interface\\ChatFrame\\ChatFrameTab")
 	f.tabBgRight:SetTexCoord(0.75, 1, 0, 1)
-	f.tabBgRight:SetAlpha(tab_alpha)
-	f.tabBgRight:SetWidth(tab_side_width)
-	f.tabBgRight:SetHeight(tab_height + 5)
-	f.tabBgRight:SetPoint("LEFT", f.tabBgMiddle, "RIGHT", 0, 0)
+	f.tabBgRight:SetPoint("TOPRIGHT", f.tab, "TOPRIGHT", 0, 5)
+	f.tabBgRight:SetPoint("BOTTOMRIGHT", f.tab, "BOTTOMRIGHT", 0, 0)
+	f.tabBgRight:SetWidth(16)
+	f.tabBgRight:SetAlpha(0.9)
+
+	f.tabBgMiddle = f.tab:CreateTexture(nil, "BACKGROUND")
+	f.tabBgMiddle:SetTexture("Interface\\ChatFrame\\ChatFrameTab")
+	f.tabBgMiddle:SetTexCoord(0.25, 0.75, 0, 1)
+	f.tabBgMiddle:SetPoint("BOTTOMLEFT", f.tabBgLeft, "BOTTOMRIGHT", 0, 0)
+	f.tabBgMiddle:SetPoint("BOTTOMRIGHT", f.tabBgRight, "BOTTOMLEFT", 0, 0)
+	f.tabBgMiddle:SetPoint("TOP", f.tab, "TOP", 0, 5)
 
 	-- Tab Label
-	f.tabText = f.tab:CreateFontString("GridLayoutFrameTabText", "BACKGROUND", "GameFontNormalSmall")
+	f.tabText = f.tab:CreateFontString(nil, "BACKGROUND", "GameFontNormalSmall")
 	f.tabText:SetText("Grid")
-	f.tabText:SetPoint("TOP", f.tab, "TOP", 0, -5)
+	f.tabText:SetPoint("LEFT", f.tab, "LEFT", 0, -5)
+	f.tabText:SetPoint("RIGHT", f.tab, "RIGHT", 0, -5)
 
 	self.frame = f
 end
@@ -999,9 +985,10 @@ function GridLayout:UpdateSize()
 		local layoutGroup = self.layoutGroups[i]
 
 		-- update group size (fixes ticket #556)
+--[[
 		local framesVisible = 0
-		for i = 1, layoutGroup:GetNumChildren() do
-			if select(i, layoutGroup:GetChildren()):IsShown() then
+		for j = 1, layoutGroup:GetNumChildren() do
+			if select(j, layoutGroup:GetChildren()):IsShown() then
 				framesVisible = framesVisible + 1
 			end
 		end
@@ -1010,12 +997,15 @@ function GridLayout:UpdateSize()
 		local unitsPerColumn = layoutGroup:GetAttribute("unitsPerColumn") or 5
 		local numCols = math.min(unitsPerColumn, framesVisible)
 		local numRows = math.min(maxColumns, math.ceil(framesVisible / unitsPerColumn))
+		print("COLS:", numCols, "ROWS:", numRows, "HORIZONTAL?", horizontal)
 		if not horizontal then
 			numCols, numRows = numRows, numCols
 		end
-		self:Debug("numCols:", numCols, "numRows:", numRows)
+		self:Debug("layoutGroup:", i, "numCols:", numCols, "numRows:", numRows)
 		layoutGroup:SetWidth(numCols * (f.frameWidth + Padding) - Padding)
 		layoutGroup:SetHeight(numRows * (f.frameHeight + Padding) - Padding)
+]]
+		-- /fix
 
 		if layoutGroup:IsVisible() then
 			groupCount = groupCount + 1
@@ -1113,8 +1103,8 @@ function GridLayout:SavePosition()
 	end
 
 	if x and y and s then
-		self.db.profile.PosX = math.floor(x + 0.5)
-		self.db.profile.PosY = math.floor(y + 0.5)
+		self.db.profile.PosX = x + 0.5
+		self.db.profile.PosY = y + 0.5
 		--self.db.profile.anchor = point
 		self.db.profile.anchorRel = relativePoint
 		self:Debug("Saved Position", anchor, x, y)
@@ -1125,8 +1115,8 @@ function GridLayout:ResetPosition()
 	--self:Debug("GridLayout:", "ResetPosition")
 	local uiScale = UIParent:GetEffectiveScale()
 
-	self.db.profile.PosX = math.floor(UIParent:GetWidth() / 2 * uiScale + 0.5)
-	self.db.profile.PosY = - math.floor(UIParent:GetHeight() / 2 * uiScale + 0.5)
+	self.db.profile.PosX = UIParent:GetWidth() / 2 * uiScale + 0.5
+	self.db.profile.PosY = -UIParent:GetHeight() / 2 * uiScale + 0.5
 	self.db.profile.anchor = "TOPLEFT"
 
 	self:RestorePosition()
