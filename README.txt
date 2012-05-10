@@ -1,6 +1,6 @@
 == **Need help?**
 
-**Comments are closed.** If you need to report a problem, see the "How to report a bug in Grid" section below. If you have a general question or comment, you can post in the [[http://forums.wowace.com/showthread.php?t=18716|WowAce forum thread]].
+**To report a problem**, see the "How to report a bug in Grid" section on this page. All other **questions and comments** should be directed to the [[http://forums.wowace.com/showthread.php?t=18716|WowAce forum thread]]. Please **do not** send us private messages asking for help; we will not respond.
 
 
 == **What is Grid?**
@@ -19,10 +19,10 @@ Due to its flexible design, Grid has a fairly daunting configuration menu. We re
 Before reporting a bug, please:
 
 # Double-check that you have the latest Release or Beta version of Grid.
-# Disable all other addons (//including// all Grid plugins) and see if the problem still happens.
+# Disable all other addons, //including// all Grid plugins, and see if the problem still happens.
 # Enable "Display Lua Errors" under Interface Options > Help, or install an error-catching addon like [[http://www.wowinterface.com/downloads/info5995-BugSack.html|BugSack]].
 
-Then, [[http://www.wowace.com/addons/grid/tickets/?status=+|submit a bug report]] in the ticket tracker. Check for existing tickets about your bug first, and fill in as much of the requested information in the ticket template as you can. Finally, remember to check back on your ticket after a few days in case we need more information from you.
+Then, [[http://www.wowace.com/addons/grid/tickets/?status=+|submit a bug report]] in the ticket tracker. Check for existing tickets about your bug first, and fill in as much of the requested information in the ticket template as you can. Finally, remember to check back on your ticket in case we need more information from you.
 
 Please note that the Grid team cannot provide support for third-party plugins. If you are experiencing problems with a plugin, you will need to contact the plugin's author for help.
 
@@ -55,7 +55,6 @@ Please do not submit tickets about these issues. We already know about them, and
 
 * Pastamancer: core, complete conversion to OO, modules
 * Maia: initial concept, UI design, status modules
-* Phanx: all around awesome
 * Greltok: bugfixing
 * Mikk: icon
 * kaybe: german localization
