@@ -1,5 +1,10 @@
 == **Need help?**
 
+* [[#w-how-to-report-a-bug-in-grid|Report a problem]]
+* [[http://www.wowace.com/addons/grid/tickets/?status=+&type=e|Suggest a feature]]
+* [[http://forums.wowace.com/showthread.php?t=18716|Ask a question, or post a comment]]
+* We //will not// answer any private messages asking for help. Use the above links to get help.
+
 **To report a problem**, see the "How to report a bug in Grid" section on this page. All other **questions and comments** should be directed to the [[http://forums.wowace.com/showthread.php?t=18716|WowAce forum thread]]. Please **do not** send us private messages asking for help; we will not respond.
 
 
