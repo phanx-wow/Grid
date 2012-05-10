@@ -1,14 +1,11 @@
-== **Need help?**
+= **Need help?**
 
-* [[#w-how-to-report-a-bug-in-grid|Report a problem]]
-* [[http://www.wowace.com/addons/grid/tickets/?status=+&type=e|Suggest a feature]]
-* [[http://forums.wowace.com/showthread.php?t=18716|Ask a question, or post a comment]]
+* **[[#w-how-to-report-a-bug-in-grid|Report a problem]]** in the ticket tracker
+* **[[http://www.wowace.com/addons/grid/tickets/?status=+&type=e|Suggest a feature]]** in the ticket tracker
+* **[[http://forums.wowace.com/showthread.php?t=18716|Ask a question, or post a comment]]** in the forum thread
 * We //will not// answer any private messages asking for help. Use the above links to get help.
 
-**To report a problem**, see the "How to report a bug in Grid" section on this page. All other **questions and comments** should be directed to the [[http://forums.wowace.com/showthread.php?t=18716|WowAce forum thread]]. Please **do not** send us private messages asking for help; we will not respond.
-
-
-== **What is Grid?**
+= **What is Grid?**
 
 **Grid is a party/raid unit frame addon.** The compact grid of units lets you select a group member quickly, while retaining a good overview of the whole group. Its aim is to display as much information as possible without overloading the user. It allows you to customize what information you see, and how that information is displayed.
 
@@ -19,7 +16,7 @@ By default, Grid includes status modules for health, mana, incoming heals, aggro
 Due to its flexible design, Grid has a fairly daunting configuration menu. We recommend taking a few minutes to look through the configuration and familiarize yourself with the options available to you. There is also a small [[http://www.wowace.com/projects/grid/pages/users-guide/|User's Guide]] which you may find helpful, and a [[http://forums.wowace.com/showthread.php?t=18716|forum thread]] for discussion.
 
 
-== **How to report a bug in Grid**
+= **How to report a bug in Grid**
 
 Before reporting a bug, please:
 
@@ -31,7 +28,7 @@ Then, [[http://www.wowace.com/addons/grid/tickets/?status=+|submit a bug report]
 
 Please note that the Grid team cannot provide support for third-party plugins. If you are experiencing problems with a plugin, you will need to contact the plugin's author for help.
 
-== **Frequently Asked Questions / Known Issues**
+= **Frequently Asked Questions / Known Issues**
 
 Please do not submit tickets about these issues. We already know about them, and in some cases, they are not actually bugs.
 
@@ -49,14 +46,14 @@ Please do not submit tickets about these issues. We already know about them, and
 : Version numbers that follow the "r1234" pattern are alpha-quality snapshots of the current development process. They are not supported, may be unstable or not work at all, and may cause you to lose your settings. If you are not comfortable running experimental code, please stick with Release and Beta versions, whose numbers follow the "4.0.3.1234" or "4.0.3.1234-beta" pattern.
 
 
-== **Localization**
+= **Localization**
 
 * Grid is //compatible with// English, Deutsch (deDE), Español (esES/esMX), Français (frFR), Português (ptBR), Русский (ruRU), 한국어 (koKR), 简体中文 (zhCN), and 正體中文 (zhTW) game clients.
 * Grid is //translated into// English, Deutsch, Español, Français, Русский, 한국어, 简体中文, and 正體中文.
 * To add or update translations, please [[http://wow.curseforge.com/addons/grid/localization/|use the WowAce localization system]].
 
 
-== **Credits**
+= **Credits**
 
 * Pastamancer: core, complete conversion to OO, modules
 * Maia: initial concept, UI design, status modules
