@@ -734,8 +734,8 @@ function GridStatusAuras:AddAura(name, isBuff)
 	self:CopyDefaults(self.db.profile[status], self.defaultDB[status])
 
 	self.options.args["delete_debuff"].args[status] = {
-		name = name,
-		desc = string.format(L["Remove %s from the menu"], name),
+		name = desc,
+		desc = string.format(L["Remove %s from the menu"], desc),
 		width = "double",
 		type = "execute",
 		func = function()
