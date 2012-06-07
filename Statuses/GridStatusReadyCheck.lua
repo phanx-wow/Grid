@@ -12,7 +12,6 @@ local GridStatusReadyCheck = Grid:NewStatusModule("GridStatusReadyCheck", "AceTi
 GridStatusReadyCheck.menuName = L["Ready Check"]
 
 GridStatusReadyCheck.defaultDB = {
-	debug = false,
 	ready_check = {
 		text = L["Ready Check"],
 		enable = true,

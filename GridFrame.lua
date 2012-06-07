@@ -792,7 +792,6 @@ GridFrame.defaultDB = {
 	enableIconStackText = true,
 	enableIconCooldown = true,
 	enableMouseoverHighlight = true,
-	debug = false,
 	invertBarColor = false,
 	invertTextColor = false,
 	showTooltip = "OOC",
@@ -1274,8 +1273,6 @@ Grid.options.args["Indicators"] = {
 
 function GridFrame:PostInitialize()
 	GridStatus = Grid:GetModule("GridStatus")
-
-	self.debugging = self.db.profile.debug
 
 	self.frames = {}
 	self.registeredFrames = {}

@@ -18,9 +18,6 @@ function GridStatus.modulePrototype:OnInitialize()
 		self.db = Grid.db:RegisterNamespace(self.moduleName, { profile = self.defaultDB or { } })
 	end
 
-	self.debugFrame = GridStatus.debugFrame
-	self.debugging = self.db.profile.debug
-
 	if type(self.PostInitialize) == "function" then
 		self:PostInitialize()
 	end
@@ -55,7 +52,6 @@ function GridStatus.modulePrototype:OnDisable()
 end
 
 function GridStatus.modulePrototype:Reset()
-	self.debugging = self.db.profile.debug
 	self:Debug("Reset")
 
 	if type(self.PostReset) == "function" then
@@ -206,7 +202,6 @@ end
 ------------------------------------------------------------------------
 
 GridStatus.defaultDB = {
-	debug = false,
 	range = false,
 	colors = {
 		PetColorType = "Using Fallback color",

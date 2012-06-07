@@ -13,7 +13,6 @@ GridStatusVoiceComm.menuName = L["Voice Chat"]
 GridStatusVoiceComm.options = false
 
 GridStatusVoiceComm.defaultDB = {
-	debug = false,
 	alert_voice = {
 		text =  L["Talking"],
 		enable = false,

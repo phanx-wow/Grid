@@ -15,7 +15,6 @@ GridStatusHeals.menuName = L["Heals"]
 GridStatusHeals.options = false
 
 GridStatusHeals.defaultDB = {
-	debug = false,
 	alert_heals = {
 		text = L["Incoming heals"],
 		enable = true,

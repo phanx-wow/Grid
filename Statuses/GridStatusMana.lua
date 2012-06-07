@@ -13,7 +13,6 @@ local GridStatusMana = GridStatus:NewModule("GridStatusMana")
 GridStatusMana.menuName = L["Mana"]
 
 GridStatusMana.defaultDB = {
-	debug = false,
 	alert_lowMana = {
 		text = L["Low Mana"],
 		enable = true,

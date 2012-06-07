@@ -13,7 +13,6 @@ GridStatusName.menuName = L["Unit Name"]
 GridStatusName.options = false
 
 GridStatusName.defaultDB = {
-	debug = false,
 	unit_name = {
 		text = L["Unit Name"],
 		enable = true,

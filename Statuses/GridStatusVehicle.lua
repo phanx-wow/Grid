@@ -13,7 +13,6 @@ GridStatusVehicle.menuName = L["In Vehicle"]
 GridStatusVehicle.options = false
 
 GridStatusVehicle.defaultDB = {
-	debug = false,
 	alert_vehicleui = {
 		text = L["Driving"],
 		enable = false,

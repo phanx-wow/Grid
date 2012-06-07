@@ -13,7 +13,6 @@ local GridStatusRange = Grid:NewStatusModule("GridStatusRange", "AceTimer-3.0")
 GridStatusRange.menuName = L["Out of Range"]
 
 GridStatusRange.defaultDB = {
-	debug = false,
 	alert_range = {
 		enable = true,
 		text = L["Range"],

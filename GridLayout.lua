@@ -173,8 +173,6 @@ end
 ------------------------------------------------------------------------
 
 GridLayout.defaultDB = {
-	debug = false,
-
 	layouts = {
 		solo = L["By Group 5"],
 		party = L["By Group 5"],

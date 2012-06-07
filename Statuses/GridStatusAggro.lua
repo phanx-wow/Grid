@@ -20,7 +20,6 @@ end
 --{{{ AceDB defaults
 
 GridStatusAggro.defaultDB = {
-	debug = false,
 	alert_aggro = {
 		text =  L["Aggro"],
 		enable = true,

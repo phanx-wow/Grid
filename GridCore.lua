@@ -16,19 +16,64 @@ _G.Grid = LibStub("AceAddon-3.0"):NewAddon(Grid, "Grid", "AceConsole-3.0", "AceE
 
 ------------------------------------------------------------------------
 
-Grid.debugFrame = ChatFrame1
-
 function Grid:Debug(str, ...)
-	if not self.debugging then return end
+	if not self.debug then return end
 	if not str or str:len() == 0 then return end
+
+
 	if (...) then
-		if str:find("%%[dfs%d%.]") then
+		if str:find("%%%.%d") or str:find("%%[dfqsx%d]") then
 			str = str:format(...)
 		else
-			str = strjoin(" ", str, tostringall(...))
+			str = (" "):join(str, tostringall(...))
 		end
 	end
-	self.debugFrame:AddMessage("|cffff9933Grid:|r " .. str)
+
+	local name = self.moduleName or self.name or GRID
+	_G[Grid.db.global.debugFrame]:AddMessage(("|cffff9933%s:|r %s"):format(name, str))
+end
+
+function Grid:GetDebuggingEnabled(moduleName)
+	return self.db.global.debug[moduleName]
+end
+
+do
+	local function FindModule(addon, moduleName)
+		if addon.name == moduleName or addon.moduleName == moduleName then
+			return addon
+		end
+		for name, module in addon:IterateModules() do
+			local found = FindModule(module, moduleName)
+			if found then
+				return found
+			end
+		end
+	end
+
+	function Grid:SetDebuggingEnabled(moduleName, value)
+		--print("SetDebuggingEnabled", moduleName, value)
+		local module = FindModule(self, moduleName)
+		if not module then
+			--print("ERROR: module doesn't exist!")
+		end
+
+		if module.db and module.db.profile and module.db.profile.debug ~= nil then
+			print("Removed old debug setting from module", moduleName, tostring(module.db.profile.debug))
+			module.db.profile.debug = nil
+		end
+
+		local args = self.options.args.debug.args
+		if not args[moduleName] then
+			args[moduleName] = self:GetDebuggingOptions(moduleName)
+		end
+
+		if value == nil then
+			module.debug = self.db.global.debug[moduleName]
+		else
+			self.db.global.debug[moduleName] = value
+			module.debug = value
+		end
+	end
 end
 
 ------------------------------------------------------------------------
@@ -37,20 +82,54 @@ Grid.options = {
 	handler = Grid,
 	type = "group", childGroups = "tab",
 	args = {
-		["debug"] = {
+		debug = {
 			type = "group",
 			name = L["Debugging"],
 			desc = L["Module debugging menu."],
 			order = -1,
-			args = {},
-		},
-	},
+			args = {
+				frame = {
+					order = 1,
+					name = L["Output Frame"],
+					desc = L["Show debugging messages in this frame."],
+					type = "select",
+					get = function(info)
+						return Grid.db.global.debugFrame
+					end,
+					set = function(info, value)
+						Grid.db.global.debugFrame = value
+					end,
+					values = {
+						ChatFrame1  = "ChatFrame1",
+						ChatFrame2  = "ChatFrame2",
+						ChatFrame3  = "ChatFrame3",
+						ChatFrame4  = "ChatFrame4",
+						ChatFrame5  = "ChatFrame5",
+						ChatFrame6  = "ChatFrame6",
+						ChatFrame7  = "ChatFrame7",
+						ChatFrame8  = "ChatFrame8",
+						ChatFrame9  = "ChatFrame9",
+						ChatFrame10 = "ChatFrame10",
+					},
+				},
+				spacer = {
+					order = 2,
+					name = " ",
+					type = "description",
+				},
+			}
+		}
+	}
 }
 
 ------------------------------------------------------------------------
 
-Grid.defaults = {
-	debug = false,
+Grid.defaultDB = {
+	profile = {},
+	global = {
+		debug = {},
+		debugFrame = "ChatFrame1",
+	}
 }
 
 ------------------------------------------------------------------------
@@ -63,17 +142,15 @@ Grid.modulePrototype = {
 
 function Grid.modulePrototype:OnInitialize()
 	if not self.db then
-		self.db = self.core.db:RegisterNamespace(self.moduleName, { profile = self.defaultDB or { } })
+		self.db = Grid.db:RegisterNamespace(self.moduleName, { profile = self.defaultDB or { } })
 	end
 
-	self.debugFrame = Grid.debugFrame
-	self.debugging = self.db.profile.debug
-
 	self:Debug("OnInitialize")
-	self.core:AddModuleDebugMenu(self)
 
+	Grid:SetDebuggingEnabled(self.moduleName)
 	for name, module in self:IterateModules() do
 		self:RegisterModule(name, module)
+		Grid:SetDebuggingEnabled(name)
 	end
 
 	if type(self.PostInitialize) == "function" then
@@ -102,7 +179,6 @@ function Grid.modulePrototype:OnDisable()
 end
 
 function Grid.modulePrototype:Reset()
-	self.debugging = self.db.profile.debug
 	self:Debug("Reset")
 	self:ResetModules()
 
@@ -113,6 +189,11 @@ end
 
 function Grid.modulePrototype:OnModuleCreated(module)
 	module.super = self.modulePrototype
+	self:Debug("OnModuleCreated", module.moduleName)
+	if Grid.db then
+		-- otherwise it will be caught in core OnInitialize
+		Grid:SetDebuggingEnabled(module.moduleName)
+	end
 end
 
 function Grid.modulePrototype:RegisterModule(name, module)
@@ -139,8 +220,6 @@ function Grid.modulePrototype:RegisterModule(name, module)
 	if module.options then
 		self.options.args[name] = module.options
 	end
-
-	self.core:AddModuleDebugMenu(module)
 
 	self.registeredModules[module] = true
 end
@@ -171,7 +250,7 @@ Grid:SetDefaultModuleLibraries("AceEvent-3.0")
 ------------------------------------------------------------------------
 
 function Grid:OnInitialize()
-	self.db = LibStub("AceDB-3.0"):New("GridDB", { profile = self.defaults }, true)
+	self.db = LibStub("AceDB-3.0"):New("GridDB", self.defaultDB, true)
 
 	self.db.RegisterCallback(self, "OnProfileChanged", "OnProfileEnable")
 	self.db.RegisterCallback(self, "OnProfileCopied", "OnProfileEnable")
@@ -216,11 +295,6 @@ function Grid:OnInitialize()
 		AceConfigDialog:Close("Grid")
 	end)
 
-	-- we need to save debugging state over sessions :(
-	self.debugging = self.db.profile.debug
-
-	self:AddModuleDebugMenu(self)
-
 	for name, module in self:IterateModules() do
 		self:RegisterModule(name, module)
 	end
@@ -254,13 +328,42 @@ function Grid:OnDisable()
 end
 
 function Grid:OnProfileEnable()
-	self.debugging = self.db.profile.debug
 	self:Debug("Loaded profile", self.db:GetCurrentProfile())
 	self:ResetModules()
 end
 
+------------------------------------------------------------------------
+
+do
+	local function debug_get(info)
+		--print("debug_get", info[#info])
+		return Grid:GetDebuggingEnabled(info[#info])
+	end
+
+	local function debug_set(info, value)
+		--print("debug_set", info[#info], value)
+		return Grid:SetDebuggingEnabled(info[#info], value)
+	end
+
+	function Grid:GetDebuggingOptions(moduleName)
+		return {
+			name = moduleName,
+			desc = L["Enable debugging messages for the %s module."]:format(moduleName),
+			type = "toggle",
+			width = "double",
+			get = debug_get,
+			set = debug_set,
+		}
+	end
+end
+
 function Grid:OnModuleCreated(module)
 	module.super = self.modulePrototype
+
+	if self.db then
+		-- otherwise it will be caught in core OnInitialize
+		self:SetDebuggingEnabled(module.moduleName)
+	end
 end
 
 ------------------------------------------------------------------------
@@ -280,26 +383,7 @@ function Grid:RegisterModule(name, module)
 		self.options.args[name] = module.options
 	end
 
-	self:AddModuleDebugMenu(module)
-
 	registeredModules[module] = true
-end
-
-function Grid:AddModuleDebugMenu(module)
-	local debugMenu = Grid.options.args.debug
-
-	debugMenu.args[module.moduleName or module.name] = {
-		name = module.moduleName or module.name,
-		desc = string.format(L["Toggle debugging for %s."], module.moduleName or module.name),
-		type = "toggle", width = "double",
-		get = function()
-			return module.db.profile.debug
-		end,
-		set = function(_, v)
-			module.db.profile.debug = v
-			module.debugging = v
-		end,
-	}
 end
 
 function Grid:EnableModules()

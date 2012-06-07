@@ -12,7 +12,6 @@ local GridStatusHealth = Grid:NewStatusModule("GridStatusHealth")
 GridStatusHealth.menuName = L["Health"]
 
 GridStatusHealth.defaultDB = {
-	debug = false,
 	unit_health = {
 		enable = true,
 		color = { r = 1, g = 1, b = 1, a = 1 },

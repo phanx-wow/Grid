@@ -14,7 +14,6 @@ GridStatusTarget.menuName = L["Target"]
 GridStatusTarget.options = false
 
 GridStatusTarget.defaultDB = {
-	debug = false,
 	player_target = {
 		text = L["Target"],
 		enable = true,

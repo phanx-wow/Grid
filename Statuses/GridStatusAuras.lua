@@ -95,7 +95,6 @@ function GridStatusAuras:CopyDefaults(settings, defaults)
 end
 
 GridStatusAuras.defaultDB = {
-	debug = false,
 	advancedOptions = false,
 	["debuff_poison"] = {
 		desc = string.format(L["Debuff type: %s"], L["Poison"]),
