@@ -638,7 +638,7 @@ local function GridLayout_OnMouseDown(frame, button)
 		else
 			GridLayout:StartMoveFrame()
 		end
-	elseif button == "RightButton" and frame == GridLayoutFrameTab and not InCombatLockdown() then
+	elseif button == "RightButton" and frame == GridLayoutFrame.tab and not InCombatLockdown() then
 		local dialog = LibStub("AceConfigDialog-3.0")
 		if dialog.OpenFrames["Grid"] then
 			dialog:Close("Grid")
