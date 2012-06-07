@@ -123,7 +123,7 @@ function GridLayout_InitialConfigFunction(frame)
 end
 
 function GridLayout:CreateHeader(isPetGroup)
-	--self:Debug("GridLayout:", "CreateHeader")
+	--self:Debug("CreateHeader")
 	NUM_HEADERS = NUM_HEADERS + 1
 
 	local header = CreateFrame("Frame", "GridLayoutHeader" .. NUM_HEADERS, GridLayoutFrame, (isPetGroup and "SecureGroupPetHeaderTemplate" or "SecureGroupHeaderTemplate"))
@@ -501,7 +501,7 @@ end
 GridLayout.layoutSettings = {}
 
 function GridLayout:PostInitialize()
-	--self:Debug("GridLayout:", "PostInitialize")
+	--self:Debug("PostInitialize")
 	self.layoutGroups = {}
 	self.layoutPetGroups = {}
 
@@ -511,7 +511,7 @@ function GridLayout:PostInitialize()
 end
 
 function GridLayout:PostEnable()
-	--self:Debug("GridLayout:", "PostEnable")
+	--self:Debug("PostEnable")
 	self:Debug("OnEnable")
 
 	self:UpdateTabVisibility()
@@ -535,12 +535,12 @@ function GridLayout:PostEnable()
 end
 
 function GridLayout:PostDisable()
-	--self:Debug("GridLayout:", "PostDisable")
+	--self:Debug("PostDisable")
 	self.frame:Hide()
 end
 
 function GridLayout:PostReset()
-	--self:Debug("GridLayout:", "PostReset")
+	--self:Debug("PostReset")
 	self:ReloadLayout()
 	-- position and scale frame
 	self:RestorePosition()
@@ -553,20 +553,20 @@ end
 local reloadLayoutQueued
 local updateSizeQueued
 function GridLayout:EnteringOrLeavingCombat()
-	--self:Debug("GridLayout:", "EnteringOrLeavingCombat")
+	--self:Debug("EnteringOrLeavingCombat")
 	if reloadLayoutQueued then return self:PartyTypeChanged() end
 	if updateSizeQueued then return self:PartyMembersChanged() end
 end
 
 function GridLayout:CombatFix()
-	--self:Debug("GridLayout:", "CombatFix")
+	--self:Debug("CombatFix")
 	self:Debug("CombatFix")
 	self.forceRaid = false
 	return self:ReloadLayout()
 end
 
 function GridLayout:PartyMembersChanged()
-	--self:Debug("GridLayout:", "PartyMembersChanged")
+	--self:Debug("PartyMembersChanged")
 	self:Debug("PartyMembersChanged")
 	if InCombatLockdown() then
 		updateSizeQueued = true
@@ -577,7 +577,7 @@ function GridLayout:PartyMembersChanged()
 end
 
 function GridLayout:PartyTypeChanged()
-	--self:Debug("GridLayout:", "PartyTypeChanged")
+	--self:Debug("PartyTypeChanged")
 	self:Debug("PartyTypeChanged")
 
 	if InCombatLockdown() then
@@ -592,7 +592,7 @@ end
 ------------------------------------------------------------------------
 
 function GridLayout:StartMoveFrame()
-	--self:Debug("GridLayout:", "StartMoveFrame")
+	--self:Debug("StartMoveFrame")
 	if config_mode or not self.db.profile.FrameLock then
 		self.frame:StartMoving()
 		self.frame.isMoving = true
@@ -600,7 +600,7 @@ function GridLayout:StartMoveFrame()
 end
 
 function GridLayout:StopMoveFrame()
-	--self:Debug("GridLayout:", "StopMoveFrame")
+	--self:Debug("StopMoveFrame")
 	if self.frame.isMoving then
 		self.frame:StopMovingOrSizing()
 		self:SavePosition()
@@ -612,7 +612,7 @@ function GridLayout:StopMoveFrame()
 end
 
 function GridLayout:UpdateTabVisibility()
-	--self:Debug("GridLayout:", "UpdateTabVisibility")
+	--self:Debug("UpdateTabVisibility")
 	local settings = self.db.profile
 
 	if not InCombatLockdown() then
@@ -667,7 +667,7 @@ local function GridLayout_OnLeave(frame)
 end
 
 function GridLayout:CreateFrames()
-	--self:Debug("GridLayout:", "CreateFrames")
+	--self:Debug("CreateFrames")
 	-- create main frame to hold all our gui elements
 	local f = CreateFrame("Frame", "GridLayoutFrame", UIParent)
 	f:SetMovable(true)
@@ -762,7 +762,7 @@ end
 
 local previousGroup
 function GridLayout:PlaceGroup(layoutGroup, groupNumber)
-	--self:Debug("GridLayout:", "PlaceGroup")
+	--self:Debug("PlaceGroup", groupNumber)
 	local frame = layoutGroup.frame
 
 	local settings = self.db.profile
@@ -792,7 +792,7 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 end
 
 function GridLayout:AddLayout(layoutName, layout)
-	--self:Debug("GridLayout:", "AddLayout")
+	--self:Debug("AddLayout", layoutName)
 	self.layoutSettings[layoutName] = layout
 	for i = 1, #GridRoster.party_states do
 		local party_type_layout = GridRoster.party_states[i] .. "layout"
@@ -804,12 +804,12 @@ function GridLayout:AddLayout(layoutName, layout)
 end
 
 function GridLayout:SetClamp()
-	--self:Debug("GridLayout:", "SetClamp")
+	--self:Debug("SetClamp")
 	self.frame:SetClampedToScreen(self.db.profile.clamp)
 end
 
 function GridLayout:ReloadLayout()
-	--self:Debug("GridLayout:", "ReloadLayout")
+	--self:Debug("ReloadLayout")
 	local party_type = GridRoster:GetPartyState()
 	self:LoadLayout(self.db.profile.layouts[party_type])
 end
@@ -832,7 +832,7 @@ local function getColumnAnchorPoint(point, horizontal)
 end
 
 function GridLayout:LoadLayout(layoutName)
-	--self:Debug("GridLayout:", "LoadLayout")
+	--self:Debug("LoadLayout", layoutName)
 	self.db.profile.layout = layoutName
 	if InCombatLockdown() then
 		reloadLayoutQueued = true
@@ -955,14 +955,14 @@ function GridLayout:LoadLayout(layoutName)
 end
 
 function GridLayout:UpdateDisplay()
-	--self:Debug("GridLayout:", "UpdateDisplay")
+	--self:Debug("UpdateDisplay")
 	self:UpdateColor()
 	self:UpdateVisibility()
 	self:UpdateSize()
 end
 
 function GridLayout:UpdateVisibility()
-	--self:Debug("GridLayout:", "UpdateVisibility")
+	--self:Debug("UpdateVisibility")
 	local party_type = GridRoster:GetPartyState()
 	if self.db.profile.layouts[party_type] == L["None"] then
 		self.frame:Hide()
@@ -972,7 +972,7 @@ function GridLayout:UpdateVisibility()
 end
 
 function GridLayout:UpdateSize()
-	--self:Debug("GridLayout:", "UpdateSize")
+	--self:Debug("UpdateSize")
 	local p = self.db.profile
 	local layoutGroup
 	local x, y
@@ -1042,7 +1042,7 @@ function GridLayout:UpdateSize()
 end
 
 function GridLayout:UpdateColor()
-	--self:Debug("GridLayout:", "UpdateColor")
+	--self:Debug("UpdateColor")
 	local settings = self.db.profile
 
 	if media then
@@ -1058,7 +1058,7 @@ function GridLayout:UpdateColor()
 end
 
 function GridLayout:SavePosition()
-	--self:Debug("GridLayout:", "SavePosition")
+	self:Debug("SavePosition")
 	local f = self.frame
 	local s = f:GetEffectiveScale()
 	local uiScale = UIParent:GetEffectiveScale()
@@ -1103,16 +1103,17 @@ function GridLayout:SavePosition()
 	end
 
 	if x and y and s then
-		self.db.profile.PosX = x + 0.5
-		self.db.profile.PosY = y + 0.5
+		x, y = math.floor(x + 0.5), math.floor(y + 0.5)
+		self.db.profile.PosX = x
+		self.db.profile.PosY = y
 		--self.db.profile.anchor = point
 		self.db.profile.anchorRel = relativePoint
-		self:Debug("Saved Position", anchor, x, y)
+		self:Debug("Saved position", anchor, x, y)
 	end
 end
 
 function GridLayout:ResetPosition()
-	--self:Debug("GridLayout:", "ResetPosition")
+	self:Debug("ResetPosition")
 	local uiScale = UIParent:GetEffectiveScale()
 
 	self.db.profile.PosX = UIParent:GetWidth() / 2 * uiScale + 0.5
@@ -1124,22 +1125,21 @@ function GridLayout:ResetPosition()
 end
 
 function GridLayout:RestorePosition()
-	--self:Debug("GridLayout:", "RestorePosition")
+	self:Debug("RestorePosition")
 	local f = self.frame
 	local s = f:GetEffectiveScale()
 	local x = self.db.profile.PosX
 	local y = self.db.profile.PosY
 	local point = self.db.profile.anchor
-
-	x, y = math.floor(x/s + 0.5), math.floor(y/s + 0.5)
+	self:Debug("Loaded position", point, x, y)
+	x, y = math.floor(x / s + 0.5), math.floor(y / s + 0.5)
 	f:ClearAllPoints()
 	f:SetPoint(point, UIParent, point, x, y)
-
-	self:Debug("Restored Position", point, x, y)
+	self:Debug("Restored position", point, x, y)
 end
 
 function GridLayout:Scale()
-	--self:Debug("GridLayout:", "Scale")
+	--self:Debug("Scale")
 	self:SavePosition()
 	self.frame:SetScale(self.db.profile.ScaleSize)
 	self:RestorePosition()
@@ -1163,7 +1163,7 @@ local function findVisibleUnitFrame(f)
 end
 
 function GridLayout:FakeSize(width, height)
-	--self:Debug("GridLayout:", "FakeSize")
+	self:Debug("FakeSize", width, height)
 	local p = self.db.profile
 
 	local f = findVisibleUnitFrame(self.frame)
@@ -1194,7 +1194,6 @@ SlashCmdList.GRIDLAYOUT = function(cmd)
 	if not width then return end
 	if not height then height = width end
 
-	GridLayout:Debug("/gridlayout", width, height)
-
+	--GridLayout:Debug("/gridlayout", width, height)
 	GridLayout:FakeSize(width, height)
 end
