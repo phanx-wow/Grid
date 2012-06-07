@@ -70,7 +70,7 @@ Statuses\GridStatusMana.lua
 Statuses\GridStatusName.lua
 Statuses\GridStatusRange.lua
 Statuses\GridStatusReadyCheck.lua
-# Statuses\GridStatusResurrect.lua
+Statuses\GridStatusResurrect.lua
 Statuses\GridStatusTarget.lua
 Statuses\GridStatusVehicle.lua
 Statuses\GridStatusVoiceComm.lua
