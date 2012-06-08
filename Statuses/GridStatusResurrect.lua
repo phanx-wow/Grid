@@ -128,8 +128,6 @@ function GridStatusResurrect:UpdateUnit(unit, guid)
 	if hasRes and not cache[guid] then
 		self:Debug(unit, UnitName(unit), "is now being resurrected.")
 
-		local now = GetTime()
-
 		local settings = self.db.profile.alert_resurrect
 		self.core:SendStatusGained(guid, "alert_resurrect",
 			settings.priority,
@@ -186,7 +184,7 @@ function GridStatusResurrect:COMBAT_LOG_EVENT_UNFILTERED(event, _, combatEvent, 
 	self:Debug(combatEvent, sourceName, "cast", spellName, "on", destName)
 
 	if cache[destGUID] then
-		self:Debug(destName, "recieved resurrection. Waiting on accept or expiry.")
+		self:Debug(GridRoster:GetUnitidByGUID(destGUID), destName, "received resurrection. Waiting for acceptance or expiry.")
 		cache[destGUID] = GetTime() + 120
 	end
 end
