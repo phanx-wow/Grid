@@ -38,13 +38,15 @@ function Grid:GetDebuggingEnabled(moduleName)
 end
 
 do
-	local function FindModule(addon, moduleName)
-		if addon.name == moduleName or addon.moduleName == moduleName then
-			return addon
+	local function FindModule(start, moduleName)
+		--print("FindModule", start.moduleName, moduleName)
+		if start.name == moduleName or start.moduleName == moduleName then
+			return start
 		end
-		for name, module in addon:IterateModules() do
+		for name, module in start:IterateModules() do
 			local found = FindModule(module, moduleName)
 			if found then
+				--print("FOUND")
 				return found
 			end
 		end
@@ -54,7 +56,8 @@ do
 		--print("SetDebuggingEnabled", moduleName, value)
 		local module = FindModule(self, moduleName)
 		if not module then
-			--print("ERROR: module doesn't exist!")
+			--print("ERROR: module "..moduleName.." doesn't exist!")
+			return
 		end
 
 		if module.db and module.db.profile and module.db.profile.debug ~= nil then

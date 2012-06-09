@@ -18,6 +18,12 @@ function GridStatus.modulePrototype:OnInitialize()
 		self.db = Grid.db:RegisterNamespace(self.moduleName, { profile = self.defaultDB or { } })
 	end
 
+	Grid:SetDebuggingEnabled(self.moduleName)
+	for name, module in self:IterateModules() do
+		self:RegisterModule(name, module)
+		Grid:SetDebuggingEnabled(name)
+	end
+
 	if type(self.PostInitialize) == "function" then
 		self:PostInitialize()
 	end
@@ -413,6 +419,11 @@ end
 
 function GridStatus:OnModuleCreated(module)
 	module.super = self.modulePrototype
+	self:Debug("OnModuleCreated", module.moduleName)
+	if Grid.db then
+		-- otherwise it will be caught in core OnInitialize
+		Grid:SetDebuggingEnabled(module.moduleName)
+	end
 end
 
 ------------------------------------------------------------------------
