@@ -80,6 +80,8 @@ do
 		resSpell = GetSpellInfo(2006)  -- Resurrection
 	elseif class == "SHAMAN" then
 		resSpell = GetSpellInfo(2008)  -- Ancestral Spirit
+	elseif class == "WARLOCK" then
+		resSpell = GetSpellInfo(20707) -- Soulstone
 	end
 end
 
