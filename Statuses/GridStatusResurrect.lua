@@ -63,11 +63,6 @@ end
 function GridStatusResurrect:PostInitialize()
 	self:Debug("PostInitialize")
 	self:RegisterStatus("alert_resurrect", L["Resurrection"], extraOptionsForStatus, true)
-
-	DEFAULT_CHAT_FRAME:AddMessage("|cff66ffccGrid:|r |cffffff99This is an experimental ALPHA VERSION, with an new built-in Resurrect status!|r")
-	DEFAULT_CHAT_FRAME:AddMessage("   If you find any problems, please enable debugging in the Grid options window, take a screenshot of the debug messages when someone in your group is resurrected, and submit a ticket with your screenshot and a description of the problem.")
-	DEFAULT_CHAT_FRAME:AddMessage("   If you'd rather not test experimental features, you can roll back to the latest stable release version from Curse or WoWInterface, and avoid alpha versions in the future.")
-	DEFAULT_CHAT_FRAME:AddMessage("   |cffffff99Thanks for testing!|r")
 end
 
 function GridStatusResurrect:OnStatusEnable(status)
