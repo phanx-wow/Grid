@@ -181,7 +181,7 @@ function GridFrame:InitializeFrame(frame)
 	frame.IconStackText:SetJustifyV("BOTTOM")
 
 	-- set texture
-	frame:SetNormalTexture(1, 1, 1, 0)
+	frame:SetNormalTexture("")
 	frame:EnableMouseoverHighlight(GridFrame.db.profile.enableMouseoverHighlight)
 
 	if frame:CanChangeAttribute() then
