@@ -12,6 +12,12 @@ GridRoster.defaultDB = {
 	party_state = "solo",
 }
 
+local wowMoP
+do
+	local _, _, _, interface = GetBuildInfo()
+	wowMoP = (interface >= 50000)
+end
+
 ------------------------------------------------------------------------
 
 local UnitExists = UnitExists
@@ -74,7 +80,12 @@ end
 function GridRoster:OnEnable()
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("UNIT_PET", "UpdateRoster")
-	self:RegisterEvent("GROUP_ROSTER_UPDATE", "UpdateRoster")
+	if wowMoP then
+		self:RegisterEvent("GROUP_ROSTER_UPDATE", "UpdateRoster")
+	else
+		self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateRoster")
+		self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateRoster")
+	end
 
 	self:RegisterEvent("UNIT_NAME_UPDATE", "UpdateRoster")
 	self:RegisterEvent("UNIT_PORTRAIT_UPDATE", "UpdateRoster")
@@ -251,12 +262,12 @@ end
 -- Party transitions
 do
 	GridRoster.party_states = {
-		'solo',
-		'party',
-		'raid_25',
-		'raid_10',
-		'bg',
-		'arena',
+		"solo",
+		"party",
+		"raid_25",
+		"raid_10",
+		"bg",
+		"arena",
 	}
 
 	local function GetPartyState()
@@ -270,8 +281,25 @@ do
 			return "bg"
 		end
 
-		if GetNumGroupMembers() > 0 then
-			if IsInRaid() then
+		if wowMoP then
+			if GetNumGroupMembers() > 0 then
+				if IsInRaid() then
+					if instanceType == "none" and GetZonePVPInfo() == "combat" then
+						return "bg"
+					end
+					if instanceType == "raid" then
+						local _, _, _, _, max_players = GetInstanceInfo()
+						return max_players > 10 and "raid_25" or "raid_10"
+					else
+						local raid_difficulty = GetRaidDifficulty()
+						return (raid_difficulty == 2 or raid_difficulty == 4) and "raid_25" or "raid_10"
+					end
+				end
+
+				return "party"
+			end
+		else
+			if GetNumRaidMembers() > 0 then
 				if instanceType == "none" and GetZonePVPInfo() == "combat" then
 					return "bg"
 				end
@@ -282,7 +310,9 @@ do
 					local raid_difficulty = GetRaidDifficulty()
 					return (raid_difficulty == 2 or raid_difficulty == 4) and "raid_25" or "raid_10"
 				end
-			else
+			end
+
+			if GetNumPartyMembers() > 0 then
 				return "party"
 			end
 		end
