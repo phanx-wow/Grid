@@ -204,10 +204,10 @@ do
 		end
 
 		local units
-		if IsInRaid() then
-			units = raid_units
+		if wowMoP then
+			units = IsInRaid() and raid_units or party_units
 		else
-			units = party_units
+			units = GetNumRaidMembers() == 0 and party_units or raid_units
 		end
 
 		for i = 1, #units do
