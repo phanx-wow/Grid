@@ -53,11 +53,11 @@ do
 	register_unit(party_units, "player", "pet")
 
 	for i = 1, MAX_PARTY_MEMBERS do
-		register_unit(party_units, ("party%d"):format(i), ("partypet%d"):format(i))
+		register_unit(party_units, "party"..i, "partypet"..i)
 	end
 
 	for i = 1, MAX_RAID_MEMBERS do
-		register_unit(raid_units, ("raid%d"):format(i), ("raidpet%d"):format(i))
+		register_unit(raid_units, "raid"..i, "raidpet"..i)
 	end
 end
 
@@ -74,8 +74,7 @@ end
 function GridRoster:OnEnable()
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("UNIT_PET", "UpdateRoster")
-	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateRoster")
-	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateRoster")
+	self:RegisterEvent("GROUP_ROSTER_UPDATE", "UpdateRoster")
 
 	self:RegisterEvent("UNIT_NAME_UPDATE", "UpdateRoster")
 	self:RegisterEvent("UNIT_PORTRAIT_UPDATE", "UpdateRoster")
@@ -194,10 +193,10 @@ do
 		end
 
 		local units
-		if GetNumRaidMembers() == 0 then
-			units = party_units
-		else
+		if IsInRaid() then
 			units = raid_units
+		else
+			units = party_units
 		end
 
 		for i = 1, #units do
@@ -261,31 +260,31 @@ do
 	}
 
 	local function GetPartyState()
-		local _, instance_type = IsInInstance()
+		local _, instanceType = IsInInstance()
 
-		if instance_type == "arena" then
+		if instanceType == "arena" then
 			return "arena"
 		end
 
-		if instance_type == "pvp" then
+		if instanceType == "pvp" then
 			return "bg"
 		end
 
-		if GetNumRaidMembers() > 0 then
-			if instance_type == "none" and GetZonePVPInfo() == "combat" then
-				return "bg"
-			end
-			if instance_type == "raid" then
-				local _, _, _, _, max_players = GetInstanceInfo()
-				return max_players > 10 and "raid_25" or "raid_10"
+		if GetNumGroupMembers() > 0 then
+			if IsInRaid() then
+				if instanceType == "none" and GetZonePVPInfo() == "combat" then
+					return "bg"
+				end
+				if instanceType == "raid" then
+					local _, _, _, _, max_players = GetInstanceInfo()
+					return max_players > 10 and "raid_25" or "raid_10"
+				else
+					local raid_difficulty = GetRaidDifficulty()
+					return (raid_difficulty == 2 or raid_difficulty == 4) and "raid_25" or "raid_10"
+				end
 			else
-				local raid_difficulty = GetRaidDifficulty()
-				return (raid_difficulty == 2 or raid_difficulty == 4) and "raid_25" or "raid_10"
+				return "party"
 			end
-		end
-
-		if GetNumPartyMembers() > 0 then
-			return "party"
 		end
 
 		return "solo"
