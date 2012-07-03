@@ -14,19 +14,23 @@ local GridStatusAuras = Grid:NewStatusModule("GridStatusAuras", "AceTimer-3.0")
 GridStatusAuras.menuName = L["Auras"]
 
 local BS = {
-	["Beacon of Light"] = GetSpellInfo(53563),
-	["Earth Shield"] = GetSpellInfo(974),
-	["Forbearance"] = GetSpellInfo(25771),
+-- All
 	["Ghost"] = GetSpellInfo(8326),
-	["Grace"] = GetSpellInfo(47930),
-	["Lifebloom"] = GetSpellInfo(33763),
 	["Mortal Strike"] = GetSpellInfo(12294),
-	["Power Word: Shield"] = GetSpellInfo(17),
+-- Druids
+	["Lifebloom"] = GetSpellInfo(33763),
 	["Regrowth"] = GetSpellInfo(8936),
 	["Rejuvenation"] = GetSpellInfo(774),
+-- Paladins
+	["Beacon of Light"] = GetSpellInfo(53563),
+	["Forbearance"] = GetSpellInfo(25771),
+-- Priests
+	["Power Word: Shield"] = GetSpellInfo(17),
 	["Renew"] = GetSpellInfo(139),
-	["Riptide"] = GetSpellInfo(61295),
 	["Weakened Soul"] = GetSpellInfo(6788),
+-- Shamans
+	["Earth Shield"] = GetSpellInfo(974),
+	["Riptide"] = GetSpellInfo(61295),
 }
 
 -- data used by aura scanning
@@ -35,10 +39,10 @@ local player_buff_names = {}
 local debuff_names = {}
 
 local debuff_types = {
-	["Poison"] = true,
+	["Curse"] = true,
 	["Disease"] = true,
 	["Magic"] = true,
-	["Curse"] = true,
+	["Poison"] = true,
 }
 
 function GridStatusAuras.StatusForSpell(spell, isBuff)
@@ -96,13 +100,13 @@ end
 
 GridStatusAuras.defaultDB = {
 	advancedOptions = false,
-	["debuff_poison"] = {
-		desc = string.format(L["Debuff type: %s"], L["Poison"]),
-		text = L["Poison"],
-		color = { r =  0, g = .6, b =  0, a = 1 },
-		durationColorLow = { r = 0, g = .18, b = 0, a = 1 },
-		durationColorMiddle = { r = 0, g = .42, b = 0, a = 1 },
-		durationColorHigh = { r = 0, g = .6, b = 0, a = 1 },
+	["debuff_curse"] = {
+		desc = string.format(L["Debuff type: %s"], L["Curse"]),
+		text = L["Curse"],
+		color = { r = .6, g =  0, b =  1, a = 1 },
+		durationColorLow = { r = .18, g =  0, b =  .3, a = 1 },
+		durationColorMiddle = { r = .42, g =  0, b =  .7, a = 1 },
+		durationColorHigh = { r = .6, g =  0, b =  1, a = 1 },
 		order = 25,
 	},
 	["debuff_disease"] = {
@@ -123,13 +127,13 @@ GridStatusAuras.defaultDB = {
 		durationColorHigh = { r = .2, g = .6, b =  1, a = 1 },
 		order = 25,
 	},
-	["debuff_curse"] = {
-		desc = string.format(L["Debuff type: %s"], L["Curse"]),
-		text = L["Curse"],
-		color = { r = .6, g =  0, b =  1, a = 1 },
-		durationColorLow = { r = .18, g =  0, b =  .3, a = 1 },
-		durationColorMiddle = { r = .42, g =  0, b =  .7, a = 1 },
-		durationColorHigh = { r = .6, g =  0, b =  1, a = 1 },
+	["debuff_poison"] = {
+		desc = string.format(L["Debuff type: %s"], L["Poison"]),
+		text = L["Poison"],
+		color = { r =  0, g = .6, b =  0, a = 1 },
+		durationColorLow = { r = 0, g = .18, b = 0, a = 1 },
+		durationColorMiddle = { r = 0, g = .42, b = 0, a = 1 },
+		durationColorHigh = { r = 0, g = .6, b = 0, a = 1 },
 		order = 25,
 	},
 	[GridStatusAuras.StatusForSpell(BS["Ghost"])] = {
@@ -164,18 +168,15 @@ GridStatusAuras.defaultDB = {
 		durationColorMiddle = { r = .35, g = .35, b = .35, a = 1 },
 		durationColorHigh = { r = .5, g = .5, b = .5, a = 1 },
 	},
-	[GridStatusAuras.StatusForSpell(BS["Grace"], true)] = {
-		desc = string.format(L["Buff: %s"], BS["Grace"]),
-		text = BS["Grace"],
-		color = { r =  .7, g = .3, b = 0, a = 1 },
-		durationColorLow = { r = .21, g = .09, b = 0, a = 1 },
-		durationColorMiddle = { r = .49, g = .21, b = 0, a = 1 },
-		durationColorHigh = { r =  .7, g = .3, b = 0, a = 1 },
-		countColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		countColorMiddle = { r = 1, g = 1, b = 0, a = 1 },
-		countColorHigh = { r = 0, g = 1, b = 0, a = 1 },
-		countLow = 1,
-		countHigh = 2,
+	[GridStatusAuras.StatusForSpell(BS["Beacon of Light"], true)] = {
+		desc = string.format(L["Buff: %s"], BS["Beacon of Light"]),
+		text = BS["Beacon of Light"],
+		color = { r = .5, g = 0.7, b = 0.3, a = 1 },
+		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
+		durationColorMiddle = { r = .49, g = .49, b = 0, a = 1 },
+		durationColorHigh = { r = .7, g = .7, b = 0, a = 1 },
+		durationLow = 5,
+		durationHigh = 10,
 	},
 	[GridStatusAuras.StatusForSpell(BS["Power Word: Shield"], true)] = {
 		desc = string.format(L["Buff: %s"], BS["Power Word: Shield"]),
@@ -222,14 +223,6 @@ GridStatusAuras.defaultDB = {
 		durationColorMiddle = { r =  0, g = .21, b = .49, a = 1 },
 		durationColorHigh = { r =  0, g = .3, b = .7, a = 1 },
 	},
-	[GridStatusAuras.StatusForSpell(BS["Riptide"], true)] = {
-		desc = string.format(L["Buff: %s"], BS["Riptide"]),
-		text = BS["Riptide"],
-		color = { r = .4, g = 0, b = .8, a = 1 },
-		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r = .28, g = 0, b = .56, a = 1 },
-		durationColorHigh = { r = .4, g = 0, b = .8, a = 1 },
-	},
 	[GridStatusAuras.StatusForSpell(BS["Earth Shield"], true)] = {
 		desc = string.format(L["Buff: %s"], BS["Earth Shield"]),
 		text = BS["Earth Shield"],
@@ -243,15 +236,13 @@ GridStatusAuras.defaultDB = {
 		countLow = 1,
 		countHigh = 4,
 	},
-	[GridStatusAuras.StatusForSpell(BS["Beacon of Light"], true)] = {
-		desc = string.format(L["Buff: %s"], BS["Beacon of Light"]),
-		text = BS["Beacon of Light"],
-		color = { r = .5, g = 0.7, b = 0.3, a = 1 },
+	[GridStatusAuras.StatusForSpell(BS["Riptide"], true)] = {
+		desc = string.format(L["Buff: %s"], BS["Riptide"]),
+		text = BS["Riptide"],
+		color = { r = .4, g = 0, b = .8, a = 1 },
 		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r = .49, g = .49, b = 0, a = 1 },
-		durationColorHigh = { r = .7, g = .7, b = 0, a = 1 },
-		durationLow = 5,
-		durationHigh = 10,
+		durationColorMiddle = { r = .28, g = 0, b = .56, a = 1 },
+		durationColorHigh = { r = .4, g = 0, b = .8, a = 1 },
 	},
 }
 
