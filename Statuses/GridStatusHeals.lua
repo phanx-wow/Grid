@@ -16,14 +16,14 @@ GridStatusHeals.options = false
 
 GridStatusHeals.defaultDB = {
 	alert_heals = {
-		text = L["Incoming heals"],
 		enable = true,
-		color = { r = 0, g = 1, b = 0, a = 1 },
 		priority = 50,
 		range = false,
-		ignore_self = false,
-		minimumValue = 1000,
+		color = { r = 0, g = 1, b = 0, a = 1 },
+		text = "+%s",
 		icon = nil,
+		ignore_self = false,
+		minimumValue = 0.1,
 	},
 }
 
@@ -42,9 +42,9 @@ local healsOptions = {
 	},
 	minimumValue = {
 		width = "double",
-		type = "range", min = 0, max = 5000, step = 500,
+		type = "range", min = 0, max = 0.5, step = 0.05, isPercent = true,
 		name = L["Minimum Value"],
-		desc = L["Only show incoming heals greater than this amount."],
+		desc = L["Only show incoming heals greater than this percent of the unit's maximum health."],
 		get = function()
 			return GridStatusHeals.db.profile.alert_heals.minimumValue
 		end,
@@ -56,6 +56,10 @@ local healsOptions = {
 
 function GridStatusHeals:PostInitialize()
 	settings = GridStatusHeals.db.profile.alert_heals
+	if settings.minimumValue > 0.5 then
+		settings.minimumValue = 0.1
+	end
+
 	self:RegisterStatus("alert_heals", L["Incoming heals"], healsOptions, true)
 end
 
@@ -96,25 +100,25 @@ function GridStatusHeals:UpdateUnit(event, unitid)
 
 	if not UnitIsDeadOrGhost(unitid) then
 		local incoming = UnitGetIncomingHeals(unitid) or 0
-		if settings.ignore_self then
+		if incoming > 0 and settings.ignore_self then
 			incoming = incoming - (UnitGetIncomingHeals(unitid, "player") or 0)
 		end
-		if incoming > 0 and incoming > (settings.minimumValue or 0) then
-			self:SendIncomingHealsStatus(guid, incoming, UnitHealth(unitid) + incoming, UnitHealthMax(unitid))
-		else
-			self.core:SendStatusLost(guid, "alert_heals")
+		if incoming > 0 then
+			local maxHealth = UnitHealthMax(unitid)
+			if (incoming / maxHealth) > (settings.minimumValue or 0) then
+				return self:SendIncomingHealsStatus(guid, incoming, UnitHealth(unitid) + incoming, maxHealth)
+			end
 		end
-	else
-		self.core:SendStatusLost(guid, "alert_heals")
 	end
+	self.core:SendStatusLost(guid, "alert_heals")
 end
 
 function GridStatusHeals:SendIncomingHealsStatus(guid, incoming, estimatedHealth, maxHealth)
-	local incomingText
-	if incoming > 999 then
-		incomingText = ("+%.1fk"):format(incoming / 1000)
-	else
-		incomingText = ("+%d"):format(incoming)
+	local incomingText = incoming
+	if incoming > 9999 then
+		incomingText = ("%.0fk"):format(incoming / 1000)
+	elseif incoming > 999 then
+		incomingText = ("%.1fk"):format(incoming / 1000)
 	end
-	self.core:SendStatusGained(guid, "alert_heals", settings.priority, (settings.range and 40), settings.color, incomingText, estimatedHealth, maxHealth, settings.icon)
+	self.core:SendStatusGained(guid, "alert_heals", settings.priority, (settings.range and 40), settings.color, settings.text:format(incomingText), estimatedHealth, maxHealth, settings.icon)
 end
