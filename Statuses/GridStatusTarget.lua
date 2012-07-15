@@ -25,7 +25,7 @@ GridStatusTarget.defaultDB = {
 
 
 function GridStatusTarget:PostInitialize()
-	self:RegisterStatus('player_target', L["Your Target"], nil, true)
+	self:RegisterStatus("player_target", L["Your Target"], nil, true)
 end
 
 function GridStatusTarget:OnStatusEnable(status)

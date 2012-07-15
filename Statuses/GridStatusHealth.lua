@@ -6,6 +6,8 @@
 local _, Grid = ...
 local L = Grid.L
 
+local MoP = select(4, GetBuildInfo()) >= 50000
+
 local GridRoster = Grid:GetModule("GridRoster")
 
 local GridStatusHealth = Grid:NewStatusModule("GridStatusHealth")
@@ -156,8 +158,13 @@ function GridStatusHealth:PostEnable()
 	self:RegisterEvent("UNIT_NAME_UPDATE", "UpdateUnit")
 
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateAllUnits")
-	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateAllUnits")
-	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateAllUnits")
+
+	if MoP then
+		self:RegisterEvent("GROUP_ROSTER_UPDATE", "UpdateAllUnits")
+	else
+		self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateAllUnits")
+		self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateAllUnits")
+	end
 
 	self:RegisterMessage("Grid_ColorsChanged", "UpdateAllUnits")
 end

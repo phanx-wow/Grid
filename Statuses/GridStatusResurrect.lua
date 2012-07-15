@@ -6,6 +6,8 @@
 local _, Grid = ...
 local L = Grid.L
 
+local MoP = select(4, GetBuildInfo()) >= 50000
+
 local GridRoster = Grid:GetModule("GridRoster")
 
 local GridStatusResurrect = Grid:NewStatusModule("GridStatusResurrect", "AceTimer-3.0")
@@ -41,14 +43,15 @@ local extraOptionsForStatus = {
 ------------------------------------------------------------------------
 --[[
 local resSpells = {
-	2008,  -- Ancestral Spirit (shaman)
-	61999, -- Raise Ally (death knight)
-	20484, -- Rebirth (druid)
-	7238,  -- Redemption (paladin)
-	2006,  -- Resurrection (priest)
-	50769, -- Revive (druid)
-	982,   -- Revive Pet (hunter)
-	20707, -- Soulstone (warlock)
+	2008,   -- Ancestral Spirit (shaman)
+	61999,  -- Raise Ally (death knight)
+	20484,  -- Rebirth (druid)
+	7238,   -- Redemption (paladin)
+	2006,   -- Resurrection (priest)
+	115178, -- Resuscitate (monk)
+	50769,  -- Revive (druid)
+	982,    -- Revive Pet (hunter)
+	20707,  -- Soulstone (warlock)
 }
 for i = #resSpells, 1, -1 do
 	local id = resSpells[i]
@@ -74,7 +77,12 @@ function GridStatusResurrect:OnStatusEnable(status)
 
 	self:RegisterEvent("INCOMING_RESURRECT_CHANGED", "UpdateAllUnits")
 	self:RegisterEvent("PARTY_LEADER_CHANGED", "OnGroupChanged")
-	self:RegisterEvent("RAID_ROSTER_UPDATE", "OnGroupChanged")
+	if MoP then
+		self:RegisterEvent("GROUP_ROSTER_UPDATE", "OnGroupChanged")
+	else
+		self:RegisterEvent("PARTY_MEMBERS_CHANGED", "OnGroupChanged")
+		self:RegisterEvent("RAID_ROSTER_UPDATE", "OnGroupChanged")
+	end
 
 	self:RegisterMessage("Grid_PartyTransition", "OnGroupChanged")
 	self:RegisterMessage("Grid_UnitJoined", "OnUnitJoined")
@@ -85,7 +93,12 @@ function GridStatusResurrect:OnStatusDisable(status)
 
 	self:UnregisterEvent("INCOMING_RESURRECT_CHANGED")
 	self:UnregisterEvent("PARTY_LEADER_CHANGED")
-	self:UnregisterEvent("RAID_ROSTER_UPDATE")
+	if MoP then
+		self:UnregisterEvent("GROUP_ROSTER_UPDATE")
+	else
+		self:UnregisterEvent("PARTY_MEMBERS_CHANGED")
+		self:UnregisterEvent("RAID_ROSTER_UPDATE")
+	end
 
 	self:UnregisterMessage("Grid_PartyTransition")
 	self:UnregisterMessage("Grid_UnitJoined")

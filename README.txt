@@ -1,4 +1,5 @@
-**[Alpha versions](http://www.wowace.com/addons/grid/files/) beginning with r1490 should work on both live realms and Mists of Pandaria beta realms.** Use the "Load out of date addons" checkbox on beta realms; the TOC will *not* be updated until Patch 5.0 goes live.
+**[Alpha versions](http://www.wowace.com/addons/grid/files/) r1490 and newer should work on both live realms and Mists of Pandaria beta realms.** Use the "Load out of date addons" checkbox on beta realms; the TOC will *not* be updated until Patch 5.0 goes live.
+
 
 **Need help? Want to contribute?**
 ==================================
@@ -73,11 +74,11 @@ Version numbers that follow the "r1234" pattern are Alpha versions, or snapshots
 **Localization**
 ================
 
-Grid is **compatible with** ![enUS, enEU, enCN](http://www.wowace.com/static/base/images/flags/us.png) English, ![deDE](http://www.wowace.com/static/base/images/flags/de.png) Deutsch, ![esES](http://www.wowace.com/static/base/images/flags/es.png) Español (EU), ![esMX](http://www.wowace.com/static/base/images/flags/mx.png) Español (AL), ![frFR](http://www.wowace.com/static/base/images/flags/fr.png) Français, ![frFR](http://www.wowace.com/static/base/images/flags/it.png) Italiano, ![ptBR](http://www.wowace.com/static/base/images/flags/br.png) Português (BR), ![ruRU](http://www.wowace.com/static/base/images/flags/ru.png) Русский, ![koKR](http://www.wowace.com/static/base/images/flags/kr.png) 한국어, ![zhCN](http://www.wowace.com/static/base/images/flags/cn.png) 简体中文, and ![zhTW](http://www.wowace.com/static/base/images/flags/tw.png) 繁體中文.
+Grid is **compatible with** ![enUS, enEU, enCN](http://www.wowace.com/static/base/images/flags/us.png) English, ![deDE](http://www.wowace.com/static/base/images/flags/de.png) Deutsch, ![esES](http://www.wowace.com/static/base/images/flags/es.png) Español (EU), ![esMX](http://www.wowace.com/static/base/images/flags/mx.png) Español (AL), ![frFR](http://www.wowace.com/static/base/images/flags/fr.png) Français, ![frFR](http://www.wowace.com/static/base/images/flags/it.png) Italiano, ![ptBR](http://www.wowace.com/static/base/images/flags/br.png) Português (BR), ![ruRU](http://www.wowace.com/static/base/images/flags/ru.png) Русский, ![koKR](http://www.wowace.com/static/base/images/flags/kr.png) 한국어, ![zhCN](http://www.wowace.com/static/base/images/flags/cn.png) 简体中文, and ![zhTW](http://www.wowace.com/static/base/images/flags/tw.png) 繁體中文 game clients.
 
 Grid is **translated into** ![enUS, enEU, enCN](http://www.wowace.com/static/base/images/flags/us.png) English, ![deDE](http://www.wowace.com/static/base/images/flags/de.png) Deutsch, ![esES](http://www.wowace.com/static/base/images/flags/es.png) Español (EU), ![esMX](http://www.wowace.com/static/base/images/flags/mx.png) Español (AL), ![frFR](http://www.wowace.com/static/base/images/flags/fr.png) Français, ![ptBR](http://www.wowace.com/static/base/images/flags/br.png) Português (BR), ![ruRU](http://www.wowace.com/static/base/images/flags/ru.png) Русский, ![koKR](http://www.wowace.com/static/base/images/flags/kr.png) 한국어, ![zhCN](http://www.wowace.com/static/base/images/flags/cn.png) 简体中文, and ![zhTW](http://www.wowace.com/static/base/images/flags/tw.png) 繁體中文.
 
-To add or update translations for any language, please [use the localization system](http://wow.curseforge.com/addons/grid/localization/) on our WowAce project page. New and updated translations will be automatically included in the next version of Grid!
+To add or update translations for any language, please use the [Localization system](http://wow.curseforge.com/addons/grid/localization/) on our WowAce project page. New and updated translations will be automatically included in the next version of Grid!
 
 
 **Credits**

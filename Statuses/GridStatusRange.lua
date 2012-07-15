@@ -71,17 +71,19 @@ local resSpell
 do
 	local _, class = UnitClass("player")
 	if class == "DEATHKNIGHT" then
-		resSpell = GetSpellInfo(61999) -- Raise Ally
+		resSpell = GetSpellInfo(61999)  -- Raise Ally
 	elseif class == "DRUID" then
-		resSpell = GetSpellInfo(50769) -- Revive
+		resSpell = GetSpellInfo(50769)  -- Revive
+	elseif class == "MONK" then
+		resSpell = GetSpellInfo(115178) -- Resuscitate
 	elseif class == "PALADIN" then
-		resSpell = GetSpellInfo(7328)  -- Redemption
+		resSpell = GetSpellInfo(7328)   -- Redemption
 	elseif class == "PRIEST" then
-		resSpell = GetSpellInfo(2006)  -- Resurrection
+		resSpell = GetSpellInfo(2006)   -- Resurrection
 	elseif class == "SHAMAN" then
-		resSpell = GetSpellInfo(2008)  -- Ancestral Spirit
+		resSpell = GetSpellInfo(2008)   -- Ancestral Spirit
 	elseif class == "WARLOCK" then
-		resSpell = GetSpellInfo(20707) -- Soulstone
+		resSpell = GetSpellInfo(20707)  -- Soulstone
 	end
 end
 
