@@ -26,7 +26,7 @@ Finally, Grid is written in a modular fashion that makes it easy for developers 
 **How to use Grid**
 ===================
 
-To open the options window, type `\grid` or right-click the Grid icon on your minimap or DataBroker display.
+To open the options window, type `/grid` or right-click the Grid icon on your minimap or DataBroker display.
 
 Due to its flexible design, Grid's options menu can overwhelming at first. We recommend taking a few minutes to look through the menus and check out all the options before asking for help. There is also a small [User's Guide](http://www.wowace.com/projects/grid/pages/users-guide/) that explains some of the core concepts used in Grid, liks *statuses*, *indicators*, and *priorities*. If you have questions or comments, head over to our [WowAce forum thread](http://forums.wowace.com/showthread.php?t=18716).
 
