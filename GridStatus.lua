@@ -482,12 +482,8 @@ function GridStatus:SendStatusGained(guid, status, priority, range, color, text,
 	local cache = self.cache
 	local cached
 
-	if color and not type(color) == "table" then
+	if type(color) ~= "table" then
 		self:Debug("color is not a table for", status)
-	end
-
-	if range and type(range) ~= "number" then
-		self:Debug("range is not a number for", status)
 	end
 
 	if type(texture) == "string" and type(texCoords) ~= "table" then
