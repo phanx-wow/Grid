@@ -1,4 +1,4 @@
-**[Alpha versions](http://www.wowace.com/addons/grid/files/) r1490 and newer are compatible with both 4.3.4 live realms and Mists of Pandaria beta realms.**
+**[Alpha and Beta versions](http://www.wowace.com/addons/grid/files/) released on or after July 15th are compatible with both 4.3.4 live realms and Mists of Pandaria beta realms.**
 Use the “Load out of date addons” checkbox on beta realms — the TOC won’t be updated until Patch 5.0 goes live.
 
 
