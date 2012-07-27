@@ -1,0 +1,16 @@
+Remove Status > Auras
+Add Status > Buffs and Status > Debuffs
+
+Remove Debuff Type: X
+Add Dispellable Debuff
+
+Add Raid Debuff
+- use isBossDebuff flag, not a list
+
+Add monk buffs
+Add MoP buffs for all classes
+
+Update default status assignments
+
+On first load, configure buff/debuff statuses based on class
+On first login to other class, show explanation dialog
