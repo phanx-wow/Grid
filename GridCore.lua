@@ -247,6 +247,53 @@ function Grid.modulePrototype:ResetModules()
     end
 end
 
+function Grid.modulePrototype:StartTimer(eventName, callback, delay, repeating, arg)
+	if not self.ScheduleTimer then
+		-- This module doesn't use AceTimer-3.0.
+		return
+	end
+
+	if not self.timerHandles then
+		-- First time starting a timer.
+		self.timerHandles = {}
+	end
+
+	if self.timerHandles[eventName] then
+		-- Timer is already running; stop it first.
+		self:StopTimer(eventName)
+	end
+
+	if type(callback) == "function" then
+		-- StartTimer("DoSomething", self.DoSomething, 5, self)
+		callback = function() return callback(self) end
+		if arg == self then
+			-- Not needed with AceTimer-3.0
+			arg = nil
+		end
+	elseif type(callback) == "number" then
+		-- StartTimer("DoSomething", 5) eg. real AceTimer usage
+		callback, delay, repeating, arg = eventName, callback, delay, repeating
+	end
+
+	local handle
+	if repeating then
+		handle = self:ScheduleRepeatingTimer(callback, delay, arg)
+	else
+		handle = self:ScheduleTimer(callback, delay, arg)
+	end
+	self.timerHandles[eventName] = handle
+	return handle
+end
+
+function Grid.modulePrototype:StopTimer(eventName)
+	if not self.timerHandles or not self.timerHandles[eventName] then
+		-- This module doesn't use AceTimer, or hasn't started any timers yet, or this timer isn't running.
+		return
+	end
+	self:CancelTimer(self.timerHandles[eventName])
+	self.timerHandles[eventName] = nil
+end
+
 Grid:SetDefaultModulePrototype(Grid.modulePrototype)
 Grid:SetDefaultModuleLibraries("AceEvent-3.0")
 
