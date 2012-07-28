@@ -62,8 +62,8 @@ function GridFrame:InitializeFrame(frame)
 
 	-- create border
 	frame:SetBackdrop({
-		bgFile = "Interface\\Addons\\Grid\\white16x16", tile = true, tileSize = 16,
-		edgeFile = "Interface\\Addons\\Grid\\white16x16", edgeSize = 1,
+		bgFile = "Interface\\BUTTONS\\WHITE8X8", tile = true, tileSize = 8,
+		edgeFile = "Interface\\BUTTONS\\WHITE8X8", edgeSize = 1,
 		insets = {left = 1, right = 1, top = 1, bottom = 1},
 	})
 	frame:SetBackdropBorderColor(0,0,0,0)
@@ -140,8 +140,8 @@ function GridFrame:InitializeFrame(frame)
 	frame.IconBG:SetHeight(GridFrame.db.profile.iconSize)
 	frame.IconBG:SetPoint("CENTER", frame, "CENTER")
 	frame.IconBG:SetBackdrop({
-			-- bgFile = "Interface\\Addons\\Grid\\white16x16", tile = true, tileSize = 16,
-			edgeFile = "Interface\\Addons\\Grid\\white16x16", edgeSize = 2,
+			-- bgFile = "Interface\\BUTTONS\\WHITE8X8", tile = true, tileSize = 8,
+			edgeFile = "Interface\\BUTTONS\\WHITE8X8", edgeSize = 2,
 			insets = { left = 2, right = 2, top = 2, bottom = 2 },
 		})
 	frame.IconBG:SetBackdropBorderColor(1, 1, 1, 1)
@@ -585,8 +585,8 @@ function GridFrame.prototype:CreateIndicator(indicator)
 	f:SetWidth(GridFrame.db.profile.cornerSize)
 	f:SetHeight(GridFrame.db.profile.cornerSize)
 	f:SetBackdrop({
-		bgFile = "Interface\\Addons\\Grid\\white16x16", tile = true, tileSize = 16,
-		edgeFile = "Interface\\Addons\\Grid\\white16x16", edgeSize = 1,
+		bgFile = "Interface\\BUTTONS\\WHITE8X8", tile = true, tileSize = 8,
+		edgeFile = "Interface\\BUTTONS\\WHITE8X8", edgeSize = 1,
 		insets = {left = 1, right = 1, top = 1, bottom = 1},
 	})
 	f:SetBackdropBorderColor(0,0,0,1)
@@ -783,7 +783,7 @@ GridFrame.defaultDB = {
 	enableText2 = false,
 	enableBarColor = false,
 	font = "Friz Quadrata TT",
-	fontSize = 11,
+	fontSize = 12,
 	fontOutline = "NONE",
 	fontShadow = true,
 	texture = "Gradient",
@@ -1458,7 +1458,7 @@ end
 function GridFrame:UpdateIndicator(frame, indicator)
 	local status = self:StatusForIndicator(frame.unit, frame.unitGUID, indicator)
 	if status then
-		-- self:Debug("Showing status", status.text, "for", name, "on", indicator)
+		self:Debug("Showing status", status.text, "for", name, "on", indicator)
 		frame:SetIndicator(indicator,
 			status.color,
 			status.text,
@@ -1470,7 +1470,7 @@ function GridFrame:UpdateIndicator(frame, indicator)
 			status.stack,
 			status.texCoords)
 	else
-		-- self:Debug("Clearing indicator", indicator, "for", name)
+		self:Debug("Clearing indicator", indicator, "for", name)
 		frame:ClearIndicator(indicator)
 	end
 end
@@ -1496,11 +1496,6 @@ function GridFrame:StatusForIndicator(unitid, guid, indicator)
 				valid = false
 			end
 
-			if status.range and type(status.range) ~= "number" then
-				self:Debug("range not number for", statusName)
-				valid = false
-			end
-
 			if status.priority and type(status.priority) ~= "number" then
 				self:Debug("priority not number for", statusName)
 				valid = false
@@ -1508,9 +1503,9 @@ function GridFrame:StatusForIndicator(unitid, guid, indicator)
 
 			-- only check range for valid statuses
 			if valid then
-				local inRange = not status.range or self:UnitInRange(unitid, status.range)
+				local inRange = not status.range or self:UnitInRange(unitid)
 
-				if ((status.priority or 99) > topPriority) and inRange then
+				if inRange and ((status.priority or 99) > topPriority) then
 					topStatus = status
 					topPriority = topStatus.priority
 				end
@@ -1522,14 +1517,22 @@ function GridFrame:StatusForIndicator(unitid, guid, indicator)
 end
 
 local GridStatusRange
-function GridFrame:UnitInRange(id, yrds)
-	if not id or not UnitExists(id) then return false end
+function GridFrame:UnitInRange(unit)
+	if not unit or not UnitExists(unit) then return false end
+	--print("GridFrame:UnitInRange", unit)
+
+	if UnitIsUnit(unit, "player") then
+		return true
+	end
 
 	if not GridStatusRange then
 		GridStatusRange = Grid:GetModule("GridStatus"):GetModule("GridStatusRange")
 	end
+	if GridStatusRange then
+		return GridStatusRange:UnitInRange(unit)
+	end
 
-	return GridStatusRange and GridStatusRange:UnitInRange(id) or UnitInRange(id)
+	return UnitInRange(unit)
 end
 
 ------------------------------------------------------------------------
@@ -1624,7 +1627,7 @@ function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
 		local indicatorType = indicator
 		local statusKey = status
 
-		-- self:Debug(indicator.type, status)
+		self:Debug(indicator.type, status)
 
 		if not indicatorMenu[status] then
 			indicatorMenu[status] = {
@@ -1640,7 +1643,7 @@ function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
 					GridFrame:UpdateAllFrames()
 				end,
 			}
-			-- self:Debug("Added", indicator.type, status)
+			self:Debug("Added", indicator.type, status)
 		end
 	end
 end
