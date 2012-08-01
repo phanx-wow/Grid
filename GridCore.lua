@@ -319,8 +319,8 @@ function Grid:OnInitialize()
 	local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 
 	local status = AceConfigDialog:GetStatusTable("Grid")
-	status.width = 777 -- 685
-	status.height = 486 -- 530
+	status.width = 780 -- 685
+	status.height = 500 -- 530
 
 	local child1 = AceConfigDialog:GetStatusTable("Grid", { "Indicators" })
 	child1.groups = child1.groups or { }
