@@ -479,6 +479,11 @@ function GridStatus:SendStatusGained(guid, status, priority, range, color, text,
 	self:Debug("GridStatus", "SendStatusGained", guid, status, text, value, maxValue)
 	if not guid then return end
 
+	if type(priority) == "table" then
+		-- support tables!
+		priority, range, color, text, value, maxValue, texture, start, duration, stack, texCoords = priority.priority, priority.range, priority.color, priority.text, priority.value, priority.maxValue, priority.texture, priority.start, priority.duration, priority.stack, priority.texCoords
+	end
+
 	local cache = self.cache
 	local cached
 

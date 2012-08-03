@@ -8,7 +8,10 @@ local L = Grid.L
 local GridStatus
 
 local media = LibStub("LibSharedMedia-3.0", true)
-if media then media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32") end
+if media then
+	media:Register("statusbar", "Blizzard Raid Bar", "Interface\\RaidFrame\\Raid-Bar-Hp-Fill")
+	media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32")
+end
 
 local GridFrame = Grid:NewModule("GridFrame", "AceBucket-3.0", "AceTimer-3.0")
 
@@ -132,6 +135,14 @@ function GridFrame:InitializeFrame(frame)
 	if not GridFrame.db.profile.fontShadow then
 		frame.Text:SetShadowOffset(0, 0)
 		frame.Text2:SetShadowOffset(0, 0)
+	end
+
+	if GridFrame.db.profile.invertBarColor and GridFrame.db.profile.invertTextColor then
+		frame.Text:SetShadowColor(1, 1, 1)
+		frame.Text2:SetShadowColor(1, 1, 1)
+	else
+		frame.Text:SetShadowColor(0, 0, 0)
+		frame.Text2:SetShadowColor(0, 0, 0)
 	end
 
 	-- create icon background/border
@@ -511,19 +522,23 @@ function GridFrame.prototype:InvertBarColor()
 		if GridFrame.db.profile.invertTextColor then
 			r, g, b = self.Text:GetTextColor()
 			self.Text:SetTextColor(r * 0.2, g * 0.2, b * 0.2)
+			self.Text:SetShadowColor(1, 1, 1)
 
 			r, g, b = self.Text2:GetTextColor()
 			self.Text2:SetTextColor(r * 0.2, g * 0.2, b * 0.2)
+			self.Text2:SetShadowColor(1, 1, 1)
 		end
 	else
 		self:SetBarColor(self.Bar:GetStatusBarColor())
 
 		if GridFrame.db.profile.invertTextColor then
 			local r, g, b = self.Text:GetTextColor()
-			self.Text:SetTextColor(r / 0.2, g / 0.2, b / 0.2)
+			self.Text:SetTextColor(r * 5, g * 5, b * 5)
+			self.Text:SetShadowColor(0, 0, 0)
 
 			r, g, b = self.Text2:GetTextColor()
-			self.Text2:SetTextColor(r / 0.2, g / 0.2, b / 0.2)
+			self.Text2:SetTextColor(r * 5, g * 5, b * 5)
+			self.Text2:SetShadowColor(0, 0, 0)
 		end
 	end
 end
@@ -533,11 +548,19 @@ function GridFrame.prototype:InvertTextColor()
 	if GridFrame.db.profile.invertTextColor then
 		r, g, b = self.Text:GetTextColor()
 		self.Text:SetTextColor(r * 0.2, g * 0.2, b * 0.2)
+		self.Text:SetShadowColor(1, 1, 1)
 
 		r, g, b = self.Text2:GetTextColor()
 		self.Text2:SetTextColor(r * 0.2, g * 0.2, b * 0.2)
+		self.Text2:SetShadowColor(1, 1, 1)
 	else
+		r, g, b = self.Text:GetTextColor()
+		self.Text:SetTextColor(r * 5, g * 5, b * 5)
+		self.Text:SetShadowColor(0, 0, 0)
 
+		r, g, b = self.Text2:GetTextColor()
+		self.Text2:SetTextColor(r * 5, g * 5, b * 5)
+		self.Text2:SetShadowColor(0, 0, 0)
 	end
 end
 
