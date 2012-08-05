@@ -53,7 +53,7 @@ function GridStatusTarget:PLAYER_TARGET_CHANGED()
 		cur_target = UnitGUID("target")
 		self.core:SendStatusGained(cur_target, "player_target",
 			settings.priority,
-			(settings.range and 40),
+			settings.range,
 			settings.color,
 			settings.text,
 			nil,

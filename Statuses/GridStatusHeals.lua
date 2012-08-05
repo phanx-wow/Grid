@@ -116,9 +116,16 @@ end
 function GridStatusHeals:SendIncomingHealsStatus(guid, incoming, estimatedHealth, maxHealth)
 	local incomingText = incoming
 	if incoming > 9999 then
-		incomingText = ("%.0fk"):format(incoming / 1000)
+		incomingText = format("%.0fk", incoming / 1000)
 	elseif incoming > 999 then
-		incomingText = ("%.1fk"):format(incoming / 1000)
+		incomingText = format("%.1fk", incoming / 1000)
 	end
-	self.core:SendStatusGained(guid, "alert_heals", settings.priority, (settings.range and 40), settings.color, settings.text:format(incomingText), estimatedHealth, maxHealth, settings.icon)
+	self.core:SendStatusGained(guid, "alert_heals",
+		settings.priority,
+		settings.range,
+		settings.color,
+		format(settings.text, incomingText),
+		estimatedHealth,
+		maxHealth,
+		settings.icon)
 end

@@ -48,7 +48,7 @@ function GridStatusVoiceComm:VOICE_START(event, unitid)
 		UnitGUID(unitid),
 		"alert_voice",
 		settings.priority,
-		(settings.range and 40),
+		settings.range,
 		settings.color,
 		settings.text,
 		nil,

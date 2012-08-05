@@ -171,7 +171,7 @@ function GridStatusAggro:UpdateUnit(event, unitid)
 	if status and ((threat and (status > 0)) or (status > 1)) then
 		GridStatusAggro.core:SendStatusGained(guid, "alert_aggro",
 			settings.priority,
-			(settings.range and 40),
+			settings.range,
 			(threat and settings.threatcolors[status] or settings.color),
 			(threat and settings.threattexts[status] or settings.text),
 			nil,

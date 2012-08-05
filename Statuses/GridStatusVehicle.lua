@@ -61,7 +61,8 @@ function GridStatusVehicle:UpdateUnit(event, unitid)
 	if UnitHasVehicleUI(unitid) then
 		local settings = self.db.profile.alert_vehicleui
 		self.core:SendStatusGained(guid, "alert_vehicleui",
-			settings.priority, (settings.range and 40),
+			settings.priority,
+			settings.range,
 			settings.color,
 			settings.text,
 			nil,

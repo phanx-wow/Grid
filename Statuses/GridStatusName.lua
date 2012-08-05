@@ -25,7 +25,7 @@ GridStatusName.defaultDB = {
 
 
 local nameOptions = {
-	["class"] = {
+	class = {
 		name = L["Use class color"],
 		desc = L["Color by class"],
 		type = "toggle", width = "double",
@@ -35,6 +35,7 @@ local nameOptions = {
 			GridStatusName:UpdateAllUnits()
 		end,
 	},
+	range = false,
 }
 
 function GridStatusName:PostInitialize()

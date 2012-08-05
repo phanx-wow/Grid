@@ -117,7 +117,7 @@ function GridStatusMana:StatusLowMana(guid, gained)
 	if gained then
 		GridStatus:SendStatusGained(guid, "alert_lowMana",
 			settings.priority,
-			(settings.range and 40),
+			settings.range,
 			settings.color,
 			settings.text,
 			nil,

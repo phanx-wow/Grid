@@ -6,6 +6,8 @@
 local _, Grid = ...
 local L = Grid.L
 
+local MoP = select(4, GetBuildInfo()) >= 50000
+
 local GridFrame = Grid:GetModule("GridFrame")
 local GridRoster = Grid:GetModule("GridRoster")
 local hasAuraEditBox = type(LibStub("AceGUI-3.0").WidgetVersions["Aura_EditBox"]) == "number"
@@ -13,22 +15,29 @@ local hasAuraEditBox = type(LibStub("AceGUI-3.0").WidgetVersions["Aura_EditBox"]
 local GridStatusAuras = Grid:NewStatusModule("GridStatusAuras", "AceTimer-3.0")
 GridStatusAuras.menuName = L["Auras"]
 
-local BS = {
+local spell_names = {
 -- All
 	["Ghost"] = GetSpellInfo(8326),
-	["Mortal Strike"] = GetSpellInfo(12294),
--- Druids
+-- Druid
 	["Lifebloom"] = GetSpellInfo(33763),
 	["Regrowth"] = GetSpellInfo(8936),
 	["Rejuvenation"] = GetSpellInfo(774),
--- Paladins
+	["Wild Growth"] = GetSpellInfo(48438),
+-- Monk
+	["Enveloping Mist"] = GetSpellInfo(124682),
+	["Life Cocoon"] = GetSpellInfo(116849),
+	["Renewing Mist"] = GetSpellInfo(115151),
+-- Paladin
 	["Beacon of Light"] = GetSpellInfo(53563),
+	["Eternal Flame"] = MoP and GetSpellInfo("114163"),
 	["Forbearance"] = GetSpellInfo(25771),
--- Priests
+	["Sacred Shield"] = MoP and GetSpellInfo(20925),
+-- Priest
 	["Power Word: Shield"] = GetSpellInfo(17),
+	["Prayer of Mending"] = GetSpellInfo(33076),
 	["Renew"] = GetSpellInfo(139),
 	["Weakened Soul"] = GetSpellInfo(6788),
--- Shamans
+-- Shaman
 	["Earth Shield"] = GetSpellInfo(974),
 	["Riptide"] = GetSpellInfo(61295),
 }
@@ -45,32 +54,102 @@ local debuff_types = {
 	["Poison"] = true,
 }
 
-function GridStatusAuras.StatusForSpell(spell, isBuff)
+local can_dispel = {}
+local dispel_priority = {
+	["Curse"] = 4,
+	["Poison"] = 3,
+	["Disease"] = 2,
+	["Magic"] = 1,
+}
+function GridStatusAuras:UpdateDispellable()
+	local _, class = UnitClass("player")
+
+	if class == "DRUID" then
+		can_dispel["Curse"] = IsSpellKnown(2782)
+		can_dispel["Poison"] = IsSpellKnown(2782)
+		if MoP then
+			can_dispel["Magic"] = GetSpecialization() == 4 and UnitLevel("player") >= 22
+		else
+			can_dispel["Magic"] = select(5, GetTalentInfo(3, 17)) == 1
+		end
+
+	elseif class == "MAGE" then
+		can_dispel["Curse"] = IsSpellKnown(475)
+
+	elseif class == "MONK" then
+		can_dispel["Disease"] = IsPlayerSpell(115450)
+		can_dispel["Magic"] = GetSpecialization() == 2 and UnitLevel("player") >= 20
+		can_dispel["Poison"] = IsPlayerSpell(115450)
+
+	elseif class == "PALADIN" then
+		can_dispel["Disease"] = IsSpellKnown(4987)
+		can_dispel["Poison"] = IsSpellKnown(4987)
+		if MoP then
+			can_dispel["Magic"] = GetSpecialization() == 1 and UnitLevel("player") >= 20
+		else
+			can_dispel["Magic"] = select(5, GetTalentInfo(1, 14)) == 1
+		end
+
+	elseif class == "PRIEST" then
+		if MoP then
+			local spec = GetSpecialization()
+			local level = UnitLevel("player")
+			can_dispel["Disease"] = spec == 2 and level >= 22
+			can_dispel["Magic"] = IsPlayerSpell(32375) or (spec == 2 and level >= 22)
+		else
+			can_dispel["Disease"] = IsSpellKnown(528)
+			can_dispel["Magic"] = IsSpellKnown(527) or IsSpellKnown(32375)
+		end
+
+	elseif class == "SHAMAN" then
+		can_dispel["Curse"] = IsSpellKnown(51886)
+		if MoP then
+			can_dispel["Magic"] = GetSpecialization() == 3 and UnitLevel("player") >= 18
+		else
+			can_dispel["Magic"] = select(5, GetTalentInfo(3, 12)) == 1
+		end
+	end
+end
+
+function GridStatusAuras:StatusForSpell(spell, isBuff)
 	local prefix = isBuff and "buff_" or "debuff_"
 	return prefix .. string.gsub(spell, " ", "")
+end
+
+function GridStatusAuras:TextForSpell(spell)
+	if spell:find("%s") then
+		local str = ""
+		for word in spell:gmatch("%S+") do
+			str = str .. word:sub(1,1)
+		end
+		return str
+	else
+		return spell:utf8sub(1, 3)
+	end
 end
 
 local statusDefaultDB = {
 	enable = true,
 	priority = 90,
 	range = false,
+	mine = false,
 	missing = false,
 	duration = false,
-	color = { r = .5, g = .5, b = .5, a = 1 },
+	color = { r = 0.2, g = 1, b = 0.2, a = 1 },
 	statusText = "name",
 	statusColor = "present",
 	refresh = 0.3,
-	durationTenths = false,
-	durationColorLow = { r = .15, g = .15, b = .15, a = 1 },
-	durationColorMiddle = { r = .35, g = .35, b = .35, a = 1 },
-	durationColorHigh = { r = .5, g = .5, b = .5, a = 1 },
-	durationLow = 2,
-	durationHigh = 4,
-	countColorLow = { r = 1, g = 0, b = 0, a = 1 },
-	countColorMiddle = { r = 1, g = 1, b = 0, a = 1 },
-	countColorHigh = { r = 0, g = 1, b = 0, a = 1 },
+	countColorLow = { r = 1, g = 0.2, b = 0.2, a = 1 },
+	countColorMiddle = { r = 1, g = 1, b = 0.2, a = 1 },
+	countColorHigh = { r = 0.2, g = 1, b = 0.2, a = 1 },
 	countLow = 1,
 	countHigh = 2,
+	durationTenths = false,
+	durationColorLow = { r = 1, g = 0.2, b = 0.2, a = 1 },
+	durationColorMiddle = { r = 1, g = 1, b = 0.2, a = 1 },
+	durationColorHigh = { r = 0.2, g = 1, b = 0.2, a = 1 },
+	durationLow = 2,
+	durationHigh = 4,
 }
 
 -- Perform a deep copy of defaultDB into the given settings table except into the slots
@@ -100,158 +179,196 @@ end
 
 GridStatusAuras.defaultDB = {
 	advancedOptions = false,
+	["dispellable_debuff"] = {
+		desc = L["Dispellable debuff"],
+		text = "Dispel!",
+		color = { r = 1, g = 0.6, b = 0.3 },
+		order = 20,
+	},
 	["debuff_curse"] = {
 		desc = string.format(L["Debuff type: %s"], L["Curse"]),
-		text = L["Curse"],
-		color = { r = .6, g =  0, b =  1, a = 1 },
-		durationColorLow = { r = .18, g =  0, b =  .3, a = 1 },
-		durationColorMiddle = { r = .42, g =  0, b =  .7, a = 1 },
-		durationColorHigh = { r = .6, g =  0, b =  1, a = 1 },
+		text = DEBUFF_SYMBOL_CURSE,
+		color = { r = 0.6, g = 0, b = 1, a = 1 },
+		enable = false,
 		order = 25,
 	},
 	["debuff_disease"] = {
 		desc = string.format(L["Debuff type: %s"], L["Disease"]),
-		text = L["Disease"],
-		color = { r = .6, g = .4, b =  0, a = 1 },
-		durationColorLow = { r = .18, g = .12, b =  0, a = 1 },
-		durationColorMiddle = { r = .42, g = .28, b =  0, a = 1 },
-		durationColorHigh = { r = .6, g = .4, b =  0, a = 1 },
+		text = DEBUFF_SYMBOL_DISEASE,
+		color = { r = 0.6, g = 0.4, b = 0, a = 1 },
+		enable = false,
 		order = 25,
 	},
 	["debuff_magic"] = {
 		desc = string.format(L["Debuff type: %s"], L["Magic"]),
-		text = L["Magic"],
-		color = { r = .2, g = .6, b =  1, a = 1 },
-		durationColorLow = { r = .06, g = .18, b =  .3, a = 1 },
-		durationColorMiddle = { r = .14, g = .42, b =  .7, a = 1 },
-		durationColorHigh = { r = .2, g = .6, b =  1, a = 1 },
+		text = DEBUFF_SYMBOL_MAGIC,
+		color = { r = 0.2, g = 0.6, b = 1, a = 1 },
+		enable = false,
 		order = 25,
 	},
 	["debuff_poison"] = {
 		desc = string.format(L["Debuff type: %s"], L["Poison"]),
-		text = L["Poison"],
-		color = { r =  0, g = .6, b =  0, a = 1 },
-		durationColorLow = { r = 0, g = .18, b = 0, a = 1 },
-		durationColorMiddle = { r = 0, g = .42, b = 0, a = 1 },
-		durationColorHigh = { r = 0, g = .6, b = 0, a = 1 },
+		text = DEBUFF_SYMBOL_POISON,
+		color = { r = 0, g = 0.6, b = 0, a = 1 },
+		enable = false,
 		order = 25,
 	},
-	[GridStatusAuras.StatusForSpell(BS["Ghost"])] = {
-		desc = string.format(L["Debuff: %s"], BS["Ghost"]),
-		text = BS["Ghost"],
-		color = { r = .5, g = .5, b = .5, a = 1 },
-		durationColorLow = { r = .15, g = .15, b = .15, a = 1 },
-		durationColorMiddle = { r = .35, g = .35, b = .35, a = 1 },
-		durationColorHigh = { r = .5, g = .5, b = .5, a = 1 },
+	[GridStatusAuras:StatusForSpell(spell_names["Ghost"])] = {
+		aura = spell_names["Ghost"],
+		desc = string.format(L["Debuff: %s"], spell_names["Ghost"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Ghost"]),
+		color = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
 	},
-	[GridStatusAuras.StatusForSpell(BS["Mortal Strike"])] = {
-		desc = string.format(L["Debuff: %s"], BS["Mortal Strike"]),
-		text = BS["Mortal Strike"],
-		color = { r = .8, g = .2, b = .2, a = 1 },
-		durationColorLow = { r = .24, g = .06, b = .06, a = 1 },
-		durationColorMiddle = { r = .56, g = .14, b = .14, a = 1 },
-		durationColorHigh = { r = .8, g = .2, b = .2, a = 1 },
-	},
-	[GridStatusAuras.StatusForSpell(BS["Forbearance"])] = {
-		desc = string.format(L["Debuff: %s"], BS["Forbearance"]),
-		text = BS["Forbearance"],
-		color = { r = .5, g = .5, b = .5, a = 1 },
-		durationColorLow = { r = .15, g = .15, b = .15, a = 1 },
-		durationColorMiddle = { r = .35, g = .35, b = .35, a = 1 },
-		durationColorHigh = { r = .5, g = .5, b = .5, a = 1 },
-	},
-	[GridStatusAuras.StatusForSpell(BS["Weakened Soul"])] = {
-		desc = string.format(L["Debuff: %s"], BS["Weakened Soul"]),
-		text = BS["Weakened Soul"],
-		color = { r = .5, g = .5, b = .5, a = 1 },
-		durationColorLow = { r = .15, g = .15, b = .15, a = 1 },
-		durationColorMiddle = { r = .35, g = .35, b = .35, a = 1 },
-		durationColorHigh = { r = .5, g = .5, b = .5, a = 1 },
-	},
-	[GridStatusAuras.StatusForSpell(BS["Beacon of Light"], true)] = {
-		desc = string.format(L["Buff: %s"], BS["Beacon of Light"]),
-		text = BS["Beacon of Light"],
-		color = { r = .5, g = 0.7, b = 0.3, a = 1 },
-		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r = .49, g = .49, b = 0, a = 1 },
-		durationColorHigh = { r = .7, g = .7, b = 0, a = 1 },
-		durationLow = 5,
-		durationHigh = 10,
-	},
-	[GridStatusAuras.StatusForSpell(BS["Power Word: Shield"], true)] = {
-		desc = string.format(L["Buff: %s"], BS["Power Word: Shield"]),
-		text = BS["Power Word: Shield"],
-		color = { r = .8, g = .8, b =  0, a = 1 },
-		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r = .56, g = .56, b =  0, a = 1 },
-		durationColorHigh = { r = .8, g = .8, b =  0, a = 1 },
-	},
-	[GridStatusAuras.StatusForSpell(BS["Renew"], true)] = {
-		desc = string.format(L["Buff: %s"], BS["Renew"]),
-		text = BS["Renew"],
-		color = { r =  0, g = .7, b = .3, a = 1 },
-		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r =  0, g = .49, b = .21, a = 1 },
-		durationColorHigh = { r =  0, g = .7, b = .3, a = 1 },
-	},
-	[GridStatusAuras.StatusForSpell(BS["Lifebloom"], true)] = {
-		desc = string.format(L["Buff: %s"], BS["Lifebloom"]),
-		text = BS["Lifebloom"],
-		color = { r =  .3, g = .7, b = 0, a = 1 },
-		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r =  .21, g = .49, b = 0, a = 1 },
-		durationColorHigh = { r =  .3, g = .7, b = 0, a = 1 },
-		countColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		countColorMiddle = { r = 1, g = 1, b = 0, a = 1 },
-		countColorHigh = { r = 0, g = 1, b = 0, a = 1 },
+	-----------
+	-- Druid
+	-----------
+	[GridStatusAuras:StatusForSpell(spell_names["Lifebloom"], true)] = {
+		aura = spell_names["Lifebloom"],
+		desc = string.format(L["Buff: %s"], spell_names["Lifebloom"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Lifebloom"]),
+		color = { r = 0.2, g = 1, b = 0.2, a = 1 },
+		mine = true,
 		countLow = 1,
 		countHigh = 2,
 	},
-	[GridStatusAuras.StatusForSpell(BS["Regrowth"], true)] = {
-		desc = string.format(L["Buff: %s"], BS["Regrowth"]),
-		text = BS["Regrowth"],
-		color = { r =  1, g = .7, b = .1, a = 1 },
-		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r =  .7, g = .49, b = .07, a = 1 },
-		durationColorHigh = { r =  1, g = .7, b = .1, a = 1 },
+	[GridStatusAuras:StatusForSpell(spell_names["Regrowth"], true)] = {
+		aura = spell_names["Regrowth"],
+		desc = string.format(L["Buff: %s"], spell_names["Regrowth"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Regrowth"]),
+		color = { r = 0.4, g = 0, b = 0.8, a = 1 },
+		mine = true,
 	},
-	[GridStatusAuras.StatusForSpell(BS["Rejuvenation"], true)] = {
-		desc = string.format(L["Buff: %s"], BS["Rejuvenation"]),
-		text = BS["Rejuvenation"],
-		color = { r =  0, g = .3, b = .7, a = 1 },
-		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r =  0, g = .21, b = .49, a = 1 },
-		durationColorHigh = { r =  0, g = .3, b = .7, a = 1 },
+	[GridStatusAuras:StatusForSpell(spell_names["Rejuvenation"], true)] = {
+		aura = spell_names["Rejuvenation"],
+		desc = string.format(L["Buff: %s"], spell_names["Rejuvenation"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Rejuvenation"]),
+		color = { r = 0.2, g = 0.8, b = 1, a = 1 },
+		mine = true,
 	},
-	[GridStatusAuras.StatusForSpell(BS["Earth Shield"], true)] = {
-		desc = string.format(L["Buff: %s"], BS["Earth Shield"]),
-		text = BS["Earth Shield"],
-		color = { r = .5, g = 0.7, b = 0.3, a = 1 },
-		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r = .35, g = .49, b = .21, a = 1 },
-		durationColorHigh = { r = .5, g = 0.7, b = 0.3, a = 1 },
-		countColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		countColorMiddle = { r = .35, g = .49, b = .21, a = 1 },
-		countColorHigh = { r = .5, g = .7, b = .3, a = 1 },
+	[GridStatusAuras:StatusForSpell(spell_names["Wild Growth"], true)] = {
+		aura = spell_names["Wild Growth"],
+		desc = string.format(L["Buff: %s"], spell_names["Wild Growth"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Wild Growth"]),
+		color = { r = 0.2, g = 0.8, b = 1, a = 1 },
+		mine = true,
+	},
+	-----------
+	-- Paladin
+	-----------
+	[GridStatusAuras:StatusForSpell(spell_names["Beacon of Light"], true)] = {
+		aura = spell_names["Beacon of Light"],
+		desc = string.format(L["Buff: %s"], spell_names["Beacon of Light"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Beacon of Light"]),
+		color = { r = 0.4, g = 0, b = 0.8, a = 1 },
+		mine = true,
+		durationLow = 5,
+		durationHigh = 10,
+	},
+	[GridStatusAuras:StatusForSpell(spell_names["Forbearance"])] = {
+		desc = string.format(L["Debuff: %s"], spell_names["Forbearance"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Forbearance"]),
+		color = { r = 0.6, g = 0.3, b = 0.3, a = 1 },
+	},
+	-----------
+	-- Priest
+	-----------
+	[GridStatusAuras:StatusForSpell(spell_names["Power Word: Shield"], true)] = {
+		aura = spell_names["Power Word: Shield"],
+		desc = string.format(L["Buff: %s"], spell_names["Power Word: Shield"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Power Word: Shield"]),
+		color = { r = 0.8, g = 0.8, b = 0.4, a = 1 },
+		mine = true,
+	},
+	[GridStatusAuras:StatusForSpell(spell_names["Prayer of Mending"], true)] = {
+		aura = spell_names["Prayer of Mending"],
+		desc = string.format(L["Buff: %s"], spell_names["Prayer of Mending"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Prayer of Mending"]),
+		color = { r = 0.2, g = 0.8, b = 1, a = 1 },
+		mine = true,
+	},
+	[GridStatusAuras:StatusForSpell(spell_names["Renew"], true)] = {
+		aura = spell_names["Renew"],
+		desc = string.format(L["Buff: %s"], spell_names["Renew"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Renew"]),
+		color = { r = 0.2, g = 1, b = 0.2, a = 1 },
+		mine = true,
+	},
+	[GridStatusAuras:StatusForSpell(spell_names["Weakened Soul"])] = {
+		desc = string.format(L["Debuff: %s"], spell_names["Weakened Soul"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Weakened Soul"]),
+		color = { r = 0.6, g = 0.3, b = 0.3, a = 1 },
+	},
+	-----------
+	-- Shaman
+	-----------
+	[GridStatusAuras:StatusForSpell(spell_names["Earth Shield"], true)] = {
+		aura = spell_names["Earth Shield"],
+		desc = string.format(L["Buff: %s"], spell_names["Earth Shield"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Earth Shield"]),
+		color = { r = 0.8, g = 0.8, b = 0.4, a = 1 },
+		mine = true,
 		countLow = 1,
 		countHigh = 4,
 	},
-	[GridStatusAuras.StatusForSpell(BS["Riptide"], true)] = {
-		desc = string.format(L["Buff: %s"], BS["Riptide"]),
-		text = BS["Riptide"],
-		color = { r = .4, g = 0, b = .8, a = 1 },
-		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r = .28, g = 0, b = .56, a = 1 },
-		durationColorHigh = { r = .4, g = 0, b = .8, a = 1 },
+	[GridStatusAuras:StatusForSpell(spell_names["Riptide"], true)] = {
+		aura = spell_names["Riptide"],
+		desc = string.format(L["Buff: %s"], spell_names["Riptide"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Riptide"]),
+		color = { r = 0.4, g = 0, b = 0.8, a = 1 },
+		mine = true,
 	},
 }
 
-local defaultDebuffs = { }
+if MoP then
+	-----------
+	-- Monk
+	-----------
+	GridStatusAuras.defaultDB[GridStatusAuras:StatusForSpell(spell_names["Enveloping Mist"], true)] = {
+		aura = spell_names["Enveloping Mist"],
+		desc = string.format(L["Buff: %s"], spell_names["Enveloping Mist"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Enveloping Mist"]),
+		color = { r = 0.2, g = 1, b = 0.2, a = 1 },
+		mine = true,
+	}
+	GridStatusAuras.defaultDB[GridStatusAuras:StatusForSpell(spell_names["Life Cocoon"], true)] = {
+		aura = spell_names["Life Cocoon"],
+		desc = string.format(L["Buff: %s"], spell_names["Life Cocoon"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Life Cocoon"]),
+		color = { r = 0.8, g = 0.8, b = 0.4, a = 1 },
+		mine = true,
+	}
+	GridStatusAuras.defaultDB[GridStatusAuras:StatusForSpell(spell_names["Renewing Mist"], true)] = {
+		aura = spell_names["Renewing Mist"],
+		desc = string.format(L["Buff: %s"], spell_names["Renewing Mist"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Renewing Mist"]),
+		color = { r = 0.4, g = 0, b = 0.8, a = 1 },
+		mine = true,
+	}
+	-----------
+	-- Paladin
+	-----------
+	GridStatusAuras.defaultDB[GridStatusAuras:StatusForSpell(spell_names["Eternal Flame"], true)] = {
+		aura = spell_names["Eternal Flame"],
+		desc = string.format(L["Buff: %s"], spell_names["Eternal Flame"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Eternal Flame"]),
+		color = { r = 0.2, g = 0.8, b = 1, a = 1 },
+		mine = true,
+	}
+	GridStatusAuras.defaultDB[GridStatusAuras:StatusForSpell(spell_names["Sacred Shield"], true)] = {
+		aura = spell_names["Sacred Shield"],
+		desc = string.format(L["Buff: %s"], spell_names["Sacred Shield"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Sacred Shield"]),
+		color = { r = 0.2, g = 0.8, b = 1, a = 1 },
+		mine = true,
+	}
+end
+
+local defaultAuras = { }
 do
 	for status, settings in pairs(GridStatusAuras.defaultDB) do
 		if type(settings) == "table" and settings.text then
 			GridStatusAuras:CopyDefaults(settings, statusDefaultDB)
-			defaultDebuffs[status] = true
+			defaultAuras[status] = true
 		end
 	end
 end
@@ -263,32 +380,37 @@ function GridStatusAuras:PostInitialize()
 	self:RegisterStatuses()
 
 	self.options.args["add_buff"] = {
+		order = 11,
 		name = L["Add new Buff"],
 		desc = L["Adds a new buff to the status module"],
-		order = 11,
+		dialogControl = hasAuraEditBox and "Aura_EditBox" or nil,
 		width = "double",
-		type = "input", usage = L["<buff name>"], dialogControl = hasAuraEditBox and "Aura_EditBox" or nil,
+		type = "input",
+		usage = L["<buff name>"],
 		get = false,
 		set = function(_, v)
 				self:AddAura(v, true)
 			end,
 	}
 	self.options.args["add_debuff"] = {
+		order = 31,
 		name = L["Add new Debuff"],
 		desc = L["Adds a new debuff to the status module"],
-		order = 31,
 		width = "double",
-		type = "input", usage = L["<debuff name>"], dialogControl = hasAuraEditBox and "Aura_EditBox" or nil,
+		dialogControl = hasAuraEditBox and "Aura_EditBox" or nil,
+		type = "input",
+		usage = L["<debuff name>"],
 		get = false,
 		set = function(_, v)
 				self:AddAura(v, false)
 			end,
 	}
 	self.options.args["delete_debuff"] = {
+		order = -2,
 		name = L["Delete (De)buff"],
 		desc = L["Deletes an existing debuff from the status module"],
-		order = -2,
-		type = "group", dialogInline = true,
+		type = "group",
+		dialogInline = true,
 		args = {},
 	}
 	self.options.args["advancedOptions"] = {
@@ -353,18 +475,15 @@ end
 function GridStatusAuras:RegisterStatuses()
 	for status, settings in pairs(self.db.profile) do
 		if type(settings) == "table" and settings.text then
-			local name = settings.text
-			local desc = settings.desc or name
-			local isBuff = GridStatusAuras.StatusForSpell(name, true) == status
-			local order = settings.order or (isBuff and 15 or 35)
-
+			local desc = settings.desc
+			local isBuff = settings.aura and GridStatusAuras:StatusForSpell(settings.aura, true) == status
 			self:Debug("registering", status, desc)
 			if not self.defaultDB[status] then
 				self.defaultDB[status] = { }
 				self:CopyDefaults(self.defaultDB[status], statusDefaultDB)
 			end
 			self:CopyDefaults(settings, self.defaultDB[status])
-			self:RegisterStatus(status, desc, self:OptionsForStatus(status, isBuff), false, order)
+			self:RegisterStatus(status, desc, self:OptionsForStatus(status, isBuff), false, settings.order or (isBuff and 15 or 35))
 		end
 	end
 	self.db:RegisterDefaults({ profile = self.defaultDB or { } })
@@ -400,9 +519,9 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 				end,
 			args = {
 				pet = {
+					order = -1,
 					name = L["Pet"],
 					desc = L["Show on pets and vehicles."],
-					order = -1,
 					width = "double",
 					type = "toggle",
 					get = function()
@@ -416,22 +535,23 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 			},
 		},
 		statusInfo = {
+			order = 300,
 			name = L["Status Information"],
 			desc = L["Change what information is displayed using the status color and text."],
-			order = 300,
-			type = "group", dialogInline = true,
+			type = "group",
+			dialogInline = true,
 			hidden = function()
 					return not self.db.profile.advancedOptions
 				end,
 			args = {
 				colorInfo = {
-					name = L["Color"],
-					desc = L["Change which information is shown by the status color."],
 					order = 310,
+					name = L["Color Info"],
+					desc = L["Change which information is shown by the status color."],
 					width = "double",
 					type = "select",
 					values = {
-						["present"] = L["Present or missing"],
+						["present"] = L["Color"],
 						["duration"] = L["Time left"],
 						["count"] = L["Stack count"],
 					},
@@ -444,13 +564,13 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 						end,
 				},
 				textInfo = {
-					name = L["Text"],
-					desc = L["Change which information is shown by the status text."],
 					order = 320,
+					name = L["Text Info"],
+					desc = L["Change which information is shown by the status text."],
 					width = "double",
 					type = "select",
 					values = {
-						["name"] = L["(De)buff name"],
+						["name"] = L["Text"],
 						["duration"] = L["Time left"],
 						["count"] = L["Stack count"],
 					},
@@ -465,10 +585,27 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 							return not self.db.profile.advancedOptions
 						end,
 				},
+				text = {
+					order = 325,
+					name = L["Text"],
+					desc = L["Set the text to display on text-type indicators."],
+					width = "double",
+					type = "input",
+					get = function()
+							return self.db.profile[status].text
+						end,
+					set = function(_, v)
+							self.db.profile[status].text = v
+							self:UpdateAllUnitAuras()
+						end,
+					hidden = function()
+							return not self.db.profile.advancedOptions or self.db.profile[status].statusText ~= "name"
+						end,
+				},
 				durationTenths = {
+					order = 330,
 					name = L["Show time left to tenths"],
 					desc = L["Show the time left to tenths of a second, instead of only whole seconds."],
-					order = 330,
 					width = "double",
 					type = "toggle",
 					get = function()
@@ -483,28 +620,44 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 						end,
 				},
 				countSettings = {
+					order = 350,
 					name = string.format(L["%s colors"], L["Stack count"]),
 					desc = string.format(L["%s colors and threshold values."], L["Stack count"]),
-					order = 350,
-					type = "group", dialogInline = true,
+					type = "group",
+					dialogInline = true,
 					get = function(info)
 							local optionName = info[#info]
-							if (info.type == "color") then
+							if info.type == "color" then
 								local color = self.db.profile[status][optionName]
+								if not color then
+									local base = self.db.profile[status].color
+									local x, f, v = 1
+									if optionName == "countColorHigh" then
+										x, f, v = 0.6, min, 1
+									elseif optionName == "countColorLow" then
+										x, f, v = 1.4, max, 0
+									end
+									color = {
+										r = f and f(v, base.r * x) or base.r * x,
+										g = f and f(v, base.b * x) or base.g * x,
+										b = f and f(v, base.b * x) or base.b * x,
+									}
+									self.db.profile[status][optionName] = color
+								end
 								return color.r, color.g, color.b, color.a
-							elseif (info.type == "range") then
+							elseif info.type == "range" then
 								return self.db.profile[status][optionName]
 							end
 						end,
 					set = function(info, r, g, b, a)
 							local optionName = info[#info]
-							if (info.type == "color") then
+							if info.type == "color" then
 								local color = self.db.profile[status][optionName]
 								color.r = r
 								color.g = g
 								color.b = b
 								color.a = a or 1
-							elseif (info.type == "range") then
+							elseif info.type == "range" then
 								self.db.profile[status][optionName] = r
 							end
 							self:UpdateAllUnitAuras()
@@ -555,22 +708,37 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 					type = "group",
 					get = function(info)
 							local optionName = info[#info]
-							if (info.type == "color") then
+							if info.type == "color" then
 								local color = self.db.profile[status][optionName]
+								if not color then
+									local base = self.db.profile[status].color
+									local x, f, v = 1
+									if optionName == "durationColorHigh" then
+										x, f, v = 0.6, min, 1
+									elseif optionName == "durationColorLow" then
+										x, f, v = 1.4, max, 0
+									end
+									color = {
+										r = f and f(v, base.r * x) or base.r * x,
+										g = f and f(v, base.b * x) or base.g * x,
+										b = f and f(v, base.b * x) or base.b * x,
+									}
+									self.db.profile[status][optionName] = color
+								end
 								return color.r, color.g, color.b, color.a
-							elseif (info.type == "range") then
+							elseif info.type == "range" then
 								return self.db.profile[status][optionName]
 							end
 						end,
 					set = function(info, r, g, b, a)
 							local optionName = info[#info]
-							if (info.type == "color") then
+							if info.type == "color" then
 								local color = self.db.profile[status][optionName]
 								color.r = r
 								color.g = g
 								color.b = b
 								color.a = a or 1
-							elseif (info.type == "range") then
+							elseif info.type == "range" then
 								self.db.profile[status][optionName] = r
 							end
 							self:UpdateAllUnitAuras()
@@ -682,6 +850,21 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 					GridStatusAuras:UpdateAllUnitAuras()
 				end,
 		}
+	elseif status == "dispellable_debuff" then
+		auraOptions.useDebuffTypeColor = {
+			name = L["Use debuff type color"],
+			desc = L["Use the color of the debuff type (eg. blue for Magic debuffs) instead of the status color."],
+			order = 35,
+			width = "double",
+			type = "toggle",
+			get = function()
+					return GridStatusAuras.db.profile[status].useDebuffTypeColor
+				end,
+			set = function(_, v)
+					GridStatusAuras.db.profile[status].useDebuffTypeColor = v
+					GridStatusAuras:UpdateAllUnitAuras()
+				end,
+		}
 	end
 
 	return auraOptions
@@ -690,8 +873,8 @@ end
 function GridStatusAuras:CreateRemoveOptions()
 	for status, settings in pairs(self.db.profile) do
 		local status = status
-		if type(settings) == "table" and settings.text and not defaultDebuffs[status] then
-			local debuffName = settings.desc or settings.text
+		if type(settings) == "table" and settings.aura and not defaultAuras[status] then
+			local debuffName = settings.desc or settings.aura
 			self.options.args["delete_debuff"].args[status] = {
 				name = debuffName,
 				desc = string.format(L["Remove %s from the menu"], debuffName),
@@ -704,7 +887,7 @@ function GridStatusAuras:CreateRemoveOptions()
 end
 
 function GridStatusAuras:AddAura(name, isBuff)
-	local status = GridStatusAuras.StatusForSpell(name, isBuff)
+	local status = GridStatusAuras:StatusForSpell(name, isBuff)
 
 	-- status already exists
 	if self.db.profile[status] then
@@ -720,7 +903,10 @@ function GridStatusAuras:AddAura(name, isBuff)
 		self.db:RegisterDefaults({ profile = self.defaultDB or { } })
 	end
 
-	self.db.profile[status] = { text = name, desc = desc }
+	self.db.profile[status] = {
+		desc = desc,
+		text = self:TextForSpell(name),
+	}
 	self:CopyDefaults(self.db.profile[status], self.defaultDB[status])
 
 	self.options.args["delete_debuff"].args[status] = {
@@ -777,17 +963,17 @@ end
 
 -- Proposal:
 -- * Iterate over known buff names and call UnitAura(unit, name, "HELPFUL") for
---   each one.  It is likely that the list of buff names is shorter than the
---   number of buffs on the unit.
+--  each one. It is likely that the list of buff names is shorter than the
+--  number of buffs on the unit.
 -- * Iterate over known buff names that are cast by the player and call
---   UnitAura(unit, name, "HELPFUL|PLAYER") for each one.  It is likely that the
---   combined list of buff names and buff names that are cast by the player is
---   shorter than the number of buffs on the unit.
+--  UnitAura(unit, name, "HELPFUL|PLAYER") for each one. It is likely that the
+--  combined list of buff names and buff names that are cast by the player is
+--  shorter than the number of buffs on the unit.
 -- * Iterate over all debuffs on the unit by calling
---   UnitAura(unit, index, "HARMFUL").  It is likely that the list of debuffs is
---   longer than the number of debuffs on the unit.  While scanning the debuffs
---   keep track of each debuff type seen and information about the last debuff
---   of that type seen.
+--  UnitAura(unit, index, "HARMFUL"). It is likely that the list of debuffs is
+--  longer than the number of debuffs on the unit. While scanning the debuffs
+--  keep track of each debuff type seen and information about the last debuff
+--  of that type seen.
 
 -- durationAuras[status][guid] = { <aura properties> }
 GridStatusAuras.durationAuras = {}
@@ -937,9 +1123,7 @@ function GridStatusAuras:StatusTextColor(settings, count, timeLeft)
 	count = count or 0
 	timeLeft = timeLeft or 0
 
-	if settings.statusText == "name" then
-		text = settings.text
-	elseif settings.statusText == "duration" then
+	if settings.statusText == "duration" then
 		if settings.durationTenths then
 			text = string.format("%.1f", tostring(timeLeft))
 		else
@@ -947,6 +1131,9 @@ function GridStatusAuras:StatusTextColor(settings, count, timeLeft)
 		end
 	elseif settings.statusText == "count" then
 		text = tostring(count)
+	else
+		-- default to "name"
+		text = settings.text
 	end
 
 	if settings.missing or settings.statusColor == "present" then
@@ -1008,7 +1195,7 @@ end
 function GridStatusAuras:UnitGainedBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 	self:Debug("UnitGainedBuff", guid, class, name)
 
-	local status = GridStatusAuras.StatusForSpell(name, true)
+	local status = GridStatusAuras:StatusForSpell(name, true)
 	local settings = self.db.profile[status]
 	if not settings then return end
 
@@ -1042,7 +1229,7 @@ end
 function GridStatusAuras:UnitLostBuff(guid, class, name)
 	self:Debug("UnitLostBuff", guid, class, name)
 
-	local status = GridStatusAuras.StatusForSpell(name, true)
+	local status = GridStatusAuras:StatusForSpell(name, true)
 	local settings = self.db.profile[status]
 	if not settings then return end
 
@@ -1066,7 +1253,7 @@ end
 function GridStatusAuras:UnitGainedPlayerBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 	self:Debug("UnitGainedPlayerBuff", guid, name)
 
-	local status = GridStatusAuras.StatusForSpell(name, true)
+	local status = GridStatusAuras:StatusForSpell(name, true)
 	local settings = self.db.profile[status]
 	if not settings then return end
 
@@ -1100,7 +1287,7 @@ end
 function GridStatusAuras:UnitLostPlayerBuff(guid, class, name)
 	self:Debug("UnitLostPlayerBuff", guid, name)
 
-	local status = GridStatusAuras.StatusForSpell(name, true)
+	local status = GridStatusAuras:StatusForSpell(name, true)
 	local settings = self.db.profile[status]
 	if not settings then return end
 
@@ -1124,7 +1311,7 @@ end
 function GridStatusAuras:UnitGainedDebuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 	self:Debug("UnitGainedDebuff", guid, class, name)
 
-	local status = GridStatusAuras.StatusForSpell(name, false)
+	local status = GridStatusAuras:StatusForSpell(name, false)
 	local settings = self.db.profile[status]
 	if not settings then return end
 
@@ -1155,7 +1342,7 @@ end
 
 function GridStatusAuras:UnitLostDebuff(guid, class, name)
 	self:Debug("UnitLostDebuff", guid, class, name)
-	local status = GridStatusAuras.StatusForSpell(name, false)
+	local status = GridStatusAuras:StatusForSpell(name, false)
 	local settings = self.db.profile[status]
 	if not settings then return end
 
@@ -1166,21 +1353,22 @@ end
 function GridStatusAuras:UnitGainedDebuffType(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 	self:Debug("UnitGainedDebuffType", guid, class, debuffType)
 
-	local status = debuffType and "debuff_" .. strlower(debuffType)
+	local status = debuffType and "debuff_" .. debuffType:lower()
 	local settings = self.db.profile[status]
 	if not settings then return end
 
+	local start = expirationTime and (expirationTime - duration)
+	local timeLeft = expirationTime and expirationTime > now and (expirationTime - now) or 0
+	local text, color = self:StatusTextColor(settings, count, timeLeft)
+
 	if settings.enable and settings[class] ~= false then
-		local start = expirationTime and (expirationTime - duration)
-		local timeLeft = expirationTime and expirationTime > now and (expirationTime - now) or 0
-		local text, color = self:StatusTextColor(settings, count, timeLeft)
 		if duration and expirationTime and duration > 0 and expirationTime > 0 then
 			self:UnitGainedDurationStatus(status, guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 		end
 		self.core:SendStatusGained(guid,
 			status,
 			settings.priority,
-			(settings.range and 40),
+			settings.range,
 			color,
 			text,
 			count,
@@ -1192,6 +1380,32 @@ function GridStatusAuras:UnitGainedDebuffType(guid, class, name, rank, icon, cou
 			texCoords)
 	else
 		self.core:SendStatusLost(guid, status)
+	end
+
+	if not can_dispel[debuffType] then
+		return
+	end
+
+	settings = self.db.profile.dispellable_debuff
+	if settings.enable and settings[class] ~= false then
+		if duration and expirationTime and duration > 0 and expirationTime > 0 then
+			self:UnitGainedDurationStatus("dispellable_debuff", guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
+		end
+		self.core:SendStatusGained(guid,
+			"dispellable_debuff",
+			settings.priority + dispel_priority[debuffType],
+			settings.range,
+			color,
+			text,
+			count,
+			nil,
+			icon,
+			start,
+			duration,
+			count,
+			texCoords)
+	else
+		self.core:SendStatusLost(guid, "dispellable_debuff")
 	end
 end
 
@@ -1221,12 +1435,11 @@ function GridStatusAuras:UpdateAuraScanList()
 
 	for status, settings in pairs(self.db.profile) do
 		if type(settings) == "table" and settings.enable then
-			local name = settings.text
+			local name = settings.aura
 
 			if name and not debuff_types[name] then
-				local isBuff = GridStatusAuras.StatusForSpell(name, true) == status
-
-				if isBuff then
+				if GridStatusAuras:StatusForSpell(name, true) == status then
+					-- isBuff
 					if settings.mine then
 						player_buff_names[name] = true
 					else
