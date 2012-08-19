@@ -1,4 +1,13 @@
 --[[--------------------------------------------------------------------
+	Grid
+	Compact party and raid unit frames.
+	Copyright (c) 2006-2012 Kyle Smith (a.k.a. Pastamancer), A. Kinley (a.k.a. Phanx) <addons@phanx.net>
+	All rights reserved.
+	See the accompanying README and LICENSE files for more information.
+	http://www.wowinterface.com/downloads/info5747-Grid.html
+	http://www.wowace.com/addons/grid/
+	http://www.curse.com/addons/wow/grid
+------------------------------------------------------------------------
 	GridStatusResurrect.lua
 	GridStatus module for showing incoming resurrections.
 ----------------------------------------------------------------------]]
@@ -103,7 +112,7 @@ function GridStatusResurrect:OnStatusDisable(status)
 	self:UnregisterMessage("Grid_PartyTransition")
 	self:UnregisterMessage("Grid_UnitJoined")
 
-	self:CancelTimer(self.timerHandle, true)
+	self:StopTimer("CheckCacheExpiry")
 	self.core:SendStatusLostAllUnits("alert_resurrect")
 end
 
@@ -125,8 +134,7 @@ function GridStatusResurrect:SendStatusLost(guid)
 	if numPending == 0 then
 		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 		self:UnregisterEvent("UNIT_HEALTH")
-		self:CancelTimer(self.timerHandle, true)
-		self.timerHandle = nil
+		self:StopTimer("CheckCacheExpiry")
 		self:Debug("Stopped timer.")
 	end
 end
@@ -172,8 +180,7 @@ function GridStatusResurrect:UpdateUnit(unit, guid)
 			if numPending == 1 then
 				self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 				self:RegisterEvent("UNIT_HEALTH")
-				self:CancelTimer(self.timerHandle, true)
-				self.timerHandle = self:ScheduleRepeatingTimer("CheckCacheExpiry", TIMER_INTERVAL)
+				self:StartTimer("CheckCacheExpiry", TIMER_INTERVAL, true)
 				self:Debug("Started timer.")
 			end
 		end

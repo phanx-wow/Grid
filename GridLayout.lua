@@ -1,5 +1,12 @@
 --[[--------------------------------------------------------------------
-	GridLayout.lua
+	Grid
+	Compact party and raid unit frames.
+	Copyright (c) 2006-2012 Kyle Smith (a.k.a. Pastamancer), A. Kinley (a.k.a. Phanx) <addons@phanx.net>
+	All rights reserved.
+	See the accompanying README and LICENSE files for more information.
+	http://www.wowinterface.com/downloads/info5747-Grid.html
+	http://www.wowace.com/addons/grid/
+	http://www.curse.com/addons/wow/grid
 ----------------------------------------------------------------------]]
 
 local GRID, Grid = ...
@@ -10,22 +17,23 @@ local media = LibStub("LibSharedMedia-3.0", true)
 
 local GridLayout = Grid:NewModule("GridLayout", "AceBucket-3.0", "AceTimer-3.0")
 
+local floor, next, pairs, select, tinsert, tonumber, tostring = floor, next, pairs, select, tinsert, tonumber, tostring
+
 ------------------------------------------------------------------------
 
-local config_mode
 CONFIGMODE_CALLBACKS = CONFIGMODE_CALLBACKS or {}
 CONFIGMODE_CALLBACKS["Grid"] = function(action)
 	if action == "ON" then
-		config_mode = true
+		GridLayout.config_mode = true
 	elseif action == "OFF" then
-		config_mode = nil
+		GridLayout.config_mode = nil
 	end
 	GridLayout:UpdateTabVisibility()
 end
 
 ------------------------------------------------------------------------
 
-GridLayout.prototype = { }
+GridLayout.prototype = {}
 
 function GridLayout.prototype:Reset()
 	self:Hide()
@@ -591,7 +599,7 @@ end
 
 function GridLayout:StartMoveFrame()
 	--self:Debug("StartMoveFrame")
-	if config_mode or not self.db.profile.FrameLock then
+	if self.config_mode or not self.db.profile.FrameLock then
 		self.frame:StartMoving()
 		self.frame.isMoving = true
 	end
@@ -614,14 +622,14 @@ function GridLayout:UpdateTabVisibility()
 	local settings = self.db.profile
 
 	if not InCombatLockdown() then
-		if not settings.hideTab or (not config_mode and settings.FrameLock) then
+		if not settings.hideTab or (not self.config_mode and settings.FrameLock) then
 			self.frame:EnableMouse(false)
 		else
 			self.frame:EnableMouse(true)
 		end
 	end
 
-	if settings.hideTab or (not config_mode and settings.FrameLock) then
+	if settings.hideTab or (not self.config_mode and settings.FrameLock) then
 		self.frame.tab:Hide()
 	else
 		self.frame.tab:Show()
@@ -860,11 +868,11 @@ function GridLayout:LoadLayout(layoutName)
 
 	-- create groups as needed
 	while groupsNeeded > groupsAvailable do
-		table.insert(self.layoutGroups, self:CreateHeader(false))
+		tinsert(self.layoutGroups, self:CreateHeader(false))
 		groupsAvailable = groupsAvailable + 1
 	end
 	while petGroupsNeeded > petGroupsAvailable do
-		table.insert(self.layoutPetGroups, self:CreateHeader(true))
+		tinsert(self.layoutPetGroups, self:CreateHeader(true))
 		petGroupsAvailable = petGroupsAvailable + 1
 	end
 
@@ -982,29 +990,6 @@ function GridLayout:UpdateSize()
 	for i = 1, #self.layoutGroups do
 		local layoutGroup = self.layoutGroups[i]
 
-		-- update group size (fixes ticket #556)
---[[
-		local framesVisible = 0
-		for j = 1, layoutGroup:GetNumChildren() do
-			if select(j, layoutGroup:GetChildren()):IsShown() then
-				framesVisible = framesVisible + 1
-			end
-		end
-		local f = Grid:GetModule("GridFrame").db.profile
-		local maxColumns = layoutGroup:GetAttribute("maxColumns") or 1
-		local unitsPerColumn = layoutGroup:GetAttribute("unitsPerColumn") or 5
-		local numCols = math.min(unitsPerColumn, framesVisible)
-		local numRows = math.min(maxColumns, math.ceil(framesVisible / unitsPerColumn))
-		print("COLS:", numCols, "ROWS:", numRows, "HORIZONTAL?", horizontal)
-		if not horizontal then
-			numCols, numRows = numRows, numCols
-		end
-		self:Debug("layoutGroup:", i, "numCols:", numCols, "numRows:", numRows)
-		layoutGroup:SetWidth(numCols * (f.frameWidth + Padding) - Padding)
-		layoutGroup:SetHeight(numRows * (f.frameHeight + Padding) - Padding)
-]]
-		-- /fix
-
 		if layoutGroup:IsVisible() then
 			groupCount = groupCount + 1
 			local width, height = layoutGroup:GetWidth(), layoutGroup:GetHeight()
@@ -1052,7 +1037,6 @@ function GridLayout:UpdateColor()
 
 	self.frame:SetBackdropBorderColor(settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA)
 	self.frame:SetBackdropColor(settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA)
-	-- self.frame.texture:SetGradientAlpha("VERTICAL", .1, .1, .1, 0, .2, .2, .2, settings.BackgroundA/2 )
 end
 
 function GridLayout:SavePosition()
@@ -1101,7 +1085,7 @@ function GridLayout:SavePosition()
 	end
 
 	if x and y and s then
-		x, y = math.floor(x + 0.5), math.floor(y + 0.5)
+		x, y = floor(x + 0.5), floor(y + 0.5)
 		self.db.profile.PosX = x
 		self.db.profile.PosY = y
 		--self.db.profile.anchor = point
@@ -1130,7 +1114,7 @@ function GridLayout:RestorePosition()
 	local y = self.db.profile.PosY
 	local point = self.db.profile.anchor
 	self:Debug("Loaded position", point, x, y)
-	x, y = math.floor(x / s + 0.5), math.floor(y / s + 0.5)
+	x, y = floor(x / s + 0.5), floor(y / s + 0.5)
 	f:ClearAllPoints()
 	f:SetPoint(point, UIParent, point, x, y)
 	self:Debug("Restored position", point, x, y)
@@ -1150,7 +1134,7 @@ local function findVisibleUnitFrame(f)
 		return f
 	end
 
-	for i = 1, select('#', f:GetChildren()) do
+	for i = 1, select("#", f:GetChildren()) do
 		local child = select(i, f:GetChildren())
 		local good = findVisibleUnitFrame(child)
 
@@ -1170,7 +1154,7 @@ function GridLayout:FakeSize(width, height)
 		self:Debug("No suitable frame found.")
 		return
 	else
-		self:Debug(("Using %s"):format(f:GetName()))
+		self:Debug(format("Using %s", f:GetName()))
 	end
 
 	local frameWidth = f:GetWidth()
@@ -1186,7 +1170,7 @@ end
 SLASH_GRIDLAYOUT1 = "/gridlayout"
 
 SlashCmdList.GRIDLAYOUT = function(cmd)
-	local width, height = cmd:trim():match("^(%d+) ?(%d*)$")
+	local width, height = strmatch(strtrim(cmd), "^(%d+) ?(%d*)$")
 	width, height = tonumber(width), tonumber(height)
 
 	if not width then return end

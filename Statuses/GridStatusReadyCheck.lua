@@ -1,4 +1,13 @@
 --[[--------------------------------------------------------------------
+	Grid
+	Compact party and raid unit frames.
+	Copyright (c) 2006-2012 Kyle Smith (a.k.a. Pastamancer), A. Kinley (a.k.a. Phanx) <addons@phanx.net>
+	All rights reserved.
+	See the accompanying README and LICENSE files for more information.
+	http://www.wowinterface.com/downloads/info5747-Grid.html
+	http://www.wowace.com/addons/grid/
+	http://www.curse.com/addons/wow/grid
+------------------------------------------------------------------------
 	GridStatusReadyCheck.lua
 	GridStatus module for reporting ready check responses.
 ----------------------------------------------------------------------]]
@@ -143,12 +152,12 @@ function GridStatusReadyCheck:OnStatusDisable(status)
 	self:UnregisterMessage("Grid_PartyTransition")
 	self:UnregisterMessage("Grid_UnitJoined")
 
-	self:CancelTimer(self.ClearTimer, true)
+	self:StopTimer("ClearStatus")
 	self.core:SendStatusLostAllUnits("ready_check")
 end
 
 function GridStatusReadyCheck:PostReset()
-	self:CancelTimer(self.ClearTimer, true)
+	self:StopTimer("ClearStatus")
 	self.core:SendStatusLostAllUnits("ready_check")
 end
 
@@ -170,7 +179,7 @@ function GridStatusReadyCheck:UpdateAllUnits()
 			self:UpdateUnit(unitid)
 		end
 	else
-		self:CancelTimer(self.ClearTimer, true)
+		self:StopTimer("ClearStatus")
 		self.core:SendStatusLostAllUnits("ready_check")
 	end
 end
@@ -188,7 +197,7 @@ end
 
 function GridStatusReadyCheck:READY_CHECK()
 	if self.db.profile.ready_check.enable then
-		self:CancelTimer(self.ClearTimer, true)
+		self:StopTimer("ClearStatus")
 		self:UpdateAllUnits()
 	end
 end
@@ -211,8 +220,7 @@ function GridStatusReadyCheck:READY_CHECK_FINISHED()
 		for guid in pairs(afk) do
 			self:GainStatus(guid, "afk", settings)
 		end
-		self:CancelTimer(self.ClearTimer, true)
-		self.ClearTimer = self:ScheduleTimer("ClearStatus", settings.delay or 0)
+		self:StartTimer("ClearStatus", settings.delay or 0)
 	end
 end
 

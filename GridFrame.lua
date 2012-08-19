@@ -1,5 +1,12 @@
 --[[--------------------------------------------------------------------
-	GridFrame.lua
+	Grid
+	Compact party and raid unit frames.
+	Copyright (c) 2006-2012 Kyle Smith (a.k.a. Pastamancer), A. Kinley (a.k.a. Phanx) <addons@phanx.net>
+	All rights reserved.
+	See the accompanying README and LICENSE files for more information.
+	http://www.wowinterface.com/downloads/info5747-Grid.html
+	http://www.wowace.com/addons/grid/
+	http://www.curse.com/addons/wow/grid
 ----------------------------------------------------------------------]]
 
 local GRID, Grid = ...
@@ -14,6 +21,8 @@ if media then
 end
 
 local GridFrame = Grid:NewModule("GridFrame", "AceBucket-3.0", "AceTimer-3.0")
+
+local format, gsub, pairs, tonumber, type = format, gsub, pairs, tonumber, type
 
 ------------------------------------------------------------------------
 
@@ -995,7 +1004,7 @@ GridFrame.options = {
 			end,
 		},
 		["mouseoverhighlight"] = {
-			name = string.format(L["Enable Mouseover Highlight"]),
+			name = format(L["Enable Mouseover Highlight"]),
 			desc = L["Toggle mouseover highlight."],
 			order = 80, width = "double",
 			type = "toggle",
@@ -1008,8 +1017,8 @@ GridFrame.options = {
 			end,
 		},
 		["text2"] = {
-			name = string.format(L["Enable %s indicator"], L["Center Text 2"]),
-			desc = string.format(L["Toggle the %s indicator."], L["Center Text 2"]),
+			name = format(L["Enable %s indicator"], L["Center Text 2"]),
+			desc = format(L["Toggle the %s indicator."], L["Center Text 2"]),
 			order = 100, width = "double",
 			type = "toggle",
 			get = function()
@@ -1075,8 +1084,8 @@ GridFrame.options = {
 					end,
 				},
 				["barcolor"] = {
-					name = string.format(L["Enable %s indicator"], L["Health Bar Color"]),
-					desc = string.format(L["Toggle the %s indicator."], L["Health Bar Color"]),
+					name = format(L["Enable %s indicator"], L["Health Bar Color"]),
+					desc = format(L["Toggle the %s indicator."], L["Health Bar Color"]),
 					order = 30, width = "double",
 					type = "toggle",
 					get = function()
@@ -1157,7 +1166,7 @@ GridFrame.options = {
 					end,
 				},
 				["cooldown"] = {
-					name = string.format(L["Enable %s"], L["Icon Cooldown Frame"]),
+					name = format(L["Enable %s"], L["Icon Cooldown Frame"]),
 					desc = L["Toggle center icon's cooldown frame."],
 					order = 30, width = "double",
 					type = "toggle",
@@ -1170,7 +1179,7 @@ GridFrame.options = {
 					end,
 				},
 				["stacktext"] = {
-					name = string.format(L["Enable %s"], L["Icon Stack Text"]),
+					name = format(L["Enable %s"], L["Icon Stack Text"]),
 					desc = L["Toggle center icon's stack count text."],
 					order = 40, width = "double",
 					type = "toggle",
@@ -1425,7 +1434,7 @@ function GridFrame:UpdateFrameUnits()
 			local old_unit = frame.unit
 			local old_guid = frame.unitGUID
 			local unitid = SecureButton_GetModifiedUnit(frame)
-				  unitid = unitid and unitid:gsub("petpet", "pet") -- http://forums.wowace.com/showpost.php?p=307619&postcount=3174
+				  unitid = unitid and gsub(unitid, "petpet", "pet") -- http://forums.wowace.com/showpost.php?p=307619&postcount=3174
 			local guid = unitid and UnitGUID(unitid) or nil
 
 			if old_unit ~= unitid or old_guid ~= guid then
@@ -1618,7 +1627,7 @@ function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
 	if not menu[indicator] then
 		menu[indicator] = {
 			name = name,
-			desc = string.format(L["Options for %s indicator."], name),
+			desc = format(L["Options for %s indicator."], name),
 			order = order and (order + 1) or nil,
 			type = "group",
 			args = {

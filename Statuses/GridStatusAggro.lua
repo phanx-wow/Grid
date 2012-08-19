@@ -1,4 +1,13 @@
 --[[--------------------------------------------------------------------
+	Grid
+	Compact party and raid unit frames.
+	Copyright (c) 2006-2012 Kyle Smith (a.k.a. Pastamancer), A. Kinley (a.k.a. Phanx) <addons@phanx.net>
+	All rights reserved.
+	See the accompanying README and LICENSE files for more information.
+	http://www.wowinterface.com/downloads/info5747-Grid.html
+	http://www.wowace.com/addons/grid/
+	http://www.curse.com/addons/wow/grid
+------------------------------------------------------------------------
 	GridStatusAggro.lua
 	GridStatus module for tracking aggro/threat.
 ----------------------------------------------------------------------]]
@@ -156,28 +165,33 @@ function GridStatusAggro:UpdateAllUnits()
 	end
 end
 
-function GridStatusAggro:UpdateUnit(event, unitid)
-	if not unitid then
-		-- because sometimes the unitid can be nil... wtf?
-		return
-	end
+do
+	local UnitGUID = UnitGUID
+	local UnitThreatSituation = UnitThreatSituation
 
-	local guid = UnitGUID(unitid)
-	local status = UnitThreatSituation(unitid)
+	function GridStatusAggro:UpdateUnit(event, unitid)
+		if not unitid then
+			-- because sometimes the unitid can be nil... wtf?
+			return
+		end
 
-	local settings = self.db.profile.alert_aggro
-	local threat = settings.threat
+		local guid = UnitGUID(unitid)
+		local status = UnitThreatSituation(unitid)
 
-	if status and ((threat and (status > 0)) or (status > 1)) then
-		GridStatusAggro.core:SendStatusGained(guid, "alert_aggro",
-			settings.priority,
-			settings.range,
-			(threat and settings.threatcolors[status] or settings.color),
-			(threat and settings.threattexts[status] or settings.text),
-			nil,
-			nil,
-			settings.icon)
-	else
-		GridStatusAggro.core:SendStatusLost(guid, "alert_aggro")
+		local settings = self.db.profile.alert_aggro
+		local threat = settings.threat
+
+		if status and ((threat and (status > 0)) or (status > 1)) then
+			GridStatusAggro.core:SendStatusGained(guid, "alert_aggro",
+				settings.priority,
+				settings.range,
+				(threat and settings.threatcolors[status] or settings.color),
+				(threat and settings.threattexts[status] or settings.text),
+				nil,
+				nil,
+				settings.icon)
+		else
+			GridStatusAggro.core:SendStatusLost(guid, "alert_aggro")
+		end
 	end
 end

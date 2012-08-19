@@ -1,4 +1,13 @@
 --[[--------------------------------------------------------------------
+	Grid
+	Compact party and raid unit frames.
+	Copyright (c) 2006-2012 Kyle Smith (a.k.a. Pastamancer), A. Kinley (a.k.a. Phanx) <addons@phanx.net>
+	All rights reserved.
+	See the accompanying README and LICENSE files for more information.
+	http://www.wowinterface.com/downloads/info5747-Grid.html
+	http://www.wowace.com/addons/grid/
+	http://www.curse.com/addons/wow/grid
+------------------------------------------------------------------------
 	GridStatusRange.lua
 	GridStatus module for tracking unit range.
 	Created by neXter, modified by Pastamancer, modified by Phanx.
@@ -59,11 +68,11 @@ function GridStatusRange:PostInitialize()
 end
 
 function GridStatusRange:OnStatusEnable(status)
-	self.timer = self:ScheduleRepeatingTimer("CheckRange", self.db.profile.alert_range.frequency)
+	self:StartTimer("CheckRange", self.db.profile.alert_range.frequency, true)
 end
 
 function GridStatusRange:OnStatusDisable(status)
-	self:CancelTimer(self.timer, true)
+	self:StopTimer("CheckRange")
 	self.core:SendStatusLostAllUnits("alert_range")
 end
 
@@ -86,6 +95,8 @@ do
 		resSpell = GetSpellInfo(20707)  -- Soulstone
 	end
 end
+
+local IsSpellInRange, UnitInRange, UnitIsUnit = IsSpellInRange, UnitInRange, UnitIsUnit
 
 function GridStatusRange:UnitInRange(unit)
 	if UnitIsUnit(unit, "player") then

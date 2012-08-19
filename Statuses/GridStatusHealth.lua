@@ -1,4 +1,13 @@
 --[[--------------------------------------------------------------------
+	Grid
+	Compact party and raid unit frames.
+	Copyright (c) 2006-2012 Kyle Smith (a.k.a. Pastamancer), A. Kinley (a.k.a. Phanx) <addons@phanx.net>
+	All rights reserved.
+	See the accompanying README and LICENSE files for more information.
+	http://www.wowinterface.com/downloads/info5747-Grid.html
+	http://www.wowace.com/addons/grid/
+	http://www.curse.com/addons/wow/grid
+------------------------------------------------------------------------
 	GridStatusHealth.lua
 	GridStatus module for tracking unit health.
 ----------------------------------------------------------------------]]
@@ -193,6 +202,8 @@ function GridStatusHealth:Grid_UnitJoined(event, guid, unitid)
 		self:UpdateUnit(event, unitid)
 	end
 end
+
+local UnitGUID, UnitHealth, UnitHealthMax, UnitIsConnected, UnitIsDeadOrGhost, UnitIsFeignDeath = UnitGUID, UnitHealth, UnitHealthMax, UnitIsConnected, UnitIsDeadOrGhost, UnitIsFeignDeath
 
 function GridStatusHealth:UpdateUnit(event, unitid, ignoreRange)
 	local guid = UnitGUID(unitid)

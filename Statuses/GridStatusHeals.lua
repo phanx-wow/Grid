@@ -1,4 +1,13 @@
 --[[--------------------------------------------------------------------
+	Grid
+	Compact party and raid unit frames.
+	Copyright (c) 2006-2012 Kyle Smith (a.k.a. Pastamancer), A. Kinley (a.k.a. Phanx) <addons@phanx.net>
+	All rights reserved.
+	See the accompanying README and LICENSE files for more information.
+	http://www.wowinterface.com/downloads/info5747-Grid.html
+	http://www.wowace.com/addons/grid/
+	http://www.curse.com/addons/wow/grid
+------------------------------------------------------------------------
 	GridStatusHeals.lua
 	GridStatus module for tracking incoming healing spells.
 ----------------------------------------------------------------------]]
@@ -91,6 +100,8 @@ function GridStatusHeals:UpdateAllUnits()
 		self:UpdateUnit("UpdateAllUnits", unitid)
 	end
 end
+
+local UnitGetIncomingHeals, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDeadOrGhost = UnitGetIncomingHeals, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDeadOrGhost
 
 function GridStatusHeals:UpdateUnit(event, unitid)
 	if not unitid then return end

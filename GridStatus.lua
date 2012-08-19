@@ -1,5 +1,12 @@
 --[[--------------------------------------------------------------------
-	GridStatus.lua
+	Grid
+	Compact party and raid unit frames.
+	Copyright (c) 2006-2012 Kyle Smith (a.k.a. Pastamancer), A. Kinley (a.k.a. Phanx) <addons@phanx.net>
+	All rights reserved.
+	See the accompanying README and LICENSE files for more information.
+	http://www.wowinterface.com/downloads/info5747-Grid.html
+	http://www.wowace.com/addons/grid/
+	http://www.curse.com/addons/wow/grid
 ----------------------------------------------------------------------]]
 
 local GRID, Grid = ...
@@ -8,9 +15,13 @@ local GridRoster = Grid:GetModule("GridRoster")
 
 local GridStatus = Grid:NewModule("GridStatus")
 
+local format, next, pairs, type = format, next, pairs, type
+
 GridStatus.modulePrototype = {
 	core = GridStatus,
 	Debug = Grid.Debug,
+	StartTimer = GridStatus.StartTimer,
+	StopTimer = GridStatus.StopTimer,
 }
 
 function GridStatus.modulePrototype:OnInitialize()
@@ -70,7 +81,7 @@ function GridStatus.modulePrototype:InitializeOptions()
 	if not self.options then
 		self.options = {
 			name = self.menuName or self.moduleName,
-			desc = string.format(L["Options for %s."], self.moduleName),
+			desc = format(L["Options for %s."], self.moduleName),
 			type = "group",
 			args = {},
 		}
@@ -100,13 +111,13 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 	if not optionMenu[status] then
 		optionMenu[status] = {
 			name = desc,
-			desc = string.format(L["Status: %s"], desc),
+			desc = format(L["Status: %s"], desc),
 			order = inMainMenu and 111 or order,
 			type = "group",
 			args = {
 				["enable"] = {
 					name = L["Enable"],
-					desc = string.format(L["Enable %s"], desc),
+					desc = format(L["Enable %s"], desc),
 					order = 10,
 					width = "full",
 					type = "toggle",
@@ -116,11 +127,11 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 					set = function(_, v)
 						module.db.profile[status].enable = v
 							if v then
-								if module['OnStatusEnable'] then
+								if module.OnStatusEnable then
 									module:OnStatusEnable(status)
 								end
 							else
-								if module['OnStatusDisable'] then
+								if module.OnStatusDisable then
 									module:OnStatusDisable(status)
 								end
 							end
@@ -128,7 +139,7 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 				},
 				["color"] = {
 					name = L["Color"],
-					desc = string.format(L["Color for %s"], desc),
+					desc = format(L["Color for %s"], desc),
 					order = 20,
 					type = "color",
 					hasAlpha = true,
@@ -146,7 +157,7 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 				},
 				["priority"] = {
 					name = L["Priority"],
-					desc = string.format(L["Priority for %s"], desc),
+					desc = format(L["Priority for %s"], desc),
 					order = 30,
 					type = "range", max = 99, min = 0, step = 1,
 					get = function()
@@ -158,7 +169,7 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 				},
 				["range"] = {
 					name = L["Range filter"],
-					desc = string.format(L["Range filter for %s"], desc),
+					desc = format(L["Range filter for %s"], desc),
 					order = 40,
 					type = "toggle",
 					get = function() return module.db.profile[status].range end,
@@ -350,7 +361,7 @@ function GridStatus:FillColorOptions(options)
 		options.args.class.args[class] = {
 			type = "color",
 			name = classLocal,
-			desc = L["Color for %s."]:format(classLocal),
+			desc = format(L["Color for %s."], classLocal),
 			get = function()
 				local c = colors[class]
 				return c.r, c.g, c.b
@@ -368,7 +379,7 @@ function GridStatus:FillColorOptions(options)
 		options.args.creaturetype.args[class] = {
 			type = "color",
 			name = class,
-			desc = L["Color for %s."]:format(class),
+			desc = format(L["Color for %s."], class),
 			get = function()
 				local c = colors[class]
 				return c.r, c.g, c.b
