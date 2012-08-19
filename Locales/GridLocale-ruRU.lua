@@ -10,7 +10,7 @@
 ------------------------------------------------------------------------
 	GridLocale-ruRU.lua
 	Russian (Русский) localization.
-	Contributors: Moschkara, onyxmaster, StingerSoft
+	Contributors: Moschkara, nightik, onyxmaster, StingerSoft
 ----------------------------------------------------------------------]]
 
 if GetLocale() ~= "ruRU" then return end

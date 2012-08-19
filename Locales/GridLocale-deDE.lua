@@ -10,7 +10,7 @@
 ------------------------------------------------------------------------
 	GridLocale-deDE.lua
 	German (Deutsch) localization.
-	Contributors: Alakabaster, derwanderer, kunda, Leialyn, ole510
+	Contributors: Alakabaster, derwanderer, kaybe, kunda, Leialyn, ole510
 ----------------------------------------------------------------------]]
 
 if GetLocale() ~= "deDE" then return end

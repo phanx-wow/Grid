@@ -10,7 +10,7 @@
 ------------------------------------------------------------------------
 	GridLocale-zhTW.lua
 	Traditional Chinese (繁體中文) localization.
-	Contributors: ananhaid, lsjyzjl, Whyv, zhTW
+	Contributors: ananhaid, helium, lsjyzjl, scorpion, Whyv, zhTW
 ----------------------------------------------------------------------]]
 
 if GetLocale() ~= "zhTW" then return end

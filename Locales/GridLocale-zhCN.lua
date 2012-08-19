@@ -10,7 +10,7 @@
 ------------------------------------------------------------------------
 	GridLocale-zhCN.lua
 	Simplified Chinese (简体中文) localization.
-	Contributors: ananhaid, wowuicn, yleaf
+	Contributors: ananhaid, candykiss, flyflame, Ghostar, isler, samuelcup, wowuicn, yleaf
 ----------------------------------------------------------------------]]
 
 if GetLocale() ~= "zhCN" then return end
