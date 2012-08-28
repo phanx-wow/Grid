@@ -69,7 +69,7 @@ do
 		end
 
 		if module.db and module.db.profile and module.db.profile.debug ~= nil then
-			print("Removed old debug setting from module", moduleName, tostring(module.db.profile.debug))
+			--print("Removed old debug setting from module", moduleName, tostring(module.db.profile.debug))
 			module.db.profile.debug = nil
 		end
 
