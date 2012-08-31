@@ -256,32 +256,25 @@ function Grid.modulePrototype:ResetModules()
     end
 end
 
-function Grid.modulePrototype:StartTimer(eventName, callback, delay, repeating, arg)
+function Grid.modulePrototype:StartTimer(callback, delay, repeating, arg)
 	if not self.ScheduleTimer then
 		-- This module doesn't use AceTimer-3.0.
+		self:Debug("Attempt to call StartTimer without AceTimer-3.0!")
 		return
 	end
+	self:Debug("StartTimer", callback, delay, repeating, arg)
 
-	if not self.timerHandles then
+	local handles = self.timerHandles
+	if not handles then
 		-- First time starting a timer.
-		self.timerHandles = {}
+		handles = {}
+		self.timerHandles = handles
 	end
 
-	if self.timerHandles[eventName] then
+	local timerName = tostring(callback)
+	if handles[timerName] then
 		-- Timer is already running; stop it first.
-		self:StopTimer(eventName)
-	end
-
-	if type(callback) == "function" then
-		-- StartTimer("DoSomething", self.DoSomething, 5, self)
-		callback = function() return callback(self) end
-		if arg == self then
-			-- Not needed with AceTimer-3.0
-			arg = nil
-		end
-	elseif type(callback) == "number" then
-		-- StartTimer("DoSomething", 5) eg. real AceTimer usage
-		callback, delay, repeating, arg = eventName, callback, delay, repeating
+		self:StopTimer(timerName)
 	end
 
 	local handle
@@ -289,18 +282,26 @@ function Grid.modulePrototype:StartTimer(eventName, callback, delay, repeating, 
 		handle = self:ScheduleRepeatingTimer(callback, delay, arg)
 	else
 		handle = self:ScheduleTimer(callback, delay, arg)
+		-- KNOWN ISSUE: Unless the module cancels the timer itself in
+		-- the callback function, the timer will remain listed in the
+		-- module.timerHandles table. Should not cause any problems,
+		-- though, since StopTimer calls CancelTimer silently.
 	end
-	self.timerHandles[eventName] = handle
+	handles[timerName] = handle
 	return handle
 end
 
-function Grid.modulePrototype:StopTimer(eventName)
-	if not self.timerHandles or not self.timerHandles[eventName] then
-		-- This module doesn't use AceTimer, or hasn't started any timers yet, or this timer isn't running.
+function Grid.modulePrototype:StopTimer(callback)
+	local handles, timerName = self.timerHandles, tostring(callback)
+	if not handles or not handles[timerName] then
+		-- This module doesn't use AceTimer, or hasn't started any timers
+		-- yet, or the specified timer is not running.
+		self:Debug("Attempt to call StopTimer without AceTimer-3.0!")
 		return
 	end
-	self:CancelTimer(self.timerHandles[eventName])
-	self.timerHandles[eventName] = nil
+	self:Debug("StopTimer", timerName)
+	self:CancelTimer(handles[timerName], true)
+	handles[timerName] = nil
 end
 
 Grid:SetDefaultModulePrototype(Grid.modulePrototype)
