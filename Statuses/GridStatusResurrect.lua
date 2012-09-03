@@ -209,7 +209,7 @@ function GridStatusResurrect:COMBAT_LOG_EVENT_UNFILTERED(event, _, combatEvent, 
 
 	if pending[destGUID] then
 		self:Debug(GridRoster:GetUnitidByGUID(destGUID), destName, "received resurrection. Waiting for acceptance or expiry.")
-		pending[destGUID] = GetTime() + 120
+		pending[destGUID] = GetTime() + (MoP and 60 or 120)
 	end
 end
 
