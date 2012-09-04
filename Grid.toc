@@ -50,6 +50,7 @@ Libs\UTF8\utf8.lua
 Locales\GridLocale-deDE.lua
 Locales\GridLocale-esES.lua
 Locales\GridLocale-frFR.lua
+Locales\GridLocale-itIT.lua
 Locales\GridLocale-ptBR.lua
 Locales\GridLocale-ruRU.lua
 Locales\GridLocale-koKR.lua
