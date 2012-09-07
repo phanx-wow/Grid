@@ -68,7 +68,8 @@ function GridStatusRange:PostInitialize()
 end
 
 function GridStatusRange:OnStatusEnable(status)
-	self:StartTimer("CheckRange", self.db.profile.alert_range.frequency, true)
+	self:RegisterMessage("Grid_PartyTransition", "PartyTransition")
+	self:PartyTransition(GridRoster:GetPartyState())
 end
 
 function GridStatusRange:OnStatusDisable(status)
@@ -98,7 +99,7 @@ end
 
 local IsSpellInRange, UnitInRange, UnitIsUnit = IsSpellInRange, UnitInRange, UnitIsUnit
 
-function GridStatusRange:UnitInRange(unit)
+local function GroupRangeCheck(self, unit)
 	if UnitIsUnit(unit, "player") then
 		return true
 	elseif resSpell and UnitIsDead(unit) and not UnitIsDead("player") then
@@ -107,6 +108,14 @@ function GridStatusRange:UnitInRange(unit)
 		return UnitInRange(unit)
 	end
 end
+
+local function SoloRangeCheck(self, unit)
+	-- This is a workaround for the bug in WoW 5.0.4 in which UnitInRange
+	-- returns *false* for player/pet while solo.
+	return true
+end
+
+GridStatusRange.UnitInRange = GroupRangeCheck
 
 function GridStatusRange:CheckRange()
 	local settings = self.db.profile.alert_range
@@ -120,5 +129,17 @@ function GridStatusRange:CheckRange()
 				settings.color,
 				settings.text)
 		end
+	end
+end
+
+function GridStatusRange:PartyTransition(message, state, oldstate)
+	self:Debug("PartyTransition", state)
+	if state == "solo" then
+		self:StopTimer("CheckRange")
+		self.UnitInRange = SoloRangeCheck
+		self.core:SendStatusLostAllUnits("alert_range")
+	else
+		self:StartTimer("CheckRange", self.db.profile.alert_range.frequency, true)
+		self.UnitInRange = GroupRangeCheck
 	end
 end
