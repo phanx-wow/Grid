@@ -16,7 +16,6 @@ local GridStatus
 
 local media = LibStub("LibSharedMedia-3.0", true)
 if media then
-	media:Register("statusbar", "Blizzard Raid Bar", "Interface\\RaidFrame\\Raid-Bar-Hp-Fill")
 	media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32")
 end
 
