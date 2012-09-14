@@ -1534,9 +1534,10 @@ function GridFrame:StatusForIndicator(unitid, guid, indicator)
 
 			-- only check range for valid statuses
 			if valid then
-				local inRange = not status.range or self:UnitInRange(unitid)
-
-				if inRange and ((status.priority or 99) > topPriority) then
+		-- #DELETE
+		--		local inRange = not status.range or self:UnitInRange(unitid)
+		--		if inRange and ((status.priority or 99) > topPriority) then
+				if (status.priority or 99) > topPriority then
 					topStatus = status
 					topPriority = topStatus.priority
 				end

@@ -115,7 +115,7 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 			order = inMainMenu and 111 or order,
 			type = "group",
 			args = {
-				["enable"] = {
+				enable = {
 					name = L["Enable"],
 					desc = format(L["Enable %s"], desc),
 					order = 10,
@@ -137,25 +137,41 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 							end
 					end,
 				},
-				["color"] = {
+				color = {
 					name = L["Color"],
 					desc = format(L["Color for %s"], desc),
 					order = 20,
 					type = "color",
-					hasAlpha = true,
 					get = function()
 						local color = module.db.profile[status].color
-						return color.r, color.g, color.b, color.a
+						return color.r, color.g, color.b
 					end,
-					set = function(_, r, g, b, a)
+					set = function(_, r, g, b)
 						local color = module.db.profile[status].color
 						color.r = r
 						color.g = g
 						color.b = b
+					end,
+				},
+				opacity = {
+					name = L["Opacity"],
+					desc = format(L["Opacity for %s"], desc),
+					order = 25,
+					type = "range",
+					min = 0.05,
+					max = 1,
+					step = 0.05,
+					isPercent = true,
+					get = function()
+						local color = module.db.profile[status].color
+						return color.a
+					end,
+					set = function(_, a)
+						local color = module.db.profile[status].color
 						color.a = a or 1
 					end,
 				},
-				["priority"] = {
+				priority = {
 					name = L["Priority"],
 					desc = format(L["Priority for %s"], desc),
 					order = 30,
@@ -167,7 +183,8 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 						module.db.profile[status].priority = v
 					end,
 				},
-				["range"] = {
+			--[[
+				range = {
 					name = L["Range filter"],
 					desc = format(L["Range filter for %s"], desc),
 					order = 40,
@@ -177,6 +194,7 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 						module.db.profile[status].range = not module.db.profile[status].range
 					end,
 				},
+			]]
 			},
 		}
 
