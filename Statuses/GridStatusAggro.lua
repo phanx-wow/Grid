@@ -170,7 +170,7 @@ do
 	local UnitThreatSituation = UnitThreatSituation
 
 	function GridStatusAggro:UpdateUnit(event, unitid)
-		local guid = unitid UnitGUID(unitid)
+		local guid = unitid and UnitGUID(unitid)
 		if not guid then return end -- because sometimes the unitid can be nil or invald... wtf?
 
 		local status = UnitThreatSituation(unitid)

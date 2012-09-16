@@ -466,7 +466,7 @@ function GridStatusAuras:RegisterStatuses()
 			self:RegisterStatus(status, desc, self:OptionsForStatus(status, isBuff), false, order)
 		end
 	end
---	self.db:RegisterDefaults({ profile = self.defaultDB or {} })
+	self.db:RegisterDefaults({ profile = self.defaultDB or {} })
 end
 
 function GridStatusAuras:UnregisterStatuses()

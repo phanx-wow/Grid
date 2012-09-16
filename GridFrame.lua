@@ -175,9 +175,8 @@ function GridFrame:InitializeFrame(frame)
 	frame.Icon:SetTexture(1,1,1,0)
 
 	-- create icon text
-	frame.IconText = frame.IconBG:CreateFontString(nil, "OVERLAY")
+	frame.IconText = frame.IconBG:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
 	frame.IconText:SetAllPoints(frame.IconBG)
-	frame.IconText:SetFontObject(GameFontHighlightSmall)
 	frame.IconText:SetFont(font, GridFrame.db.profile.fontSize)
 	frame.IconText:SetJustifyH("CENTER")
 	frame.IconText:SetJustifyV("CENTER")
@@ -192,9 +191,8 @@ function GridFrame:InitializeFrame(frame)
 	end)
 
 	-- create icon stack text
-	frame.IconStackText = frame.IconBG:CreateFontString(nil, "OVERLAY")
+	frame.IconStackText = frame.IconBG:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
 	frame.IconStackText:SetPoint("BOTTOMRIGHT", frame.IconBG, 2, -2)
-	frame.IconStackText:SetFontObject(GameFontHighlightSmall)
 	frame.IconStackText:SetFont(font, GridFrame.db.profile.fontSize, "OUTLINE")
 	frame.IconStackText:SetJustifyH("RIGHT")
 	frame.IconStackText:SetJustifyV("BOTTOM")
