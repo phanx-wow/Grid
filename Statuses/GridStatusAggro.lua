@@ -170,12 +170,9 @@ do
 	local UnitThreatSituation = UnitThreatSituation
 
 	function GridStatusAggro:UpdateUnit(event, unitid)
-		if not unitid then
-			-- because sometimes the unitid can be nil... wtf?
-			return
-		end
+		local guid = unitid UnitGUID(unitid)
+		if not guid then return end -- because sometimes the unitid can be nil or invald... wtf?
 
-		local guid = UnitGUID(unitid)
 		local status = UnitThreatSituation(unitid)
 
 		local settings = self.db.profile.alert_aggro
