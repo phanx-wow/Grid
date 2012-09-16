@@ -60,7 +60,7 @@ function GridFrame:InitializeFrame(frame)
 		frame[k] = v
 	end
 
-	frame:RegisterForClicks("LeftButtonUp", "RightButtonUp", "MiddleButtonUp", "Button4Up", "Button5Up")
+	frame:RegisterForClicks("AnyUp")
 
 	-- set our left-click action
 	if frame:CanChangeAttribute() then

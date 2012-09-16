@@ -18,6 +18,7 @@ externals:
     Libs/CallbackHandler-1.0: svn://svn.wowace.com/wow/callbackhandler/mainline/tags/1.0.6/CallbackHandler-1.0
     Libs/LibDBIcon-1.0: svn://svn.wowace.com/wow/libdbicon-1-0/mainline/trunk/LibDBIcon-1.0
     Libs/LibDualSpec-1.0: git://git.wowace.com/wow/libdualspec-1-0/mainline.git
+    Libs/LibResInfo-1.0: svn://svn.wowinterface.com/LibResInfo-976/trunk/LibResInfo-1.0
     Libs/LibStub: svn://svn.wowace.com/wow/libstub/mainline/tags/1.0
     Libs/LibSharedMedia-3.0: svn://svn.wowace.com/wow/libsharedmedia-3-0/mainline/trunk/LibSharedMedia-3.0
     Libs/UTF8: svn://svn.wowace.com/wow/utf8/mainline/trunk
