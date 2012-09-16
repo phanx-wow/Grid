@@ -431,6 +431,27 @@ end
 function GridStatusAuras:RegisterStatuses()
 	for status, settings in pairs(self.db.profile) do
 		if type(settings) == "table" and settings.desc then
+			if settings.buff == nil and settings.debuff == nil then
+				-- upgrade old thing
+				self:Debug("Upgrading old aura:", settings.desc)
+				if strmatch(status, "^buff_") then
+					local buffname = strmatch(settings.desc, gsub(L["Buff: %s"], "%%s", "(.+)"))
+					settings.buff = buffname
+					if settings.text == buffname then
+						settings.text = self:TextForSpell(buffname)
+					end
+					self:Debug("Upgraded buff:", buffname)
+
+				elseif strmatch(status, "^debuff_") and not settings.order == 25 then
+					local debuffname = strmatch(settings.desc, gsub(L["Debuff: %s"], "%%s", "(.+)"))
+					settings.debuff = debuffname
+					if settings.text == debuffname then
+						settings.text = self:TextForSpell(debuffname)
+					end
+					self:Debug("Upgraded debuff:", debuffname)
+				end
+			end
+
 			local name = settings.text
 			local desc = settings.desc or name
 			local isBuff = not not settings.buff
@@ -438,14 +459,14 @@ function GridStatusAuras:RegisterStatuses()
 
 			self:Debug("registering", status, desc)
 			if not self.defaultDB[status] then
-				self.defaultDB[status] = { }
+				self.defaultDB[status] = {}
 				self:CopyDefaults(self.defaultDB[status], statusDefaultDB)
 			end
 			self:CopyDefaults(settings, self.defaultDB[status])
 			self:RegisterStatus(status, desc, self:OptionsForStatus(status, isBuff), false, order)
 		end
 	end
-	self.db:RegisterDefaults({ profile = self.defaultDB or { } })
+--	self.db:RegisterDefaults({ profile = self.defaultDB or {} })
 end
 
 function GridStatusAuras:UnregisterStatuses()
