@@ -86,7 +86,6 @@ end
 local statusDefaultDB = {
 	enable = true,
 	priority = 90,
-	range = false,
 	duration = false,
 	color = { r = .5, g = .5, b = .5, a = 1 },
 	statusText = "name",
@@ -1047,6 +1046,7 @@ function GridStatusAuras:UnitGainedDurationStatus(status, guid, class, name, ran
 		self.durationAuras[status][guid] = {
 			class = class,
 			rank = rank,
+			icon = icon,
 			count = count,
 			debuffType = debuffType,
 			duration = duration,
@@ -1164,10 +1164,10 @@ function GridStatusAuras:RefreshActiveDurations()
 
 	self:Debug("RefreshActiveDurations", now)
 
-	for status, auras in pairs(self.durationAuras) do
+	for status, guids in pairs(self.durationAuras) do
 		local settings = self.db.profile[status]
 		if settings and settings.enable and not settings.missing then -- and settings[class] ~= false then -- ##DELETE
-			for guid, aura in pairs(auras) do
+			for guid, aura in pairs(guids) do
 				local count, duration, expirationTime, icon = aura.count, aura.duration, aura.expirationTime, aura.icon
 				local start = expirationTime and (expirationTime - duration)
 				local timeLeft = expirationTime and expirationTime > now and (expirationTime - now) or 0
@@ -1175,7 +1175,7 @@ function GridStatusAuras:RefreshActiveDurations()
 				self.core:SendStatusGained(guid,
 					status,
 					settings.priority,
-					(settings.range and 40),
+					nil,
 					color,
 					text,
 					count,
@@ -1211,7 +1211,7 @@ function GridStatusAuras:UnitGainedBuff(guid, class, name, rank, icon, count, de
 		self.core:SendStatusGained(guid,
 			status,
 			settings.priority,
-			(settings.range and 40),
+			nil,
 			color,
 			text,
 			count,
@@ -1239,7 +1239,7 @@ function GridStatusAuras:UnitLostBuff(guid, class, name)
 		self.core:SendStatusGained(guid,
 			status,
 			settings.priority,
-			(settings.range and 40),
+			nil,
 			color,
 			text,
 			nil,
@@ -1269,7 +1269,7 @@ function GridStatusAuras:UnitGainedPlayerBuff(guid, class, name, rank, icon, cou
 		self.core:SendStatusGained(guid,
 			status,
 			settings.priority,
-			(settings.range and 40),
+			nil,
 			color,
 			text,
 			count,
@@ -1297,7 +1297,7 @@ function GridStatusAuras:UnitLostPlayerBuff(guid, class, name)
 		self.core:SendStatusGained(guid,
 			status,
 			settings.priority,
-			(settings.range and 40),
+			nil,
 			color,
 			text,
 			nil,
@@ -1325,7 +1325,7 @@ function GridStatusAuras:UnitGainedDebuff(guid, class, name, rank, icon, count, 
 		self.core:SendStatusGained(guid,
 			status,
 			settings.priority,
-			(settings.range and 40),
+			nil,
 			color,
 			text,
 			count,
@@ -1367,7 +1367,7 @@ function GridStatusAuras:UnitGainedDebuffType(guid, class, name, rank, icon, cou
 		self.core:SendStatusGained(guid,
 			status,
 			settings.priority,
-			(settings.range and 40),
+			nil,
 			color,
 			text,
 			count,
