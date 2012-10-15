@@ -675,7 +675,7 @@ end
 function GridLayout:CreateFrames()
 	--self:Debug("CreateFrames")
 	-- create main frame to hold all our gui elements
-	local f = CreateFrame("Frame", "GridLayoutFrame", UIParent)
+	local f = CreateFrame("Frame", "GridLayoutFrame", UIParent, "SecureHandlerStateTemplate")
 	f:SetMovable(true)
 	f:SetClampedToScreen(self.db.profile.clamp)
 	f:SetPoint("CENTER", UIParent, "CENTER")
@@ -683,6 +683,9 @@ function GridLayout:CreateFrames()
 	f:SetScript("OnMouseUp", GridLayout_OnMouseUp)
 	f:SetScript("OnHide", GridLayout_OnMouseUp)
 	f:SetFrameStrata("MEDIUM")
+
+	-- hide in pet battles
+	RegisterStateDriver(f, "visibility", "[petbattle]hide;show")
 
 	-- create background
 	f:SetFrameLevel(0)
