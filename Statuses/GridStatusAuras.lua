@@ -938,8 +938,11 @@ function GridStatusAuras:UpdateDispellable()
 	elseif class == "PRIEST" then
 		local spec = GetSpecialization()
 		local level = UnitLevel("player")
-		can_dispel.Disease = (spec == 1 or spec == 2) and level >= 22
-		can_dispel.Magic = IsPlayerSpell(32375) or (spec == 2 and level >= 22)
+		local mass = IsPlayerSpell(32375)
+		can_dispel.Curse = mass
+		can_dispel.Disease = mass or ((spec == 1 or spec == 2) and level >= 22)
+		can_dispel.Magic = mass or (spec == 2 and level >= 22)
+		can_dispel.Poison = mass
 
 	elseif class == "SHAMAN" then
 		can_dispel.Curse = IsSpellKnown(51886)
