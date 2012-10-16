@@ -530,6 +530,9 @@ function GridLayout:PostEnable()
 	self:RestorePosition()
 	self:Scale()
 
+	self:RegisterEvent("PET_BATTLE_OPENING_START", "UpdateVisibility")
+	self:RegisterEvent("PET_BATTLE_CLOSE", "UpdateVisibility")
+
 	self:RegisterMessage("Grid_ReloadLayout", "PartyTypeChanged")
 	self:RegisterMessage("Grid_PartyTransition", "PartyTypeChanged")
 
@@ -675,7 +678,7 @@ end
 function GridLayout:CreateFrames()
 	--self:Debug("CreateFrames")
 	-- create main frame to hold all our gui elements
-	local f = CreateFrame("Frame", "GridLayoutFrame", UIParent, "SecureHandlerStateTemplate")
+	local f = CreateFrame("Frame", "GridLayoutFrame", UIParent)
 	f:SetMovable(true)
 	f:SetClampedToScreen(self.db.profile.clamp)
 	f:SetPoint("CENTER", UIParent, "CENTER")
@@ -683,9 +686,6 @@ function GridLayout:CreateFrames()
 	f:SetScript("OnMouseUp", GridLayout_OnMouseUp)
 	f:SetScript("OnHide", GridLayout_OnMouseUp)
 	f:SetFrameStrata("MEDIUM")
-
-	-- hide in pet battles
-	RegisterStateDriver(f, "visibility", "[petbattle]hide;show")
 
 	-- create background
 	f:SetFrameLevel(0)
@@ -972,8 +972,7 @@ end
 
 function GridLayout:UpdateVisibility()
 	--self:Debug("UpdateVisibility")
-	local party_type = GridRoster:GetPartyState()
-	if self.db.profile.layouts[party_type] == L["None"] then
+	if C_PetBattles.IsInBattle() or self.db.profile.layouts[(GridRoster:GetPartyState())] == L["None"] then
 		self.frame:Hide()
 	else
 		self.frame:Show()
