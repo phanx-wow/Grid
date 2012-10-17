@@ -6,6 +6,8 @@
 ## Notes: A compact grid of party/raid unit frames.
 ## Notes-esES: Una cuadrícula compacta de marcos de unidades para tu grupo o banda.
 ## Notes-esMX: Una cuadrícula compacta de marcos de unidades para su grupo o banda.
+## Notes-frFR: Une grille compacte de fenêtres des unités de votre groupe ou raid.
+## Notes-itIT: Una griglia compatta di riquadri delle unità nel tuo gruppo o incursione.
 ## Notes-ptBR: Uma grade compacta de quadros das unidades do grupo ou banda.
 ## Notes-zhCN: 紧凑方格队伍/团队框架。
 ## Notes-zhTW: 緊湊方格隊伍/團隊框架。
