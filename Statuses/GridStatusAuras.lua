@@ -44,6 +44,7 @@ local spell_names = {
 	["Forbearance"] = GetSpellInfo(25771),
 	["Sacred Shield"] = GetSpellInfo(20925),
 -- Priest
+	["Grace"] = GetSpellInfo(77613),
 	["Power Word: Shield"] = GetSpellInfo(17),
 	["Prayer of Mending"] = GetSpellInfo(33076),
 	["Renew"] = GetSpellInfo(139),
@@ -254,6 +255,15 @@ GridStatusAuras.defaultDB = {
 	},
 
 	-- Priest
+	[GridStatusAuras:StatusForSpell(spell_names["Grace"], true)] = {
+		buff = spell_names["Grace"],
+		desc = format(L["Buff: %s"], spell_names["Grace"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Grace"]),
+		color = { r = 0.2, g = 0.8, b = 1, a = 1 },
+		countLow = 1,
+		countHigh = 3,
+		mine = true,
+	},
 	[GridStatusAuras:StatusForSpell(spell_names["Power Word: Shield"], true)] = {
 		desc = format(L["Buff: %s"], spell_names["Power Word: Shield"]),
 		buff = spell_names["Power Word: Shield"],
@@ -429,40 +439,45 @@ end
 
 function GridStatusAuras:RegisterStatuses()
 	for status, settings in pairs(self.db.profile) do
-		if type(settings) == "table" and settings.desc then
-			if settings.buff == nil and settings.debuff == nil then
-				-- upgrade old thing
-				self:Debug("Upgrading old aura:", settings.desc)
-				if strmatch(status, "^buff_") then
-					local buffname = strmatch(settings.desc, gsub(L["Buff: %s"], "%%s", "(.+)"))
-					settings.buff = buffname
-					if settings.text == buffname then
-						settings.text = self:TextForSpell(buffname)
-					end
-					self:Debug("Upgraded buff:", buffname)
+		if strmatch(status, "buff_") and type(settings) == "table" then
+			if settings.desc then
+				if settings.buff == nil and settings.debuff == nil then
+					-- upgrade old thing
+					self:Debug("Upgrading old aura:", settings.desc)
+					if strmatch(status, "^buff_") then
+						local buffname = strmatch(settings.desc, gsub(L["Buff: %s"], "%%s", "(.+)"))
+						settings.buff = buffname
+						if settings.text == buffname then
+							settings.text = self:TextForSpell(buffname)
+						end
+						self:Debug("Upgraded buff:", buffname)
 
-				elseif strmatch(status, "^debuff_") and not settings.order == 25 then
-					local debuffname = strmatch(settings.desc, gsub(L["Debuff: %s"], "%%s", "(.+)"))
-					settings.debuff = debuffname
-					if settings.text == debuffname then
-						settings.text = self:TextForSpell(debuffname)
+					elseif strmatch(status, "^debuff_") and not settings.order == 25 then
+						local debuffname = strmatch(settings.desc, gsub(L["Debuff: %s"], "%%s", "(.+)"))
+						settings.debuff = debuffname
+						if settings.text == debuffname then
+							settings.text = self:TextForSpell(debuffname)
+						end
+						self:Debug("Upgraded debuff:", debuffname)
 					end
-					self:Debug("Upgraded debuff:", debuffname)
 				end
-			end
 
-			local name = settings.text
-			local desc = settings.desc or name
-			local isBuff = not not settings.buff
-			local order = settings.order or (isBuff and 15 or 35)
+				local name = settings.text
+				local desc = settings.desc or name
+				local isBuff = not not settings.buff
+				local order = settings.order or (isBuff and 15 or 35)
 
-			self:Debug("registering", status, desc)
-			if not self.defaultDB[status] then
-				self.defaultDB[status] = {}
-				self:CopyDefaults(self.defaultDB[status], statusDefaultDB)
+				self:Debug("registering", status, desc)
+				if not self.defaultDB[status] then
+					self.defaultDB[status] = {}
+					self:CopyDefaults(self.defaultDB[status], statusDefaultDB)
+				end
+				self:CopyDefaults(settings, self.defaultDB[status])
+				self:RegisterStatus(status, desc, self:OptionsForStatus(status, isBuff), false, order)
+			else
+				self:Debug("Removing invalid status:", status)
+				self.db.profile[status] = nil
 			end
-			self:CopyDefaults(settings, self.defaultDB[status])
-			self:RegisterStatus(status, desc, self:OptionsForStatus(status, isBuff), false, order)
 		end
 	end
 	self.db:RegisterDefaults({ profile = self.defaultDB or {} })
@@ -848,12 +863,15 @@ function GridStatusAuras:CreateRemoveOptions()
 end
 
 function GridStatusAuras:AddAura(name, isBuff)
+	if strlen(name) < 1 then
+		return self:Debug("AddAura failed, no name entered!")
+	end
+
 	local status = GridStatusAuras:StatusForSpell(name, isBuff)
 
 	-- status already exists
 	if self.db.profile[status] then
-		self:Debug("AddAura failed, status exists!", name, status)
-		return
+		return self:Debug("AddAura failed, status exists!", name, status)
 	end
 
 	local desc = isBuff and format(L["Buff: %s"], name) or format(L["Debuff: %s"], name)
