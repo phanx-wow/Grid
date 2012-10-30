@@ -1383,7 +1383,7 @@ end
 function GridFrame:WithAllFrames(func, ...)
 	for _, frame in pairs(self.registeredFrames) do
 		if type(frame[func]) == "function" then
-			frame[func](func, ...)
+			frame[func](frame, ...)
 		end
 	end
 end
