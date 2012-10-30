@@ -60,10 +60,10 @@ local player_buff_names = {}
 local debuff_names = {}
 
 local debuff_types = {
-	["Curse"] = "debuff_curse",
-	["Disease"] = "debuff_disease",
-	["Magic"] = "debuff_magic",
-	["Poison"] = "debuff_poison",
+	["Curse"] = "dispel_curse",
+	["Disease"] = "dispel_disease",
+	["Magic"] = "dispel_magic",
+	["Poison"] = "dispel_poison",
 }
 
 local can_dispel = {}
@@ -124,7 +124,7 @@ GridStatusAuras.defaultDB = {
 	advancedOptions = false,
 
 	-- Debuff Types
-	["debuff_curse"] = {
+	["dispel_curse"] = {
 		desc = format(L["Debuff type: %s"], L["Curse"]),
 		text = DEBUFF_SYMBOL_CURSE,
 		color = { r = .6, g =  0, b =  1, a = 1 },
@@ -134,7 +134,7 @@ GridStatusAuras.defaultDB = {
 		dispellable = true,
 		order = 25,
 	},
-	["debuff_disease"] = {
+	["dispel_disease"] = {
 		desc = format(L["Debuff type: %s"], L["Disease"]),
 		text = DEBUFF_SYMBOL_DISEASE,
 		color = { r = .6, g = .4, b =  0, a = 1 },
@@ -144,7 +144,7 @@ GridStatusAuras.defaultDB = {
 		dispellable = true,
 		order = 25,
 	},
-	["debuff_magic"] = {
+	["dispel_magic"] = {
 		desc = format(L["Debuff type: %s"], L["Magic"]),
 		text = DEBUFF_SYMBOL_MAGIC,
 		color = { r = .2, g = .6, b =  1, a = 1 },
@@ -154,7 +154,7 @@ GridStatusAuras.defaultDB = {
 		dispellable = true,
 		order = 25,
 	},
-	["debuff_poison"] = {
+	["dispel_poison"] = {
 		desc = format(L["Debuff type: %s"], L["Poison"]),
 		text = DEBUFF_SYMBOL_POISON,
 		color = { r =  0, g = .6, b =  0, a = 1 },
@@ -437,46 +437,79 @@ function GridStatusAuras:OnStatusDisable(status)
 	end
 end
 
-function GridStatusAuras:RegisterStatuses()
-	for status, settings in pairs(self.db.profile) do
-		if strmatch(status, "buff_") and type(settings) == "table" then
-			if settings.desc then
-				if settings.buff == nil and settings.debuff == nil then
-					-- upgrade old thing
-					self:Debug("Upgrading old aura:", settings.desc)
-					if strmatch(status, "^buff_") then
-						local buffname = strmatch(settings.desc, gsub(L["Buff: %s"], "%%s", "(.+)"))
-						settings.buff = buffname
-						if settings.text == buffname then
-							settings.text = self:TextForSpell(buffname)
-						end
-						self:Debug("Upgraded buff:", buffname)
+local upgrade121025 = {
+	debuff_curse   = "dispel_curse",
+	debuff_disease = "dispel_disease",
+	debuff_magic   = "dispel_magic",
+	debuff_poison  = "dispel_poison",
+}
 
-					elseif strmatch(status, "^debuff_") and not settings.order == 25 then
-						local debuffname = strmatch(settings.desc, gsub(L["Debuff: %s"], "%%s", "(.+)"))
-						settings.debuff = debuffname
-						if settings.text == debuffname then
-							settings.text = self:TextForSpell(debuffname)
-						end
-						self:Debug("Upgraded debuff:", debuffname)
+function GridStatusAuras:RegisterStatuses()
+	local profile = self.db.profile
+	for old, new in pairs(upgrade121025) do
+		--self:Debug("Looking for old dispel:", old, profile[old] ~= nil)
+		if profile[old] then
+			profile[new] = profile[old]
+			profile[old] = nil
+			self:Debug("Copied to new dispel:", new)
+			for indicator, statuses in pairs(Grid:GetModule("GridFrame").db.profile.statusmap) do
+				if type(statuses) == "table" then
+					if statuses[old] ~= nil then
+						statuses[new] = statuses[old]
+						statuses[old] = nil
+						self:Debug("Updated status name for indicator:", indicator)
+					elseif statuses[new] then
+						statuses[new] = nil
+						self:Debug("Removed status on default indicator:", indicator)
 					end
 				end
-
-				local name = settings.text
-				local desc = settings.desc or name
-				local isBuff = not not settings.buff
-				local order = settings.order or (isBuff and 15 or 35)
-
-				self:Debug("registering", status, desc)
-				if not self.defaultDB[status] then
-					self.defaultDB[status] = {}
-					self:CopyDefaults(self.defaultDB[status], statusDefaultDB)
+			end
+		end
+	end
+	for status, settings in pairs(profile) do
+		if type(settings) == "table" then
+			if settings.desc then
+				--self:Debug("Registering status:", status)
+				if settings.buff == nil and settings.debuff == nil and not self.defaultDB[status] then
+					self:Debug("Upgrading old aura:", settings.desc)
+					local aura = strmatch(settings.desc, gsub(L["Buff: %s"], "%%s", "(.+)"))
+					if aura then
+						settings.aura = aura
+						if settings.text == aura then
+							settings.text = self:TextForSpell(aura)
+						end
+						--self:Debug("Upgraded buff:", aura)
+					else
+						aura = strmatch(settings.desc, gsub(L["Debuff: %s"], "%%s", "(.+)"))
+						if aura then
+							settings.debuff = aura
+							if settings.text == aura then
+								settings.text = self:TextForSpell(aura)
+							end
+							--self:Debug("Upgraded debuff:", aura)
+						else
+							self:Debug("Upgrade failed!")
+						end
+					end
 				end
-				self:CopyDefaults(settings, self.defaultDB[status])
-				self:RegisterStatus(status, desc, self:OptionsForStatus(status, isBuff), false, order)
+				if settings.buff or settings.debuff or self.defaultDB[status] then
+					local name = settings.text
+					local desc = settings.desc or name
+					local isBuff = not not settings.buff
+					local order = settings.order or (isBuff and 15 or 35)
+
+					self:Debug("Registering", status, desc)
+					if not self.defaultDB[status] then
+						self.defaultDB[status] = {}
+						self:CopyDefaults(self.defaultDB[status], statusDefaultDB)
+					end
+					self:CopyDefaults(settings, self.defaultDB[status])
+					self:RegisterStatus(status, desc, self:OptionsForStatus(status, isBuff), false, order)
+				end
 			else
-				self:Debug("Removing invalid status:", status)
-				self.db.profile[status] = nil
+				-- Can't do this because it screws people who play in multiple languages.
+				--self:Debug("Removing invalid status:", status)
+				--profile[status] = nil
 			end
 		end
 	end

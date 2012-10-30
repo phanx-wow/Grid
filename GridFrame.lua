@@ -855,10 +855,10 @@ GridFrame.defaultDB = {
 		["corner2"] = {
 		},
 		["corner3"] = {
-			debuff_curse = true,
-			debuff_disease = true,
-			debuff_magic = true,
-			debuff_poison = true,
+			dispel_curse = true,
+			dispel_disease = true,
+			dispel_magic = true,
+			dispel_poison = true,
 		},
 		["corner4"] = {
 			alert_aggro = true,
@@ -884,10 +884,10 @@ GridFrame.defaultDB = {
 			alert_heals = true,
 		},
 		["icon"] = {
-			debuff_curse = true,
-			debuff_disease = true,
-			debuff_magic = true,
-			debuff_poison = true,
+			dispel_curse = true,
+			dispel_disease = true,
+			dispel_magic = true,
+			dispel_poison = true,
 			ready_check = true,
 		}
 	},
@@ -1400,9 +1400,7 @@ function GridFrame:ResizeAllFrames()
 end
 
 function GridFrame:UpdateAllFrames()
-	for _, frame in pairs(self.registeredFrames) do
-		GridFrame:UpdateIndicators(frame)
-	end
+	self:WithAllFrames("UpdateIndicators")
 end
 
 function GridFrame:InvertBarColor()
@@ -1539,7 +1537,6 @@ end
 local GridStatusRange
 function GridFrame:UnitInRange(unit)
 	if not unit or not UnitExists(unit) then return false end
-	--print("GridFrame:UnitInRange", unit)
 
 	if UnitIsUnit(unit, "player") then
 		return true
