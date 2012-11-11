@@ -60,7 +60,13 @@ function GridLayout.prototype:Reset()
 	self:SetAttribute("xOffset", nil)
 	self:SetAttribute("yOffset", nil)
 
-	self:UnregisterEvent("UNIT_NAME_UPDATE")
+	-- Ticket #631
+	-- This line shouldn't be needed anymore since Blizzard protected
+	-- the function to change character titles and addons can't switch
+	-- them constantly anymore, and this line seems to be causing
+	-- problems with group updates in MoP, especially in battlegrounds.
+	-- Thanks to warbaby for finding the cause of the problem!
+	-- self:UnregisterEvent("UNIT_NAME_UPDATE")
 end
 
 function GridLayout.prototype:SetAttributeByProxy(name, value)
@@ -677,8 +683,14 @@ end
 
 function GridLayout:CreateFrames()
 	--self:Debug("CreateFrames")
+	-- create pet battle hider
+	local hider = CreateFrame("Frame", "GridPetBattleHider", UIParent, "SecureHandlerStateTemplate")
+	hider:SetSize(1, 1)
+	hider:SetPoint("BOTTOM", UIParent, "TOP", 0, 1000)
+	RegisterStateDriver(hider, "visibility", "[petbattle] hide; show")
+
 	-- create main frame to hold all our gui elements
-	local f = CreateFrame("Frame", "GridLayoutFrame", UIParent)
+	local f = CreateFrame("Frame", "GridLayoutFrame", hider)
 	f:SetMovable(true)
 	f:SetClampedToScreen(self.db.profile.clamp)
 	f:SetPoint("CENTER", UIParent, "CENTER")
