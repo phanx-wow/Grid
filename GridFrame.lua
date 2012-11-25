@@ -1354,6 +1354,8 @@ function GridFrame:OnDisable()
 end
 
 function GridFrame:PostReset()
+	self:Debug("PostReset")
+
 	self:UpdateOptionsMenu()
 
 	-- Fix for font size not updating on profile change
@@ -1400,7 +1402,9 @@ function GridFrame:ResizeAllFrames()
 end
 
 function GridFrame:UpdateAllFrames()
-	self:WithAllFrames("UpdateIndicators")
+	for _, frame in pairs(self.registeredFrames) do
+		self:UpdateIndicators(frame)
+	end
 end
 
 function GridFrame:InvertBarColor()
