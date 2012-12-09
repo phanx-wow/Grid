@@ -230,6 +230,7 @@ GridLayout.options = {
 	name = L["Layout"],
 	desc = L["Options for GridLayout."],
 	disabled = InCombatLockdown,
+	order = 1,
 	type = "group",
 	args = {
 		-- layouts for SOLO, PARTY, RAID, BG, ARENA

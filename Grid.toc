@@ -67,6 +67,7 @@ GridLayoutLayouts.lua
 GridFrame.lua
 GridStatus.lua
 GridLDB.lua
+GridHelp.lua
 
 Statuses\GridStatusAggro.lua
 Statuses\GridStatusAuras.lua

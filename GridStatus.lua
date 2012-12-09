@@ -259,6 +259,7 @@ GridStatus.options = {
 	type = "group",
 	name = L["Status"],
 	desc = L["Options for GridStatus."],
+	order = 4,
 	args = {
 		["color"] = {
 			order = -1,

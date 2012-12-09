@@ -904,6 +904,7 @@ GridFrame.options = {
 	name = L["Frame"],
 	desc = L["Options for GridFrame."],
 	disabled = InCombatLockdown,
+	order = 2,
 	args = {
 		["framewidth"] = {
 			name = L["Frame Width"],
@@ -1293,6 +1294,7 @@ end
 Grid.options.args["Indicators"] = {
 	name = L["Indicators"],
 	desc = L["Options for assigning statuses to indicators."],
+	order = 3,
 	type = "group", -- childGroups = "select",
 	args = {
 	}

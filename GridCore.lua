@@ -100,8 +100,13 @@ Grid.options = {
 			desc = L["Module debugging menu."],
 			order = -1,
 			args = {
-				frame = {
+				desc = {
 					order = 1,
+					type = "description",
+					name = L["Debugging messages help developers or testers see what is happening inside Grid in real time. Regular users should leave debugging turned off except when troubleshooting a problem for a bug report."],
+				},
+				frame = {
+					order = 2,
 					name = L["Output Frame"],
 					desc = L["Show debugging messages in this frame."],
 					type = "select",
@@ -125,7 +130,7 @@ Grid.options = {
 					},
 				},
 				spacer = {
-					order = 2,
+					order = 3,
 					name = " ",
 					type = "description",
 				},
