@@ -829,7 +829,7 @@ GridFrame.defaultDB = {
 	healingBar_useStatusColor = false,
 	throttleUpdates = false,
 	statusmap = {
-		["text"] = {
+		text = {
 			alert_death = true,
 			alert_feignDeath = true,
 			alert_heals = true,
@@ -838,52 +838,52 @@ GridFrame.defaultDB = {
 			unit_healthDeficit = true,
 			unit_name = true,
 		},
-		["text2"] = {
+		text2 = {
 			alert_death = true,
 			alert_feignDeath = true,
 			alert_offline = true,
 			debuff_Ghost = true,
 		},
-		["border"] = {
+		border = {
 			alert_lowHealth = true,
 			alert_lowMana = true,
 			player_target = true,
 		},
-		["corner1"] = {
+		corner1 = {
 			alert_heals = true,
 		},
-		["corner2"] = {
+		corner2 = {
 		},
-		["corner3"] = {
+		corner3 = {
 			dispel_curse = true,
 			dispel_disease = true,
 			dispel_magic = true,
 			dispel_poison = true,
 		},
-		["corner4"] = {
+		corner4 = {
 			alert_aggro = true,
 		},
-		["frameAlpha"] = {
+		frameAlpha = {
 			alert_death = true,
 			alert_offline = true,
 			alert_range = true,
 		},
-		["bar"] = {
+		bar = {
 			alert_death = true,
 			alert_offline = true,
 			debuff_Ghost = true,
 			unit_health = true,
 		},
-		["barcolor"] = {
+		barcolor = {
 			alert_death = true,
 			alert_offline = true,
 			debuff_Ghost = true,
 			unit_health = true,
 		},
-		["healingBar"] = {
+		healingBar = {
 			alert_heals = true,
 		},
-		["icon"] = {
+		icon = {
 			dispel_curse = true,
 			dispel_disease = true,
 			dispel_magic = true,
@@ -906,7 +906,7 @@ GridFrame.options = {
 	disabled = InCombatLockdown,
 	order = 2,
 	args = {
-		["framewidth"] = {
+		framewidth = {
 			name = L["Frame Width"],
 			desc = L["Adjust the width of each unit's frame."],
 			order = 10, width = "double",
@@ -920,7 +920,7 @@ GridFrame.options = {
 				GridFrame:ScheduleTimer("Grid_ReloadLayout", 0.5)
 			end,
 		},
-		["frameheight"] = {
+		frameheight = {
 			name = L["Frame Height"],
 			desc = L["Adjust the height of each unit's frame."],
 			order = 20, width = "double",
@@ -934,7 +934,7 @@ GridFrame.options = {
 				GridFrame:ScheduleTimer("Grid_ReloadLayout", 0.5)
 			end,
 		},
-		["bordersize"] = {
+		bordersize = {
 			name = L["Border Size"],
 			desc = L["Adjust the size of the border indicators."],
 			order = 30, width = "double",
@@ -947,7 +947,7 @@ GridFrame.options = {
 				GridFrame:WithAllFrames("SetBorderSize", v)
 			end,
 		},
-		["cornersize"] = {
+		cornersize = {
 			name = L["Corner Size"],
 			desc = L["Adjust the size of the corner indicators."],
 			order = 40, width = "double",
@@ -960,12 +960,12 @@ GridFrame.options = {
 				GridFrame:WithAllFrames("SetCornerSize", v)
 			end,
 		},
-		["tooltip"] = {
+		tooltip = {
 			name = L["Show Tooltip"],
 			desc = L["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."],
 			order = 50, width = "double",
 			type = "select",
-			values = { ["Always"] = L["Always"], ["Never"] = L["Never"], ["OOC"] = L["OOC"] },
+			values = { Always = L["Always"], Never = L["Never"], OOC = L["OOC"] },
 			get = function()
 				return GridFrame.db.profile.showTooltip
 			end,
@@ -973,12 +973,12 @@ GridFrame.options = {
 				GridFrame.db.profile.showTooltip = v
 			end,
 		},
-		["orientation"] = {
+		orientation = {
 			name = L["Orientation of Frame"],
 			desc = L["Set frame orientation."],
 			order = 60, width = "double",
 			type = "select",
-			values = { ["VERTICAL"] = L["Vertical"], ["HORIZONTAL"] = L["Horizontal"] },
+			values = { VERTICAL = L["Vertical"], HORIZONTAL = L["Horizontal"] },
 			get = function()
 				return GridFrame.db.profile.orientation
 			end,
@@ -987,12 +987,12 @@ GridFrame.options = {
 				GridFrame:WithAllFrames("SetOrientation", v)
 			end,
 		},
-		["textorientation"] = {
+		textorientation = {
 			name = L["Orientation of Text"],
 			desc = L["Set frame text orientation."],
 			order = 70, width = "double",
 			type = "select",
-			values = { ["VERTICAL"] = L["Vertical"], ["HORIZONTAL"] = L["Horizontal"] },
+			values = { VERTICAL = L["Vertical"], HORIZONTAL = L["Horizontal"] },
 			get = function()
 				return GridFrame.db.profile.textorientation
 			end,
@@ -1001,7 +1001,7 @@ GridFrame.options = {
 				GridFrame:WithAllFrames("SetTextOrientation", v)
 			end,
 		},
-		["mouseoverhighlight"] = {
+		mouseoverhighlight = {
 			name = format(L["Enable Mouseover Highlight"]),
 			desc = L["Toggle mouseover highlight."],
 			order = 80, width = "double",
@@ -1014,7 +1014,7 @@ GridFrame.options = {
 				GridFrame:WithAllFrames("EnableMouseoverHighlight", v)
 			end,
 		},
-		["text2"] = {
+		text2 = {
 			name = format(L["Enable %s indicator"], L["Center Text 2"]),
 			desc = format(L["Toggle the %s indicator."], L["Center Text 2"]),
 			order = 100, width = "double",
@@ -1028,7 +1028,7 @@ GridFrame.options = {
 				GridFrame:UpdateOptionsMenu()
 			end,
 		},
-		["throttleUpdates"] = {
+		throttleUpdates = {
 			name = L["Throttle Updates"],
 			desc = L["Throttle updates on group changes. This option may cause delays in updating frames, so you should only enable it if you're experiencing temporary freezes or lockups when people join or leave your group."],
 			type = "toggle",
@@ -1049,13 +1049,29 @@ GridFrame.options = {
 				GridFrame:UpdateFrameUnits()
 			end,
 		},
-		["bar"] = {
+		bar = {
 			name = L["Bar Options"],
 			desc = L["Options related to bar indicators."],
 			order = 200,
 			type = "group", inline = true,
 			args = {
-				["healingBar_intensity"] = {
+				texture = {
+					name = L["Frame Texture"],
+					desc = L["Adjust the texture of each unit's frame."],
+					order = 10, width = "double",
+					type = "select",
+					values = media:HashTable("statusbar"),
+					dialogControl = "LSM30_Statusbar",
+					get = function()
+						return GridFrame.db.profile.texture
+					end,
+					set = function(_, v)
+						GridFrame.db.profile.texture = v
+						local texture = media:Fetch("statusbar", v)
+						GridFrame:WithAllFrames("SetFrameTexture", texture)
+					end,
+				},
+				healingBar_intensity = {
 					name = L["Healing Bar Opacity"],
 					desc = L["Sets the opacity of the healing bar."],
 					order = 20, width = "double",
@@ -1068,7 +1084,7 @@ GridFrame.options = {
 						GridFrame:UpdateAllFrames()
 					end,
 				},
-				["healingBar_useStatusColor"] = {
+				healingBar_useStatusColor = {
 					name = L["Healing Bar Uses Status Color"],
 					desc = L["Make the healing bar use the status color instead of the health bar color."],
 					order = 40, width = "double",
@@ -1081,7 +1097,7 @@ GridFrame.options = {
 						GridFrame:UpdateAllFrames()
 					end,
 				},
-				["barcolor"] = {
+				barcolor = {
 					name = format(L["Enable %s indicator"], L["Health Bar Color"]),
 					desc = format(L["Toggle the %s indicator."], L["Health Bar Color"]),
 					order = 30, width = "double",
@@ -1094,7 +1110,7 @@ GridFrame.options = {
 						GridFrame:UpdateOptionsMenu()
 					end,
 				},
-				["invertBarColor"] = {
+				invertBarColor = {
 					name = L["Invert Bar Color"],
 					desc = L["Swap foreground/background colors on bars."],
 					order = 50, width = "double",
@@ -1107,7 +1123,7 @@ GridFrame.options = {
 						GridFrame:InvertBarColor()
 					end,
 				},
-				["invertTextColor"] = {
+				invertTextColor = {
 					name = L["Invert Text Color"],
 					desc = L["Darken the text color to match the inverted bar."],
 					order = 50, width = "double",
@@ -1128,13 +1144,13 @@ GridFrame.options = {
 				},
 			},
 		},
-		["icon"] = {
+		icon = {
 			name = L["Icon Options"],
 			desc = L["Options related to icon indicators."],
 			order = 300, width = "double",
 			type = "group", inline = true,
 			args = {
-				["size"] = {
+				size = {
 					name = L["Icon Size"],
 					desc = L["Adjust the size of the center icon."],
 					order = 10, width = "double",
@@ -1148,7 +1164,7 @@ GridFrame.options = {
 						GridFrame:WithAllFrames("SetIconSize", v, iconBorderSize)
 					end,
 				},
-				["bordersize"] = {
+				bordersize = {
 					name = L["Icon Border Size"],
 					desc = L["Adjust the size of the center icon's border."],
 					order = 20, width = "double",
@@ -1163,7 +1179,7 @@ GridFrame.options = {
 						GridFrame:UpdateAllFrames()
 					end,
 				},
-				["cooldown"] = {
+				cooldown = {
 					name = format(L["Enable %s"], L["Icon Cooldown Frame"]),
 					desc = L["Toggle center icon's cooldown frame."],
 					order = 30, width = "double",
@@ -1176,7 +1192,7 @@ GridFrame.options = {
 						GridFrame:UpdateAllFrames()
 					end,
 				},
-				["stacktext"] = {
+				stacktext = {
 					name = format(L["Enable %s"], L["Icon Stack Text"]),
 					desc = L["Toggle center icon's stack count text."],
 					order = 40, width = "double",
@@ -1191,13 +1207,29 @@ GridFrame.options = {
 				},
 			},
 		},
-		["text"] = {
+		text = {
 			name = L["Text Options"],
 			desc = L["Options related to text indicators."],
 			order = 400,
 			type = "group", inline = true,
 			args = {
-				["size"] = {
+				font = {
+					name = L["Font"],
+					desc = L["Adjust the font settings"],
+					order = 10, width = "double",
+					type = "select",
+					values = media:HashTable("font"),
+					dialogControl = "LSM30_Font",
+					get = function()
+						return GridFrame.db.profile.font
+					end,
+					set = function(_, v)
+						GridFrame.db.profile.font = v
+						local font = media:Fetch("font", v)
+						GridFrame:WithAllFrames("SetFrameFont", font, GridFrame.db.profile.fontSize, GridFrame.db.profile.fontOutline, GridFrame.db.profile.fontShadow)
+					end,
+				},
+				size = {
 					name = L["Font Size"],
 					desc = L["Adjust the font size."],
 					order = 20, width = "double",
@@ -1211,12 +1243,12 @@ GridFrame.options = {
 						GridFrame:WithAllFrames("SetFrameFont", font, v, GridFrame.db.profile.fontOutline, GridFrame.db.profile.fontShadow)
 					end,
 				},
-				["outline"] = {
+				outline = {
 					name = L["Font Outline"],
 					desc = L["Adjust the font outline."],
 					order = 30, width = "double",
 					type = "select",
-					values = { ["NONE"] = L["None"], ["OUTLINE"] = L["Thin"], ["THICKOUTLINE"] = L["Thick"] },
+					values = { NONE = L["None"], OUTLINE = L["Thin"], THICKOUTLINE = L["Thick"] },
 					get = function()
 						return GridFrame.db.profile.fontOutline
 					end,
@@ -1226,7 +1258,7 @@ GridFrame.options = {
 						GridFrame:WithAllFrames("SetFrameFont", font, GridFrame.db.profile.fontSize, v, GridFrame.db.profile.fontShadow)
 					end,
 				},
-				["shadow"] = {
+				shadow = {
 					name = L["Font Shadow"],
 					desc = L["Toggle the font drop shadow effect."],
 					order = 40, width = "double",
@@ -1240,7 +1272,7 @@ GridFrame.options = {
 						GridFrame:WithAllFrames("SetFrameFont", font, GridFrame.db.profile.fontSize, GridFrame.db.profile.fontOutline, v)
 					end,
 				},
-				["length"] = {
+				length = {
 					name = L["Center Text Length"],
 					desc = L["Number of characters to show on Center Text indicator."],
 					order = 50, width = "double",
@@ -1256,48 +1288,12 @@ GridFrame.options = {
 	},
 }
 
-if media then
-	GridFrame.options.args.text.args.font = {
-		name = L["Font"],
-		desc = L["Adjust the font settings"],
-		order = 10, width = "double",
-		type = "select",
-		values = media:HashTable("font"),
-		dialogControl = "LSM30_Font",
-		get = function()
-			return GridFrame.db.profile.font
-		end,
-		set = function(_, v)
-			GridFrame.db.profile.font = v
-			local font = media:Fetch("font", v)
-			GridFrame:WithAllFrames("SetFrameFont", font, GridFrame.db.profile.fontSize, GridFrame.db.profile.fontOutline, GridFrame.db.profile.fontShadow)
-		end,
-	}
-	GridFrame.options.args.bar.args.texture = {
-		name = L["Frame Texture"],
-		desc = L["Adjust the texture of each unit's frame."],
-		order = 10, width = "double",
-		type = "select",
-		values = media:HashTable("statusbar"),
-		dialogControl = "LSM30_Statusbar",
-		get = function()
-			return GridFrame.db.profile.texture
-		end,
-		set = function(_, v)
-			GridFrame.db.profile.texture = v
-			local texture = media:Fetch("statusbar", v)
-			GridFrame:WithAllFrames("SetFrameTexture", texture)
-		end,
-	}
-end
-
-Grid.options.args["Indicators"] = {
+Grid.options.args.GridIndicator = {
 	name = L["Indicators"],
 	desc = L["Options for assigning statuses to indicators."],
 	order = 3,
 	type = "group", -- childGroups = "select",
-	args = {
-	}
+	args = {}
 }
 
 ------------------------------------------------------------------------
@@ -1588,7 +1584,7 @@ function GridFrame:UpdateOptionsMenu()
 end
 
 function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
-	local menu = Grid.options.args["Indicators"].args
+	local menu = Grid.options.args.GridIndicator.args
 	local GridStatus = Grid:GetModule("GridStatus")
 
 	if indicator == "bar" then
@@ -1622,7 +1618,7 @@ function GridFrame:UpdateOptionsForIndicator(indicator, name, order)
 			order = order and (order + 1) or nil,
 			type = "group",
 			args = {
-				["StatusesHeader"] = {
+				StatusesHeader = {
 					type = "header",
 					name = L["Statuses"],
 					order = 1,

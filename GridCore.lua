@@ -337,16 +337,17 @@ function Grid:OnInitialize()
 	status.width = 780 -- 685
 	status.height = 500 -- 530
 
-	local child1 = AceConfigDialog:GetStatusTable("Grid", { "Indicators" })
-	child1.groups = child1.groups or { }
+	local child1 = AceConfigDialog:GetStatusTable("Grid", { "GridIndicator" })
+	child1.groups = child1.groups or {}
 	child1.groups.treewidth = 220
 
 	local child2 = AceConfigDialog:GetStatusTable("Grid", { "GridStatus" })
-	child2.groups = child2.groups or { }
-	child2.groups["GridStatusAuras"] = true
-	child2.groups["GridStatusHealth"] = true
-	child2.groups["GridStatusRange"] = true
+	child2.groups = child2.groups or {}
 	child2.groups.treewidth = 260
+
+	local child3 = AceConfigDialog:GetStatusTable("Grid", { "GridHelp" })
+	child3.groups = child3.groups or {}
+	child3.groups.treewidth = 300
 
 	self:RegisterChatCommand("grid", function(input)
 		if not input or input:trim() == "" then
