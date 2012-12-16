@@ -537,9 +537,6 @@ function GridLayout:PostEnable()
 	self:RestorePosition()
 	self:Scale()
 
-	self:RegisterEvent("PET_BATTLE_OPENING_START", "UpdateVisibility")
-	self:RegisterEvent("PET_BATTLE_CLOSE", "UpdateVisibility")
-
 	self:RegisterMessage("Grid_ReloadLayout", "PartyTypeChanged")
 	self:RegisterMessage("Grid_PartyTransition", "PartyTypeChanged")
 
@@ -685,9 +682,8 @@ end
 function GridLayout:CreateFrames()
 	--self:Debug("CreateFrames")
 	-- create pet battle hider
-	local hider = CreateFrame("Frame", "GridPetBattleHider", UIParent, "SecureHandlerStateTemplate")
-	hider:SetSize(1, 1)
-	hider:SetPoint("BOTTOM", UIParent, "TOP", 0, 1000)
+	local hider = CreateFrame("Frame", "GridPetBattleFrameHider", UIParent, "SecureHandlerStateTemplate")
+	hider:SetAllPoints(true)
 	RegisterStateDriver(hider, "visibility", "[petbattle] hide; show")
 
 	-- create main frame to hold all our gui elements
@@ -985,7 +981,7 @@ end
 
 function GridLayout:UpdateVisibility()
 	--self:Debug("UpdateVisibility")
-	if C_PetBattles.IsInBattle() or self.db.profile.layouts[(GridRoster:GetPartyState())] == L["None"] then
+	if self.db.profile.layouts[(GridRoster:GetPartyState())] == L["None"] then
 		self.frame:Hide()
 	else
 		self.frame:Show()
