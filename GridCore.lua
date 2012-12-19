@@ -322,13 +322,64 @@ function Grid:OnInitialize()
 	self.db.RegisterCallback(self, "OnProfileReset", "OnProfileEnable")
 
 	self.options.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
-	self.options.args.profile.order = -2
+	self.options.args.profile.order = -3
 
 	local LibDualSpec = LibStub("LibDualSpec-1.0")
 	LibDualSpec:EnhanceDatabase(self.db, "Grid")
 	LibDualSpec:EnhanceOptions(self.options.args.profile, self.db)
 
 	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("Grid", self.options)
+
+	--
+	--	Broker launcher
+	--
+
+	local DataBroker = LibStub("LibDataBroker-1.1", true)
+	if DataBroker then
+		self.Broker = DataBroker:NewDataObject("Grid", {
+			type = "launcher",
+			label = GetAddOnInfo("Grid", "Title"),
+			icon = "Interface\\AddOns\\Grid\\icon",
+			OnClick = function(self, button)
+				if button == "RightButton" then
+					local dialog = LibStub("AceConfigDialog-3.0")
+					if dialog.OpenFrames["Grid"] then
+						dialog:Close("Grid")
+					else
+						dialog:Open("Grid")
+					end
+				elseif not InCombatLockdown() then
+					local GridLayout = Grid:GetModule("GridLayout")
+					GridLayout.db.profile.FrameLock = not GridLayout.db.profile.FrameLock
+					LibStub("AceConfigRegistry-3.0"):NotifyChange("Grid")
+					GridLayout:UpdateTabVisibility()
+				end
+			end,
+			OnTooltipShow = function(tooltip)
+				tooltip:AddLine("Grid", 1, 1, 1)
+				if InCombatLockdown() then
+					tooltip:AddLine(L["Click to toggle the frame lock."], 0.5, 0.5, 0.5)
+				else
+					tooltip:AddLine(L["Click to toggle the frame lock."])
+				end
+				tooltip:AddLine(L["Right-Click for more options."])
+			end,
+		})
+	end
+
+	local LDBIcon = LibStub("LibDBIcon-1.0", true)
+	if LDBIcon then
+		LDBIcon:Register("Grid", self.Broker, self.db.profile.minimap)
+		if self.db.profile.minimap.hide then
+			LDBIcon:Hide("Grid")
+		else
+			LDBIcon:Show("Grid")
+		end
+	end
+
+	--
+	--	Options window
+	--
 
 	local AceConfigCmd = LibStub("AceConfigCmd-3.0")
 	local AceConfigDialog = LibStub("AceConfigDialog-3.0")
@@ -395,6 +446,17 @@ end
 
 function Grid:OnProfileEnable()
 	self:Debug("Loaded profile", self.db:GetCurrentProfile())
+
+	local LDBIcon = LibStub("LibDBIcon-1.0", true)
+	if LDBIcon then
+		LDBIcon:Refresh("Grid", self.db.profile.minimap)
+		if self.db.profile.minimap.hide then
+			LDBIcon:Hide("Grid")
+		else
+			LDBIcon:Show("Grid")
+		end
+	end
+
 	self:ResetModules()
 end
 

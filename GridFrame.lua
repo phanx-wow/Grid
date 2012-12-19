@@ -900,160 +900,154 @@ function GridFrame:Grid_ReloadLayout()
 end
 
 GridFrame.options = {
-	type = "group",
 	name = L["Frame"],
 	desc = L["Options for GridFrame."],
-	disabled = InCombatLockdown,
 	order = 2,
+	type = "group",
+	childGroups = "tab",
+	disabled = InCombatLockdown,
 	args = {
-		framewidth = {
-			name = L["Frame Width"],
-			desc = L["Adjust the width of each unit's frame."],
-			order = 10, width = "double",
-			type = "range", min = 10, max = 100, step = 1,
-			get = function(info)
-				return GridFrame.db.profile.frameWidth
-			end,
-			set = function(info, v)
-				GridFrame.db.profile.frameWidth = v
-				GridFrame:ResizeAllFrames()
-				GridFrame:ScheduleTimer("Grid_ReloadLayout", 0.5)
-			end,
-		},
-		frameheight = {
-			name = L["Frame Height"],
-			desc = L["Adjust the height of each unit's frame."],
-			order = 20, width = "double",
-			type = "range", min = 10, max = 100, step = 1,
-			get = function()
-				return GridFrame.db.profile.frameHeight
-			end,
-			set = function(_, v)
-				GridFrame.db.profile.frameHeight = v
-				GridFrame:ResizeAllFrames()
-				GridFrame:ScheduleTimer("Grid_ReloadLayout", 0.5)
-			end,
-		},
-		bordersize = {
-			name = L["Border Size"],
-			desc = L["Adjust the size of the border indicators."],
-			order = 30, width = "double",
-			type = "range", min = 1, max = 9, step = 1,
-			get = function()
-				return GridFrame.db.profile.borderSize
-			end,
-			set = function(_, v)
-				GridFrame.db.profile.borderSize = v
-				GridFrame:WithAllFrames("SetBorderSize", v)
-			end,
-		},
-		cornersize = {
-			name = L["Corner Size"],
-			desc = L["Adjust the size of the corner indicators."],
-			order = 40, width = "double",
-			type = "range", min = 1, max = 20, step = 1,
-			get = function()
-				return GridFrame.db.profile.cornerSize
-			end,
-			set = function(_, v)
-				GridFrame.db.profile.cornerSize = v
-				GridFrame:WithAllFrames("SetCornerSize", v)
-			end,
-		},
-		tooltip = {
-			name = L["Show Tooltip"],
-			desc = L["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."],
-			order = 50, width = "double",
-			type = "select",
-			values = { Always = L["Always"], Never = L["Never"], OOC = L["OOC"] },
-			get = function()
-				return GridFrame.db.profile.showTooltip
-			end,
-			set = function(_, v)
-				GridFrame.db.profile.showTooltip = v
-			end,
-		},
-		orientation = {
-			name = L["Orientation of Frame"],
-			desc = L["Set frame orientation."],
-			order = 60, width = "double",
-			type = "select",
-			values = { VERTICAL = L["Vertical"], HORIZONTAL = L["Horizontal"] },
-			get = function()
-				return GridFrame.db.profile.orientation
-			end,
-			set = function(_, v)
-				GridFrame.db.profile.orientation = v
-				GridFrame:WithAllFrames("SetOrientation", v)
-			end,
-		},
-		textorientation = {
-			name = L["Orientation of Text"],
-			desc = L["Set frame text orientation."],
-			order = 70, width = "double",
-			type = "select",
-			values = { VERTICAL = L["Vertical"], HORIZONTAL = L["Horizontal"] },
-			get = function()
-				return GridFrame.db.profile.textorientation
-			end,
-			set = function(_, v)
-				GridFrame.db.profile.textorientation = v
-				GridFrame:WithAllFrames("SetTextOrientation", v)
-			end,
-		},
-		mouseoverhighlight = {
-			name = format(L["Enable Mouseover Highlight"]),
-			desc = L["Toggle mouseover highlight."],
-			order = 80, width = "double",
-			type = "toggle",
-			get = function()
-				return GridFrame.db.profile.enableMouseoverHighlight
-			end,
-			set = function(_, v)
-				GridFrame.db.profile.enableMouseoverHighlight = v
-				GridFrame:WithAllFrames("EnableMouseoverHighlight", v)
-			end,
-		},
-		text2 = {
-			name = format(L["Enable %s indicator"], L["Center Text 2"]),
-			desc = format(L["Toggle the %s indicator."], L["Center Text 2"]),
-			order = 100, width = "double",
-			type = "toggle",
-			get = function()
-				return GridFrame.db.profile.enableText2
-			end,
-			set = function(_, v)
-				GridFrame.db.profile.enableText2 = v
-				GridFrame:WithAllFrames("EnableText2", v)
-				GridFrame:UpdateOptionsMenu()
-			end,
-		},
-		throttleUpdates = {
-			name = L["Throttle Updates"],
-			desc = L["Throttle updates on group changes. This option may cause delays in updating frames, so you should only enable it if you're experiencing temporary freezes or lockups when people join or leave your group."],
-			type = "toggle",
-			order = 110, width = "double",
-			get = function()
-				return GridFrame.db.profile.throttleUpdates
-			end,
-			set = function(_, v)
-				GridFrame.db.profile.throttleUpdates = v
-				if v then
-					GridFrame:UnregisterMessage("UpdateFrameUnits")
-					GridFrame.bucket_UpdateFrameUnits = GridFrame:RegisterBucketMessage("UpdateFrameUnits", 0.1)
-				else
-					GridFrame:RegisterMessage("UpdateFrameUnits")
-					GridFrame:UnregisterBucket(GridFrame.bucket_UpdateFrameUnits, true)
-					GridFrame.bucket_UpdateFrameUnits = nil
-				end
-				GridFrame:UpdateFrameUnits()
-			end,
+		general = {
+			name = L["General"],
+			order = 1,
+			type = "group",
+			args = {
+				framewidth = {
+					name = L["Frame Width"],
+					desc = L["Adjust the width of each unit's frame."],
+					order = 10, width = "double",
+					type = "range", min = 10, max = 100, step = 1,
+					get = function(info)
+						return GridFrame.db.profile.frameWidth
+					end,
+					set = function(info, v)
+						GridFrame.db.profile.frameWidth = v
+						GridFrame:ResizeAllFrames()
+						GridFrame:ScheduleTimer("Grid_ReloadLayout", 0.5)
+					end,
+				},
+				frameheight = {
+					name = L["Frame Height"],
+					desc = L["Adjust the height of each unit's frame."],
+					order = 20, width = "double",
+					type = "range", min = 10, max = 100, step = 1,
+					get = function()
+						return GridFrame.db.profile.frameHeight
+					end,
+					set = function(_, v)
+						GridFrame.db.profile.frameHeight = v
+						GridFrame:ResizeAllFrames()
+						GridFrame:ScheduleTimer("Grid_ReloadLayout", 0.5)
+					end,
+				},
+				bordersize = {
+					name = L["Border Size"],
+					desc = L["Adjust the size of the border indicators."],
+					order = 30, width = "double",
+					type = "range", min = 1, max = 9, step = 1,
+					get = function()
+						return GridFrame.db.profile.borderSize
+					end,
+					set = function(_, v)
+						GridFrame.db.profile.borderSize = v
+						GridFrame:WithAllFrames("SetBorderSize", v)
+					end,
+				},
+				cornersize = {
+					name = L["Corner Size"],
+					desc = L["Adjust the size of the corner indicators."],
+					order = 40, width = "double",
+					type = "range", min = 1, max = 20, step = 1,
+					get = function()
+						return GridFrame.db.profile.cornerSize
+					end,
+					set = function(_, v)
+						GridFrame.db.profile.cornerSize = v
+						GridFrame:WithAllFrames("SetCornerSize", v)
+					end,
+				},
+				tooltip = {
+					name = L["Show Tooltip"],
+					desc = L["Show unit tooltip.  Choose 'Always', 'Never', or 'OOC'."],
+					order = 50, width = "double",
+					type = "select",
+					values = { Always = L["Always"], Never = L["Never"], OOC = L["OOC"] },
+					get = function()
+						return GridFrame.db.profile.showTooltip
+					end,
+					set = function(_, v)
+						GridFrame.db.profile.showTooltip = v
+					end,
+				},
+				orientation = {
+					name = L["Orientation of Frame"],
+					desc = L["Set frame orientation."],
+					order = 60, width = "double",
+					type = "select",
+					values = { VERTICAL = L["Vertical"], HORIZONTAL = L["Horizontal"] },
+					get = function()
+						return GridFrame.db.profile.orientation
+					end,
+					set = function(_, v)
+						GridFrame.db.profile.orientation = v
+						GridFrame:WithAllFrames("SetOrientation", v)
+					end,
+				},
+				textorientation = {
+					name = L["Orientation of Text"],
+					desc = L["Set frame text orientation."],
+					order = 70, width = "double",
+					type = "select",
+					values = { VERTICAL = L["Vertical"], HORIZONTAL = L["Horizontal"] },
+					get = function()
+						return GridFrame.db.profile.textorientation
+					end,
+					set = function(_, v)
+						GridFrame.db.profile.textorientation = v
+						GridFrame:WithAllFrames("SetTextOrientation", v)
+					end,
+				},
+				mouseoverhighlight = {
+					name = format(L["Enable Mouseover Highlight"]),
+					desc = L["Toggle mouseover highlight."],
+					order = 80, width = "double",
+					type = "toggle",
+					get = function()
+						return GridFrame.db.profile.enableMouseoverHighlight
+					end,
+					set = function(_, v)
+						GridFrame.db.profile.enableMouseoverHighlight = v
+						GridFrame:WithAllFrames("EnableMouseoverHighlight", v)
+					end,
+				},
+				throttleUpdates = {
+					name = L["Throttle Updates"],
+					desc = L["Throttle updates on group changes. This option may cause delays in updating frames, so you should only enable it if you're experiencing temporary freezes or lockups when people join or leave your group."],
+					type = "toggle",
+					order = 110, width = "double",
+					get = function()
+						return GridFrame.db.profile.throttleUpdates
+					end,
+					set = function(_, v)
+						GridFrame.db.profile.throttleUpdates = v
+						if v then
+							GridFrame:UnregisterMessage("UpdateFrameUnits")
+							GridFrame.bucket_UpdateFrameUnits = GridFrame:RegisterBucketMessage("UpdateFrameUnits", 0.1)
+						else
+							GridFrame:RegisterMessage("UpdateFrameUnits")
+							GridFrame:UnregisterBucket(GridFrame.bucket_UpdateFrameUnits, true)
+							GridFrame.bucket_UpdateFrameUnits = nil
+						end
+						GridFrame:UpdateFrameUnits()
+					end,
+				},
+			},
 		},
 		bar = {
 			name = L["Bar Options"],
 			desc = L["Options related to bar indicators."],
 			order = 200,
-			type = "group", inline = true,
+			type = "group",
 			args = {
 				texture = {
 					name = L["Frame Texture"],
@@ -1148,7 +1142,7 @@ GridFrame.options = {
 			name = L["Icon Options"],
 			desc = L["Options related to icon indicators."],
 			order = 300, width = "double",
-			type = "group", inline = true,
+			type = "group",
 			args = {
 				size = {
 					name = L["Icon Size"],
@@ -1211,7 +1205,7 @@ GridFrame.options = {
 			name = L["Text Options"],
 			desc = L["Options related to text indicators."],
 			order = 400,
-			type = "group", inline = true,
+			type = "group",
 			args = {
 				font = {
 					name = L["Font"],
@@ -1283,6 +1277,20 @@ GridFrame.options = {
 						GridFrame:UpdateAllFrames()
 					end,
 				},
+				text2 = {
+					name = format(L["Enable %s indicator"], L["Center Text 2"]),
+					desc = format(L["Toggle the %s indicator."], L["Center Text 2"]),
+					order = 60, width = "double",
+					type = "toggle",
+					get = function()
+						return GridFrame.db.profile.enableText2
+					end,
+					set = function(_, v)
+						GridFrame.db.profile.enableText2 = v
+						GridFrame:WithAllFrames("EnableText2", v)
+						GridFrame:UpdateOptionsMenu()
+					end,
+				},
 			},
 		},
 	},
@@ -1292,7 +1300,8 @@ Grid.options.args.GridIndicator = {
 	name = L["Indicators"],
 	desc = L["Options for assigning statuses to indicators."],
 	order = 3,
-	type = "group", -- childGroups = "select",
+	type = "group",
+	childGroups = "tree",
 	args = {}
 }
 

@@ -256,18 +256,19 @@ GridStatus.defaultDB = {
 ------------------------------------------------------------------------
 
 GridStatus.options = {
-	type = "group",
 	name = L["Status"],
 	desc = L["Options for GridStatus."],
 	order = 4,
+	type = "group",
+	--childGroups = "tab",
 	args = {
-		["color"] = {
+		color = {
 			order = -1,
 			name = L["Colors"],
 			desc = L["Color options for class and pets."],
 			type = "group",
 			args = {
-				["class"] = {
+				class = {
 					order = 100,
 					name = L["Class colors"],
 					desc = L["Color of player unit classes."],
@@ -287,7 +288,7 @@ GridStatus.options = {
 						}
 					},
 				},
-				["petcolortype"] = {
+				petcolortype = {
 					order = 200,
 					name = L["Pet coloring"],
 					desc = L["Set the coloring strategy of pet units."],
@@ -305,7 +306,7 @@ GridStatus.options = {
 							GridStatus:SendMessage("Grid_ColorsChanged")
 						end,
 				},
-				["creaturetype"] = {
+				creaturetype = {
 					order = 300,
 					name = L["Creature type colors"],
 					desc = L["Color of pet unit creature types."],
@@ -313,13 +314,13 @@ GridStatus.options = {
 					args = {
 					},
 				},
-				["fallback"] = {
+				fallback = {
 					order = 400,
 					name = L["Fallback colors"],
 					desc = L["Color of unknown units or pets."],
 					type = "group", inline = true,
 					args = {
-						["unit"] = {
+						unit = {
 							type = "color",
 							name = L["Unknown Unit"],
 							desc = L["The color of unknown units."],
@@ -335,7 +336,7 @@ GridStatus.options = {
 								end,
 							hasAlpha = false,
 						},
-						["pet"] = {
+						pet = {
 							type = "color",
 							name = L["Unknown Pet"],
 							desc = L["The color of unknown pets."],
