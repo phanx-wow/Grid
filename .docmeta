@@ -1,4 +1,4 @@
 -
-    type: html
-    input-file: README.html
+    type: markdown
+    input-file: README.txt
     output-page: Main
