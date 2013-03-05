@@ -249,7 +249,7 @@ GridLayout.options = {
 		},
 		tab = {
 			name = L["Show tab"],
-			desc = L["Show the tab when Grid is unlocked."],
+			desc = L["Show a tab for dragging when Grid is unlocked."],
 			order = 15,
 			width = "double",
 			type = "toggle",
