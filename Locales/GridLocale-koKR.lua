@@ -9,7 +9,7 @@
 	http://www.curse.com/addons/wow/grid
 ------------------------------------------------------------------------
 	GridLocale-koKR.lua
-	Korean (한국어) localization.
+	Korean localization
 	Contributors: 7destiny, Sayclub
 ----------------------------------------------------------------------]]
 

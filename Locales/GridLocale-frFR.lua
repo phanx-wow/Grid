@@ -9,8 +9,8 @@
 	http://www.curse.com/addons/wow/grid
 ------------------------------------------------------------------------
 	GridLocale-frFR.lua
-	French (Français) localization.
-	Contributors: Devfool, Pettigrow, Strigx, trasher
+	French localization
+	Contributors: Devfool, Matisk, NoGynGz, Pettigrow, Strigx, trasher
 ----------------------------------------------------------------------]]
 
 if GetLocale() ~= "frFR" then return end

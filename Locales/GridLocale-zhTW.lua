@@ -9,7 +9,7 @@
 	http://www.curse.com/addons/wow/grid
 ------------------------------------------------------------------------
 	GridLocale-zhTW.lua
-	Traditional Chinese (繁體中文) localization.
+	Traditional Chinese localization
 	Contributors: ananhaid, helium, lsjyzjl, scorpion, Whyv, zhTW
 ----------------------------------------------------------------------]]
 

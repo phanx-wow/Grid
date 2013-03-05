@@ -9,7 +9,7 @@
 	http://www.curse.com/addons/wow/grid
 ------------------------------------------------------------------------
 	GridLocale-deDE.lua
-	German (Deutsch) localization.
+	German localization
 	Contributors: Alakabaster, derwanderer, kaybe, kunda, Leialyn, ole510
 ----------------------------------------------------------------------]]
 

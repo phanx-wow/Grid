@@ -9,7 +9,7 @@
 	http://www.curse.com/addons/wow/grid
 ------------------------------------------------------------------------
 	GridLocale-itIT.lua
-	Italian (Italiano) localization.
+	Italian localization
 	Contributors: Holydeath1984, kappesante
 ----------------------------------------------------------------------]]
 

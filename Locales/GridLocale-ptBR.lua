@@ -9,7 +9,7 @@
 	http://www.curse.com/addons/wow/grid
 ------------------------------------------------------------------------
 	GridLocale-ptBR.lua
-	Brazilian Portuguese (Português do Brasil) localization.
+	Brazilian Portuguese localization
 	Contributors: heltonaugusto, leocolpas
 ----------------------------------------------------------------------]]
 

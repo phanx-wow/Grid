@@ -9,7 +9,7 @@
 	http://www.curse.com/addons/wow/grid
 ------------------------------------------------------------------------
 	GridLocale-esES.lua
-	Spanish (Español) localization.
+	Spanish localization
 	Contributors: Akkorian, Guiaswow, Valdesca, yllelder
 ----------------------------------------------------------------------]]
 

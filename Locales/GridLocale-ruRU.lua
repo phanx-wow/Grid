@@ -9,8 +9,8 @@
 	http://www.curse.com/addons/wow/grid
 ------------------------------------------------------------------------
 	GridLocale-ruRU.lua
-	Russian (Русский) localization.
-	Contributors: Moschkara, nightik, onyxmaster, StingerSoft
+	Russian (Русский) localization
+	Contributors: Exzorm, Moschkara, nightik, onyxmaster, StingerSoft
 ----------------------------------------------------------------------]]
 
 if GetLocale() ~= "ruRU" then return end
