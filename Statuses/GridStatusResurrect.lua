@@ -81,12 +81,12 @@ function GridStatusResurrect:OnStatusEnable(status)
 	self:Debug("OnStatusEnable", status)
 
 	LibResInfo = LibStub("LibResInfo-1.0")
-	LibResInfo.RegisterCallback(self, "LibResInfo_ResCastStarted", "UpdateAllUnits")
-	LibResInfo.RegisterCallback(self, "LibResInfo_ResCastCancelled", "UpdateAllUnits")
-	LibResInfo.RegisterCallback(self, "LibResInfo_ResCastFinished", "UpdateAllUnits")
-	LibResInfo.RegisterCallback(self, "LibResInfo_ResPending", "UpdateAllUnits")
-	LibResInfo.RegisterCallback(self, "LibResInfo_ResUsed", "UpdateAllUnits")
-	LibResInfo.RegisterCallback(self, "LibResInfo_ResExpired", "UpdateAllUnits")
+	LibResInfo.RegisterCallback(self, "LibResInfo_ResCastStarted", "HandleCallback")
+	LibResInfo.RegisterCallback(self, "LibResInfo_ResCastCancelled", "HandleCallback")
+	LibResInfo.RegisterCallback(self, "LibResInfo_ResCastFinished", "HandleCallback")
+	LibResInfo.RegisterCallback(self, "LibResInfo_ResPending", "HandleCallback")
+	LibResInfo.RegisterCallback(self, "LibResInfo_ResUsed", "HandleCallback")
+	LibResInfo.RegisterCallback(self, "LibResInfo_ResExpired", "HandleCallback")
 
 	self:RegisterMessage("Grid_RosterUpdated", "UpdateAllUnits")
 end
