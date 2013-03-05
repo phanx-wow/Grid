@@ -247,39 +247,35 @@ GridLayout.options = {
 				GridLayout:ReloadLayout()
 			end,
 		},
-		hideTab = {
-			name = L["Hide tab"],
-			desc = L["Do not show the tab when Grid is unlocked."],
+		tab = {
+			name = L["Show tab"],
+			desc = L["Show the tab when Grid is unlocked."],
 			order = 15,
 			width = "double",
 			type = "toggle",
-			set = function(_, v)
-				GridLayout.db.profile.hideTab = v
+			set = function(_, show)
+				GridLayout.db.profile.hideTab = not show
 				GridLayout:UpdateTabVisibility()
 			end,
 		},
-		hideMinimap = {
-			name = L["Hide minimap icon"],
-			desc = L["Hide the Grid icon on the minimap. Note that some standalone DataBroker displays may hide the icon regardless of this setting."],
+		minimap = {
+			name = L["Show minimap icon"],
+			desc = L["Show the Grid icon on the minimap. Note that some DataBroker display addons may hide the icon regardless of this setting."],
 			order = 16,
 			type = "toggle",
 			width = "double",
 			disabled = function()
-				local LDBIcon = LibStub("LibDBIcon-1.0", true)
-				return not LDBIcon
+				return not LibStub("LibDBIcon-1.0", true)
 			end,
 			get = function()
-				return Grid.db.profile.minimap.hide
+				return not Grid.db.profile.minimap.hide
 			end,
-			set = function(_, v)
-				Grid.db.profile.minimap.hide = v
-				local LDBIcon = LibStub("LibDBIcon-1.0", true)
-				if LibDBIcon then
-					if v then
-						LDBIcon:Hide("Grid")
-					else
-						LDBIcon:Show("Grid")
-					end
+			set = function(_, show)
+				Grid.db.profile.minimap.hide = not show
+				if show then
+					LibStub("LibDBIcon-1.0"):Show("Grid")
+				else
+					LibStub("LibDBIcon-1.0"):Hide("Grid")
 				end
 			end
 		},
