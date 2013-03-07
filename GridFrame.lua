@@ -1305,6 +1305,13 @@ Grid.options.args.GridIndicator = {
 	args = {}
 }
 
+local fakeTableForOutdatedPlugins = {}
+setmetatable(Grid.options.args, { __index = function(t, k)
+	if k == "Indicator" then
+		return fakeTableForOutdatedPlugins
+	end
+end })
+
 ------------------------------------------------------------------------
 
 function GridFrame:PostInitialize()
