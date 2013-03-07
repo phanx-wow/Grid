@@ -1048,6 +1048,7 @@ function GridLayout:UpdateSize()
 
 	self.frame:SetWidth(x)
 	self.frame:SetHeight(y)
+	self.frame:SetClampRectInsets(Spacing, -Spacing, -Spacing, Spacing)
 end
 
 function GridLayout:UpdateColor()
