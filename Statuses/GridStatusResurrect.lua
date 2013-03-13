@@ -126,6 +126,10 @@ function GridStatusResurrect:UpdateUnit(unit, guid)
 		local icon, startTime, duration, _
 		if hasRes == "CASTING" then
 			_, _, _, icon, startTime = UnitCastingInfo(casterUnit)
+			if not startTime then
+				-- ignore instant casts
+				return
+			end
 			startTime = startTime / 1000
 			duration = endTime - startTime
 		else
