@@ -27,7 +27,6 @@ GridStatusHeals.defaultDB = {
 	alert_heals = {
 		enable = true,
 		priority = 50,
-		range = false,
 		color = { r = 0, g = 1, b = 0, a = 1 },
 		text = "+%s",
 		icon = nil,
@@ -65,10 +64,6 @@ local healsOptions = {
 
 function GridStatusHeals:PostInitialize()
 	settings = GridStatusHeals.db.profile.alert_heals
-	if settings.minimumValue > 0.5 then
-		settings.minimumValue = 0.1
-	end
-
 	self:RegisterStatus("alert_heals", L["Incoming heals"], healsOptions, true)
 end
 
@@ -96,28 +91,29 @@ function GridStatusHeals:PostReset()
 end
 
 function GridStatusHeals:UpdateAllUnits()
-	for guid, unitid in GridRoster:IterateRoster() do
-		self:UpdateUnit("UpdateAllUnits", unitid)
+	for guid, unit in GridRoster:IterateRoster() do
+		self:UpdateUnit("UpdateAllUnits", unit)
 	end
 end
 
-local UnitGetIncomingHeals, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDeadOrGhost = UnitGetIncomingHeals, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDeadOrGhost
+local UnitGetIncomingHeals, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDeadOrGhost
+	= UnitGetIncomingHeals, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDeadOrGhost
 
-function GridStatusHeals:UpdateUnit(event, unitid)
-	if not unitid then return end
+function GridStatusHeals:UpdateUnit(event, unit)
+	if not unit then return end
 
-	local guid = UnitGUID(unitid)
+	local guid = UnitGUID(unit)
 	if not GridRoster:IsGUIDInRaid(guid) then return end
 
-	if not UnitIsDeadOrGhost(unitid) then
-		local incoming = UnitGetIncomingHeals(unitid) or 0
-		if incoming > 0 and settings.ignore_self then
-			incoming = incoming - (UnitGetIncomingHeals(unitid, "player") or 0)
+	if not UnitIsDeadOrGhost(unit) then
+		local incoming = UnitGetIncomingHeals(unit)
+		if incoming and settings.ignore_self then
+			incoming = incoming - (UnitGetIncomingHeals(unit, "player") or 0)
 		end
 		if incoming > 0 then
-			local maxHealth = UnitHealthMax(unitid)
+			local maxHealth = UnitHealthMax(unit)
 			if (incoming / maxHealth) > (settings.minimumValue or 0) then
-				return self:SendIncomingHealsStatus(guid, incoming, UnitHealth(unitid) + incoming, maxHealth)
+				return self:SendIncomingHealsStatus(guid, incoming, UnitHealth(unit) + incoming, maxHealth)
 			end
 		end
 	end

@@ -121,13 +121,13 @@ function GridLayout.prototype:GetVisibleUnitCount()
 	return count
 end
 
+function GridLayout.prototype:initialConfigFunction(...)
+	Grid:GetModule("GridFrame"):RegisterFrame(self[#self])
+end
+
 ------------------------------------------------------------------------
 
 local NUM_HEADERS = 0
-
-function GridLayout_InitialConfigFunction(frame)
-	Grid:GetModule("GridFrame").InitialConfigFunction(frame)
-end
 
 function GridLayout:CreateHeader(isPetGroup)
 	--self:Debug("CreateHeader")
@@ -148,27 +148,22 @@ function GridLayout:CreateHeader(isPetGroup)
 		header:SetAttribute("unitsuffix", "pet")
 	end
 
-	function header:Grid_InitialConfigFunction(...)
-		GridLayout_InitialConfigFunction(self[#self])
-	end
-
-	header.initialConfigFunction = GridLayout_InitialConfigFunction
-
 	header:SetAttribute("initialConfigFunction", [[
 		RegisterUnitWatch(self)
-
 		self:SetAttribute("*type1", "target")
-
 		self:SetAttribute("toggleForVehicle", true)
 
 		local header = self:GetParent()
-
 		if header:GetAttribute("unitsuffix") == "pet" then
 			self:SetAttribute("useOwnerUnit", true)
 			self:SetAttribute("unitsuffix", "pet")
 		end
-
-		header:CallMethod("Grid_InitialConfigFunction")
+		local click = header:GetFrameRef("clickcast_header")
+		if click then
+			click:SetAttribute("clickcast_button", self)
+			click:RunAttribute("clickcast_register")
+		end
+		header:CallMethod("initialConfigFunction")
 	]])
 
 	header:Reset()

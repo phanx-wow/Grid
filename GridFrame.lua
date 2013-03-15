@@ -40,13 +40,6 @@ local function GridFrame_OnAttributeChanged(self, name, value)
 	end
 end
 
-GridFrame.InitialConfigFunction = function(self)
-	GridFrame:RegisterFrame(self)
-
-	self:SetScript("OnShow", GridFrame_OnShow)
-	self:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
-end
-
 ------------------------------------------------------------------------
 
 GridFrame.prototype = { }
@@ -1387,6 +1380,9 @@ function GridFrame:RegisterFrame(frame)
 	self.registeredFrameCount = (self.registeredFrameCount or 0) + 1
 	self.registeredFrames[frame:GetName()] = self:InitializeFrame(frame)
 	self:UpdateFrameUnits()
+
+	frame:SetScript("OnShow", GridFrame_OnShow)
+	frame:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
 end
 
 function GridFrame:WithAllFrames(func, ...)

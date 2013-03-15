@@ -117,9 +117,8 @@ local function setupmenu()
     end
 end
 
---{{{ additional options
 local aggroOptions = {
-    ["threat"] = {
+    threat = {
         type = "toggle",
         name = L["Threat"],
         desc = L["Show more detailed threat levels."],
@@ -131,7 +130,6 @@ local aggroOptions = {
         end,
     },
 }
---}}}
 
 function GridStatusAggro:PostInitialize()
 	self:RegisterStatus("alert_aggro", L["Aggro alert"], aggroOptions, true)

@@ -68,6 +68,7 @@ GridFrame.lua
 GridStatus.lua
 GridHelp.lua
 
+Statuses\GridStatusAbsorbs.lua
 Statuses\GridStatusAggro.lua
 Statuses\GridStatusAuras.lua
 Statuses\GridStatusHeals.lua

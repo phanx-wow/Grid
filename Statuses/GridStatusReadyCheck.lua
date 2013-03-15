@@ -73,7 +73,8 @@ local function setstatuscolor(key, r, g, b, a)
 end
 
 local readyCheckOptions = {
-	["waiting"] = {
+	color = false,
+	waiting = {
 		name = L["Waiting color"],
 		desc = L["Color for Waiting."],
 		order = 86, width = "double",
@@ -82,7 +83,7 @@ local readyCheckOptions = {
 		get = function() return getstatuscolor("waiting") end,
 		set = function(_, r, g, b, a) setstatuscolor("waiting", r, g, b, a) end,
 	},
-	["ready"] = {
+	ready = {
 		name = L["Ready color"],
 		desc = L["Color for Ready."],
 		order = 87, width = "double",
@@ -91,7 +92,7 @@ local readyCheckOptions = {
 		get = function() return getstatuscolor("ready") end,
 		set = function(_, r, g, b, a) setstatuscolor("ready", r, g, b, a) end,
 	},
-	["notready"] = {
+	notready = {
 		name = L["Not Ready color"],
 		desc = L["Color for Not Ready."],
 		order = 88, width = "double",
@@ -100,7 +101,7 @@ local readyCheckOptions = {
 		get = function() return getstatuscolor("notready") end,
 		set = function(_, r, g, b, a) setstatuscolor("notready", r, g, b, a) end,
 	},
-	["afk"] = {
+	afk = {
 		name = L["AFK color"],
 		desc = L["Color for AFK."],
 		order = 89, width = "double",
@@ -109,7 +110,7 @@ local readyCheckOptions = {
 		get = function() return getstatuscolor("afk") end,
 		set = function(_, r, g, b, a) setstatuscolor("afk", r, g, b, a) end,
 	},
-	["delay"] = {
+	delay = {
 		name = L["Delay"],
 		desc = L["Set the delay until ready check results are cleared."],
 		width = "double",
@@ -121,8 +122,6 @@ local readyCheckOptions = {
 			GridStatusReadyCheck.db.profile.ready_check.delay = v
 		end,
 	},
-	["color"] = false,
-	["range"] = false,
 }
 
 function GridStatusReadyCheck:PostInitialize()
