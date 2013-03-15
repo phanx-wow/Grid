@@ -14,9 +14,10 @@
 
 local _, Grid = ...
 local L = Grid.L
-local GridRoster = Grid:GetModule("GridRoster")
 
 local settings
+
+local GridRoster = Grid:GetModule("GridRoster")
 
 local GridStatusAbsorbs = Grid:NewStatusModule("GridStatusAbsorbs")
 GridStatusAbsorbs.menuName = L["Absorbs"]
@@ -26,30 +27,14 @@ GridStatusAbsorbs.defaultDB = {
 	alert_absorbs = {
 		enable = true,
 		priority = 50,
+		range = false,
 		color = { r = 1, g = 1, b = 0, a = 1 },
-		text = "+%s",
-		mininumValue = 0.2,
-	},
-}
-
-local extraOptions = {
-	mininumValue = {
-		width = "double",
-		type = "range", min = 0, max = 0.5, step = 0.05, isPercent = true,
-		name = L["Minimum Value"],
-		desc = L["Ignore absorb values less than this percent of the unit's maximum health."],
-		get = function()
-			return GridStatusAbsorbs.db.profile.alert_absorbs.mininumValue
-		end,
-		set = function(_, v)
-			GridStatusAbsorbs.db.profile.alert_absorbs.mininumValue = v
-		end,
 	},
 }
 
 function GridStatusAbsorbs:PostInitialize()
-	settings = self.db.profile.alert_absorbs
 	self:RegisterStatus("alert_absorbs", L["Incoming heals"], nil, true)
+	settings = self.db.profile.alert_absorbs
 end
 
 function GridStatusAbsorbs:OnStatusEnable(status)
@@ -90,27 +75,18 @@ function GridStatusAbsorbs:UpdateUnit(event, unit)
 	local guid = UnitGUID(unit)
 	if not GridRoster:IsGUIDInRaid(guid) then return end
 
-	local amount = UnitGetTotalAbsorbs(unit)
-	if amount and amount > 0 then
-		local maxHealth = UnitHealthMax(unit)
-		if (amount / maxHealth) >= settings.minimumValue then
-			local text = amount
-			if amount > 9999 then
-				text = format("%.0fk", amount / 1000)
-			elseif amount > 999 then
-				text = format("%.1fk", amount / 1000)
-			end
-
-			return self.core:SendStatusGained(guid, "alert_absorbs",
-				settings.priority,
-				nil,
-				settings.color,
-				format(settings.text, text),
-				UnitHealth(unit) + amount,
-				maxHealth,
-				settings.icon
-			)
-		end
+	local amount = UnitGetTotalAbsorbs(unit) or 0
+	if amount > 0 then
+		self.core:SendStatusGained(guid, "alert_absorbs",
+			settings.priority,
+			nil,
+			settings.color,
+			amount,
+			UnitHealth(unit) + amount,
+			UnitHealthMax(unit),
+			settings.icon
+		)
+	else
+		self.core:SendStatusLost(guid, "alert_absorbs")
 	end
-	self.core:SendStatusLost(guid, "alert_absorbs")
 end
