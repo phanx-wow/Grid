@@ -40,7 +40,7 @@ local spell_names = {
 	["Renewing Mist"] = GetSpellInfo(115151),
 -- Paladin
 	["Beacon of Light"] = GetSpellInfo(53563),
-	["Eternal Flame"] = GetSpellInfo("114163"),
+	["Eternal Flame"] = GetSpellInfo(114163),
 	["Forbearance"] = GetSpellInfo(25771),
 	["Sacred Shield"] = GetSpellInfo(20925),
 -- Priest
@@ -66,7 +66,7 @@ local debuff_types = {
 	["Poison"] = "dispel_poison",
 }
 
-local can_dispel = {}
+local PlayerCanDispel = {}
 
 function GridStatusAuras:StatusForSpell(spell, isBuff)
 	return format(isBuff and "buff_%s" or "debuff_%s", gsub(spell, " ", ""))
@@ -969,36 +969,36 @@ function GridStatusAuras:UpdateDispellable()
 	local _, class = UnitClass("player")
 
 	if class == "DRUID" then
-		can_dispel.Curse = IsSpellKnown(2782)
-		can_dispel.Magic = GetSpecialization() == 4 and UnitLevel("player") >= 22
-		can_dispel.Poison = IsSpellKnown(2782)
+		PlayerCanDispel.Curse   = IsPlayerSpell(88423) or IsPlayerSpell(2782) -- Nature's Cure / Remove Corruption
+		PlayerCanDispel.Magic   = IsPlayerSpell(88423)
+		PlayerCanDispel.Poison  = IsPlayerSpell(88423) or IsPlayerSpell(2782) -- RC is base, but doesn't return true for NC
 
 	elseif class == "MAGE" then
-		can_dispel.Curse = IsSpellKnown(475)
+		PlayerCanDispel.Curse   = IsPlayerSpell(475)    -- Remove Curse
 
 	elseif class == "MONK" then
-		can_dispel.Disease = IsPlayerSpell(115450)
-		can_dispel.Magic = GetSpecialization() == 2 and UnitLevel("player") >= 20
-		can_dispel.Poison = IsPlayerSpell(115450)
+		PlayerCanDispel.Disease = IsPlayerSpell(115450) -- Detox
+		PlayerCanDispel.Magic   = IsPlayerSpell(115451) -- Internal Medicine (Mistweaver spec passive) -- CHECK LEVEL
+		PlayerCanDispel.Poison  = IsPlayerSpell(115450)
 
 	elseif class == "PALADIN" then
-		can_dispel.Disease = IsSpellKnown(4987)
-		can_dispel.Magic = GetSpecialization() == 1 and UnitLevel("player") >= 20
-		can_dispel.Poison = IsSpellKnown(4987)
+		PlayerCanDispel.Disease = IsPlayerSpell(4987)   -- Cleanse
+		PlayerCanDispel.Magic   = IsPlayerSpell(53551)  -- Sacred Cleansing (Holy spec passive) -- CHECK LEVEL
+		PlayerCanDispel.Poison  = IsPlayerSpell(4987)
 
 	elseif class == "PRIEST" then
-		local spec = GetSpecialization()
-		local level = UnitLevel("player")
-		local mass = IsPlayerSpell(32375)
-		can_dispel.Curse = mass
-		can_dispel.Disease = mass or ((spec == 1 or spec == 2) and level >= 22)
-		can_dispel.Magic = mass or (spec == 2 and level >= 22)
-		can_dispel.Poison = mass
+		local mass = IsPlayerSpell(32375) -- Mass Dispel
+		PlayerCanDispel.Curse   = mass
+		PlayerCanDispel.Disease = mass or IsPlayerSpell(527) -- Purify
+		PlayerCanDispel.Magic   = mass or IsPlayerSpell(527)
+		PlayerCanDispel.Poison  = mass
 
 	elseif class == "SHAMAN" then
-		can_dispel.Curse = IsSpellKnown(51886)
-		can_dispel.Magic = GetSpecialization() == 3 and UnitLevel("player") >= 18
+		PlayerCanDispel.Curse   = IsPlayerSpell(51886) -- Cleanse Spirit, also returns true for Purify Spirit
+		PlayerCanDispel.Magic   = IsPlayerSpell(77130) -- Purify Spirit
 	end
+
+	Grid_PlayerCanDispel = PlayerCanDispel -- debugging
 end
 
 -- Unit Aura Driver
@@ -1411,7 +1411,7 @@ function GridStatusAuras:UnitGainedDebuffType(guid, class, name, rank, icon, cou
 	local settings = self.db.profile[status]
 	if not settings then return end
 
-	if settings.enable and (can_dispel[debuffType] or not settings.dispellable) then -- and settings[class] ~= false then -- ##DELETE
+	if settings.enable and (PlayerCanDispel[debuffType] or not settings.dispellable) then -- and settings[class] ~= false then -- ##DELETE
 		local start = expirationTime and (expirationTime - duration)
 		local timeLeft = expirationTime and expirationTime > now and (expirationTime - now) or 0
 		local text, color = self:StatusTextColor(settings, count, timeLeft)
