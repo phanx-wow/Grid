@@ -835,7 +835,7 @@ function GridLayout:ReloadLayout()
 	--self:Debug("ReloadLayout")
 	local party_type = GridRoster:GetPartyState()
 	-- Switch to 10 Player or 25 Player layout if World Raid support is not enabled
-	if party_type == "raid_40" and not self.db.profile.layouts["raid_outside"] and not IsInInstance() then
+	if party_type == "raid_40" and not self.db.profile.layouts.raid_outside and not IsInInstance() then
 		local difficulty = GetRaidDifficultyID()
 		party_type = difficulty % 2 == 0 and "raid_25" or "raid_10"
 	end
