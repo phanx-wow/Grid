@@ -810,7 +810,7 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 	layoutGroup:ClearAllPoints()
 	layoutGroup:SetParent(self.frame)
 	if groupNumber == 1 then
-		layoutGroup:SetPoint(groupAnchor, self.frame, groupAnchor, spacing * xMult, spacing * yMult)
+		layoutGroup:SetPoint(groupAnchor, self.frame, groupAnchor, spacing * xMult + 4, spacing * yMult + 4) -- 4 backdrop inset
 	else
 		if horizontal then
 			xMult = 0
@@ -1006,7 +1006,7 @@ function GridLayout:UpdateSize()
 
 	local groupCount, curWidth, curHeight, maxWidth, maxHeight = -1, 0, 0, 0, 0
 
-	local Padding, Spacing = p.Padding, p.Spacing * 2
+	local Padding, Spacing = p.Padding, p.Spacing * 2 + 8 -- 2x4 backdrop inset
 
 	for i = 1, #self.layoutGroups do
 		local layoutGroup = self.layoutGroups[i]
