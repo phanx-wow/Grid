@@ -996,6 +996,10 @@ function GridStatusAuras:UpdateDispellable()
 	elseif class == "SHAMAN" then
 		PlayerCanDispel.Curse   = IsPlayerSpell(51886) -- Cleanse Spirit, also returns true for Purify Spirit
 		PlayerCanDispel.Magic   = IsPlayerSpell(77130) -- Purify Spirit
+
+	elseif class == "WARLOCK" then
+		PlayerCanDispel.Magic   = IsPlayerSpell(115276, true) or IsPlayerSpell(89808, true) -- Sear Magic (Fel Imp) or Singe Magic (Imp)
+
 	end
 
 	Grid_PlayerCanDispel = PlayerCanDispel -- debugging
