@@ -95,11 +95,17 @@ function GridStatusAbsorbs:UpdateUnit(event, unit)
 	if amount > 0 then
 		local maxHealth = UnitHealthMax(unit)
 		if (amount / maxHealth) > settings.minimumValue then
+			local text = amount
+			if amount > 9999 then
+				text = format("%.0fk", amount / 1000)
+			elseif amount > 999 then
+				text = format("%.1fk", amount / 1000)
+			end
 			self.core:SendStatusGained(guid, "alert_absorbs",
 				settings.priority,
 				nil,
 				settings.color,
-				amount,
+				format(settings.text, text),
 				UnitHealth(unit) + amount,
 				UnitHealthMax(unit),
 				settings.icon
