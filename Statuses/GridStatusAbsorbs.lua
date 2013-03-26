@@ -27,13 +27,29 @@ GridStatusAbsorbs.defaultDB = {
 	alert_absorbs = {
 		enable = true,
 		priority = 50,
-		range = false,
 		color = { r = 1, g = 1, b = 0, a = 1 },
+		text = "+%s",
+		minimumValue = 0.1,
+	},
+}
+
+local extraOptionsForStatus = {
+	minimumValue = {
+		width = "double",
+		type = "range", min = 0, max = 0.5, step = 0.05, isPercent = true,
+		name = L["Minimum Value"],
+		desc = L["Only show total absorbs greater than this percent of the unit's maximum health."],
+		get = function()
+			return GridStatusAbsorbs.db.profile.alert_absorbs.minimumValue
+		end,
+		set = function(_, v)
+			GridStatusAbsorbs.db.profile.alert_absorbs.minimumValue = v
+		end,
 	},
 }
 
 function GridStatusAbsorbs:PostInitialize()
-	self:RegisterStatus("alert_absorbs", L["Incoming heals"], nil, true)
+	self:RegisterStatus("alert_absorbs", L["Absorbs"], extraOptionsForStatus, true)
 	settings = self.db.profile.alert_absorbs
 end
 
@@ -77,15 +93,18 @@ function GridStatusAbsorbs:UpdateUnit(event, unit)
 
 	local amount = UnitGetTotalAbsorbs(unit) or 0
 	if amount > 0 then
-		self.core:SendStatusGained(guid, "alert_absorbs",
-			settings.priority,
-			nil,
-			settings.color,
-			amount,
-			UnitHealth(unit) + amount,
-			UnitHealthMax(unit),
-			settings.icon
-		)
+		local maxHealth = UnitHealthMax(unit)
+		if (amount / maxHealth) > settings.minimumValue then
+			self.core:SendStatusGained(guid, "alert_absorbs",
+				settings.priority,
+				nil,
+				settings.color,
+				amount,
+				UnitHealth(unit) + amount,
+				UnitHealthMax(unit),
+				settings.icon
+			)
+		end
 	else
 		self.core:SendStatusLost(guid, "alert_absorbs")
 	end
