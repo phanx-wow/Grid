@@ -107,13 +107,15 @@ function GridStatusHeals:UpdateUnit(event, unit)
 
 	if not UnitIsDeadOrGhost(unit) then
 		local incoming = UnitGetIncomingHeals(unit)
-		if incoming and settings.ignore_self then
-			incoming = incoming - (UnitGetIncomingHeals(unit, "player") or 0)
-		end
-		if incoming > 0 then
-			local maxHealth = UnitHealthMax(unit)
-			if (incoming / maxHealth) > (settings.minimumValue or 0) then
-				return self:SendIncomingHealsStatus(guid, incoming, UnitHealth(unit) + incoming, maxHealth)
+		if incoming then
+			if settings.ignore_self then
+				incoming = incoming - (UnitGetIncomingHeals(unit, "player") or 0)
+			end
+			if incoming > 0 then
+				local maxHealth = UnitHealthMax(unit)
+				if (incoming / maxHealth) > (settings.minimumValue or 0) then
+					return self:SendIncomingHealsStatus(guid, incoming, UnitHealth(unit) + incoming, maxHealth)
+				end
 			end
 		end
 	end
