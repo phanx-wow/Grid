@@ -810,7 +810,7 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 	layoutGroup:ClearAllPoints()
 	layoutGroup:SetParent(self.frame)
 	if groupNumber == 1 then
-		layoutGroup:SetPoint(groupAnchor, self.frame, groupAnchor, spacing * xMult + 4, spacing * yMult + 4) -- 4 backdrop inset
+		layoutGroup:SetPoint(groupAnchor, self.frame, groupAnchor, spacing * xMult + 4, spacing * yMult - 4) -- 4 backdrop inset
 	else
 		if horizontal then
 			xMult = 0
