@@ -978,12 +978,12 @@ function GridStatusAuras:UpdateDispellable()
 
 	elseif class == "MONK" then
 		PlayerCanDispel.Disease = IsPlayerSpell(115450) -- Detox
-		PlayerCanDispel.Magic   = IsPlayerSpell(115451) -- Internal Medicine (Mistweaver spec passive) -- CHECK LEVEL
+		PlayerCanDispel.Magic   = IsPlayerSpell(115451) -- Internal Medicine (Mistweaver spec passive)
 		PlayerCanDispel.Poison  = IsPlayerSpell(115450)
 
 	elseif class == "PALADIN" then
 		PlayerCanDispel.Disease = IsPlayerSpell(4987)   -- Cleanse
-		PlayerCanDispel.Magic   = IsPlayerSpell(53551)  -- Sacred Cleansing (Holy spec passive) -- CHECK LEVEL
+		PlayerCanDispel.Magic   = IsPlayerSpell(53551)  -- Sacred Cleansing (Holy spec passive)
 		PlayerCanDispel.Poison  = IsPlayerSpell(4987)
 
 	elseif class == "PRIEST" then
