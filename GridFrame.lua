@@ -37,6 +37,13 @@ local function GridFrame_OnAttributeChanged(self, name, value)
 		GridFrame:SendMessage("UpdateFrameUnits")
 	elseif name == "type1" and (not value or value == "") and self:CanChangeAttribute() then
 		self:SetAttribute("type1", "target")
+	elseif name == "type2" and (not value or value == "" or value == "menu" or value == "togglemenu") and self:CanChangeAttribute() then
+		local wanted = GridFrame.db.profile.rightClickMenu
+		if (value == "menu" or value == "togglemenu") and not wanted then
+			self:SetAttribute(name, nil)
+		elseif wanted and (not value or value == "") then
+			self:SetAttribute("type2", "togglemenu")
+		end
 	end
 end
 
@@ -55,10 +62,16 @@ function GridFrame:InitializeFrame(frame)
 
 	frame:RegisterForClicks("LeftButtonUp", "RightButtonUp", "MiddleButtonUp", "Button4Up", "Button5Up")
 
-	-- set our left-click action
 	if frame:CanChangeAttribute() then
-		frame:SetAttribute("*type1", "target")
+		frame:SetAttribute("initial-width", self.db.profile.frameWidth)
+		frame:SetAttribute("initial-height", self.db.profile.frameHeight)
+		if not self.db.profile.rightClickMenu then
+			frame:SetAttribute("type2", nil) -- remove right-click menu
+		end
 	end
+
+	frame:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
+	frame:SetScript("OnShow", GridFrame_OnShow)
 
 	-- tooltip support, use HookScript in case our template defined OnEnter/OnLeave
 	frame:HookScript("OnEnter", frame.OnEnter)
@@ -193,11 +206,6 @@ function GridFrame:InitializeFrame(frame)
 	-- set texture
 	frame:SetNormalTexture("")
 	frame:EnableMouseoverHighlight(GridFrame.db.profile.enableMouseoverHighlight)
-
-	if frame:CanChangeAttribute() then
-		frame:SetAttribute("initial-width", self.db.profile.frameWidth)
-		frame:SetAttribute("initial-height", self.db.profile.frameHeight)
-	end
 
 	frame:Reset()
 
@@ -972,6 +980,26 @@ GridFrame.options = {
 						GridFrame.db.profile.showTooltip = v
 					end,
 				},
+				menu = {
+					name = L["Enable right-click menu"],
+					desc = L["Show the standard unit menu when right-clicking on a frame."],
+					order = 55, width = "double",
+					type = "toggle",
+					get = function()
+						return GridFrame.db.profile.rightClickMenu
+					end,
+					set = function(_, v)
+						GridFrame.db.profile.rightClickMenu = v
+						for _, frame in pairs(GridFrame.registeredFrames) do
+							local attrib = frame:GetAttribute("type2")
+							if (attrib == "menu" or attrib == "togglemenu") and not v then
+								frame:SetAttribute("type2", nil)
+							elseif v and (not attrib or attrib == "") then
+								frame:SetAttribute("type2", "togglemenu")
+							end
+						end
+					end,
+				},
 				orientation = {
 					name = L["Orientation of Frame"],
 					desc = L["Set frame orientation."],
@@ -1380,9 +1408,6 @@ function GridFrame:RegisterFrame(frame)
 	self.registeredFrameCount = (self.registeredFrameCount or 0) + 1
 	self.registeredFrames[frame:GetName()] = self:InitializeFrame(frame)
 	self:UpdateFrameUnits()
-
-	frame:SetScript("OnShow", GridFrame_OnShow)
-	frame:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
 end
 
 function GridFrame:WithAllFrames(func, ...)
