@@ -721,7 +721,7 @@ function GridLayout:CreateFrames()
 	})
 
 	-- create drag handle
-	f.tab = CreateFrame("Frame", nil, f)
+	f.tab = CreateFrame("Frame", "$parentTab", f)
 	f.tab:SetWidth(48)
 	f.tab:SetHeight(24)
 	f.tab:EnableMouse(true)
