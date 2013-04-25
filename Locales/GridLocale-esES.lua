@@ -13,7 +13,7 @@
 	Contributors: Akkorian, Guiaswow, Valdesca, yllelder
 ----------------------------------------------------------------------]]
 
-if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
+if not GetLocale():match("^es") then return end
 
 local _, Grid = ...
 local L = { }
@@ -79,6 +79,10 @@ Grid.L = L
 --	GridStatusReadyCheck
 
 --@localization(locale="esES", namespace="GridStatusReadyCheck", format="lua_additive_table")@
+------------------------------------------------------------------------
+--	GridStatusResurrect
+
+--@localization(locale="esES", namespace="GridStatusResurrect", format="lua_additive_table")@
 ------------------------------------------------------------------------
 --	GridStatusTarget
 

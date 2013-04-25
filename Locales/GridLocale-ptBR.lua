@@ -13,7 +13,7 @@
 	Contributors: heltonaugusto, leocolpas
 ----------------------------------------------------------------------]]
 
-if GetLocale() ~= "ptBR" then return end
+if not GetLocale():match("^pt") then return end
 
 local _, Grid = ...
 local L = { }
@@ -79,6 +79,10 @@ Grid.L = L
 --	GridStatusReadyCheck
 
 --@localization(locale="ptBR", namespace="GridStatusReadyCheck", format="lua_additive_table")@
+------------------------------------------------------------------------
+--	GridStatusResurrect
+
+--@localization(locale="ptBR", namespace="GridStatusResurrect", format="lua_additive_table")@
 ------------------------------------------------------------------------
 --	GridStatusTarget
 

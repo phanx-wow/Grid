@@ -80,6 +80,10 @@ Grid.L = L
 
 --@localization(locale="zhTW", namespace="GridStatusReadyCheck", format="lua_additive_table")@
 ------------------------------------------------------------------------
+--	GridStatusResurrect
+
+--@localization(locale="zhTW", namespace="GridStatusResurrect", format="lua_additive_table")@
+------------------------------------------------------------------------
 --	GridStatusTarget
 
 --@localization(locale="zhTW", namespace="GridStatusTarget", format="lua_additive_table")@
