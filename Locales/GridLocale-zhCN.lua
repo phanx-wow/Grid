@@ -82,7 +82,7 @@ Grid.L = L
 ------------------------------------------------------------------------
 --	GridStatusResurrect
 
---@localization(locale="zhCn", namespace="GridStatusResurrect", format="lua_additive_table")@
+--@localization(locale="zhCN", namespace="GridStatusResurrect", format="lua_additive_table")@
 ------------------------------------------------------------------------
 --	GridStatusTarget
 
