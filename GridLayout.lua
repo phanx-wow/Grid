@@ -248,6 +248,9 @@ GridLayout.options = {
 			order = 15,
 			width = "double",
 			type = "toggle",
+			get = function()
+				return not GridLayout.db.profile.hideTab
+			end,
 			set = function(_, show)
 				GridLayout.db.profile.hideTab = not show
 				GridLayout:UpdateTabVisibility()
