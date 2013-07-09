@@ -46,20 +46,21 @@ function GridLayout.prototype:Reset()
 	self:SetAttribute("showRaid", true)
 
 	self:SetAttribute("columnSpacing", nil)
-	self:SetAttributeByProxy("columnAnchorPoint", nil)
 	self:SetAttribute("groupBy", nil)
 	self:SetAttribute("groupFilter", nil)
 	self:SetAttribute("groupingOrder", nil)
 	self:SetAttribute("maxColumns", nil)
 	self:SetAttribute("nameList", nil)
-	self:SetAttributeByProxy("point", nil)
 	self:SetAttribute("sortDir", nil)
 	self:SetAttribute("sortMethod", "NAME")
 	self:SetAttribute("startingIndex", nil)
 	self:SetAttribute("strictFiltering", nil)
-	self:SetAttributeByProxy("unitsPerColumn", nil)
 	self:SetAttribute("xOffset", nil)
 	self:SetAttribute("yOffset", nil)
+
+	self:SetAttributeByProxy("columnAnchorPoint", nil)
+	self:SetAttributeByProxy("point", nil)
+	self:SetAttributeByProxy("unitsPerColumn", nil)
 end
 
 function GridLayout.prototype:SetAttributeByProxy(name, value)
@@ -705,6 +706,14 @@ function GridLayout:CreateFrames()
 	hider:SetAllPoints(true)
 	RegisterStateDriver(hider, "visibility", "[petbattle] hide; show")
 
+	-- create backdrop
+	local bg = CreateFrame("Frame", nil, hider)
+	bg:SetBackdrop({
+		bgFile = "Interface\\ChatFrame\\ChatFrameBackground", tile = false, tileSize = 16,
+		edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16,
+		insets = {left = 4, right = 4, top = 4, bottom = 4},
+	})
+
 	-- create main frame to hold all our gui elements
 	local f = CreateFrame("Frame", "GridLayoutFrame", hider)
 	f:SetMovable(true)
@@ -715,13 +724,10 @@ function GridLayout:CreateFrames()
 	f:SetScript("OnHide", GridLayout_OnMouseUp)
 	f:SetFrameStrata("MEDIUM")
 
-	-- create background
-	f:SetFrameLevel(0)
-	f:SetBackdrop({
-		bgFile = "Interface\\ChatFrame\\ChatFrameBackground", tile = false, tileSize = 16,
-		edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16,
-		insets = {left = 4, right = 4, top = 4, bottom = 4},
-	})
+	-- attach backdrop to frame
+	bg:SetPoint("BOTTOMLEFT", f, -4, -4)
+	bg:SetPoint("TOPRIGHT", f, 4, 4)
+	f.backdrop = bg
 
 	-- create drag handle
 	f.tab = CreateFrame("Frame", "$parentTab", f)
@@ -813,7 +819,7 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 	layoutGroup:ClearAllPoints()
 	layoutGroup:SetParent(self.frame)
 	if groupNumber == 1 then
-		layoutGroup:SetPoint(groupAnchor, self.frame, groupAnchor, spacing * xMult + 4, spacing * yMult - 4) -- 4 backdrop inset
+		layoutGroup:SetPoint(groupAnchor, self.frame, groupAnchor, spacing * xMult, spacing * yMult)
 	else
 		if horizontal then
 			xMult = 0
@@ -995,9 +1001,9 @@ end
 function GridLayout:UpdateVisibility()
 	--self:Debug("UpdateVisibility")
 	if self.db.profile.layouts[(GridRoster:GetPartyState())] == L["None"] then
-		self.frame:Hide()
+		self.frame.backdrop:Hide()
 	else
-		self.frame:Show()
+		self.frame.backdrop:Show()
 	end
 end
 
@@ -1009,7 +1015,7 @@ function GridLayout:UpdateSize()
 
 	local groupCount, curWidth, curHeight, maxWidth, maxHeight = -1, 0, 0, 0, 0
 
-	local Padding, Spacing = p.Padding, p.Spacing * 2 + 8 -- 2x4 backdrop inset
+	local Padding, Spacing = p.Padding, p.Spacing * 2
 
 	for i = 1, #self.layoutGroups do
 		local layoutGroup = self.layoutGroups[i]
@@ -1046,7 +1052,7 @@ function GridLayout:UpdateSize()
 
 	self.frame:SetWidth(x)
 	self.frame:SetHeight(y)
-	self.frame:SetClampRectInsets(Spacing, -Spacing, -Spacing, Spacing)
+	self.frame:SetClampRectInsets(p.Spacing, -p.Spacing, -p.Spacing, p.Spacing)
 end
 
 function GridLayout:UpdateColor()
@@ -1054,14 +1060,14 @@ function GridLayout:UpdateColor()
 	local settings = self.db.profile
 
 	if media then
-		local backdrop = self.frame:GetBackdrop()
+		local backdrop = self.frame.backdrop:GetBackdrop()
 		backdrop.bgFile = media:Fetch(media.MediaType.BACKGROUND, settings.backgroundTexture)
 		backdrop.edgeFile = media:Fetch(media.MediaType.BORDER, settings.borderTexture)
-		self.frame:SetBackdrop(backdrop)
+		self.frame.backdrop:SetBackdrop(backdrop)
 	end
 
-	self.frame:SetBackdropBorderColor(settings.borderColor.r, settings.borderColor.g, settings.borderColor.b, settings.borderColor.a)
-	self.frame:SetBackdropColor(settings.backgroundColor.r, settings.backgroundColor.g, settings.backgroundColor.b, settings.backgroundColor.a)
+	self.frame.backdrop:SetBackdropBorderColor(settings.borderColor.r, settings.borderColor.g, settings.borderColor.b, settings.borderColor.a)
+	self.frame.backdrop:SetBackdropColor(settings.backgroundColor.r, settings.backgroundColor.g, settings.backgroundColor.b, settings.backgroundColor.a)
 end
 
 function GridLayout:SavePosition()

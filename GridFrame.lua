@@ -11,7 +11,7 @@
 
 local GRID, Grid = ...
 local L = Grid.L
-
+local format, gsub, pairs, tonumber, type = format, gsub, pairs, tonumber, type
 local GridStatus
 
 local media = LibStub("LibSharedMedia-3.0", true)
@@ -20,8 +20,7 @@ if media then
 end
 
 local GridFrame = Grid:NewModule("GridFrame", "AceBucket-3.0", "AceTimer-3.0")
-
-local format, gsub, pairs, tonumber, type = format, gsub, pairs, tonumber, type
+GridFrame.prototype = {}
 
 ------------------------------------------------------------------------
 
@@ -34,22 +33,22 @@ end
 
 local function GridFrame_OnAttributeChanged(self, name, value)
 	if name == "unit" then
-		GridFrame:SendMessage("UpdateFrameUnits")
-	elseif name == "type1" and (not value or value == "") and self:CanChangeAttribute() then
-		self:SetAttribute("type1", "target")
-	elseif name == "type2" and (not value or value == "" or value == "menu" or value == "togglemenu") and self:CanChangeAttribute() then
-		local wanted = GridFrame.db.profile.rightClickMenu
-		if (value == "menu" or value == "togglemenu") and not wanted then
-			self:SetAttribute(name, nil)
-		elseif wanted and (not value or value == "") then
-			self:SetAttribute("type2", "togglemenu")
+		return GridFrame:SendMessage("UpdateFrameUnits")
+	elseif self:CanChangeAttribute() then
+		if name == "type1" then
+			if not value or value == "" then
+				self:SetAttribute("type1", "target")
+			end
+		elseif name == "type2" then
+			local wanted = GridFrame.db.profile.rightClickMenu
+			if wanted and (not value or value == "") then
+				self:SetAttribute("type2", "togglemenu")
+			elseif value == "togglemenu" and not wanted then
+				self:SetAttribute("type2", nil)
+			end
 		end
 	end
 end
-
-------------------------------------------------------------------------
-
-GridFrame.prototype = { }
 
 function GridFrame:InitializeFrame(frame)
 	-- set media based on shared media
@@ -217,18 +216,18 @@ end
 
 -- used by GridFrame:UpdateOptionsMenu()
 GridFrame.prototype.indicators = {
-	{ type = "border",		order = 1,  name = L["Border"] },
-	{ type = "bar",			order = 2,  name = L["Health Bar"] },
-	{ type = "barcolor",	order = 3,  name = L["Health Bar Color"] },
-	{ type = "healingBar",	order = 4,  name = L["Healing Bar"] },
-	{ type = "text",		order = 5,  name = L["Center Text"] },
-	{ type = "text2",		order = 6,  name = L["Center Text 2"] },
-	{ type = "icon",		order = 7,  name = L["Center Icon"] },
-	{ type = "corner4",		order = 8,  name = L["Top Left Corner"] },
-	{ type = "corner3",		order = 9,  name = L["Top Right Corner"] },
-	{ type = "corner1",		order = 10, name = L["Bottom Left Corner"] },
-	{ type = "corner2",		order = 11, name = L["Bottom Right Corner"] },
-	{ type = "frameAlpha",	order = 12, name = L["Frame Alpha"] },
+	{ type = "border",     order = 1,  name = L["Border"] },
+	{ type = "bar",        order = 2,  name = L["Health Bar"] },
+	{ type = "barcolor",   order = 3,  name = L["Health Bar Color"] },
+	{ type = "healingBar", order = 4,  name = L["Healing Bar"] },
+	{ type = "text",       order = 5,  name = L["Center Text"] },
+	{ type = "text2",      order = 6,  name = L["Center Text 2"] },
+	{ type = "icon",       order = 7,  name = L["Center Icon"] },
+	{ type = "corner4",    order = 8,  name = L["Top Left Corner"] },
+	{ type = "corner3",    order = 9,  name = L["Top Right Corner"] },
+	{ type = "corner1",    order = 10, name = L["Bottom Left Corner"] },
+	{ type = "corner2",    order = 11, name = L["Bottom Right Corner"] },
+	{ type = "frameAlpha", order = 12, name = L["Frame Alpha"] },
 }
 
 function GridFrame.prototype:Reset()
@@ -991,10 +990,10 @@ GridFrame.options = {
 					set = function(_, v)
 						GridFrame.db.profile.rightClickMenu = v
 						for _, frame in pairs(GridFrame.registeredFrames) do
-							local attrib = frame:GetAttribute("type2")
-							if (attrib == "menu" or attrib == "togglemenu") and not v then
+							local attrib = frame:GetAttribute("type2") or ""
+							if attrib == "togglemenu" and not v then
 								frame:SetAttribute("type2", nil)
-							elseif v and (not attrib or attrib == "") then
+							elseif v and attrib == "" then
 								frame:SetAttribute("type2", "togglemenu")
 							end
 						end

@@ -1,4 +1,4 @@
-## Interface: 50200
+## Interface: 50300
 ## Version: @project-version@
 ## X-ReleaseDate: "$Date$"
 
@@ -52,15 +52,7 @@ Libs\AceGUI-3.0-Spell-EditBox\AceGUI-3.0-Spell-EditBox.xml
 Libs\UTF8\utf8.lua
 #@end-no-lib-strip@
 
-Locales\GridLocale-deDE.lua
-Locales\GridLocale-esES.lua
-Locales\GridLocale-frFR.lua
-Locales\GridLocale-itIT.lua
-Locales\GridLocale-ptBR.lua
-Locales\GridLocale-ruRU.lua
-Locales\GridLocale-koKR.lua
-Locales\GridLocale-zhCN.lua
-Locales\GridLocale-zhTW.lua
+Locales\Locales.xml
 
 GridCore.lua
 GridRoster.lua
@@ -70,16 +62,4 @@ GridFrame.lua
 GridStatus.lua
 GridHelp.lua
 
-Statuses\GridStatusAbsorbs.lua
-Statuses\GridStatusAggro.lua
-Statuses\GridStatusAuras.lua
-Statuses\GridStatusHeals.lua
-Statuses\GridStatusHealth.lua
-Statuses\GridStatusMana.lua
-Statuses\GridStatusName.lua
-Statuses\GridStatusRange.lua
-Statuses\GridStatusReadyCheck.lua
-Statuses\GridStatusResurrect.lua
-Statuses\GridStatusTarget.lua
-Statuses\GridStatusVehicle.lua
-Statuses\GridStatusVoiceComm.lua
+Statuses\Statuses.xml
