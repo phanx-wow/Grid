@@ -97,11 +97,13 @@ do
 	end
 end
 
-local IsSpellInRange, UnitInRange, UnitIsUnit = IsSpellInRange, UnitInRange, UnitIsUnit
+local IsSpellInRange, UnitInPhase, UnitInRange, UnitIsUnit = IsSpellInRange, UnitInRange, UnitInPhase, UnitIsUnit
 
 local function GroupRangeCheck(self, unit)
 	if UnitIsUnit(unit, "player") then
 		return true
+	elseif not UnitInPhase(unit) then
+		return false
 	elseif resSpell and UnitIsDead(unit) and not UnitIsDead("player") then
 		return IsSpellInRange(resSpell, unit) == 1
 	else

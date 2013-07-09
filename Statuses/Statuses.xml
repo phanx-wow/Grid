@@ -1,0 +1,16 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Script file="GridStatusAbsorbs.lua"/>
+	<Script file="GridStatusAggro.lua"/>
+	<Script file="GridStatusAuras.lua"/>
+	<Script file="GridStatusHeals.lua"/>
+	<Script file="GridStatusHealth.lua"/>
+	<Script file="GridStatusMana.lua"/>
+	<Script file="GridStatusName.lua"/>
+	<Script file="GridStatusRange.lua"/>
+	<Script file="GridStatusReadyCheck.lua"/>
+	<Script file="GridStatusResurrect.lua"/>
+	<Script file="GridStatusTarget.lua"/>
+	<Script file="GridStatusVehicle.lua"/>
+	<Script file="GridStatusVoiceComm.lua"/>
+</Ui>

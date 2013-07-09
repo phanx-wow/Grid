@@ -1,0 +1,12 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Script file="GridLocale-deDE.lua"/>
+	<Script file="GridLocale-esES.lua"/>
+	<Script file="GridLocale-frFR.lua"/>
+	<Script file="GridLocale-itIT.lua"/>
+	<Script file="GridLocale-ptBR.lua"/>
+	<Script file="GridLocale-ruRU.lua"/>
+	<Script file="GridLocale-koKR.lua"/>
+	<Script file="GridLocale-zhCN.lua"/>
+	<Script file="GridLocale-zhTW.lua"/>
+</Ui>
