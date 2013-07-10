@@ -1131,7 +1131,7 @@ end
 function GridStatusAuras:DeleteDurationStatus(status)
 	local auras = self.durationAuras[status]
 	if not auras then return end
-	for guid in auras do
+	for guid in pairs(auras) do
 		durationAuraPool:put(auras[guid])
 		auras[guid] = nil
 	end
