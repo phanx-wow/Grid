@@ -186,7 +186,6 @@ function GridFrame:InitializeFrame(frame)
 
 	-- create healing bar
 	frame.HealingBar = CreateFrame("StatusBar", nil, frame)
-	frame.HealingBar:SetFrameLevel(frame:GetFrameLevel() + 1)
 	frame.HealingBar:SetStatusBarTexture(texture)
 
 	local bar_texture = frame.HealingBar:GetStatusBarTexture()
@@ -204,7 +203,7 @@ function GridFrame:InitializeFrame(frame)
 
 	-- create bar
 	frame.Bar = CreateFrame("StatusBar", nil, frame)
-	frame.Bar:SetFrameLevel(frame:GetFrameLevel() + 2)
+	frame.Bar:SetFrameLevel(frame.HealingBar:GetFrameLevel() + 1)
 	frame.Bar:SetStatusBarTexture(texture)
 
 	bar_texture = frame.Bar:GetStatusBarTexture()
@@ -262,7 +261,7 @@ function GridFrame:InitializeFrame(frame)
 		})
 	frame.IconBG:SetBackdropBorderColor(1, 1, 1, 1)
 	frame.IconBG:SetBackdropColor(0, 0, 0, 0)
-	frame.IconBG:SetFrameLevel(5)
+	frame.IconBG:SetFrameLevel(frame.Bar:GetFrameLevel() + 1)
 	frame.IconBG:Hide()
 
 	-- create icon
@@ -727,7 +726,7 @@ function GridFrame.prototype:CreateIndicator(indicator)
 	})
 	f:SetBackdropBorderColor(0,0,0,1)
 	f:SetBackdropColor(1,1,1,1)
-	f:SetFrameLevel(5)
+	f:SetFrameLevel(self.Bar:GetFrameLevel() + 1) -- same as self.IconBG
 	f:Hide()
 
 	self[indicator] = f

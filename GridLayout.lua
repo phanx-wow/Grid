@@ -722,8 +722,6 @@ function GridLayout:CreateFrames()
 	f:SetScript("OnMouseDown", GridLayout_OnMouseDown)
 	f:SetScript("OnMouseUp", GridLayout_OnMouseUp)
 	f:SetScript("OnHide", GridLayout_OnMouseUp)
-	f:SetFrameStrata("MEDIUM")
-	f:SetFrameLevel(0)
 
 	-- attach backdrop to frame
 	bg:SetPoint("BOTTOMLEFT", f, -4, -4)
