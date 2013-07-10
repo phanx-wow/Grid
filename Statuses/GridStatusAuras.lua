@@ -26,6 +26,9 @@ local hasAuraEditBox = type(LibStub("AceGUI-3.0").WidgetVersions["Aura_EditBox"]
 local GridStatusAuras = Grid:NewStatusModule("GridStatusAuras", "AceTimer-3.0")
 GridStatusAuras.menuName = L["Auras"]
 
+local _, PLAYER_CLASS = UnitClass("player")
+local PlayerCanDispel = {}
+
 local spell_names = {
 -- All
 	["Ghost"] = GetSpellInfo(8326),
@@ -65,8 +68,6 @@ local debuff_types = {
 	["Magic"] = "dispel_magic",
 	["Poison"] = "dispel_poison",
 }
-
-local PlayerCanDispel = {}
 
 function GridStatusAuras:StatusForSpell(spell, isBuff)
 	return format(isBuff and "buff_%s" or "debuff_%s", gsub(spell, " ", ""))
@@ -422,6 +423,7 @@ function GridStatusAuras:OnStatusEnable(status)
 	self:RegisterEvent("PLAYER_TALENT_UPDATE", "UpdateDispellable")
 
 	self:DeleteDurationStatus(status)
+	self:UpdateDispellable()
 	self:UpdateAuraScanList()
 	self:UpdateAllUnitAuras()
 end
@@ -966,38 +968,43 @@ function GridStatusAuras:Grid_UnitJoined(event, guid, unitid)
 end
 
 function GridStatusAuras:UpdateDispellable()
-	local _, class = UnitClass("player")
-
-	if class == "DRUID" then
+	if PLAYER_CLASS == "DRUID" then
 		PlayerCanDispel.Curse   = IsPlayerSpell(88423) or IsPlayerSpell(2782) -- Nature's Cure / Remove Corruption
+		PlayerCanDispel.Disease = IsPlayerSpell(122288) -- Cleanse, via Symbiosis cast on a paladin
 		PlayerCanDispel.Magic   = IsPlayerSpell(88423)
 		PlayerCanDispel.Poison  = IsPlayerSpell(88423) or IsPlayerSpell(2782) -- RC is base, but doesn't return true for NC
 
-	elseif class == "MAGE" then
+		if GetSpecialization() == 4 then -- Restoration
+			self:RegisterEvent("SPELLS_CHANGED", "UpdateDispellable")
+		else
+			self:UnregisterEvent("SPELLS_CHANGED")
+		end
+
+	elseif PLAYER_CLASS == "MAGE" then
 		PlayerCanDispel.Curse   = IsPlayerSpell(475)    -- Remove Curse
 
-	elseif class == "MONK" then
+	elseif PLAYER_CLASS == "MONK" then
 		PlayerCanDispel.Disease = IsPlayerSpell(115450) -- Detox
 		PlayerCanDispel.Magic   = IsPlayerSpell(115451) -- Internal Medicine (Mistweaver spec passive)
 		PlayerCanDispel.Poison  = IsPlayerSpell(115450)
 
-	elseif class == "PALADIN" then
+	elseif PLAYER_CLASS == "PALADIN" then
 		PlayerCanDispel.Disease = IsPlayerSpell(4987)   -- Cleanse
 		PlayerCanDispel.Magic   = IsPlayerSpell(53551)  -- Sacred Cleansing (Holy spec passive)
 		PlayerCanDispel.Poison  = IsPlayerSpell(4987)
 
-	elseif class == "PRIEST" then
+	elseif PLAYER_CLASS == "PRIEST" then
 		local mass = IsPlayerSpell(32375) -- Mass Dispel
 		PlayerCanDispel.Curse   = mass
 		PlayerCanDispel.Disease = mass or IsPlayerSpell(527) -- Purify
 		PlayerCanDispel.Magic   = mass or IsPlayerSpell(527)
 		PlayerCanDispel.Poison  = mass
 
-	elseif class == "SHAMAN" then
+	elseif PLAYER_CLASS == "SHAMAN" then
 		PlayerCanDispel.Curse   = IsPlayerSpell(51886) -- Cleanse Spirit, also returns true for Purify Spirit
 		PlayerCanDispel.Magic   = IsPlayerSpell(77130) -- Purify Spirit
 
-	elseif class == "WARLOCK" then
+	elseif PLAYER_CLASS == "WARLOCK" then
 		PlayerCanDispel.Magic   = IsPlayerSpell(115276, true) or IsPlayerSpell(89808, true) -- Sear Magic (Fel Imp) or Singe Magic (Imp)
 
 	end
