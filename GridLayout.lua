@@ -716,12 +716,13 @@ function GridLayout:CreateFrames()
 
 	-- create main frame to hold all our gui elements
 	local f = CreateFrame("Frame", "GridLayoutFrame", hider)
+	f:SetPoint("CENTER")
 	f:SetMovable(true)
 	f:SetClampedToScreen(true)
-	f:SetPoint("CENTER")
 	f:SetScript("OnMouseDown", GridLayout_OnMouseDown)
 	f:SetScript("OnMouseUp", GridLayout_OnMouseUp)
 	f:SetScript("OnHide", GridLayout_OnMouseUp)
+	f:SetFrameLevel(0) -- avoid forcing lazy plugin authors to update
 
 	-- attach backdrop to frame
 	bg:SetPoint("BOTTOMLEFT", f, -4, -4)

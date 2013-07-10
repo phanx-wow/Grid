@@ -137,7 +137,7 @@ local function GridFrame_OnAttributeChanged(self, name, value)
 end
 
 function GridFrame:InitializeFrame(frame)
-	print("InitializeFrame", frame:GetName())
+	--print("InitializeFrame", frame:GetName())
 
 	-- set media based on shared media
 	local font = media and media:Fetch("font", self.db.profile.font) or STANDARD_TEXT_FONT
@@ -251,6 +251,7 @@ function GridFrame:InitializeFrame(frame)
 
 	-- create icon background/border
 	frame.IconBG = CreateFrame("Frame", nil, frame)
+	frame.IconBG:SetFrameLevel(frame.Bar:GetFrameLevel() + 2)
 	frame.IconBG:SetWidth(GridFrame.db.profile.iconSize)
 	frame.IconBG:SetHeight(GridFrame.db.profile.iconSize)
 	frame.IconBG:SetPoint("CENTER", frame, "CENTER")
@@ -261,7 +262,6 @@ function GridFrame:InitializeFrame(frame)
 		})
 	frame.IconBG:SetBackdropBorderColor(1, 1, 1, 1)
 	frame.IconBG:SetBackdropColor(0, 0, 0, 0)
-	frame.IconBG:SetFrameLevel(frame.Bar:GetFrameLevel() + 1)
 	frame.IconBG:Hide()
 
 	-- create icon
@@ -295,11 +295,11 @@ function GridFrame:InitializeFrame(frame)
 
 	-- add custom indicators
 	for name in pairs(GridFrame.customIndicators) do
-		print("adding indicator", name, "...")
+		--print("adding indicator", name, "...")
 		frame:CreateCustomIndicator(name)
 	end
 	for name, indicator in pairs(frame.customIndicators) do
-		print("resetting indicator", name, "...")
+		--print("resetting indicator", name, "...")
 		indicator:Reset()
 		indicator:ClearStatus()
 	end
