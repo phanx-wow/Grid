@@ -1,6 +1,7 @@
-### Version
+### Version 5.3.0.1611
 
-* [API] Plugins may now register custom indicators without hooking into internal Grid methods. See GridFrame.lua for details. Actual documentation coming soon. Direct all feedback to the forum thread.
+* Fixed a frame layering issue
+* Fixed an error that occurred when switching profiles while using the "show duration" option for auras
 
 ### Version 5.3.0.1606
 
