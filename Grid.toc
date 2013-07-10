@@ -26,7 +26,6 @@
 ## SavedVariables: GridDB
 
 Libs\Libs.xml
-
 Locales\Locales.xml
 
 GridCore.lua

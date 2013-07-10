@@ -20,7 +20,93 @@ if media then
 end
 
 local GridFrame = Grid:NewModule("GridFrame", "AceBucket-3.0", "AceTimer-3.0")
-GridFrame.prototype = {}
+GridFrame.prototype = {
+	customIndicators = {}
+}
+
+--[[--------------------------------------------------------------------
+GridFrame:RegisterIndicator(name, constructor)
+- name - unique string containing A-Z, a-z, 0-9, and _ characters only
+- constructor - function returning a table with the following methods:
+	:Reset()
+	- the indicator should apply its position, size, etc.
+	:ClearStatus()
+	- the indicator should return to its default appearance (likely hidden)
+ 	:SetStatus()
+	- the indicator should display the status using the supplied properties
+----------------------------------------------------------------------]]
+
+GridFrame.customIndicators = {}
+
+function GridFrame:RegisterIndicator(name, displayName, constructor)
+	assert(type(name) == "string", "Indicator name must be a string.")
+	assert(type(constructor) == "function", "Indicator constructor must be a function.")
+	assert(not strfind(name, "[^A-Za-z%d_]"), "Indicator name must be a string containing only letters, numbers, and underscores.")
+	assert(not self.customIndicators[name], "Indicator name must be unique.")
+	--print("RegisterIndicator:", name)
+	self.customIndicators[name] = {
+		constructor = constructor,
+		displayName = type(displayName) == "string" and strlen(displayName) > 0 and displayName or name,
+	}
+
+	if GridFrame.registeredFrames then
+		for _, frame in pairs(GridFrame.registeredFrames) do
+			local indicator = frame:CreateCustomIndicator(name)
+			indicator:Reset()
+			indicator:ClearStatus()
+		end
+	end
+end
+
+function GridFrame.prototype:CreateCustomIndicator(name)
+	if self.customIndicators[name] then
+		return
+	end
+	--print("CreateCustomIndicator:", name, self:GetName())
+	local indicator = GridFrame.customIndicators[name].constructor(self)
+	if type(indicator) ~= "table" then
+		return --print("indicator is not a table!")
+	end
+	if type(indicator.Reset) ~= "function" then
+		return --print("indicator.Reset is not a function!")
+	end
+	if type(indicator.ClearStatus) ~= "function" then
+		return --print("indicator.ClearStatus is not a function!")
+	end
+	if type(indicator.SetStatus) ~= "function" then
+		return --print("indicator.SetStatus is not a function!")
+	end
+	--print("Success!")
+	indicator.__owner = self
+	indicator.__name = name
+	self.customIndicators[name] = indicator
+	return indicator
+end
+
+function GridFrame.prototype:ResetAllIndicators()
+	--print("ResetAllIndicators")
+	for name, indicator in pairs(self.customIndicators) do
+		indicator:Reset()
+	end
+end
+
+function GridFrame.prototype:ResetIndicator(name)
+	--print("ResetIndicator:", name)
+	local indicator = self.customIndicators[name]
+	indicator:Reset()
+end
+
+function GridFrame.prototype:SetStatusForIndicator(name, ...)
+	--print("SetStatusForIndicator:", name)
+	local indicator = self.customIndicators[name]
+	indicator:SetStatus(...)
+end
+
+function GridFrame.prototype:ClearStatusForIndicator(name)
+	--print("ClearStatusForIndicator:", name)
+	local indicator = self.customIndicators[name]
+	indicator:ClearStatus()
+end
 
 ------------------------------------------------------------------------
 
@@ -51,6 +137,8 @@ local function GridFrame_OnAttributeChanged(self, name, value)
 end
 
 function GridFrame:InitializeFrame(frame)
+	print("InitializeFrame", frame:GetName())
+
 	-- set media based on shared media
 	local font = media and media:Fetch("font", self.db.profile.font) or STANDARD_TEXT_FONT
 	local texture = media and media:Fetch("statusbar", self.db.profile.texture) or "Interface\\Addons\\Grid\\gradient32x32"
@@ -75,6 +163,10 @@ function GridFrame:InitializeFrame(frame)
 	-- tooltip support, use HookScript in case our template defined OnEnter/OnLeave
 	frame:HookScript("OnEnter", frame.OnEnter)
 	frame:HookScript("OnLeave", frame.OnLeave)
+
+	-- set texture
+	frame:SetNormalTexture("")
+	frame:EnableMouseoverHighlight(GridFrame.db.profile.enableMouseoverHighlight)
 
 	-- create border
 	frame:SetBackdrop({
@@ -202,9 +294,16 @@ function GridFrame:InitializeFrame(frame)
 	frame.IconStackText:SetJustifyH("RIGHT")
 	frame.IconStackText:SetJustifyV("BOTTOM")
 
-	-- set texture
-	frame:SetNormalTexture("")
-	frame:EnableMouseoverHighlight(GridFrame.db.profile.enableMouseoverHighlight)
+	-- add custom indicators
+	for name in pairs(GridFrame.customIndicators) do
+		print("adding indicator", name, "...")
+		frame:CreateCustomIndicator(name)
+	end
+	for name, indicator in pairs(frame.customIndicators) do
+		print("resetting indicator", name, "...")
+		indicator:Reset()
+		indicator:ClearStatus()
+	end
 
 	frame:Reset()
 
@@ -240,6 +339,8 @@ function GridFrame.prototype:Reset()
 	self:EnableText2(GridFrame.db.profile.enableText2)
 	self:SetIconSize(GridFrame.db.profile.iconSize, GridFrame.db.profile.iconBorderSize)
 	self:EnableMouseoverHighlight(GridFrame.db.profile.enableMouseoverHighlight)
+	-- reset custom indicators
+	self:ResetAllIndicators()
 end
 
 -- shows the default unit tooltip
@@ -350,6 +451,9 @@ function GridFrame.prototype:PlaceIndicators()
 			self.Text2:SetPoint("TOP", self, "CENTER")
 		end
 	end
+
+	-- reset custom indicators
+	self:ResetAllIndicators()
 end
 
 function GridFrame.prototype:SetBorderSize(borderSize)
@@ -371,6 +475,9 @@ function GridFrame.prototype:SetBorderSize(borderSize)
 	self:SetFrameHeight(GridFrame.db.profile.frameHeight)
 
 	self:PositionAllIndicators()
+
+	-- reset custom indicators
+	self:ResetAllIndicators()
 end
 
 function GridFrame.prototype:SetCornerSize(size)
@@ -662,11 +769,17 @@ function GridFrame.prototype:SetIndicator(indicator, color, text, value, maxValu
 	if not color then
 		color = COLOR_WHITE
 	end
+	if value and not maxValue then
+		maxValue = 100
+	end
 	if texture and not texCoords then
 		texCoords = COORDS_FULL
 	end
 
-	if indicator == "border" then
+	local customIndicator = self.customIndicators[indicator]
+	if customIndicator then
+		customIndicator:SetStatus(color, text, value, maxValue, texture, start, duration, stack, texCoords)
+	elseif indicator == "border" then
 		self:SetBackdropBorderColor(color.r, color.g, color.b, color.a or 1)
 	elseif indicator == "corner1" or indicator == "corner2" or indicator == "corner3" or indicator == "corner4" then
 		-- create indicator on demand if not available yet
@@ -759,7 +872,10 @@ function GridFrame.prototype:SetIndicator(indicator, color, text, value, maxValu
 end
 
 function GridFrame.prototype:ClearIndicator(indicator)
-	if indicator == "border" then
+	local customIndicator = self.customIndicators[indicator]
+	if customIndicator then
+		customIndicator:ClearStatus(color, text, value, maxValue, texture, start, duration, stack, texCoords)
+	elseif indicator == "border" then
 		self:SetBackdropBorderColor(0, 0, 0, 0)
 	elseif indicator == "corner1" or indicator == "corner2" or indicator == "corner3" or indicator == "corner4" then
 		if self[indicator] then
@@ -1609,6 +1725,11 @@ function GridFrame:UpdateOptionsMenu()
 	for i = 1, #self.prototype.indicators do
 		local indicator = self.prototype.indicators[i]
 		self:UpdateOptionsForIndicator(indicator.type, indicator.name, indicator.order)
+	end
+
+	-- add custom indicators to menu
+	for name, indicator in pairs(self.customIndicators) do
+		self:UpdateOptionsForIndicator(name, indicator.displayName)
 	end
 end
 

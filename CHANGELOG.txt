@@ -1,3 +1,7 @@
+### Version
+
+* [API] Plugins may now register custom indicators without hooking into internal Grid methods. See GridFrame.lua for details. Actual documentation coming soon. Direct all feedback to the forum thread.
+
 ### Version 5.3.0.1606
 
 * Fixed errors caused by missing files
