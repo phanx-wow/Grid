@@ -645,8 +645,8 @@ function GridLayout:StopMoveFrame()
 end
 
 function GridLayout:UpdateTabVisibility()
-	--self:Debug("UpdateTabVisibility")
 	local settings = self.db.profile
+	--print("UpdateTabVisibility", not settings.hideTab)
 
 	if not InCombatLockdown() then
 		if not settings.hideTab or (not self.config_mode and settings.FrameLock) then
@@ -735,12 +735,11 @@ function GridLayout:CreateFrames()
 	f.tab:SetHeight(24)
 	f.tab:EnableMouse(true)
 	f.tab:RegisterForDrag("LeftButton")
-	f.tab:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 1, -4)
+	f.tab:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 1, 0)
 	f.tab:SetScript("OnMouseDown", GridLayout_OnMouseDown)
 	f.tab:SetScript("OnMouseUp", GridLayout_OnMouseUp)
 	f.tab:SetScript("OnEnter", GridLayout_OnEnter)
 	f.tab:SetScript("OnLeave", GridLayout_OnLeave)
-	f.tab:Hide()
 
 	-- Tab Background
 	f.tabBgLeft = f.tab:CreateTexture(nil, "BACKGROUND")
