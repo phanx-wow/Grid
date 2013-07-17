@@ -713,6 +713,7 @@ function GridLayout:CreateFrames()
 		edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16,
 		insets = {left = 4, right = 4, top = 4, bottom = 4},
 	})
+	bg:SetFrameLevel(0)
 
 	-- create main frame to hold all our gui elements
 	local f = CreateFrame("Frame", "GridLayoutFrame", hider)
@@ -722,7 +723,7 @@ function GridLayout:CreateFrames()
 	f:SetScript("OnMouseDown", GridLayout_OnMouseDown)
 	f:SetScript("OnMouseUp", GridLayout_OnMouseUp)
 	f:SetScript("OnHide", GridLayout_OnMouseUp)
-	f:SetFrameLevel(0) -- avoid forcing lazy plugin authors to update
+	f:SetFrameLevel(1)
 
 	-- attach backdrop to frame
 	bg:SetPoint("BOTTOMLEFT", f, -4, -4)
@@ -869,19 +870,18 @@ end
 
 function GridLayout:LoadLayout(layoutName)
 	--self:Debug("LoadLayout", layoutName)
+	local p = self.db.profile
+	local layout = self.layoutSettings[layoutName]
 	self.db.profile.layout = layoutName
 	if InCombatLockdown() then
 		reloadLayoutQueued = true
 		return
 	end
-	local p = self.db.profile
-	local layout = self.layoutSettings[layoutName]
-
 	self:Debug("LoadLayout", layoutName)
 
 	-- layout not ready yet
 	if type(layout) ~= "table" or not next(layout) then
-		self:Debug("No groups found in layout")
+		self:Debug("Layout not found")
 		self:UpdateDisplay()
 		return
 	end
@@ -912,6 +912,13 @@ function GridLayout:LoadLayout(layoutName)
 	end
 	for i = petGroupsNeeded + 1, petGroupsAvailable, 1 do
 		self.layoutPetGroups[i]:Reset()
+	end
+
+	-- quit if layout has no groups (eg. None)
+	if #layout == 0 then
+		self:Debug("No groups found in layout")
+		self:UpdateDisplay()
+		return
 	end
 
 	local defaults = layout.defaults
@@ -968,7 +975,6 @@ function GridLayout:LoadLayout(layoutName)
 		-- deals with the blizz bug that prevents initializing unit frames in combat
 		-- should be called when each group in a layout is initialized
 		-- http://forums.wowace.com/showpost.php?p=307503&postcount=3163
-
 		local maxColumns = layoutGroup:GetAttribute("maxColumns") or 1
 		local unitsPerColumn = layoutGroup:GetAttribute("unitsPerColumn") or 5
 		local startingIndex = layoutGroup:GetAttribute("startingIndex")
