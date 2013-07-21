@@ -869,7 +869,6 @@ local function getColumnAnchorPoint(point, horizontal)
 end
 
 function GridLayout:LoadLayout(layoutName)
-	--self:Debug("LoadLayout", layoutName)
 	local p = self.db.profile
 	local layout = self.layoutSettings[layoutName]
 	self.db.profile.layout = layoutName
@@ -880,7 +879,7 @@ function GridLayout:LoadLayout(layoutName)
 	self:Debug("LoadLayout", layoutName)
 
 	-- layout not ready yet
-	if type(layout) ~= "table" or not next(layout) then
+	if type(layout) ~= "table" then
 		self:Debug("Layout not found")
 		self:UpdateDisplay()
 		return
