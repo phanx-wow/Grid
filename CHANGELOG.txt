@@ -1,3 +1,7 @@
+### Version 5.3.0.1621
+
+* Fixed switching to the "None" layout
+
 ### Version 5.3.0.1618
 
 * Moved the drag tab up slightly to avoid overlapping the backdrop
