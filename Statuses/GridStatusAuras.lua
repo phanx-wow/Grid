@@ -647,7 +647,8 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 						self:UpdateAllUnitAuras()
 					end,
 					hidden = function()
-						return not self.db.profile.advancedOptions or self.db.profile[status].statusText ~= "duration"
+						return not self.db.profile.advancedOptions or 
+							(self.db.profile[status].statusText ~= "duration" and self.db.profile[status].statusText ~= "count_duration")
 					end,
 				},
 				countSettings = {
@@ -801,7 +802,7 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 						self:UpdateAllUnitAuras()
 					end,
 					hidden = function()
-						return not self.db.profile.advancedOptions or (self.db.profile[status].statusColor ~= "duration" and self.db.profile[status].statusText ~= "duration")
+						return not self.db.profile.advancedOptions or (self.db.profile[status].statusColor ~= "duration" and self.db.profile[status].statusText ~= "count_duration")
 					end,
 				},
 			},
