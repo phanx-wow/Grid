@@ -16,8 +16,10 @@ local _, Grid = ...
 local L = Grid.L
 
 local gmatch, gsub, pairs, strfind, strlower, strsub, tostring, type = gmatch, gsub, pairs, strfind, strlower, strsub, tostring, type
+local format,strmatch,strlen = format,strmatch,strlen
 local strutf8sub = string.utf8sub
 local UnitAura, UnitClass, UnitGUID, UnitIsPlayer = UnitAura, UnitClass, UnitGUID, UnitIsPlayer
+local IsPlayerSpell,UnitIsVisible = IsPlayerSpell,UnitIsVisible
 
 local GridFrame = Grid:GetModule("GridFrame")
 local GridRoster = Grid:GetModule("GridRoster")
@@ -618,6 +620,7 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 						["name"] = L["Buff name"],
 						["duration"] = L["Time left"],
 						["count"] = L["Stack count"],
+						["count_duration"] = L["Stack count"].." - "..L["Time left"]
 					},
 					get = function()
 						return self.db.profile[status].statusText
@@ -1101,7 +1104,7 @@ function GridStatusAuras:UnitGainedDurationStatus(status, guid, class, name, ran
 	local settings = self.db.profile[status]
 	if not settings then return end
 
-	if settings.enable and (settings.statusText == "duration" or settings.statusColor == "duration") then
+	if settings.enable and (settings.statusText == "duration" or settings.statusText == "count_duration" or settings.statusColor == "duration") then
 		if not self.durationAuras[status] then
 			self.durationAuras[status] = {}
 		end
@@ -1193,12 +1196,18 @@ function GridStatusAuras:StatusTextColor(settings, count, timeLeft)
 		text = settings.text
 	elseif settings.statusText == "duration" then
 		if settings.durationTenths then
-			text = format("%.1f", tostring(timeLeft))
+			text = format("%.1f", timeLeft)
 		else
-			text = format("%d", tostring(timeLeft))
+			text = format("%d", timeLeft)
 		end
 	elseif settings.statusText == "count" then
 		text = tostring(count)
+	elseif settings.statusText == "count_duration" then
+		if settings.durationTenths then
+			text = format("%d-%.1f", count, timeLeft)
+		else
+			text = format("%d-%d", count, timeLeft)
+		end
 	end
 
 	if settings.missing or settings.statusColor == "present" then
@@ -1252,7 +1261,7 @@ function GridStatusAuras:RefreshActiveDurations()
 					texCoords)
 			end
 		else
-			self.core:SendStatusLost(guid, status)
+			self.core:SendStatusLost(guid, status)  -- XXX "guid" is undefined=nil here; what is the purpose?!
 		end
 	end
 end
@@ -1454,7 +1463,7 @@ function GridStatusAuras:UnitLostDebuffType(guid, class, debuffType)
 	local settings = self.db.profile[status]
 	if not settings then return end
 
-	self:UnitLostDurationStatus(status, guid, class, name)
+	self:UnitLostDurationStatus(status, guid, class, name)  -- XXX name is undefined=nil here, what is the purpose? 
 	self.core:SendStatusLost(guid, status)
 end
 
