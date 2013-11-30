@@ -69,7 +69,7 @@ end
 
 function GridStatusRange:OnStatusEnable(status)
 	self:RegisterMessage("Grid_PartyTransition", "PartyTransition")
-	self:PartyTransition(GridRoster:GetPartyState())
+	self:PartyTransition("OnStatusEnable", GridRoster:GetPartyState())
 end
 
 function GridStatusRange:OnStatusDisable(status)
@@ -97,7 +97,8 @@ do
 	end
 end
 
-local IsSpellInRange, UnitInPhase, UnitInRange, UnitIsUnit = IsSpellInRange, UnitInRange, UnitInPhase, UnitIsUnit
+local IsSpellInRange, UnitIsDead, UnitInPhase, UnitInRange, UnitIsUnit
+    = IsSpellInRange, UnitIsDead, UnitInRange, UnitInPhase, UnitIsUnit
 
 local function GroupRangeCheck(self, unit)
 	if UnitIsUnit(unit, "player") then
@@ -140,7 +141,7 @@ function GridStatusRange:CheckRange()
 end
 
 function GridStatusRange:PartyTransition(message, state, oldstate)
-	self:Debug("PartyTransition", state)
+	self:Debug("PartyTransition", message, state, oldstate)
 	if state == "solo" then
 		self:StopTimer("CheckRange")
 		self.UnitInRange = SoloRangeCheck
