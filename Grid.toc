@@ -1,9 +1,10 @@
-## Interface: 50300
+## Interface: 50400
 ## Version: @project-version@
 ## X-ReleaseDate: "$Date$"
 
 ## Title: Grid
 ## Notes: A compact grid of party/raid unit frames.
+## Notes-deDE: Ein kompakte Gitter der Gruppen- und Schlachtzugsfenstern.
 ## Notes-esES: Una cuadrícula compacta de marcos de unidades para tu grupo o banda.
 ## Notes-esMX: Una cuadrícula compacta de marcos de unidades para su grupo o banda.
 ## Notes-frFR: Une grille compacte de fenêtres des unités de votre groupe ou raid.
