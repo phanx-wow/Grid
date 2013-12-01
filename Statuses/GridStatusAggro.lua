@@ -67,32 +67,40 @@ local function setstatuscolor(status, r, g, b, a)
 end
 
 local aggroDynamicOptions = {
-    [1] = {
-        type = "color",
-        name = L["High Threat color"],
-        desc = L["Color for High Threat."],
-        order = 87, width = "double",
-        hasAlpha = true,
-        get = function() return getstatuscolor(1) end,
-        set = function(_, r, g, b, a) setstatuscolor(1, r, g, b, a) end,
-    },
-    [2] = {
-        type = "color",
-        name = L["Aggro color"],
-        desc = L["Color for Aggro."],
-        order = 88, width = "double",
-        hasAlpha = true,
-        get = function() return getstatuscolor(2) end,
-        set = function(_, r, g, b, a) setstatuscolor(2, r, g, b, a) end,
-    },
-    [3] = {
-        type = "color",
-        name = L["Tanking color"],
-        desc = L["Color for Tanking."],
-        order = 89, width = "double",
-        hasAlpha = true,
-        get = function() return getstatuscolor(3) end,
-        set = function(_, r, g, b, a) setstatuscolor(3, r, g, b, a) end,
+    ["threat_colors"] = {
+        type = "group",
+        dialogInline = true,
+        name = L["Threat colors"],
+        order = 87,
+        args = {
+            ["1"] = {
+                type = "color",
+                name = L["High Threat color"],
+                desc = L["Color for High Threat."],
+                order = 100, width = "double",
+                hasAlpha = true,
+                get = function() return getstatuscolor(1) end,
+                set = function(_, r, g, b, a) setstatuscolor(1, r, g, b, a) end,
+            },
+            ["2"] = {
+                type = "color",
+                name = L["Aggro color"],
+                desc = L["Color for Aggro."],
+                order = 101, width = "double",
+                hasAlpha = true,
+                get = function() return getstatuscolor(2) end,
+                set = function(_, r, g, b, a) setstatuscolor(2, r, g, b, a) end,
+            },
+            ["3"] = {
+                type = "color",
+                name = L["Tanking color"],
+                desc = L["Color for Tanking."],
+                order = 102, width = "double",
+                hasAlpha = true,
+                get = function() return getstatuscolor(3) end,
+                set = function(_, r, g, b, a) setstatuscolor(3, r, g, b, a) end,
+            },
+        },
     },
 }
 
@@ -106,14 +114,10 @@ local function setupmenu()
 
 	if threat then
         args.color = nil
-        args["1"] = aggroDynamicOptions[1]
-        args["2"] = aggroDynamicOptions[2]
-        args["3"] = aggroDynamicOptions[3]
+        args.threat_colors = aggroDynamicOptions.threat_colors
     else
         args.color = aggroDynamicOptions.aggroColor
-        args["1"] = nil
-        args["2"] = nil
-        args["3"] = nil
+        args.threat_colors = nil
     end
 end
 
