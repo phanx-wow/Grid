@@ -126,6 +126,7 @@ local aggroOptions = {
         type = "toggle",
         name = L["Threat"],
         desc = L["Show more detailed threat levels."],
+        width = "full",
         get = function() return GridStatusAggro.db.profile.alert_aggro.threat end,
         set = function()
             GridStatusAggro.db.profile.alert_aggro.threat = not GridStatusAggro.db.profile.alert_aggro.threat
