@@ -34,6 +34,7 @@ GridStatusResurrect.defaultDB = {
 }
 
 local extraOptionsForStatus = {
+    color = false,
 	showUntilUsed = {
 		name = L["Show until used"],
 		desc = L["Show the status until the resurrection is accepted or expires, instead of only while it is being cast."],
@@ -47,21 +48,44 @@ local extraOptionsForStatus = {
 			GridStatusResurrect:UpdateAllUnits()
 		end,
 	},
-	color2 = {
-		order = 21,
-		name = L["Pending color"],
-		desc = L["Use this color for resurrections that have finished casting and are waiting to be accepted."],
-		type = "color",
-		hasAlpha = true,
-		get = function(t)
-			local color = GridStatusResurrect.db.profile.alert_resurrect.color2
-			return color.r, color.g, color.b, color.a or 1
-		end,
-		set = function(t, r, g, b, a)
-			local color = GridStatusResurrect.db.profile.alert_resurrect.color2
-			color.r, color.g, color.b, color.a = r, g, b, a or 1
-		end,
-	},
+	["resurrect_colors"] = {
+		type = "group",
+		dialogInline = true,
+		name = L["Resurrection colors"],
+		order = 86,
+		args = {
+		  color1 = {
+                order = 100,
+                name = L["Casting color"],
+                desc = L["Use this color for resurrections that are currently being cast."],
+                type = "color",
+                hasAlpha = true,
+                get = function(t)
+                    local color = GridStatusResurrect.db.profile.alert_resurrect.color
+                    return color.r, color.g, color.b, color.a or 1
+                end,
+                set = function(t, r, g, b, a)
+                    local color = GridStatusResurrect.db.profile.alert_resurrect.color
+                    color.r, color.g, color.b, color.a = r, g, b, a or 1
+                end,
+            },
+            color2 = {
+                order = 101,
+                name = L["Pending color"],
+                desc = L["Use this color for resurrections that have finished casting and are waiting to be accepted."],
+                type = "color",
+                hasAlpha = true,
+                get = function(t)
+                    local color = GridStatusResurrect.db.profile.alert_resurrect.color2
+                    return color.r, color.g, color.b, color.a or 1
+                end,
+                set = function(t, r, g, b, a)
+                    local color = GridStatusResurrect.db.profile.alert_resurrect.color2
+                    color.r, color.g, color.b, color.a = r, g, b, a or 1
+                end,
+            },
+        },
+    },
 }
 
 ------------------------------------------------------------------------
@@ -70,9 +94,6 @@ function GridStatusResurrect:PostInitialize()
 	self:Debug("PostInitialize")
 
 	self:RegisterStatus("alert_resurrect", L["Resurrection"], extraOptionsForStatus, true)
-
-	self.core.options.args.alert_resurrect.args.color.name = L["Casting color"]
-	self.core.options.args.alert_resurrect.args.color.desc = L["Use this color for resurrections that are currently being cast."]
 
 	self.core.options.args.alert_resurrect.args.range = nil
 end
