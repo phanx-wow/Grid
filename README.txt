@@ -1,6 +1,6 @@
 # **&#10100; [Bug Reports] [1] &#10101; &#10100; [Suggestions] [2] &#10101; &#10100; [Comments] [3] &#10101;**
 
-<small>*Looking for alpha versions?* Read this: <http://forums.wowace.com/showthread.php?p=324435></small>
+* Please **do not** use the comments or forum thread to report bugs -- [post a ticket] [1] instead!
 
  [1]: http://www.wowace.com/addons/grid/pages/how-to-report-a-bug-in-grid/
  [2]: http://www.wowace.com/addons/grid/tickets/?status=+&type=e
@@ -20,9 +20,9 @@ The compact grid of units lets you select a group member quickly, while keeping 
 
 # <a>&#65517;</a> **How to use Grid**
 
-To open the options window, type &#8220;``/grid``&#8221;, right-click the tab on the Grid layout frame, or right-click the Grid icon on your minimap or DataBroker display.
+**To open the options window,** type &#8220;``/grid``&#8221;, or right-click the tab on the Grid layout frame, or right-click the Grid icon on your minimap or DataBroker display.
 
-Because Grid is so configurable, its extensive options can be confusing at first. We recommend taking a few minutes to look through all of the options before asking for help. There is a small in-game Help section in the options panel, and also a small [User&#8217;s Guide] [5] that may be helpful in explaining some of the terms used in Grid, like *status*, *indicator*, and *priority*.
+Because Grid is so configurable, its options can be confusing at first. We recommend taking a few minutes to look through all of the options before asking for help. There is a small in-game Help section in the options panel, and also a small [User&#8217;s Guide] [5] that may be helpful in explaining some of the terms used in Grid, like *status*, *indicator*, and *priority*.
 
  [5]: http://www.wowace.com/projects/grid/pages/users-guide/
 
@@ -31,7 +31,7 @@ Because Grid is so configurable, its extensive options can be confusing at first
 
 **Found a bug?** Please [check the FAQ and list of known issues] [6] first, and then [let us know about the bug] [1] so we can fix it!
 
-**Problem with a plugin?** Contact the plugin&#8217;s author for help. The Grid team cannot provide support for third-party plugins.
+**Problem with a plugin?** Contact the plugin&#8217;s author for help. The Grid team can&#8217;t provide support for third-party plugins.
 
 **Have a suggestion?** Feel free to [tell us about your idea] [2], but please make sure there isn&#8217;t [already a plugin] [4] that adds the feature you&#8217;re looking for first!
 
@@ -48,7 +48,7 @@ Grid is **translated into** English, Deutsch, Español, Français, Português, �
 
 To add or update translations for any language, enter them in the [Grid localization system] [7] on WowAce. New and updated translations will be automatically included in the next version of Grid!
 
-<small>**Hint:** The web interface for adding translations can be slow and clumsy. To make the process easier, use the Export function, copy the exported data into Notepad, enter your translations, and then paste the new data back into the system using the Import function.</small>
+<small>**Hint:** The web UI for adding translations can be slow and clumsy. To make the process easier, use the Export function, copy the exported data into Notepad, enter your translations there, and then paste them back into the system all at once using the Import function.</small>
 
  [7]: http://www.wowace.com/addons/grid/localization/
 
