@@ -21,7 +21,7 @@ local L = setmetatable( Grid.L, {
 
 _G.Grid = LibStub("AceAddon-3.0"):NewAddon(Grid, "Grid", "AceConsole-3.0", "AceEvent-3.0")
 
-local format, print, strlen, tostring, type = format, print, strlen, tostring, type
+local format, print, strfind, strlen, tostring, type = format, print, strfind, strlen, tostring, type
 
 ------------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ function Grid:Debug(str, ...)
 	if not str or strlen(str) == 0 then return end
 
 	if (...) then
-		if str:find("%%%.%d") or str:find("%%[dfqsx%d]") then
+		if strfind(str, "%%%.%d") or strfind(str, "%%[dfqsx%d]") then
 			str = format(str, ...)
 		else
 			str = strjoin(" ", str, tostringall(...))
