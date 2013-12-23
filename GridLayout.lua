@@ -36,14 +36,14 @@ end
 
 GridLayout.prototype = {}
 
-function GridLayout.prototype:Reset()
-	self:Hide()
+function GridLayout.prototype:Reset(hide)
+	--self:Hide()
 
-	self:SetAttribute("showPlayer", true)
+	self:SetAttribute("showPlayer", not hide)
 
-	self:SetAttribute("showSolo", true)
-	self:SetAttribute("showParty", true)
-	self:SetAttribute("showRaid", true)
+	self:SetAttribute("showSolo", not hide)
+	self:SetAttribute("showParty", not hide)
+	self:SetAttribute("showRaid", not hide)
 
 	self:SetAttribute("columnSpacing", nil)
 	self:SetAttribute("groupBy", nil)
@@ -907,10 +907,10 @@ function GridLayout:LoadLayout(layoutName)
 
 	-- hide unused groups
 	for i = groupsNeeded + 1, groupsAvailable, 1 do
-		self.layoutGroups[i]:Reset()
+		self.layoutGroups[i]:Reset(true)
 	end
 	for i = petGroupsNeeded + 1, petGroupsAvailable, 1 do
-		self.layoutPetGroups[i]:Reset()
+		self.layoutPetGroups[i]:Reset(true)
 	end
 
 	-- quit if layout has no groups (eg. None)
@@ -981,7 +981,7 @@ function GridLayout:LoadLayout(layoutName)
 		self:Debug("maxColumns", maxColumns, "unitsPerColumn", unitsPerColumn, "startingIndex", startingIndex, "maxUnits", maxUnits)
 		if not layoutGroup.UnitFramesCreated or layoutGroup.UnitFramesCreated < maxUnits then
 			layoutGroup.UnitFramesCreated = maxUnits
-			layoutGroup:Show()
+			--layoutGroup:Show()
 			layoutGroup:SetAttribute("startingIndex", -maxUnits + 1)
 			layoutGroup:SetAttribute("startingIndex", startingIndex)
 		end
