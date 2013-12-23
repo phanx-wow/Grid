@@ -620,7 +620,6 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 						["name"] = L["Buff name"],
 						["duration"] = L["Time left"],
 						["count"] = L["Stack count"],
-						["count_duration"] = L["Stack count"].." & "..L["Time left"]
 					},
 					get = function()
 						return self.db.profile[status].statusText
@@ -647,8 +646,7 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 						self:UpdateAllUnitAuras()
 					end,
 					hidden = function()
-						return not self.db.profile.advancedOptions or
-							(self.db.profile[status].statusText ~= "duration" and self.db.profile[status].statusText ~= "count_duration")
+						return not self.db.profile.advancedOptions or self.db.profile[status].statusText ~= "duration"
 					end,
 				},
 				countSettings = {
@@ -802,7 +800,7 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 						self:UpdateAllUnitAuras()
 					end,
 					hidden = function()
-						return not self.db.profile.advancedOptions or (self.db.profile[status].statusColor ~= "duration" and self.db.profile[status].statusText ~= "count_duration")
+						return not self.db.profile.advancedOptions or self.db.profile[status].statusColor ~= "duration"
 					end,
 				},
 			},
@@ -1102,7 +1100,7 @@ function GridStatusAuras:UnitGainedDurationStatus(status, guid, class, name, ran
 	local settings = self.db.profile[status]
 	if not settings then return end
 
-	if settings.enable and (settings.statusText == "duration" or settings.statusText == "count_duration" or settings.statusColor == "duration") then
+	if settings.enable and (settings.statusText == "duration" or settings.statusColor == "duration") then
 		if not self.durationAuras[status] then
 			self.durationAuras[status] = {}
 		end
@@ -1192,19 +1190,13 @@ function GridStatusAuras:StatusTextColor(settings, count, timeLeft)
 
 	if settings.statusText == "name" then
 		text = settings.text
+	elseif settings.statusText == "count" then
+		text = tostring(count)
 	elseif settings.statusText == "duration" then
 		if settings.durationTenths then
 			text = format("%.1f", timeLeft)
 		else
 			text = format("%d", timeLeft)
-		end
-	elseif settings.statusText == "count" then
-		text = tostring(count)
-	elseif settings.statusText == "count_duration" then
-		if settings.durationTenths then
-			text = format("%d-%.1f", count, timeLeft)
-		else
-			text = format("%d-%d", count, timeLeft)
 		end
 	end
 
