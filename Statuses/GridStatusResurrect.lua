@@ -25,16 +25,17 @@ GridStatusResurrect.options = false
 GridStatusResurrect.defaultDB = {
 	alert_resurrect = {
 		enable = true,
-		text =  L["RES"],
+		text = L["RES"],
 		color = { r = 0.8, g = 1, b = 0, a = 1 },
 		color2 = { r = 0.2, g = 1, b = 0, a = 1 },
+		color3 = { r = 0.8, g = 0, b = 0.8, a = 1 },
 		priority = 50,
 		showUntilUsed = true,
 	},
 }
 
 local extraOptionsForStatus = {
-    color = false,
+	color = false,
 	showUntilUsed = {
 		name = L["Show until used"],
 		desc = L["Show the status until the resurrection is accepted or expires, instead of only while it is being cast."],
@@ -48,44 +49,59 @@ local extraOptionsForStatus = {
 			GridStatusResurrect:UpdateAllUnits()
 		end,
 	},
-	["resurrect_colors"] = {
+	colors = {
 		type = "group",
 		dialogInline = true,
 		name = L["Resurrection colors"],
 		order = 86,
 		args = {
-		  color1 = {
-                order = 100,
-                name = L["Casting color"],
-                desc = L["Use this color for resurrections that are currently being cast."],
-                type = "color",
-                hasAlpha = true,
-                get = function(t)
-                    local color = GridStatusResurrect.db.profile.alert_resurrect.color
-                    return color.r, color.g, color.b, color.a or 1
-                end,
-                set = function(t, r, g, b, a)
-                    local color = GridStatusResurrect.db.profile.alert_resurrect.color
-                    color.r, color.g, color.b, color.a = r, g, b, a or 1
-                end,
-            },
-            color2 = {
-                order = 101,
-                name = L["Pending color"],
-                desc = L["Use this color for resurrections that have finished casting and are waiting to be accepted."],
-                type = "color",
-                hasAlpha = true,
-                get = function(t)
-                    local color = GridStatusResurrect.db.profile.alert_resurrect.color2
-                    return color.r, color.g, color.b, color.a or 1
-                end,
-                set = function(t, r, g, b, a)
-                    local color = GridStatusResurrect.db.profile.alert_resurrect.color2
-                    color.r, color.g, color.b, color.a = r, g, b, a or 1
-                end,
-            },
-        },
-    },
+			color1 = {
+				order = 100,
+				name = L["Casting color"],
+				desc = L["Use this color for resurrections that are currently being cast."],
+				type = "color",
+				hasAlpha = true,
+				get = function(t)
+					local color = GridStatusResurrect.db.profile.alert_resurrect.color
+					return color.r, color.g, color.b, color.a or 1
+				end,
+				set = function(t, r, g, b, a)
+					local color = GridStatusResurrect.db.profile.alert_resurrect.color
+					color.r, color.g, color.b, color.a = r, g, b, a or 1
+				end,
+			},
+			color2 = {
+				order = 101,
+				name = L["Pending color"],
+				desc = L["Use this color for resurrections that have finished casting and are waiting to be accepted."],
+				type = "color",
+				hasAlpha = true,
+				get = function(t)
+					local color = GridStatusResurrect.db.profile.alert_resurrect.color2
+					return color.r, color.g, color.b, color.a or 1
+				end,
+				set = function(t, r, g, b, a)
+					local color = GridStatusResurrect.db.profile.alert_resurrect.color2
+					color.r, color.g, color.b, color.a = r, g, b, a or 1
+				end,
+			},
+			color3 = {
+				order = 101,
+				name = L["Soulstone color"],
+				desc = L["Use this color for pre-cast Soulstones that are waiting to be accepted."],
+				type = "color",
+				hasAlpha = true,
+				get = function(t)
+					local color = GridStatusResurrect.db.profile.alert_resurrect.color3
+					return color.r, color.g, color.b, color.a or 1
+				end,
+				set = function(t, r, g, b, a)
+					local color = GridStatusResurrect.db.profile.alert_resurrect.color3
+					color.r, color.g, color.b, color.a = r, g, b, a or 1
+				end,
+			},
+		},
+	},
 }
 
 ------------------------------------------------------------------------
@@ -102,7 +118,7 @@ function GridStatusResurrect:OnStatusEnable(status)
 	self:Debug("OnStatusEnable", status)
 
 	LibResInfo = LibStub("LibResInfo-1.0")
-	LibResInfo.RegisterAllCallbacks(self, "HandleCallback")
+	LibResInfo.RegisterAllCallbacks(self, "HandleCallback", true)
 
 	self:RegisterMessage("Grid_RosterUpdated", "UpdateAllUnits")
 end
@@ -110,7 +126,6 @@ end
 function GridStatusResurrect:OnStatusDisable(status)
 	self:Debug("OnStatusDisable", status)
 
-	local LibResInfo = LibStub("LibResInfo-1.0")
 	LibResInfo.UnregisterAllCallbacks(self)
 
 	self.core:SendStatusLostAllUnits("alert_resurrect")
@@ -126,8 +141,13 @@ function GridStatusResurrect:UpdateAllUnits(event)
 end
 
 function GridStatusResurrect:HandleCallback(callback, targetUnit, targetGUID, casterUnit, casterGUID, endTime)
-	self:Debug(callback, targetUnit, casterUnit)
-	self:UpdateUnit(targetUnit, targetGUID)
+	if strsub(callback, 1, 18) == "LibResInfo_MassRes" then
+		self:Debug(callback, casterUnit)
+		self:UpdateAllUnits()
+	else
+		self:Debug(callback, targetUnit, casterUnit)
+		self:UpdateUnit(targetUnit, targetGUID)
+	end
 end
 
 function GridStatusResurrect:UpdateUnit(unit, guid)
@@ -138,9 +158,9 @@ function GridStatusResurrect:UpdateUnit(unit, guid)
 	local db = self.db.profile.alert_resurrect
 	local hasRes, endTime, casterUnit, casterGUID = LibResInfo:UnitHasIncomingRes(guid)
 
-	if hasRes and (hasRes == "CASTING" or db.showUntilUsed) then
+	if hasRes and ((hasRes == "CASTING" or hasRes == "MASSRES") or db.showUntilUsed) then
 		local icon, startTime, duration, _
-		if hasRes == "CASTING" then
+		if hasRes == "CASTING" or hasRes == "MASSRES" then
 			_, _, _, icon, startTime = UnitCastingInfo(casterUnit)
 			if not startTime then
 				-- ignore instant casts
@@ -148,6 +168,10 @@ function GridStatusResurrect:UpdateUnit(unit, guid)
 			end
 			startTime = startTime / 1000
 			duration = endTime - startTime
+		elseif hasRes == "SELFRES" then
+			icon = "Interface\\ICONS\\Spell_Shadow_Soulgem"
+			startTime = endTime - 360
+			duration = 360
 		else
 			icon = "Interface\\Icons\\Spell_Nature_Reincarnation"
 			startTime = endTime - 60
@@ -157,7 +181,7 @@ function GridStatusResurrect:UpdateUnit(unit, guid)
 		self.core:SendStatusGained(guid, "alert_resurrect",
 			db.priority,
 			nil,
-			hasRes == "PENDING" and db.color2 or db.color,
+			hasRes == "SELFRES" and db.color3 or hasRes == "PENDING" and db.color2 or db.color,
 			db.text,
 			nil,
 			nil,
