@@ -86,7 +86,7 @@ local extraOptionsForStatus = {
 				end,
 			},
 			color3 = {
-				order = 101,
+				order = 102,
 				name = L["Soulstone color"],
 				desc = L["Use this color for pre-cast Soulstones that are waiting to be accepted."],
 				type = "color",
