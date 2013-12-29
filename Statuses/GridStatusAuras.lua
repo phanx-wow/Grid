@@ -961,12 +961,12 @@ end
 
 function GridStatusAuras:UpdateAllUnitAuras()
 	for guid, unitid in GridRoster:IterateRoster() do
-		self:ScanUnitAuras("UpdateAllUnitAuras", unitid)
+		self:ScanUnitAuras("UpdateAllUnitAuras", unitid, guid)
 	end
 end
 
 function GridStatusAuras:Grid_UnitJoined(event, guid, unitid)
-	self:ScanUnitAuras(event, unitid)
+	self:ScanUnitAuras(event, unitid, guid)
 end
 
 function GridStatusAuras:UpdateDispellable()
@@ -1495,10 +1495,10 @@ local player_buff_names_seen = {}
 local debuff_names_seen = {}
 local debuff_types_seen = {}
 
-function GridStatusAuras:ScanUnitAuras(event, unit)
+function GridStatusAuras:ScanUnitAuras(event, unit, guid)
 	local name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable
 
-	local guid = UnitGUID(unit)
+	if not guid then guid = UnitGUID(unit) end
 	if not GridRoster:IsGUIDInRaid(guid) then
 		return
 	end
