@@ -260,6 +260,7 @@ do
 		"raid_25",
 		"raid_10",
 		"raid_40",
+		"raid_flex",
 		"arena",
 		"bg",
 	}
@@ -278,8 +279,7 @@ do
 		if IsInRaid() then
 			if instanceType == "raid" then
 				local _, _, difficultyID, _, maxPlayers = GetInstanceInfo()
-				-- TODO: do something with flex raids? (difficultyID 14)
-				return maxPlayers == 10 and "raid_10" or maxPlayers == 25 and "raid_25" or "raid_40"
+				return difficultyID == 14 and "raid_flex" or maxPlayers == 10 and "raid_10" or maxPlayers == 25 and "raid_25" or "raid_40"
 			else
 				return "raid_40"
 			end

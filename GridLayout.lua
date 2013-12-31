@@ -181,6 +181,7 @@ GridLayout.defaultDB = {
 		party = L["By Group 5"],
 		raid_10 = L["By Group 10"],
 		raid_25 = L["By Group 25"],
+		raid_flex = L["By Class 25"],
 		raid_40 = L["By Group 40"],
 		raid_outside = false,
 		arena = L["By Group 5"],
@@ -323,6 +324,14 @@ GridLayout.options = {
 					type = "select",
 					values = GridLayout.LayoutList,
 				},
+				raid_flex = {
+					name = L["Flexible Raid Layout"],
+					desc = L["Select which layout to use when in a flexible raid."],
+					order = 40,
+					width = "double",
+					type = "select",
+					values = GridLayout.LayoutList,
+				},
 				raid_40 = {
 					name = L["40 Player Raid Layout"],
 					desc = L["Select which layout to use when in a 40 player raid."],
@@ -336,7 +345,7 @@ GridLayout.options = {
 					desc = L["Use the 40 Player Raid layout when in a raid group outside of a raid instance, instead of choosing a layout based on the current Raid Difficulty setting."],
 					order = 55,
 					type = "toggle",
-					width = "double",
+					width = "full",
 				},
 				arena = {
 					name = L["Arena Layout"],
