@@ -36,14 +36,14 @@ end
 
 GridLayout.prototype = {}
 
-function GridLayout.prototype:Reset(hide)
-	--self:Hide()
+function GridLayout.prototype:Reset()
+	self:Hide()
 
-	self:SetAttribute("showPlayer", not hide)
+	self:SetAttribute("showPlayer", true)
 
-	self:SetAttribute("showSolo", not hide)
-	self:SetAttribute("showParty", not hide)
-	self:SetAttribute("showRaid", not hide)
+	self:SetAttribute("showSolo", true)
+	self:SetAttribute("showParty", true)
+	self:SetAttribute("showRaid", true)
 
 	self:SetAttribute("columnSpacing", nil)
 	self:SetAttribute("groupBy", nil)
@@ -65,14 +65,14 @@ end
 
 function GridLayout.prototype:SetAttributeByProxy(name, value)
 	if name == "point" or name == "columnAnchorPoint" or name == "unitsPerColumn" then
-		GridLayout:Debug("SetAttributeByProxy " .. name .. " " .. tostring(value) .. " " .. self:GetName())
+		GridLayout:Debug("SetAttributeByProxy", self:GetName(), name, tostring(value))
 		local count = 1
-		local uframe = self:GetAttribute("child" .. count)
-		while uframe do
-			-- GridLayout:Debug("ClearAllPoints " .. uframe:GetName())
-			uframe:ClearAllPoints()
+		local frame = self:GetAttribute("child" .. count)
+		while frame do
+			-- GridLayout:Debug("ClearAllPoints", frame:GetName())
+			frame:ClearAllPoints()
 			count = count + 1
-			uframe = self:GetAttribute("child" .. count)
+			frame = self:GetAttribute("child" .. count)
 		end
 	end
 	self:SetAttribute(name, value)
@@ -981,7 +981,7 @@ function GridLayout:LoadLayout(layoutName)
 		self:Debug("maxColumns", maxColumns, "unitsPerColumn", unitsPerColumn, "startingIndex", startingIndex, "maxUnits", maxUnits)
 		if not layoutGroup.UnitFramesCreated or layoutGroup.UnitFramesCreated < maxUnits then
 			layoutGroup.UnitFramesCreated = maxUnits
-			--layoutGroup:Show()
+			layoutGroup:Show()
 			layoutGroup:SetAttribute("startingIndex", -maxUnits + 1)
 			layoutGroup:SetAttribute("startingIndex", startingIndex)
 		end
@@ -1023,7 +1023,6 @@ function GridLayout:UpdateSize()
 
 	for i = 1, #self.layoutGroups do
 		local layoutGroup = self.layoutGroups[i]
-
 		if layoutGroup:IsVisible() then
 			groupCount = groupCount + 1
 			local width, height = layoutGroup:GetWidth(), layoutGroup:GetHeight()
