@@ -1526,45 +1526,40 @@ function GridStatusAuras:ScanUnitAuras(event, unit, guid)
 		end
 	end
 
-	-- scan for buffs
-	for buff_name in pairs(buff_names) do
-		name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL")
-
-		if name then
-			buff_names_seen[name] = true
-			self:UnitGainedBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
-		end
-	end
-
 	if UnitIsVisible(unit) then
+		-- scan for buffs
+		for buff_name in pairs(buff_names) do
+			name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL")
+			if name then
+				buff_names_seen[name] = true
+				self:UnitGainedBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
+			end
+		end
+
+		-- scan for buffs cast by the player
 		for buff_name in pairs(player_buff_names) do
 			name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL|PLAYER")
-
 			if name then
 				player_buff_names_seen[name] = true
 				self:UnitGainedPlayerBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 			end
 		end
-	end
 
-	-- scan for debuffs
-	local index = 1
-	while true do
-		name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, index, "HARMFUL")
-
-		if not name then
-			break
+		-- scan for debuffs
+		for index = 1, 40 do
+			name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, index, "HARMFUL")
+			if not name then
+				break
+			end
+			if debuff_names[name] then
+				debuff_names_seen[name] = true
+				self:UnitGainedDebuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
+			elseif debuff_types[debuffType] then
+				-- elseif so that a named debuff doesn't trigger the type status
+				debuff_types_seen[debuffType] = true
+				self:UnitGainedDebuffType(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
+			end
 		end
-		if debuff_names[name] then
-			debuff_names_seen[name] = true
-			self:UnitGainedDebuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
-		elseif debuff_types[debuffType] then
-			-- elseif so that a named debuff doesn't trigger the type status
-			debuff_types_seen[debuffType] = true
-			self:UnitGainedDebuffType(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
-		end
-
-		index = index + 1
 	end
 
 	-- handle lost buffs

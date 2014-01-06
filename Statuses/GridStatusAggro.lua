@@ -26,8 +26,6 @@ local function getthreatcolor(status)
     return { r = r, g = g, b = b, a = 1 }
 end
 
---{{{ AceDB defaults
-
 GridStatusAggro.defaultDB = {
 	alert_aggro = {
 		text =  L["Aggro"],
@@ -48,8 +46,6 @@ GridStatusAggro.defaultDB = {
 		},
 	},
 }
-
---}}}
 
 GridStatusAggro.options = false
 
@@ -163,35 +159,35 @@ function GridStatusAggro:PostReset()
 end
 
 function GridStatusAggro:UpdateAllUnits()
-	for guid, unitid in GridRoster:IterateRoster() do
-		self:UpdateUnit("UpdateAllUnits", unitid)
+	for guid, unit in GridRoster:IterateRoster() do
+		self:UpdateUnit("UpdateAllUnits", unit)
 	end
 end
 
-do
-	local UnitGUID = UnitGUID
-	local UnitThreatSituation = UnitThreatSituation
+------------------------------------------------------------------------
 
-	function GridStatusAggro:UpdateUnit(event, unitid)
-		local guid = unitid and UnitGUID(unitid)
-		if not guid then return end -- because sometimes the unitid can be nil or invald... wtf?
+local UnitGUID, UnitIsVisible, UnitThreatSituation
+	 = UnitGUID, UnitIsVisible, UnitThreatSituation
 
-		local status = UnitThreatSituation(unitid)
+function GridStatusAggro:UpdateUnit(event, unit)
+	local guid = unit and UnitGUID(unit)
+	if not guid or not GridRoster:IsGUIDInRaid(guid) then return end -- sometimes unit can be nil or invalid, wtf?
 
-		local settings = self.db.profile.alert_aggro
-		local threat = settings.threat
+	local status = UnitIsVisible(unit) and UnitThreatSituation(unit) or 0
 
-		if status and ((threat and (status > 0)) or (status > 1)) then
-			GridStatusAggro.core:SendStatusGained(guid, "alert_aggro",
-				settings.priority,
-				settings.range,
-				(threat and settings.threatcolors[status] or settings.color),
-				(threat and settings.threattexts[status] or settings.text),
-				nil,
-				nil,
-				settings.icon)
-		else
-			GridStatusAggro.core:SendStatusLost(guid, "alert_aggro")
-		end
+	local settings = self.db.profile.alert_aggro
+	local threat = settings.threat
+
+	if status and ((threat and (status > 0)) or (status > 1)) then
+		GridStatusAggro.core:SendStatusGained(guid, "alert_aggro",
+			settings.priority,
+			settings.range,
+			(threat and settings.threatcolors[status] or settings.color),
+			(threat and settings.threattexts[status] or settings.text),
+			nil,
+			nil,
+			settings.icon)
+	else
+		GridStatusAggro.core:SendStatusLost(guid, "alert_aggro")
 	end
 end

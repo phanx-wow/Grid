@@ -83,58 +83,40 @@ function GridStatusMana:PostReset()
 	self:UpdateAllUnits()
 end
 
-function GridStatusMana:Grid_UnitJoined(event, guid, unitid)
-	if unitid then
-		self:UpdateUnit(event, unitid)
+function GridStatusMana:Grid_UnitJoined(event, guid, unit)
+	if unit then
+		self:UpdateUnit(event, unit, guid)
 	end
 end
 
 function GridStatusMana:UpdateAllUnits()
-	for guid, unitid in GridRoster:IterateRoster() do
-		self:UpdateUnit("UpdateAllUnits", unitid)
+	for guid, unit in GridRoster:IterateRoster() do
+		self:UpdateUnit("UpdateAllUnits", unit, guid)
 	end
 end
 
-local UnitGUID, UnitIsDeadOrGhost, UnitPower, UnitPowerMax, UnitPowerType = UnitGUID, UnitIsDeadOrGhost, UnitPower, UnitPowerMax, UnitPowerType
+local UnitGUID, UnitIsDeadOrGhost, UnitIsVisible, UnitPower, UnitPowerMax, UnitPowerType
+    = UnitGUID, UnitIsDeadOrGhost, UnitIsVisible, UnitPower, UnitPowerMax, UnitPowerType
 
-function GridStatusMana:UpdateUnit(event, unitid)
-	local guid = UnitGUID(unitid)
+function GridStatusMana:UpdateUnit(event, unit, guid)
+	if not guid then guid = UnitGUID(unit) end
 	if not GridRoster:IsGUIDInRaid(guid) then return end
-	local powerType = UnitPowerType(unitid)
 
-	-- mana user and is alive
-	if powerType == 0 and not UnitIsDeadOrGhost(unitid) then
-		local cur, max = UnitPower(unitid, powerType), UnitPowerMax(unitid, powerType)
-		if max == 0 then
-			-- fix for 4.3 division by zero
-			cur, max = 100, 100
+	if UnitIsVisible(unit) and not UnitIsDeadOrGhost(unit) and UnitPowerType(unit) == 0 then
+		-- mana user and is alive
+		local cur = UnitPower(unit, 0)
+		local max = UnitPowerMax(unit, 0)
+		if max > 0 and self.db.profile.alert_lowMana.threshold > (cur / max * 100) then
+			local settings = self.db.profile.alert_lowMana
+			return GridStatus:SendStatusGained(guid, "alert_lowMana",
+				settings.priority,
+				settings.range,
+				settings.color,
+				settings.text,
+				nil,
+				nil,
+				settings.icon)
 		end
-
-		local mana_percent = (cur / max * 100)
-		local threshold = self.db.profile.alert_lowMana.threshold
-
-		self:StatusLowMana(guid, mana_percent <= threshold)
-	else
-		self:StatusLowMana(guid, false)
 	end
-end
-
-function GridStatusMana:StatusLowMana(guid, gained)
-	local settings = self.db.profile.alert_lowMana
-
-	-- return if this option isnt enabled
-	if not settings.enable then return end
-
-	if gained then
-		GridStatus:SendStatusGained(guid, "alert_lowMana",
-			settings.priority,
-			settings.range,
-			settings.color,
-			settings.text,
-			nil,
-			nil,
-			settings.icon)
-	else
-		GridStatus:SendStatusLost(guid, "alert_lowMana")
-	end
+	GridStatus:SendStatusLost(guid, "alert_lowMana")
 end

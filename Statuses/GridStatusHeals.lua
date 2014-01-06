@@ -96,8 +96,8 @@ function GridStatusHeals:UpdateAllUnits()
 	end
 end
 
-local UnitGetIncomingHeals, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDeadOrGhost
-	= UnitGetIncomingHeals, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDeadOrGhost
+local UnitGetIncomingHeals, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDeadOrGhost, UnitIsVisible
+    = UnitGetIncomingHeals, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDeadOrGhost, UnitIsVisible
 
 function GridStatusHeals:UpdateUnit(event, unit)
 	if not unit then return end
@@ -105,7 +105,7 @@ function GridStatusHeals:UpdateUnit(event, unit)
 	local guid = UnitGUID(unit)
 	if not GridRoster:IsGUIDInRaid(guid) then return end
 
-	if not UnitIsDeadOrGhost(unit) then
+	if UnitIsVisible(unit) and not UnitIsDeadOrGhost(unit) then
 		local incoming = UnitGetIncomingHeals(unit) or 0
 		if settings.ignore_self then
 			incoming = incoming - (UnitGetIncomingHeals(unit, "player") or 0)

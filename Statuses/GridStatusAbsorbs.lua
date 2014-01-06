@@ -82,8 +82,8 @@ function GridStatusAbsorbs:UpdateAllUnits()
 	end
 end
 
-local UnitGetTotalAbsorbs, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDeadOrGhost
-	= UnitGetTotalAbsorbs, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDeadOrGhost
+local UnitGetTotalAbsorbs, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDeadOrGhost, UnitIsVisible
+    = UnitGetTotalAbsorbs, UnitGUID, UnitHealth, UnitHealthMax, UnitIsDeadOrGhost, UnitIsVisible
 
 function GridStatusAbsorbs:UpdateUnit(event, unit)
 	if not unit then return end
@@ -91,7 +91,7 @@ function GridStatusAbsorbs:UpdateUnit(event, unit)
 	local guid = UnitGUID(unit)
 	if not GridRoster:IsGUIDInRaid(guid) then return end
 
-	local amount = UnitGetTotalAbsorbs(unit) or 0
+	local amount = UnitIsVisible(unit) and UnitGetTotalAbsorbs(unit) or 0
 	if amount > 0 then
 		local maxHealth = UnitHealthMax(unit)
 		if (amount / maxHealth) > settings.minimumValue then
