@@ -20,9 +20,7 @@ if media then
 end
 
 local GridFrame = Grid:NewModule("GridFrame", "AceBucket-3.0", "AceTimer-3.0")
-GridFrame.prototype = {
-	customIndicators = {}
-}
+GridFrame.prototype = {}
 
 --[[--------------------------------------------------------------------
 GridFrame:RegisterIndicator(name, constructor)
@@ -35,7 +33,7 @@ GridFrame:RegisterIndicator(name, constructor)
  	:SetStatus()
 	- the indicator should display the status using the supplied properties
 ----------------------------------------------------------------------]]
-
+-- THIS ENTIRE SECTION CURRENTLY DOES NOTHING
 GridFrame.customIndicators = {}
 
 function GridFrame:RegisterIndicator(name, displayName, constructor)
@@ -143,6 +141,8 @@ function GridFrame:InitializeFrame(frame)
 	local font = media and media:Fetch("font", self.db.profile.font) or STANDARD_TEXT_FONT
 	local texture = media and media:Fetch("statusbar", self.db.profile.texture) or "Interface\\Addons\\Grid\\gradient32x32"
 
+	-- THIS BLOCK CURRENTLY DOES NOTHING
+	frame.customIndicators = {}
 	for k, v in pairs(self.prototype) do
 		frame[k] = v
 	end
