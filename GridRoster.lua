@@ -140,9 +140,10 @@ function GridRoster:GetOwnerUnitidByUnitid(unitid)
 	return owner_of_unit[unitid]
 end
 
-function GridRoster:IsGUIDInRaid(guid)
+function GridRoster:IsGUIDInGroup(guid)
 	return roster.guid[guid] ~= nil
 end
+GridRoster.IsGUIDInRaid = GridRoster.IsGUIDInGroup -- deprecated
 
 function GridRoster:IterateRoster()
 	return pairs(roster.unitid)
