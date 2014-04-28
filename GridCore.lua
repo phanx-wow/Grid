@@ -522,10 +522,12 @@ function Grid:SetupOptions()
 		return orderA < orderB
 	end)
 
-	Dialog:AddToBlizOptions(GRID, GRID, nil, "general") -- "appName", "panelName", "parentName", ... "optionsPath"
+	self.optionsPanels = {
+		Dialog:AddToBlizOptions(GRID, GRID, nil, "general") -- "appName", "panelName", "parentName", ... "optionsPath"
+	}
 	for i = 1, #panels do
 		local k = panels[i]
-		Dialog:AddToBlizOptions(GRID, self.options.args[k].name, GRID, k)
+		self.optionsPanels[i+1] = Dialog:AddToBlizOptions(GRID, self.options.args[k].name, GRID, k)
 	end
 
 	self.SetupOptions = nil
@@ -540,8 +542,8 @@ function Grid:ToggleOptions()
 			Dialog:Open(GRID)
 		end
 	else
-		InterfaceOptionsFrame_OpenToCategory(GRID)
-		InterfaceOptionsFrame_OpenToCategory(GRID) -- double up as a workaround for the bug that opens the frame without selecting the panel
+		InterfaceOptionsFrame_OpenToCategory(self.optionsPanels[2]) -- default to Layout
+		InterfaceOptionsFrame_OpenToCategory(self.optionsPanels[2]) -- double up as a workaround for the bug that opens the frame without selecting the panel
 	end
 end
 
