@@ -13,7 +13,8 @@ local GRID, Grid = ...
 local L = Grid.L
 
 local GridRoster = Grid:GetModule("GridRoster")
-local media = LibStub("LibSharedMedia-3.0", true)
+local BrokerIcon = LibStub("LibDBIcon-1.0")
+local Media = LibStub("LibSharedMedia-3.0")
 
 local GridLayout = Grid:NewModule("GridLayout", "AceBucket-3.0", "AceTimer-3.0")
 GridLayout.LayoutList = {}
@@ -194,10 +195,12 @@ GridLayout.defaultDB = {
 	Padding = 1,
 	Spacing = 10,
 	ScaleSize = 1.0,
-	backgroundTexture = "Blizzard Tooltip",
 	backgroundColor = { r = 0.1, g = 0.1, b = 0.1, a = 0.65 },
-	borderTexture = "Blizzard Tooltip",
+	backgroundTexture = "Blizzard Tooltip",
 	borderColor = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
+	borderTexture = "Blizzard Tooltip",
+	borderSize = 16,
+	borderInset = 4,
 
 	anchor = "TOPLEFT",
 	groupAnchor = "TOPLEFT",
@@ -215,11 +218,18 @@ GridLayout.options = {
 	disabled = InCombatLockdown,
 	order = 1,
 	type = "group",
-	get = function(t)
-		return GridLayout.db.profile[t[#t]]
+	get = function(info)
+		local k = info[#info]
+		local v = GridLayout.db.profile[k]
+		if type(v) == "table" and v.r and v.g and v.b then
+			return v.r, v.g, v.b, v.a
+		else
+			return v
+		end
 	end,
-	set = function(t, v)
-		GridLayout.db.profile[t[#t]] = v
+	set = function(info, v)
+		local k = info[#info]
+		GridLayout.db.profile[k] = v
 	end,
 	args = {
 		FrameLock = {
@@ -228,7 +238,7 @@ GridLayout.options = {
 			order = 5,
 			width = "double",
 			type = "toggle",
-			set = function(_, v)
+			set = function(info, v)
 				GridLayout.db.profile.FrameLock = v
 				GridLayout:UpdateTabVisibility()
 			end,
@@ -239,7 +249,7 @@ GridLayout.options = {
 			order = 10,
 			width = "double",
 			type = "toggle",
-			set = function(_, v)
+			set = function(info, v)
 				GridLayout.db.profile.horizontal = v
 				GridLayout:ReloadLayout()
 			end,
@@ -253,7 +263,7 @@ GridLayout.options = {
 			get = function()
 				return not GridLayout.db.profile.hideTab
 			end,
-			set = function(_, show)
+			set = function(info, show)
 				GridLayout.db.profile.hideTab = not show
 				GridLayout:UpdateTabVisibility()
 			end,
@@ -264,18 +274,15 @@ GridLayout.options = {
 			order = 16,
 			type = "toggle",
 			width = "double",
-			disabled = function()
-				return not LibStub("LibDBIcon-1.0", true)
-			end,
 			get = function()
 				return not Grid.db.profile.minimap.hide
 			end,
-			set = function(_, show)
+			set = function(info, show)
 				Grid.db.profile.minimap.hide = not show
 				if show then
-					LibStub("LibDBIcon-1.0"):Show("Grid")
+					BrokerIcon:Show("Grid")
 				else
-					LibStub("LibDBIcon-1.0"):Hide("Grid")
+					BrokerIcon:Hide("Grid")
 				end
 			end
 		},
@@ -365,10 +372,84 @@ GridLayout.options = {
 				},
 			},
 		},
+		background = {
+			name = L["Layout Background"],
+			order = 20,
+			type = "group",
+			dialogInline = true,
+			args = {
+				backgroundColor = {
+					name = L["Background color"],
+					order = 21,
+					width = "double",
+					type = "color", hasAlpha = true,
+					set = function(info, r, g, b, a)
+						local color = GridLayout.db.profile.backgroundColor
+						color.r, color.g, color.b, color.a = r, g, b, a
+						GridLayout:UpdateColor()
+					end,
+				},
+				borderColor = {
+					name = L["Border color"],
+					order = 22,
+					width = "double",
+					type = "color", hasAlpha = true,
+					set = function(info, r, g, b, a)
+						local color = GridLayout.db.profile.borderColor
+						color.r, color.g, color.b, color.a = r, g, b, a
+						GridLayout:UpdateColor()
+					end,
+				},
+				backgroundTexture = {
+					name = L["Background Texture"],
+					order = 23,
+					width = "double",
+					type = "select",
+					dialogControl = "LSM30_Background",
+					values = Media:HashTable("background"),
+					set = function(info, v)
+						GridLayout.db.profile.backgroundTexture = v
+						GridLayout:UpdateColor()
+					end,
+				},
+				borderTexture = {
+					name = L["Border Texture"],
+					order = 24,
+					width = "double",
+					type = "select",
+					dialogControl = "LSM30_Border",
+					values = Media:HashTable("border"),
+					set = function(info, v)
+						GridLayout.db.profile.borderTexture = v
+						GridLayout:UpdateColor()
+					end,
+				},
+				borderSize = {
+					name = L["Border Size"],
+					order = 25,
+					width = "double",
+					type = "range", min = 1, max = 64, step = 1,
+					set = function(info, v)
+						GridLayout.db.profile.borderSize = v
+						GridLayout:UpdateColor()
+					end,
+				},
+				borderInset = {
+					name = L["Border Inset"],
+					order = 26,
+					width = "double",
+					type = "range", min = 0, max = 32, step = 1,
+					set = function(info, v)
+						GridLayout.db.profile.borderInset = v
+						GridLayout:UpdateColor()
+					end,
+				}
+			}
+		},
 		anchor = {
 			name = L["Layout Anchor"],
 			desc = L["Sets where Grid is anchored relative to the screen."],
-			order = 20,
+			order = 30,
 			width = "double",
 			type = "select",
 			values = {
@@ -382,7 +463,7 @@ GridLayout.options = {
 				BOTTOMLEFT  = L["Bottom Left"],
 				BOTTOMRIGHT = L["Bottom Right"],
 			},
-			set = function(_, v)
+			set = function(info, v)
 				GridLayout.db.profile.anchor = v
 				GridLayout:SavePosition()
 				GridLayout:RestorePosition()
@@ -391,7 +472,7 @@ GridLayout.options = {
 		groupAnchor = {
 			name = L["Group Anchor"],
 			desc = L["Sets where groups are anchored relative to the layout frame."],
-			order = 22,
+			order = 32,
 			width = "double",
 			type = "select",
 			values = {
@@ -400,84 +481,45 @@ GridLayout.options = {
 				BOTTOMLEFT  = L["Bottom Left"],
 				BOTTOMRIGHT = L["Bottom Right"],
 			},
-			set = function(_, v)
+			set = function(info, v)
 				GridLayout.db.profile.groupAnchor = v
 				GridLayout:ReloadLayout()
 			end,
 		},
 		Padding = {
-			name = L["Padding"],
-			desc = L["Adjust frame padding."],
-			order = 24,
+			name = L["Frame Spacing"],
+			desc = L["Adjust the spacing between the individual unit frames."],
+			order = 34,
 			width = "double",
 			type = "range", max = 20, min = 0, step = 1,
-			set = function(_, v)
+			set = function(info, v)
 				GridLayout.db.profile.Padding = v
 				GridLayout:ReloadLayout()
 			end,
 		},
 		Spacing = {
-			name = L["Spacing"],
-			desc = L["Adjust frame spacing."],
-			order = 26,
+			name = L["Layout Padding"],
+			desc = L["Adjust the extra spacing inside the layout frame, around the unit frames."],
+			order = 36,
 			width = "double",
 			type = "range", min = 0, max = 25, step = 1,
-			set = function(_, v)
+			set = function(info, v)
 				GridLayout.db.profile.Spacing = v
 				GridLayout:ReloadLayout()
 			end,
 		},
 		ScaleSize = {
 			name = L["Scale"],
-			desc = L["Adjust Grid scale."],
-			order = 28,
+			order = 38,
 			width = "double",
 			type = "range", min = 0.5, max = 2.0, step = 0.05, isPercent = true,
-			get = function()
-				return GridLayout.db.profile.ScaleSize
-			end,
-			set = function(_, v)
+			set = function(info, v)
 				GridLayout.db.profile.ScaleSize = v
 				GridLayout:Scale()
 			end,
 		},
-		-- 30: borderTexture
-		borderColor = {
-			name = L["Border color"],
-			desc = L["Adjust border color and alpha."],
-			order = 32,
-			width = "double",
-			type = "color", hasAlpha = true,
-			get = function()
-				local color = GridLayout.db.profile.borderColor
-				return color.r, color.g, color.b, color.a
-			end,
-			set = function(_, r, g, b, a)
-				local color = GridLayout.db.profile.borderColor
-				color.r, color.g, color.b, color.a = r, g, b, a
-				GridLayout:UpdateColor()
-			end,
-		},
-		-- 34: backgroundTexture
-		backgroundColor = {
-			name = L["Background color"],
-			desc = L["Adjust background color and alpha."],
-			order = 36,
-			width = "double",
-			type = "color", hasAlpha = true,
-			get = function()
-				local color = GridLayout.db.profile.backgroundColor
-				return color.r, color.g, color.b, color.a
-			end,
-			set = function(_, r, g, b, a)
-				local color = GridLayout.db.profile.backgroundColor
-				color.r, color.g, color.b, color.a = r, g, b, a
-				GridLayout:UpdateColor()
-			end,
-		},
 		reset = {
 			name = L["Reset Position"],
-			desc = L["Resets the layout frame's position and anchor."],
 			order = -1,
 			width = "double",
 			type = "execute",
@@ -485,38 +527,6 @@ GridLayout.options = {
 		},
 	},
 }
-
-if media then
-	local mediaWidgets = media and LibStub("AceGUISharedMediaWidgets-1.0", true)
-
-	GridLayout.options.args.backgroundTexture = {
-		name = L["Background Texture"],
-		desc = L["Choose the layout background texture."],
-		order = 30,
-		width = "double",
-		type = "select",
-		dialogControl = mediaWidgets and "LSM30_Background" or nil,
-		values = media:HashTable("background"),
-		set = function(_, v)
-			GridLayout.db.profile.backgroundTexture = v
-			GridLayout:UpdateColor()
-		end,
-	}
-
-	GridLayout.options.args.borderTexture = {
-		name = L["Border Texture"],
-		desc = L["Choose the layout border texture."],
-		order = 34,
-		width = "double",
-		type = "select",
-		values = media:HashTable("border"),
-		dialogControl = mediaWidgets and "LSM30_Border" or nil,
-		set = function(_, v)
-			GridLayout.db.profile.borderTexture = v
-			GridLayout:UpdateColor()
-		end,
-	}
-end
 
 ------------------------------------------------------------------------
 
@@ -526,26 +536,6 @@ function GridLayout:PostInitialize()
 	--self:Debug("PostInitialize")
 	self.layoutGroups = {}
 	self.layoutPetGroups = {}
-
-	local upgrades = {
-		-- Upgraded 2012 Dec 20
-		-- Remove 2013 Mar 20
-		BackgroundR = function(v) self.db.profile.backgroundColor.r = v end,
-		BackgroundG = function(v) self.db.profile.backgroundColor.g = v end,
-		BackgroundB = function(v) self.db.profile.backgroundColor.b = v end,
-		BackgroundA = function(v) self.db.profile.backgroundColor.a = v end,
-		BorderR = function(v) self.db.profile.borderColor.r = v end,
-		BorderG = function(v) self.db.profile.borderColor.g = v end,
-		BorderB = function(v) self.db.profile.borderColor.b = v end,
-		BorderA = function(v) self.db.profile.borderColor.a = v end,
-	}
-	for oldkey, upgrade in pairs(upgrades) do
-		local oldvalue = self.db.profile[oldkey]
-		if oldvalue ~= nil then
-			upgrade(oldvalue)
-			self.db.profile[oldkey] = nil
-		end
-	end
 
 	if not self.frame then
 		self:CreateFrames()
@@ -1071,12 +1061,16 @@ function GridLayout:UpdateColor()
 	--self:Debug("UpdateColor")
 	local settings = self.db.profile
 
-	if media then
-		local backdrop = self.frame.backdrop:GetBackdrop()
-		backdrop.bgFile = media:Fetch(media.MediaType.BACKGROUND, settings.backgroundTexture)
-		backdrop.edgeFile = media:Fetch(media.MediaType.BORDER, settings.borderTexture)
-		self.frame.backdrop:SetBackdrop(backdrop)
-	end
+
+	local backdrop = self.frame.backdrop:GetBackdrop()
+	backdrop.bgFile = Media:Fetch(Media.MediaType.BACKGROUND, settings.backgroundTexture)
+	backdrop.edgeFile = Media:Fetch(Media.MediaType.BORDER, settings.borderTexture)
+	backdrop.edgeSize = settings.borderSize
+	backdrop.insets.left = settings.borderInset
+	backdrop.insets.right = settings.borderInset
+	backdrop.insets.top =  settings.borderInset
+	backdrop.insets.bottom = settings.borderInset
+	self.frame.backdrop:SetBackdrop(backdrop)
 
 	self.frame.backdrop:SetBackdropBorderColor(settings.borderColor.r, settings.borderColor.g, settings.borderColor.b, settings.borderColor.a)
 	self.frame.backdrop:SetBackdropColor(settings.backgroundColor.r, settings.backgroundColor.g, settings.backgroundColor.b, settings.backgroundColor.a)
