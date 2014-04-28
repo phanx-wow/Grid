@@ -13,7 +13,6 @@ local GRID, Grid = ...
 local L = Grid.L
 
 local GridRoster = Grid:GetModule("GridRoster")
-local BrokerIcon = LibStub("LibDBIcon-1.0")
 local Media = LibStub("LibSharedMedia-3.0")
 
 local GridLayout = Grid:NewModule("GridLayout", "AceBucket-3.0", "AceTimer-3.0")
@@ -267,24 +266,6 @@ GridLayout.options = {
 				GridLayout.db.profile.hideTab = not show
 				GridLayout:UpdateTabVisibility()
 			end,
-		},
-		minimap = {
-			name = L["Show minimap icon"],
-			desc = L["Show the Grid icon on the minimap. Note that some DataBroker display addons may hide the icon regardless of this setting."],
-			order = 16,
-			type = "toggle",
-			width = "double",
-			get = function()
-				return not Grid.db.profile.minimap.hide
-			end,
-			set = function(info, show)
-				Grid.db.profile.minimap.hide = not show
-				if show then
-					BrokerIcon:Show("Grid")
-				else
-					BrokerIcon:Hide("Grid")
-				end
-			end
 		},
 		layouts = {
 			name = L["Layouts"],
@@ -671,12 +652,7 @@ local function GridLayout_OnMouseDown(frame, button)
 			GridLayout:StartMoveFrame()
 		end
 	elseif button == "RightButton" and frame == GridLayoutFrame.tab and not InCombatLockdown() then
-		local dialog = LibStub("AceConfigDialog-3.0")
-		if dialog.OpenFrames["Grid"] then
-			dialog:Close("Grid")
-		else
-			dialog:Open("Grid")
-		end
+		Grid:ToggleOptions()
 	end
 end
 

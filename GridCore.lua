@@ -9,7 +9,8 @@
 	http://www.curse.com/addons/wow/grid
 ----------------------------------------------------------------------]]
 
-local _, Grid = ...
+local GRID, Grid = ...
+_G.Grid = LibStub("AceAddon-3.0"):NewAddon(Grid, GRID, "AceConsole-3.0", "AceEvent-3.0")
 
 if not Grid.L then Grid.L = { } end
 local L = setmetatable( Grid.L, {
@@ -19,8 +20,7 @@ local L = setmetatable( Grid.L, {
 	end
 })
 
-_G.Grid = LibStub("AceAddon-3.0"):NewAddon(Grid, "Grid", "AceConsole-3.0", "AceEvent-3.0")
-
+local LDBIcon = LibStub("LibDBIcon-1.0")
 local format, print, strfind, strlen, tostring, type = format, print, strfind, strlen, tostring, type
 
 ------------------------------------------------------------------------
@@ -94,6 +94,44 @@ Grid.options = {
 	type = "group",
 	childGroups = "tab",
 	args = {
+		general = {
+			type = "group",
+			name = L["General"],
+			order = 1,
+			args = {
+				minimap = {
+					name = L["Show minimap icon"],
+					desc = L["Show the Grid icon on the minimap. Note that some DataBroker display addons may hide the icon regardless of this setting."],
+					order = 1,
+					width = "double",
+					type = "toggle",
+					get = function()
+						return not Grid.db.profile.minimap.hide
+					end,
+					set = function(info, value)
+						Grid.db.profile.minimap.hide = not value
+						if value then
+							LDBIcon:Show(GRID)
+						else
+							LDBIcon:Hide(GRID)
+						end
+					end
+				},
+				standaloneOptions = {
+					name = L["Standalone options"],
+					desc = L["Open Grid's options in their own window, instead of the Interface Options window, when typing /grid or right-clicking on the minimap icon, DataBroker icon, or layout tab."],
+					order = 2,
+					width = "double",
+					type = "toggle",
+					get = function()
+						return Grid.db.profile.standaloneOptions
+					end,
+					set = function(info, value)
+						Grid.db.profile.standaloneOptions = value
+					end,
+				}
+			},
+		},
 		debug = {
 			type = "group",
 			name = L["Debugging"],
@@ -144,6 +182,7 @@ Grid.options = {
 Grid.defaultDB = {
 	profile = {
 		minimap = {},
+		standaloneOptions = true,
 	},
 	global = {
 		debug = {},
@@ -256,11 +295,11 @@ function Grid.modulePrototype:DisableModules()
 end
 
 function Grid.modulePrototype:ResetModules()
-    for name, module in self:IterateModules() do
+	for name, module in self:IterateModules() do
 		self:Debug("Resetting " .. name)
 		module.db = self.core.db:GetNamespace(name)
 		module:Reset()
-    end
+	end
 end
 
 function Grid.modulePrototype:StartTimer(callback, delay, repeating, arg)
@@ -327,10 +366,10 @@ function Grid:OnInitialize()
 	self.options.args.profile.order = -3
 
 	local LibDualSpec = LibStub("LibDualSpec-1.0")
-	LibDualSpec:EnhanceDatabase(self.db, "Grid")
+	LibDualSpec:EnhanceDatabase(self.db, GRID)
 	LibDualSpec:EnhanceOptions(self.options.args.profile, self.db)
 
-	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("Grid", self.options)
+	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(GRID, self.options)
 
 	--
 	--	Broker launcher
@@ -338,27 +377,22 @@ function Grid:OnInitialize()
 
 	local DataBroker = LibStub("LibDataBroker-1.1", true)
 	if DataBroker then
-		self.Broker = DataBroker:NewDataObject("Grid", {
+		self.Broker = DataBroker:NewDataObject(GRID, {
 			type = "launcher",
-			label = GetAddOnInfo("Grid", "Title"),
+			label = GetAddOnInfo(GRID, "Title"),
 			icon = "Interface\\AddOns\\Grid\\icon",
 			OnClick = function(self, button)
 				if button == "RightButton" then
-					local dialog = LibStub("AceConfigDialog-3.0")
-					if dialog.OpenFrames["Grid"] then
-						dialog:Close("Grid")
-					else
-						dialog:Open("Grid")
-					end
+					Grid:ToggleOptions()
 				elseif not InCombatLockdown() then
 					local GridLayout = Grid:GetModule("GridLayout")
 					GridLayout.db.profile.FrameLock = not GridLayout.db.profile.FrameLock
-					LibStub("AceConfigRegistry-3.0"):NotifyChange("Grid")
+					LibStub("AceConfigRegistry-3.0"):NotifyChange(GRID)
 					GridLayout:UpdateTabVisibility()
 				end
 			end,
 			OnTooltipShow = function(tooltip)
-				tooltip:AddLine("Grid", 1, 1, 1)
+				tooltip:AddLine(GRID, 1, 1, 1)
 				if InCombatLockdown() then
 					tooltip:AddLine(L["Click to toggle the frame lock."], 0.5, 0.5, 0.5)
 				else
@@ -369,50 +403,12 @@ function Grid:OnInitialize()
 		})
 	end
 
-	local LDBIcon = LibStub("LibDBIcon-1.0", true)
-	if LDBIcon then
-		LDBIcon:Register("Grid", self.Broker, self.db.profile.minimap)
-		if self.db.profile.minimap.hide then
-			LDBIcon:Hide("Grid")
-		else
-			LDBIcon:Show("Grid")
-		end
+	LDBIcon:Register(GRID, self.Broker, self.db.profile.minimap)
+	if self.db.profile.minimap.hide then
+		LDBIcon:Hide(GRID)
+	else
+		LDBIcon:Show(GRID)
 	end
-
-	--
-	--	Options window
-	--
-
-	local AceConfigCmd = LibStub("AceConfigCmd-3.0")
-	local AceConfigDialog = LibStub("AceConfigDialog-3.0")
-
-	local status = AceConfigDialog:GetStatusTable("Grid")
-	status.width = 780 -- 685
-	status.height = 500 -- 530
-
-	local child1 = AceConfigDialog:GetStatusTable("Grid", { "GridIndicator" })
-	child1.groups = child1.groups or {}
-	child1.groups.treewidth = 220
-
-	local child2 = AceConfigDialog:GetStatusTable("Grid", { "GridStatus" })
-	child2.groups = child2.groups or {}
-	child2.groups.treewidth = 260
-
-	local child3 = AceConfigDialog:GetStatusTable("Grid", { "GridHelp" })
-	child3.groups = child3.groups or {}
-	child3.groups.treewidth = 300
-
-	self:RegisterChatCommand("grid", function(input)
-		if not input or input:trim() == "" then
-			AceConfigDialog:Open("Grid")
-		else
-			AceConfigCmd.HandleCommand(Grid, "grid", "Grid", input)
-		end
-	end)
-
-	InterfaceOptionsFrame:HookScript("OnShow", function()
-		AceConfigDialog:Close("Grid")
-	end)
 
 	for name, module in self:IterateModules() do
 		self:RegisterModule(name, module)
@@ -430,6 +426,10 @@ function Grid:OnEnable()
 	end
 
 	self:EnableModules()
+
+	if self.SetupOptions then
+		self:SetupOptions()
+	end
 
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
@@ -451,15 +451,98 @@ function Grid:OnProfileEnable()
 
 	local LDBIcon = LibStub("LibDBIcon-1.0", true)
 	if LDBIcon then
-		LDBIcon:Refresh("Grid", self.db.profile.minimap)
+		LDBIcon:Refresh(GRID, self.db.profile.minimap)
 		if self.db.profile.minimap.hide then
-			LDBIcon:Hide("Grid")
+			LDBIcon:Hide(GRID)
 		else
-			LDBIcon:Show("Grid")
+			LDBIcon:Show(GRID)
 		end
 	end
 
 	self:ResetModules()
+end
+
+function Grid:SetupOptions()
+	local Command = LibStub("AceConfigCmd-3.0")
+	local Dialog = LibStub("AceConfigDialog-3.0")
+
+	---------------------------------------------------------------------
+	--	Standalone options
+
+	local status = Dialog:GetStatusTable(GRID)
+	status.width = 780 -- 685
+	status.height = 500 -- 530
+
+	local child1 = Dialog:GetStatusTable(GRID, { "GridIndicator" })
+	child1.groups = child1.groups or {}
+	child1.groups.treewidth = 220
+
+	local child2 = Dialog:GetStatusTable(GRID, { "GridStatus" })
+	child2.groups = child2.groups or {}
+	child2.groups.treewidth = 260
+
+	local child3 = Dialog:GetStatusTable(GRID, { "GridHelp" })
+	child3.groups = child3.groups or {}
+	child3.groups.treewidth = 300
+
+	self:RegisterChatCommand("grid", function(input)
+		if not input or strtrim(input) == "" then
+			self:ToggleOptions()
+		else
+			Command.HandleCommand(Grid, "grid", GRID, input)
+		end
+	end)
+
+	InterfaceOptionsFrame:HookScript("OnShow", function()
+		Dialog:Close(GRID)
+	end)
+
+	---------------------------------------------------------------------
+	--	Interface Options frame integrated options
+
+	local panels = {}
+	for k, v in pairs(self.options.args) do
+		if k ~= "general" then
+			tinsert(panels, k)
+		end
+	end
+
+	table.sort(panels, function(a, b) -- copied from Dialog-3.0
+		if not a then return true end
+		if not b then return false end
+		local orderA, orderB = self.options.args[a].order or 10000, self.options.args[b].order or 10000
+		if orderA == orderB then
+			return strupper(self.options.args[a].name or "") < strupper(self.options.args[b].name or "")
+		end
+		if orderA < 0 then
+			if orderB > 0 then return false end
+		else
+			if orderB < 0 then return true end
+		end
+		return orderA < orderB
+	end)
+
+	Dialog:AddToBlizOptions(GRID, GRID, nil, "general") -- "appName", "panelName", "parentName", ... "optionsPath"
+	for i = 1, #panels do
+		local k = panels[i]
+		Dialog:AddToBlizOptions(GRID, self.options.args[k].name, GRID, k)
+	end
+
+	self.SetupOptions = nil
+end
+
+function Grid:ToggleOptions()
+	if self.db.profile.standaloneOptions then
+		local Dialog = LibStub("AceConfigDialog-3.0")
+		if Dialog.OpenFrames[GRID] then
+			Dialog:Close(GRID)
+		else
+			Dialog:Open(GRID)
+		end
+	else
+		InterfaceOptionsFrame_OpenToCategory(GRID)
+		InterfaceOptionsFrame_OpenToCategory(GRID) -- double up as a workaround for the bug that opens the frame without selecting the panel
+	end
 end
 
 ------------------------------------------------------------------------
