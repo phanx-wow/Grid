@@ -1,3 +1,18 @@
+--[[--------------------------------------------------------------------
+	Grid
+	Compact party and raid unit frames.
+	Copyright (c) 2006-2013 Kyle Smith (Pastamancer), A. Kinley (Phanx)
+	All rights reserved.
+	See the accompanying README and LICENSE files for more information.
+	http://www.wowinterface.com/downloads/info5747-Grid.html
+	http://www.wowace.com/addons/grid/
+	http://www.curse.com/addons/wow/grid
+------------------------------------------------------------------------
+	GridHelp.lua
+	Provides a basic in-game introduction and FAQ.
+	Translators, scroll down for an example of how to localize this file!
+----------------------------------------------------------------------]]
+
 local helpText = {
 	{
 		order = 1,
@@ -31,8 +46,8 @@ local helpText = {
 		"{Bug Reports & Feature Requests}",
 		"Please use the links at the top of Grid's download page to report bugs and request features in the ticket tracker. This keeps all reports and requests in one place, so the developers can easily keep track of what needs to be done.",
 		"{Questions & Comments}",
-		"We have a forum thread on WowAce for questions and comments:\n     http://forums.wowace.com/showthread.php?t=18716",
-		"You can also post a comment on WoWInterface:\n     http://www.wowinterface.com/downloads/info5747-Grid.html",
+		"We have a forum thread on WowAce for questions and comments:\n|cff00d1ff http://forums.wowace.com/showthread.php?t=18716 |r",
+		"You can also post a comment on WoWInterface:\n|cff00d1ff http://www.wowinterface.com/downloads/info5747 |r",
 	},
 	{
 		"Adding new buffs & debuffs",
@@ -64,6 +79,19 @@ local helpText = {
 
 ------------------------------------------------------------------------
 
+-- Example localization
+if GetLocale() == "xxXX" then
+	helpText = {
+		-- Insert localized help sections here.
+		-- Order is optional, and should be omitted for most sections.
+		-- First line is the section title.
+		-- Additional lines are paragraphs with spaces between them.
+		-- Use {curly brackets} to highlight words or phrases in paragraphs.
+	}
+end
+
+------------------------------------------------------------------------
+
 local L = Grid.L
 
 Grid.options.args.GridHelp = {
@@ -75,13 +103,14 @@ Grid.options.args.GridHelp = {
 }
 
 for i = 1, #helpText do
+	local title = helpText[i][1]
 	local entry = {
-		name = helpText[i][1],
+		name = title,
 		order = helpText[i].order,
 		type = "group",
 		args = {
 			["1"] = {
-				name = format("|cffffd100%s|r", helpText[i][1]),
+				name = format("|cffffd100%s|r", title),
 				order = 1,
 				type = "description",
 				fontSize = "large",
