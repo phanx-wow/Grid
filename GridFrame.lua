@@ -14,10 +14,8 @@ local L = Grid.L
 local format, gsub, pairs, tonumber, type = format, gsub, pairs, tonumber, type
 local GridStatus
 
-local media = LibStub("LibSharedMedia-3.0", true)
-if media then
-	media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32")
-end
+local Media = LibStub("LibSharedMedia-3.0")
+Media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\gradient32x32")
 
 local GridFrame = Grid:NewModule("GridFrame", "AceBucket-3.0", "AceTimer-3.0")
 GridFrame.prototype = {}
@@ -124,10 +122,10 @@ local function GridFrame_OnAttributeChanged(self, name, value)
 				self:SetAttribute("type1", "target")
 			end
 		elseif name == "type2" then
-			local wanted = GridFrame.db.profile.rightClickMenu
-			if wanted and (not value or value == "") then
+			local wantmenu = GridFrame.db.profile.rightClickMenu
+			if wantmenu and (not value or value == "") then
 				self:SetAttribute("type2", "togglemenu")
-			elseif value == "togglemenu" and not wanted then
+			elseif value == "togglemenu" and not wantmenu then
 				self:SetAttribute("type2", nil)
 			end
 		end
@@ -137,28 +135,26 @@ end
 function GridFrame:InitializeFrame(frame)
 	--print("InitializeFrame", frame:GetName())
 
-	-- set media based on shared media
-	local font = media and media:Fetch("font", self.db.profile.font) or STANDARD_TEXT_FONT
-	local texture = media and media:Fetch("statusbar", self.db.profile.texture) or "Interface\\Addons\\Grid\\gradient32x32"
+	local font = Media:Fetch("font", self.db.profile.font) or STANDARD_TEXT_FONT
+	local texture = Media:Fetch("statusbar", self.db.profile.texture) or "Interface\\Addons\\Grid\\gradient32x32"
 
 	-- THIS BLOCK CURRENTLY DOES NOTHING
 	frame.customIndicators = {}
 	for k, v in pairs(self.prototype) do
 		frame[k] = v
 	end
+	-- END BLOCK
 
 	frame:RegisterForClicks("LeftButtonUp", "RightButtonUp", "MiddleButtonUp", "Button4Up", "Button5Up")
+
+	frame:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
+	frame:SetScript("OnShow", GridFrame_OnShow)
 
 	if frame:CanChangeAttribute() then
 		frame:SetAttribute("initial-width", self.db.profile.frameWidth)
 		frame:SetAttribute("initial-height", self.db.profile.frameHeight)
-		if not self.db.profile.rightClickMenu then
-			frame:SetAttribute("type2", nil) -- remove right-click menu
-		end
+		frame:SetAttribute("type2", self.db.profile.rightClickMenu and "togglemenu" or nil)
 	end
-
-	frame:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
-	frame:SetScript("OnShow", GridFrame_OnShow)
 
 	-- tooltip support, use HookScript in case our template defined OnEnter/OnLeave
 	frame:HookScript("OnEnter", frame.OnEnter)
@@ -1189,14 +1185,14 @@ GridFrame.options = {
 					desc = L["Adjust the texture of each unit's frame."],
 					order = 10, width = "double",
 					type = "select",
-					values = media:HashTable("statusbar"),
+					values = Media:HashTable("statusbar"),
 					dialogControl = "LSM30_Statusbar",
 					get = function()
 						return GridFrame.db.profile.texture
 					end,
 					set = function(_, v)
 						GridFrame.db.profile.texture = v
-						local texture = media:Fetch("statusbar", v)
+						local texture = Media:Fetch("statusbar", v)
 						GridFrame:WithAllFrames("SetFrameTexture", texture)
 					end,
 				},
@@ -1347,14 +1343,14 @@ GridFrame.options = {
 					desc = L["Adjust the font settings"],
 					order = 10, width = "double",
 					type = "select",
-					values = media:HashTable("font"),
+					values = Media:HashTable("font"),
 					dialogControl = "LSM30_Font",
 					get = function()
 						return GridFrame.db.profile.font
 					end,
 					set = function(_, v)
 						GridFrame.db.profile.font = v
-						local font = media:Fetch("font", v)
+						local font = Media:Fetch("font", v)
 						GridFrame:WithAllFrames("SetFrameFont", font, GridFrame.db.profile.fontSize, GridFrame.db.profile.fontOutline, GridFrame.db.profile.fontShadow)
 					end,
 				},
@@ -1368,7 +1364,7 @@ GridFrame.options = {
 					end,
 					set = function(_, v)
 						GridFrame.db.profile.fontSize = v
-						local font = media and media:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
+						local font = Media:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
 						GridFrame:WithAllFrames("SetFrameFont", font, v, GridFrame.db.profile.fontOutline, GridFrame.db.profile.fontShadow)
 					end,
 				},
@@ -1383,7 +1379,7 @@ GridFrame.options = {
 					end,
 					set = function(_, v)
 						GridFrame.db.profile.fontOutline = v
-						local font = media and media:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
+						local font = Media:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
 						GridFrame:WithAllFrames("SetFrameFont", font, GridFrame.db.profile.fontSize, v, GridFrame.db.profile.fontShadow)
 					end,
 				},
@@ -1397,7 +1393,7 @@ GridFrame.options = {
 					end,
 					set = function(_, v)
 						GridFrame.db.profile.fontShadow = v
-						local font = media and media:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
+						local font = Media:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
 						GridFrame:WithAllFrames("SetFrameFont", font, GridFrame.db.profile.fontSize, GridFrame.db.profile.fontOutline, v)
 					end,
 				},
@@ -1470,10 +1466,8 @@ function GridFrame:OnEnable()
 		self:RegisterMessage("UpdateFrameUnits")
 	end
 
-	if media then
-		media.RegisterCallback(self, "LibSharedMedia_Registered", "LibSharedMedia_Update")
-		media.RegisterCallback(self, "LibSharedMedia_SetGlobal", "LibSharedMedia_Update")
-	end
+	Media.RegisterCallback(self, "LibSharedMedia_Registered", "LibSharedMedia_Update")
+	Media.RegisterCallback(self, "LibSharedMedia_SetGlobal", "LibSharedMedia_Update")
 
 	self:Reset()
 end
@@ -1484,9 +1478,9 @@ end
 
 function GridFrame:LibSharedMedia_Update(callback, type, handle)
  	if type == "font" then
- 		self:WithAllFrames("SetFrameFont", media:Fetch("font", self.db.profile.font), self.db.profile.fontSize, GridFrame.db.profile.fontOutline, GridFrame.db.profile.fontShadow)
+ 		self:WithAllFrames("SetFrameFont", Media:Fetch("font", self.db.profile.font), self.db.profile.fontSize, GridFrame.db.profile.fontOutline, GridFrame.db.profile.fontShadow)
  	elseif type == "statusbar" then
- 		self:WithAllFrames("SetFrameTexture", media:Fetch("statusbar", self.db.profile.texture))
+ 		self:WithAllFrames("SetFrameTexture", Media:Fetch("statusbar", self.db.profile.texture))
 	end
 end
 
@@ -1502,7 +1496,7 @@ function GridFrame:PostReset()
 
 	-- Fix for font size not updating on profile change
 	-- Can probably be done better
-	local font = media and media:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
+	local font = Media:Fetch("font", GridFrame.db.profile.font) or STANDARD_TEXT_FONT
 	GridFrame:WithAllFrames("SetFrameFont", font, GridFrame.db.profile.fontSize, GridFrame.db.profile.fontOutline, GridFrame.db.profile.fontShadow)
 
 	self:ResetAllFrames()
