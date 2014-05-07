@@ -266,7 +266,6 @@ function Grid.modulePrototype:RegisterModule(name, module)
 	if module.extraOptions and not module.options then
 		module.options = {
 			name = module.menuName or module.moduleName,
-			desc = format(L["Options for %s."], module.moduleName),
 			type = "group",
 			args = {},
 		}

@@ -346,8 +346,8 @@ function GridStatusAuras:PostInitialize()
 	self:RegisterStatuses()
 
 	self.options.args["add_buff"] = {
-		name = L["Add new Buff"],
-		desc = L["Adds a new buff to the status module"],
+		name = L["Add Buff"],
+		desc = L["Create a new buff status."],
 		order = 11,
 		width = "double",
 		type = "input",
@@ -359,8 +359,8 @@ function GridStatusAuras:PostInitialize()
 		end,
 	}
 	self.options.args["add_debuff"] = {
-		name = L["Add new Debuff"],
-		desc = L["Adds a new debuff to the status module"],
+		name = L["Add Debuff"],
+		desc = L["Create a new debuff status."],
 		order = 31,
 		width = "double",
 		type = "input",
@@ -372,8 +372,8 @@ function GridStatusAuras:PostInitialize()
 		end,
 	}
 	self.options.args["delete_aura"] = {
-		name = L["Delete Aura"],
-		desc = L["Deletes an existing debuff from the status module"],
+		name = L["Remove Aura"],
+		desc = L["Remove an existing buff or debuff status."],
 		order = -2,
 		type = "group",
 		dialogInline = true,

@@ -117,7 +117,6 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 			args = {
 				enable = {
 					name = L["Enable"],
-					desc = format(L["Enable %s"], desc),
 					order = 10,
 					width = "full",
 					type = "toggle",
@@ -139,41 +138,22 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 				},
 				color = {
 					name = L["Color"],
-					desc = format(L["Color for %s"], desc),
 					order = 20,
-					type = "color",
+					type = "color", hasAlpha = true,
 					get = function()
 						local color = module.db.profile[status].color
-						return color.r, color.g, color.b
+						return color.r, color.g, color.b, color.a
 					end,
-					set = function(_, r, g, b)
+					set = function(_, r, g, b, a)
 						local color = module.db.profile[status].color
 						color.r = r
 						color.g = g
 						color.b = b
-					end,
-				},
-				opacity = {
-					name = L["Opacity"],
-					desc = format(L["Opacity for %s"], desc),
-					order = 25,
-					type = "range",
-					min = 0.05,
-					max = 1,
-					step = 0.05,
-					isPercent = true,
-					get = function()
-						local color = module.db.profile[status].color
-						return color.a
-					end,
-					set = function(_, a)
-						local color = module.db.profile[status].color
 						color.a = a or 1
 					end,
 				},
 				priority = {
 					name = L["Priority"],
-					desc = format(L["Priority for %s"], desc),
 					order = 30,
 					type = "range", max = 99, min = 0, step = 1,
 					get = function()
@@ -183,18 +163,6 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 						module.db.profile[status].priority = v
 					end,
 				},
-			--[[
-				range = {
-					name = L["Range filter"],
-					desc = format(L["Range filter for %s"], desc),
-					order = 40,
-					type = "toggle",
-					get = function() return module.db.profile[status].range end,
-					set = function()
-						module.db.profile[status].range = not module.db.profile[status].range
-					end,
-				},
-			]]
 			},
 		}
 
@@ -207,7 +175,6 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 				end
 			end
 		end
-
 	end
 end
 
@@ -257,7 +224,6 @@ GridStatus.defaultDB = {
 
 GridStatus.options = {
 	name = L["Status"],
-	desc = L["Options for GridStatus."],
 	order = 4,
 	type = "group",
 	--childGroups = "tab",
@@ -265,13 +231,11 @@ GridStatus.options = {
 		color = {
 			order = -1,
 			name = L["Colors"],
-			desc = L["Color options for class and pets."],
 			type = "group",
 			args = {
 				class = {
 					order = 100,
 					name = L["Class colors"],
-					desc = L["Color of player unit classes."],
 					type = "group", inline = true,
 					args = {
 						br = {
@@ -282,7 +246,6 @@ GridStatus.options = {
 						reset = {
 							order = 130,
 							name = L["Reset class colors"],
-							desc = L["Reset class colors to defaults."],
 							type = "execute", width = "double",
 							func = function() GridStatus:ResetClassColors() end,
 						}
@@ -291,7 +254,6 @@ GridStatus.options = {
 				petcolortype = {
 					order = 200,
 					name = L["Pet coloring"],
-					desc = L["Set the coloring strategy of pet units."],
 					type = "select", width = "double",
 					values = {
 						["By Owner Class"] = L["By Owner Class"],
@@ -309,7 +271,6 @@ GridStatus.options = {
 				creaturetype = {
 					order = 300,
 					name = L["Creature type colors"],
-					desc = L["Color of pet unit creature types."],
 					type = "group", inline = true,
 					args = {
 					},
@@ -381,7 +342,6 @@ function GridStatus:FillColorOptions(options)
 		options.args.class.args[class] = {
 			type = "color",
 			name = classLocal,
-			desc = format(L["Color for %s."], classLocal),
 			get = function()
 				local c = colors[class]
 				return c.r, c.g, c.b
@@ -399,7 +359,6 @@ function GridStatus:FillColorOptions(options)
 		options.args.creaturetype.args[class] = {
 			type = "color",
 			name = class,
-			desc = format(L["Color for %s."], class),
 			get = function()
 				local c = colors[class]
 				return c.r, c.g, c.b
@@ -489,18 +448,16 @@ function GridStatus:UnregisterStatus(status, moduleName)
 end
 
 function GridStatus:IsStatusRegistered(status)
-	return (self.registry and
-		self.registry[status] and
-		true)
+	return self.registry and self.registry[status] and true
 end
 
 function GridStatus:RegisteredStatusIterator()
 	local status
-	local gsreg = self.registry
-	local gsregdescr = self.registryDescriptions
+	local registry = self.registry
+	local registryDescriptions = self.registryDescriptions
 	return function()
-		status = next(gsreg, status)
-		return status, gsreg[status], gsregdescr[status]
+		status = next(registry, status)
+		return status, registry[status], registryDescriptions[status]
 	end
 end
 
@@ -579,7 +536,7 @@ function GridStatus:SendStatusLost(guid, status)
 	if not guid then return end
 
 	-- if status isn't cached, don't send status lost event
-	if (not self.cache[guid]) or (not self.cache[guid][status]) then
+	if not self.cache[guid] or not self.cache[guid][status] then
 		return
 	end
 
@@ -600,7 +557,7 @@ end
 
 function GridStatus:GetCachedStatus(guid, status)
 	local cache = self.cache
-	return (cache[guid] and cache[guid][status])
+	return cache[guid] and cache[guid][status]
 end
 
 function GridStatus:CachedStatusIterator(status)
