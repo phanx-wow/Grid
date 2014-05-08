@@ -10,7 +10,7 @@
 ------------------------------------------------------------------------
 	GridLocale-itIT.lua
 	Italian localization
-	Contributors: Holydeath1984, kappesante
+	Contributors: Holydeath1984, kappesante, _YuSaKu_
 ----------------------------------------------------------------------]]
 
 if GetLocale() ~= "itIT" then return end

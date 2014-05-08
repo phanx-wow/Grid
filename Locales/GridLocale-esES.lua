@@ -10,7 +10,7 @@
 ------------------------------------------------------------------------
 	GridLocale-esES.lua
 	Spanish localization
-	Contributors: Akkorian, Guiaswow, Valdesca, yllelder
+	Contributors: Akkorian, Guiaswow, pgriff91, Valdesca, yllelder
 ----------------------------------------------------------------------]]
 
 if not GetLocale():match("^es") then return end

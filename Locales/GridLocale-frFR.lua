@@ -10,7 +10,7 @@
 ------------------------------------------------------------------------
 	GridLocale-frFR.lua
 	French localization
-	Contributors: Devfool, Matisk, NoGynGz, Pettigrow, Strigx, trasher
+	Contributors: brubru777, Devfool, Matisk, NoGynGz, Pettigrow, Strigx, trasher
 ----------------------------------------------------------------------]]
 
 if GetLocale() ~= "frFR" then return end
