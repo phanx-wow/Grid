@@ -72,7 +72,7 @@ local debuff_types = {
 }
 
 function GridStatusAuras:StatusForSpell(spell, isBuff)
-	return format(isBuff and "buff_%s" or "debuff_%s", gsub(spell, " ", ""))
+	return spell and format(isBuff and "buff_%s" or "debuff_%s", gsub(spell, " ", "")) or false
 end
 
 function GridStatusAuras:TextForSpell(spell)
@@ -328,6 +328,13 @@ GridStatusAuras.defaultDB = {
 		mine = true,
 	},
 }
+
+for status in pairs(GridStatusAuras.defaultDB) do
+	if status == false then
+		-- spell doesn't exist anymore
+		GridStatusAuras.defaultDB[status] = nil
+	end
+end
 
 local default_auras = { }
 do
