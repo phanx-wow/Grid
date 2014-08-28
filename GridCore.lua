@@ -182,7 +182,7 @@ Grid.options = {
 Grid.defaultDB = {
 	profile = {
 		minimap = {},
-		standaloneOptions = true,
+		standaloneOptions = false,
 	},
 	global = {
 		debug = {},
@@ -524,9 +524,15 @@ function Grid:SetupOptions()
 	self.optionsPanels = {
 		Dialog:AddToBlizOptions(GRID, GRID, nil, "general") -- "appName", "panelName", "parentName", ... "optionsPath"
 	}
+
+	local noop = function() end
 	for i = 1, #panels do
-		local k = panels[i]
-		self.optionsPanels[i+1] = Dialog:AddToBlizOptions(GRID, self.options.args[k].name, GRID, k)
+		local path = panels[i]
+		local name = self.options.args[path].name
+		local f = Dialog:AddToBlizOptions(GRID, name, GRID, path)
+		f.obj:SetTitle(GRID .. " - " .. name) -- workaround for AceConfig deficiency
+		f.obj.SetTitle = noop
+		self.optionsPanels[i+1] = f
 	end
 
 	self.SetupOptions = nil
