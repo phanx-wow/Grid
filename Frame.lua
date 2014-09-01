@@ -15,7 +15,7 @@ local format, gsub, pairs, tonumber, type = format, gsub, pairs, tonumber, type
 local GridStatus
 
 local Media = LibStub("LibSharedMedia-3.0")
-Media:Register("statusbar", "Gradient", "Interface\\Addons\\Media\\Grid\\gradient32x32")
+Media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\Media\\gradient32x32")
 
 local GridFrame = Grid:NewModule("GridFrame", "AceBucket-3.0", "AceTimer-3.0")
 GridFrame.prototype = {}
