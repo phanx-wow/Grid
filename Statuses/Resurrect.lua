@@ -1,15 +1,15 @@
 --[[--------------------------------------------------------------------
 	Grid
 	Compact party and raid unit frames.
-	Copyright (c) 2006-2013 Kyle Smith (Pastamancer), A. Kinley (Phanx)
+	Copyright (c) 2006-2014 Kyle Smith (Pastamancer), Phanx
 	All rights reserved.
 	See the accompanying README and LICENSE files for more information.
 	http://www.wowinterface.com/downloads/info5747-Grid.html
 	http://www.wowace.com/addons/grid/
 	http://www.curse.com/addons/wow/grid
 ------------------------------------------------------------------------
-	GridStatusResurrect.lua
-	GridStatus module for showing incoming resurrections.
+	Resurrect.lua
+	Grid status module for resurrections.
 ----------------------------------------------------------------------]]
 
 local _, Grid = ...

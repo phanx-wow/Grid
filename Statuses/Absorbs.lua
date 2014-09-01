@@ -1,15 +1,15 @@
 --[[--------------------------------------------------------------------
 	Grid
 	Compact party and raid unit frames.
-	Copyright (c) 2006-2013 Kyle Smith (Pastamancer), A. Kinley (Phanx)
+	Copyright (c) 2006-2014 Kyle Smith (Pastamancer), Phanx
 	All rights reserved.
 	See the accompanying README and LICENSE files for more information.
 	http://www.wowinterface.com/downloads/info5747-Grid.html
 	http://www.wowace.com/addons/grid/
 	http://www.curse.com/addons/wow/grid
 ------------------------------------------------------------------------
-	GridStatusAbsorbs.lua
-	Grid status module for showing active absorption effects.
+	Absorbs.lua
+	Grid status module for absorption effects.
 ----------------------------------------------------------------------]]
 
 local _, Grid = ...
@@ -26,7 +26,7 @@ GridStatusAbsorbs.options = false
 GridStatusAbsorbs.defaultDB = {
 	alert_absorbs = {
 		enable = true,
-		priority = 50,
+		priority = 40,
 		color = { r = 1, g = 1, b = 0, a = 1 },
 		text = "+%s",
 		minimumValue = 0.1,
@@ -73,7 +73,6 @@ end
 
 function GridStatusAbsorbs:PostReset()
 	settings = self.db.profile.alert_absorbs
-	self:UpdateAllUnits()
 end
 
 function GridStatusAbsorbs:UpdateAllUnits()

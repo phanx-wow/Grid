@@ -15,7 +15,7 @@
 
 ## Author: Phanx, Pastamancer, Maia
 ## X-Credits: Greltok, Jerry, jlam
-## X-Copyright: Copyright (c) 2006-2013 Pastamancer, Phanx. All rights reserved.
+## X-Copyright: Copyright (c) 2006-2014 Pastamancer, Phanx. All rights reserved.
 ## X-License: See the accompanying LICENSE file for details.
 ## X-CompatibleLocales: enUS, deDE, esES, esMX, frFR, itIT, koKR, ptBR, ruRU, zhCN, zhTW
 ## X-Localizations: enUS, deDE, esES, esMX, frFR, koKR, ptBR, ruRU, zhCN, zhTW
@@ -29,12 +29,12 @@
 Libs\Libs.xml
 Locales\Locales.xml
 
-GridCore.lua
-GridRoster.lua
-GridLayout.lua
-GridLayoutLayouts.lua
-GridFrame.lua
-GridStatus.lua
-GridHelp.lua
+Core.lua
+Roster.lua
+Layout.lua
+Layouts.lua
+Frame.lua
+Status.lua
+Help.lua
 
 Statuses\Statuses.xml

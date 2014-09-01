@@ -1,3 +1,8 @@
+### Version 5.4.8.xxxx
+
+* Added status modules for Group Leader, Raid Assistant, Master Looter, Raid Icon, and Role
+* [API] GridStatus now calls :UpdateAllUnits (if it exists) on status modules when resetting them
+
 ### Version 5.4.7.1653
 
 * Added Soulstone support to the Incoming Resurrection status

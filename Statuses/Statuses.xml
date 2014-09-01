@@ -1,16 +1,21 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
-	<Script file="GridStatusAbsorbs.lua"/>
-	<Script file="GridStatusAggro.lua"/>
-	<Script file="GridStatusAuras.lua"/>
-	<Script file="GridStatusHeals.lua"/>
-	<Script file="GridStatusHealth.lua"/>
-	<Script file="GridStatusMana.lua"/>
-	<Script file="GridStatusName.lua"/>
-	<Script file="GridStatusRange.lua"/>
-	<Script file="GridStatusReadyCheck.lua"/>
-	<Script file="GridStatusResurrect.lua"/>
-	<Script file="GridStatusTarget.lua"/>
-	<Script file="GridStatusVehicle.lua"/>
-	<Script file="GridStatusVoiceComm.lua"/>
+	<Script file="Absorbs.lua"/>
+	<Script file="Aggro.lua"/>
+	<Script file="Auras.lua"/>
+	<Script file="Heals.lua"/>
+	<Script file="Health.lua"/>
+	<Script file="Mana.lua"/>
+	<Script file="Name.lua"/>
+	<Script file="Range.lua"/>
+	<Script file="ReadyCheck.lua"/>
+	<Script file="Resurrect.lua"/>
+	<Script file="Target.lua"/>
+	<Script file="Vehicle.lua"/>
+	<Script file="VoiceComm.lua"/>
+<!--@debug@-->
+	<Script file="Group.lua"/>
+	<Script file="RaidIcon.lua"/>
+	<Script file="Role.lua"/>
+<!--@end-debug@-->
 </Ui>
