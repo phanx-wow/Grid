@@ -10,6 +10,9 @@
 ----------------------------------------------------------------------]]
 
 local GRID, Grid = ...
+local LDBIcon = LibStub("LibDBIcon-1.0")
+local format, print, strfind, strlen, tostring, type = format, print, strfind, strlen, tostring, type
+
 _G.Grid = LibStub("AceAddon-3.0"):NewAddon(Grid, GRID, "AceConsole-3.0", "AceEvent-3.0")
 
 if not Grid.L then Grid.L = { } end
@@ -19,9 +22,6 @@ local L = setmetatable( Grid.L, {
 		return k
 	end
 })
-
-local LDBIcon = LibStub("LibDBIcon-1.0")
-local format, print, strfind, strlen, tostring, type = format, print, strfind, strlen, tostring, type
 
 ------------------------------------------------------------------------
 
@@ -378,7 +378,6 @@ function Grid:OnInitialize()
 	if DataBroker then
 		self.Broker = DataBroker:NewDataObject(GRID, {
 			type = "launcher",
-			label = GetAddOnInfo(GRID, "Title"),
 			icon = "Interface\\AddOns\\Grid\\Media\\icon",
 			OnClick = function(self, button)
 				if button == "RightButton" then
