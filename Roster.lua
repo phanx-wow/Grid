@@ -266,6 +266,8 @@ do
 		"bg",
 	}
 
+	local lastRaidType
+
 	local function GetPartyState()
 		local _, instanceType = IsInInstance()
 
@@ -280,10 +282,13 @@ do
 		if IsInRaid() then
 			if instanceType == "raid" then
 				local _, _, difficultyID, _, maxPlayers = GetInstanceInfo()
-				return difficultyID == 14 and "raid_flex" or maxPlayers == 10 and "raid_10" or maxPlayers == 25 and "raid_25" or "raid_40"
+				lastRaidType = difficultyID == 14 and "raid_flex" or maxPlayers == 10 and "raid_10" or maxPlayers == 25 and "raid_25" or "raid_40"
+				return lastRaidType
 			else
-				return "raid_40"
+				return lastRaidType or "raid_40"
 			end
+		else
+			lastRaidType = nil
 		end
 
 		if IsInGroup() then
