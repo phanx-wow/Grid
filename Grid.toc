@@ -4,7 +4,7 @@
 
 ## Title: Grid
 ## Notes: A compact grid of party/raid unit frames.
-## Notes-deDE: Ein kompakte Gitter der Gruppen- und Schlachtzugsfenstern.
+## Notes-deDE: Ein kompakter Gitter von Gruppen- und Schlachtzugsfenstern.
 ## Notes-esES: Una cuadrícula compacta de marcos de unidades para tu grupo o banda.
 ## Notes-esMX: Una cuadrícula compacta de marcos de unidades para su grupo o banda.
 ## Notes-frFR: Une grille compacte de fenêtres des unités de votre groupe ou raid.
@@ -26,8 +26,40 @@
 ## OptionalDeps: Ace3, LibDBIcon-1.0, LibDualSpec-1.0, LibResInfo-1.0, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, AceGUI-3.0-Spell-EditBox, UTF8, Clique, SharedMedia
 ## SavedVariables: GridDB
 
-Libs\Libs.xml
-Locales\Locales.xml
+#@no-lib-strip@
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\AceAddon-3.0\AceAddon-3.0.lua
+Libs\AceBucket-3.0\AceBucket-3.0.lua
+Libs\AceGUI-3.0\AceGUI-3.0.xml
+Libs\AceGUI-3.0-Spell-EditBox\AceGUI-3.0-Spell-EditBox.xml
+Libs\AceConfigRegistry-3.0\AceConfigRegistry-3.0.lua
+Libs\AceConfigDialog-3.0\AceConfigDialog-3.0.lua
+Libs\AceConsole-3.0\AceConsole-3.0.lua
+Libs\AceConfigCmd-3.0\AceConfigCmd-3.0.lua
+Libs\AceDB-3.0\AceDB-3.0.lua
+Libs\AceDBOptions-3.0\AceDBOptions-3.0.lua
+Libs\AceEvent-3.0\AceEvent-3.0.lua
+Libs\AceHook-3.0\AceHook-3.0.lua
+Libs\AceTimer-3.0\AceTimer-3.0.lua
+Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
+Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
+Libs\LibDualSpec-1.0\LibDualSpec-1.0.lua
+Libs\LibResInfo-1.0\LibResInfo-1.0.lua
+Libs\LibSharedMedia-3.0\LibSharedMedia-3.0.lua
+Libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
+Libs\UTF8\utf8.lua
+#@end-no-lib-strip@
+
+Locales\Locale-de.lua
+Locales\Locale-es.lua
+Locales\Locale-fr.lua
+Locales\Locale-it.lua
+Locales\Locale-pt.lua
+Locales\Locale-ru.lua
+Locales\Locale-ko.lua
+Locales\Locale-zhCN.lua
+Locales\Locale-zhTW.lua
 
 Core.lua
 Roster.lua
@@ -37,4 +69,34 @@ Frame.lua
 Status.lua
 Help.lua
 
-Statuses\Statuses.xml
+Indicators\Alpha.lua
+Indicators\Bar.lua
+Indicators\Border.lua
+Indicators\Corner.lua
+Indicators\HealingBar.lua
+Indicators\Icon.lua
+Indicators\Text.lua
+
+Statuses\Absorbs.lua
+Statuses\Aggro.lua
+Statuses\Auras.lua
+Statuses\Group.lua
+Statuses\Heals.lua
+Statuses\Health.lua
+Statuses\Mana.lua
+Statuses\Name.lua
+Statuses\RaidIcon.lua
+Statuses\Range.lua
+Statuses\ReadyCheck.lua
+Statuses\Resurrect.lua
+Statuses\Target.lua
+Statuses\Vehicle.lua
+Statuses\VoiceComm.lua
+
+#@debug@
+Statuses\Role.lua
+#@end-debug@
+
+#@debug@
+Statuses\new\GridAura.lua
+#@end-debug@
