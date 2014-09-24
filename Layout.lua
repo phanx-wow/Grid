@@ -140,7 +140,12 @@ function GridLayout:CreateHeader(isPetGroup)
 		header[k] = v
 	end
 
-	header:SetAttribute("template", ClickCastHeader and "ClickCastUnitTemplate,SecureUnitButtonTemplate" or "SecureUnitButtonTemplate")
+	if Clique then
+		header:SetAttribute("template", "ClickCastUnitTemplate,SecureUnitButtonTemplate")
+		SecureHandlerSetFrameRef(header, "clickcast_header", Clique.header)
+	else
+		header:SetAttribute("template", "SecureUnitButtonTemplate")
+	end
 
 	-- Fix for bug on the Blizz end when using SecureActionButtonTemplate with SecureGroupPetHeaderTemplate
 	-- http://forums.wowace.com/showpost.php?p=307869&postcount=3216
