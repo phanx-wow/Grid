@@ -97,7 +97,7 @@ function GridStatusRaidIcon:OnStatusEnable(status)
 	self:RegisterEvent("RAID_TARGET_UPDATE", "UpdateAllUnits")
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", "UpdateAllUnits")
 	self:RegisterMessage("Grid_RosterUpdated", "UpdateAllUnits")
-	self:UpdateAllUnits("StatusEnable")
+	self:UpdateAllUnits("OnStatusEnable")
 end
 
 function GridStatusRaidIcon:OnStatusDisable(status)
@@ -108,13 +108,13 @@ function GridStatusRaidIcon:OnStatusDisable(status)
 	self:SendStatusLostAllUnits(status)
 end
 
-function GridStatusRaidIcon:UpdateAllUnits(event)
-	self:Debug("UpdateAllUnits", event)
+function GridStatusRaidIcon:UpdateAllUnits(event, ...)
+	self:Debug("UpdateAllUnits", event, ...)
 	local settings = self.db.profile.raid_icon
 
 	for guid, unit in Roster:IterateRoster() do
 		local i = GetRaidTargetIndex(unit)
-		self:Debug(unit, i)
+		self:Debug(unit, i, i and settings.text[i], i and settings.icon[i])
 		if i then
 			self.core:SendStatusGained(guid, "raid_icon",
 				settings.priority,

@@ -71,7 +71,7 @@ function GridStatusName:OnStatusEnable(status)
 		end
 	end
 
-	self:UpdateAllUnits()
+	self:UpdateAllUnits("OnStatusEnable")
 end
 
 function GridStatusName:OnStatusDisable(status)
