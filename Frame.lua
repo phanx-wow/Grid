@@ -12,7 +12,7 @@
 local GRID, Grid = ...
 local L = Grid.L
 local format, gsub, pairs, tonumber, type = format, gsub, pairs, tonumber, type
-local GridStatus
+local GridStatus, GridStatusRange
 
 local Media = LibStub("LibSharedMedia-3.0")
 Media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid\\Media\\gradient32x32")
@@ -122,6 +122,19 @@ local function GridFrame_OnAttributeChanged(self, name, value)
 	end
 end
 
+local initialConfigSnippet = [[
+   self:SetAttribute("initial-width", %d)
+   self:SetAttribute("initial-height", %d)
+   self:SetAttribute("type2", %s)
+]]
+
+function GridFrame:GetInitialConfigSnippet()
+	return format(initialConfigSnippet,
+		self.db.profile.frameWidth, self.db.profile.frameHeight,
+		self.db.profile.rightClickMenu and '"togglemenu"' or 'nil'
+	)
+end
+
 function GridFrame:InitializeFrame(frame)
 	--print("InitializeFrame", frame:GetName())
 
@@ -131,14 +144,8 @@ function GridFrame:InitializeFrame(frame)
 
 	frame:RegisterForClicks("AnyUp")
 
-	if frame:CanChangeAttribute() then
-		frame:SetAttribute("initial-width", self.db.profile.frameWidth)
-		frame:SetAttribute("initial-height", self.db.profile.frameHeight)
-		frame:SetAttribute("type2", self.db.profile.rightClickMenu and "togglemenu" or nil)
-	end
-
-	frame:SetScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
-	frame:SetScript("OnShow", GridFrame_OnShow)
+	frame:HookScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
+	frame:HookScript("OnShow", GridFrame_OnShow)
 
 	-- tooltip support, use HookScript in case our template defined OnEnter/OnLeave
 	frame:HookScript("OnEnter", frame.OnEnter)
@@ -371,7 +378,7 @@ GridFrame.options = {
 					type = "range", min = 10, max = 100, step = 1,
 					set = function(info, v)
 						GridFrame.db.profile.frameWidth = v
-						GridFrame:ResizeAllFrames()
+						--GridFrame:ResizeAllFrames()
 						GridFrame:ScheduleTimer("Grid_ReloadLayout", 0.5)
 					end,
 				},
@@ -382,7 +389,7 @@ GridFrame.options = {
 					type = "range", min = 10, max = 100, step = 1,
 					set = function(info, v)
 						GridFrame.db.profile.frameHeight = v
-						GridFrame:ResizeAllFrames()
+						--GridFrame:ResizeAllFrames()
 						GridFrame:ScheduleTimer("Grid_ReloadLayout", 0.5)
 					end,
 				},
@@ -636,6 +643,7 @@ Grid.options.args.GridIndicator = {
 
 function GridFrame:PostInitialize()
 	GridStatus = Grid:GetModule("GridStatus")
+	GridStatusRange = GridStatus:GetModule("GridStatusRange", true)
 
 	self.frames = {}
 	self.registeredFrames = {}
@@ -857,7 +865,6 @@ function GridFrame:StatusForIndicator(unitid, guid, indicator)
 	return topStatus
 end
 
-local GridStatusRange
 function GridFrame:UnitInRange(unit)
 	if not unit or not UnitExists(unit) then return false end
 
@@ -865,9 +872,6 @@ function GridFrame:UnitInRange(unit)
 		return true
 	end
 
-	if not GridStatusRange then
-		GridStatusRange = Grid:GetModule("GridStatus"):GetModule("GridStatusRange")
-	end
 	if GridStatusRange then
 		return GridStatusRange:UnitInRange(unit)
 	end

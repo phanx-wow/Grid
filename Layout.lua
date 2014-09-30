@@ -12,6 +12,7 @@
 local GRID, Grid = ...
 local L = Grid.L
 
+local GridFrame
 local GridRoster = Grid:GetModule("GridRoster")
 local Media = LibStub("LibSharedMedia-3.0")
 
@@ -61,6 +62,8 @@ function GridLayout.prototype:Reset()
 	self:SetAttributeByProxy("columnAnchorPoint", nil)
 	self:SetAttributeByProxy("point", nil)
 	self:SetAttributeByProxy("unitsPerColumn", nil)
+
+	self:SetAttribute("initialConfigFunction", GridLayout:GetInitialConfigSnippet())
 end
 
 function GridLayout.prototype:SetAttributeByProxy(name, value)
@@ -123,7 +126,43 @@ function GridLayout.prototype:GetVisibleUnitCount()
 end
 
 function GridLayout.prototype:initialConfigFunction(...)
-	Grid:GetModule("GridFrame"):RegisterFrame(self[#self])
+	GridFrame:RegisterFrame(self[#self])
+end
+
+------------------------------------------------------------------------
+
+local initialConfigSnippet = [[
+   RegisterUnitWatch(self)
+   self:SetAttribute("*type1", "target")
+   self:SetAttribute("toggleForVehicle", true)
+
+   local header = self:GetParent()
+   if header:GetAttribute("unitsuffix") == "pet" then
+      self:SetAttribute("useOwnerUnit", true)
+      self:SetAttribute("unitsuffix", "pet")
+   end
+
+   local click = header:GetFrameRef("clickcast_header")
+   if click then
+      click:SetAttribute("clickcast_button", self)
+      click:RunAttribute("clickcast_register")
+   end
+
+   header:CallMethod("initialConfigFunction")
+
+]]
+
+function GridLayout:GetInitialConfigSnippet()
+	return initialConfigSnippet .. GridFrame:GetInitialConfigSnippet()
+end
+
+function GridLayout:SetInitialConfigSnippet()
+	for i = 1, #self.layoutGroups do
+		self.layoutGroups[i]:SetAttribute("initialConfigFunction", GridLayout:GetInitialConfigSnippet())
+	end
+	for i = 1, #self.layoutPetGroups do
+		self.layoutGroups[i]:SetAttribute("initialConfigFunction", GridLayout:GetInitialConfigSnippet())
+	end
 end
 
 ------------------------------------------------------------------------
@@ -154,26 +193,9 @@ function GridLayout:CreateHeader(isPetGroup)
 		header:SetAttribute("unitsuffix", "pet")
 	end
 
-	header:SetAttribute("initialConfigFunction", [[
-		RegisterUnitWatch(self)
-		self:SetAttribute("*type1", "target")
-		self:SetAttribute("toggleForVehicle", true)
-
-		local header = self:GetParent()
-		if header:GetAttribute("unitsuffix") == "pet" then
-			self:SetAttribute("useOwnerUnit", true)
-			self:SetAttribute("unitsuffix", "pet")
-		end
-		local click = header:GetFrameRef("clickcast_header")
-		if click then
-			click:SetAttribute("clickcast_button", self)
-			click:RunAttribute("clickcast_register")
-		end
-		header:CallMethod("initialConfigFunction")
-	]])
+	header:SetAttribute("initialConfigFunction", GridLayout:GetInitialConfigSnippet())
 
 	header:Reset()
-	-- header:SetOrientation()
 
 	return header
 end
@@ -520,6 +542,8 @@ GridLayout.layoutSettings = {}
 
 function GridLayout:PostInitialize()
 	--self:Debug("PostInitialize")
+	GridFrame = Grid:GetModule("GridFrame")
+
 	self.layoutGroups = {}
 	self.layoutPetGroups = {}
 
