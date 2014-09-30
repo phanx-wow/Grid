@@ -97,6 +97,8 @@ end
 ------------------------------------------------------------------------
 
 local initialConfigSnippet = [[
+   self:SetWidth(%d)
+   self:SetHeight(%d)
    self:SetAttribute("initial-width", %d)
    self:SetAttribute("initial-height", %d)
    self:SetAttribute("type2", %s)
@@ -104,6 +106,7 @@ local initialConfigSnippet = [[
 
 function GridFrame:GetInitialConfigSnippet()
 	return format(initialConfigSnippet,
+		self.db.profile.frameWidth, self.db.profile.frameHeight,
 		self.db.profile.frameWidth, self.db.profile.frameHeight,
 		self.db.profile.rightClickMenu and '"togglemenu"' or 'nil'
 	)
