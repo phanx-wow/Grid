@@ -84,6 +84,7 @@ Statuses\Group.lua
 Statuses\Heals.lua
 Statuses\Health.lua
 Statuses\Mana.lua
+Statuses\Mouseover.lua
 Statuses\Name.lua
 Statuses\RaidIcon.lua
 Statuses\Range.lua

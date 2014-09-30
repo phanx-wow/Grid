@@ -96,14 +96,12 @@ end
 
 ------------------------------------------------------------------------
 
-local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
-
-local function GridFrame_OnShow(self)
+local function GridFrame.prototype:OnShow()
 	GridFrame:SendMessage("UpdateFrameUnits")
 	GridFrame:SendMessage("Grid_UpdateLayoutSize")
 end
 
-local function GridFrame_OnAttributeChanged(self, name, value)
+local function GridFrame.prototype:OnAttributeChanged(name, value)
 	if name == "unit" then
 		return GridFrame:SendMessage("UpdateFrameUnits")
 	elseif self:CanChangeAttribute() then
@@ -136,42 +134,32 @@ function GridFrame:GetInitialConfigSnippet()
 end
 
 function GridFrame:InitializeFrame(frame)
-	--print("InitializeFrame", frame:GetName())
+	self:Debug("InitializeFrame", frame:GetName())
 
 	for k, v in pairs(self.prototype) do
 		frame[k] = v
 	end
 
+	frame:SetNormalTexture("")
+	frame:SetHighlightTexture("")
+
 	frame:RegisterForClicks("AnyUp")
 
-	frame:HookScript("OnAttributeChanged", GridFrame_OnAttributeChanged)
-	frame:HookScript("OnShow", GridFrame_OnShow)
-
-	-- tooltip support, use HookScript in case our template defined OnEnter/OnLeave
+	frame:HookScript("OnAttributeChanged", frame.OnAttributeChanged)
+	frame:HookScript("OnShow",  frame.OnShow)
 	frame:HookScript("OnEnter", frame.OnEnter)
 	frame:HookScript("OnLeave", frame.OnLeave)
-
-	-- set texture
-	frame:SetNormalTexture("")
-	frame:EnableMouseoverHighlight(GridFrame.db.profile.enableMouseoverHighlight)
 
 	frame.indicators = {}
 	for id in pairs(self.indicators) do
 		frame:AddIndicator(id)
 	end
-
-	frame:Reset()
+	frame:ResetAllIndicators()
 
 	return frame
 end
 
 ------------------------------------------------------------------------
-
-function GridFrame.prototype:Reset()
-	local profile = GridFrame.db.profile
-	self:ResetAllIndicators()
-	self:EnableMouseoverHighlight(profile.enableMouseoverHighlight)
-end
 
 -- shows the default unit tooltip
 function GridFrame.prototype:OnEnter()
@@ -190,10 +178,6 @@ function GridFrame.prototype:OnLeave()
 end
 
 ------------------------------------------------------------------------
-
-function GridFrame.prototype:EnableMouseoverHighlight(enabled)
-	self:SetHighlightTexture(enabled and "Interface\\QuestFrame\\UI-QuestTitleHighlight" or nil)
-end
 
 local COLOR_WHITE = { r = 1, g = 1, b = 1, a = 1 }
 local COORDS_FULL = { left = 0, right = 1, top = 0, bottom = 1 }
@@ -268,7 +252,6 @@ GridFrame.defaultDB = {
 	iconBorderSize = 1,
 	enableIconStackText = true,
 	enableIconCooldown = true,
-	enableMouseoverHighlight = true,
 	invertBarColor = false,
 	invertTextColor = false,
 	showTooltip = "OOC",
@@ -451,16 +434,6 @@ GridFrame.options = {
 						VERTICAL = L["Vertical"],
 						HORIZONTAL = L["Horizontal"]
 					},
-				},
-				enableMouseoverHighlight = {
-					name = format(L["Enable Mouseover Highlight"]),
-					desc = L["Toggle mouseover highlight."],
-					order = 80, width = "double",
-					type = "toggle",
-					set = function(info, v)
-						GridFrame.db.profile.enableMouseoverHighlight = v
-						GridFrame:WithAllFrames("EnableMouseoverHighlight", v)
-					end,
 				},
 				throttleUpdates = {
 					name = L["Throttle Updates"],
@@ -673,7 +646,7 @@ function GridFrame:OnEnable()
 	Media.RegisterCallback(self, "LibSharedMedia_Registered", "LibSharedMedia_Update")
 	Media.RegisterCallback(self, "LibSharedMedia_SetGlobal", "LibSharedMedia_Update")
 
-	self:Reset()
+	self:ResetAllIndicators()
 end
 
 function GridFrame:SendMessage_UpdateFrameUnits()
@@ -743,6 +716,8 @@ end
 
 ------------------------------------------------------------------------
 
+local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit -- it's so slow
+
 function GridFrame:UpdateFrameUnits()
 	for frame_name, frame in pairs(self.registeredFrames) do
 		if frame:IsVisible() then
@@ -778,8 +753,8 @@ function GridFrame:UpdateIndicators(frame)
 	if not unitid then return end
 
 	-- statusmap[indicator][status]
+	frame:ResetAllIndicators()
 	for indicator in pairs(self.db.profile.statusmap) do
-		self:WithAllFrames("ResetIndicator", indicator)
 		self:UpdateIndicator(frame, indicator)
 	end
 end
