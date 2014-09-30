@@ -96,30 +96,6 @@ end
 
 ------------------------------------------------------------------------
 
-local function GridFrame.prototype:OnShow()
-	GridFrame:SendMessage("UpdateFrameUnits")
-	GridFrame:SendMessage("Grid_UpdateLayoutSize")
-end
-
-local function GridFrame.prototype:OnAttributeChanged(name, value)
-	if name == "unit" then
-		return GridFrame:SendMessage("UpdateFrameUnits")
-	elseif self:CanChangeAttribute() then
-		if name == "type1" then
-			if not value or value == "" then
-				self:SetAttribute("type1", "target")
-			end
-		elseif name == "type2" then
-			local wantmenu = GridFrame.db.profile.rightClickMenu
-			if wantmenu and (not value or value == "") then
-				self:SetAttribute("type2", "togglemenu")
-			elseif value == "togglemenu" and not wantmenu then
-				self:SetAttribute("type2", nil)
-			end
-		end
-	end
-end
-
 local initialConfigSnippet = [[
    self:SetAttribute("initial-width", %d)
    self:SetAttribute("initial-height", %d)
@@ -145,10 +121,10 @@ function GridFrame:InitializeFrame(frame)
 
 	frame:RegisterForClicks("AnyUp")
 
-	frame:HookScript("OnAttributeChanged", frame.OnAttributeChanged)
-	frame:HookScript("OnShow",  frame.OnShow)
 	frame:HookScript("OnEnter", frame.OnEnter)
 	frame:HookScript("OnLeave", frame.OnLeave)
+	frame:HookScript("OnShow",  frame.OnShow)
+	frame:HookScript("OnAttributeChanged", frame.OnAttributeChanged)
 
 	frame.indicators = {}
 	for id in pairs(self.indicators) do
@@ -175,6 +151,30 @@ end
 
 function GridFrame.prototype:OnLeave()
 	UnitFrame_OnLeave(self)
+end
+
+function GridFrame.prototype:OnShow()
+	GridFrame:SendMessage("UpdateFrameUnits")
+	GridFrame:SendMessage("Grid_UpdateLayoutSize")
+end
+
+function GridFrame.prototype:OnAttributeChanged(name, value)
+	if name == "unit" then
+		return GridFrame:SendMessage("UpdateFrameUnits")
+	elseif self:CanChangeAttribute() then
+		if name == "type1" then
+			if not value or value == "" then
+				self:SetAttribute("type1", "target")
+			end
+		elseif name == "type2" then
+			local wantmenu = GridFrame.db.profile.rightClickMenu
+			if wantmenu and (not value or value == "") then
+				self:SetAttribute("type2", "togglemenu")
+			elseif value == "togglemenu" and not wantmenu then
+				self:SetAttribute("type2", nil)
+			end
+		end
+	end
 end
 
 ------------------------------------------------------------------------
@@ -646,7 +646,7 @@ function GridFrame:OnEnable()
 	Media.RegisterCallback(self, "LibSharedMedia_Registered", "LibSharedMedia_Update")
 	Media.RegisterCallback(self, "LibSharedMedia_SetGlobal", "LibSharedMedia_Update")
 
-	self:ResetAllIndicators()
+	self:Reset()
 end
 
 function GridFrame:SendMessage_UpdateFrameUnits()
