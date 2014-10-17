@@ -1,3 +1,9 @@
+### Version 6.0.2.1679-beta
+
+* Fixed center icon intercepting mouse clicks
+* Removed debug prints triggered by outdated layout plugins
+* Removed outdated spell name auto-completion library
+
 ### Version 6.0.2.1674
 
 * Updated for WoW 6.0
