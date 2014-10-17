@@ -69,7 +69,7 @@ function GridFrame.prototype:AddIndicator(id)
 	local prototype = GridFrame.indicators[id]
 	local indicator = prototype.New(self)
 	if not indicator then
-		return print("AddIndicator: creation failed for id", id, type(prototype), type(prototype.New))
+		return GridFrame:Debug("AddIndicator: creation failed for id", id, type(prototype), type(prototype.New))
 	end
 	indicator.__id = id
 	indicator.__owner = self
@@ -84,7 +84,7 @@ function GridFrame.prototype:ResetIndicator(id)
 	if indicator then
 		indicator:Reset()
 	else
-		print("ResetIndicator:", id, "does not exist")
+		GridFrame:Debug("ResetIndicator:", id, "does not exist")
 	end
 end
 
@@ -202,7 +202,7 @@ function GridFrame.prototype:SetIndicator(id, color, text, value, maxValue, text
 	if indicator then
 		indicator:SetStatus(color, text, value, maxValue, texture, texCoords, count, start, duration)
 	else
-		print("SetIndicator:", id, "does not exist")
+		GridFrame:Debug("SetIndicator:", id, "does not exist")
 	end
 
 	--[[ TODO: Why does this exist?
@@ -221,7 +221,7 @@ function GridFrame.prototype:ClearIndicator(id)
 	if indicator then
 		indicator:Clear()
 	else
-		print("ClearIndicator:", id, "does not exist")
+		GridFrame:Debug("ClearIndicator:", id, "does not exist")
 	end
 
 	--[[ TODO: Why does this exist?
