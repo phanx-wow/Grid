@@ -23,7 +23,6 @@ local IsPlayerSpell, UnitAura, UnitClass, UnitGUID, UnitIsPlayer, UnitIsVisible
 
 local GridFrame = Grid:GetModule("GridFrame")
 local GridRoster = Grid:GetModule("GridRoster")
-local hasAuraEditBox = type(LibStub("AceGUI-3.0").WidgetVersions["Aura_EditBox"]) == "number"
 
 local GridStatusAuras = Grid:NewStatusModule("GridStatusAuras", "AceTimer-3.0")
 GridStatusAuras.menuName = L["Auras"]
@@ -378,7 +377,6 @@ function GridStatusAuras:PostInitialize()
 		width = "double",
 		type = "input",
 		usage = L["<buff name>"],
-		dialogControl = hasAuraEditBox and "Aura_EditBox" or nil,
 		get = false,
 		set = function(_, v)
 			self:AddAura(v, true)
@@ -391,7 +389,6 @@ function GridStatusAuras:PostInitialize()
 		width = "double",
 		type = "input",
 		usage = L["<debuff name>"],
-		dialogControl = hasAuraEditBox and "Aura_EditBox" or nil,
 		get = false,
 		set = function(_, v)
 			self:AddAura(v, false)
