@@ -89,13 +89,10 @@ Statuses\RaidIcon.lua
 Statuses\Range.lua
 Statuses\ReadyCheck.lua
 Statuses\Resurrect.lua
+Statuses\Role.lua
 Statuses\Target.lua
 Statuses\Vehicle.lua
 Statuses\VoiceComm.lua
-
-#@debug@
-Statuses\Role.lua
-#@end-debug@
 
 #@debug@
 Statuses\new\GridAura.lua
