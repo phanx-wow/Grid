@@ -128,15 +128,15 @@ function GridStatus.modulePrototype:RegisterStatus(status, desc, options, inMain
 					end,
 					set = function(_, v)
 						module.db.profile[status].enable = v
-							if v then
-								if module.OnStatusEnable then
-									module:OnStatusEnable(status)
-								end
-							else
-								if module.OnStatusDisable then
-									module:OnStatusDisable(status)
-								end
+						if v then
+							if module.OnStatusEnable then
+								module:OnStatusEnable(status)
 							end
+						else
+							if module.OnStatusDisable then
+								module:OnStatusDisable(status)
+							end
+						end
 					end,
 				},
 				color = {
