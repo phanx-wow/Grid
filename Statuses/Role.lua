@@ -182,14 +182,15 @@ function GridStatusRole:UpdateUnit(event, unit, guid)
 	if roleSettings and roleSettings.enable and not (roleSettings.hideInCombat and UnitAffectingCombat("player")) then
 		self.core:SendStatusGained(guid, "role",
 			settings.priority,
-			nil,
+			nil, -- range
 			roleSettings.color,
 			roleSettings.text,
-			nil,
-			nil,
+			nil, -- value
+			nil, -- maxValue
 			ROLE_TEXTURE,
-			nil,
-			nil,
+			nil, -- start
+			nil, -- duration
+			nil, -- count
 			ROLE_TEXCOORDS[role]
 		)
 	else
