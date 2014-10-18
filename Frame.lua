@@ -185,7 +185,7 @@ end
 local COLOR_WHITE = { r = 1, g = 1, b = 1, a = 1 }
 local COORDS_FULL = { left = 0, right = 1, top = 0, bottom = 1 }
 
-function GridFrame.prototype:SetIndicator(id, color, text, value, maxValue, texture, start, duration, stack, texCoords)
+function GridFrame.prototype:SetIndicator(id, color, text, value, maxValue, texture, start, duration, count, texCoords)
 	local profile = GridFrame.db.profile
 
 	if not color then
