@@ -89,8 +89,17 @@ function GridFrame.prototype:ResetIndicator(id)
 end
 
 function GridFrame.prototype:ResetAllIndicators()
-	for _, indicator in pairs(self.indicators) do
-		indicator:Reset()
+	-- Reset default indicators first:
+	for id, indicator in pairs(self.indicators) do
+		if defaultOrder[id] then
+			indicator:Reset()
+		end
+	end
+	-- Then custom ones:
+	for id, indicator in pairs(self.indicators) do
+		if not defaultOrder[id] then
+			indicator:Reset()
+		end
 	end
 end
 
