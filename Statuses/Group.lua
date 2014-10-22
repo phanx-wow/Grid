@@ -161,7 +161,7 @@ function GridStatusName:UpdateAllUnits()
 				looterDB.text,
 				nil,
 				nil,
-				"Interface\\GroupFrame\\UI-Group-AssistantIcon"
+				"Interface\\GroupFrame\\UI-Group-MasterLooter"
 			)
 		else
 			self.core:SendStatusLost(guid, "master_looter")
