@@ -1,3 +1,10 @@
+### Version 6.0.2.
+
+* Fixed Healing Bar indicator
+* Fixed Master Looter, Mouseover, and Role statuses
+* Fixed count property not being passed to indicators ([ticket #741](http://www.wowace.com/addons/grid/tickets/741/))
+* [API] All default indicators are now reset before any third-party indicators
+
 ### Version 6.0.2.1679-beta
 
 * Fixed center icon intercepting mouse clicks

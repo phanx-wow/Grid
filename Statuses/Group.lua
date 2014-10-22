@@ -19,11 +19,6 @@ local Roster = Grid:GetModule("GridRoster")
 local GetLootMethod, UnitAffectingCombat, UnitIsGroupAssistant, UnitIsGroupLeader, UnitIsUnit
     = GetLootMethod, UnitAffectingCombat, UnitIsGroupAssistant, UnitIsGroupLeader, UnitIsUnit
 
--- TEMPORARY:
-L["Group Leader ABBREVIATION"] = "L"
-L["Group Assistant ABBREVIATION"] = "A"
-L["Master Looter ABBREVIATION"] = "M"
-
 local GridStatusName = Grid:NewStatusModule("GridStatusGroup")
 GridStatusName.menuName = L["Group"]
 GridStatusName.options = false
@@ -53,9 +48,9 @@ GridStatusName.defaultDB = {
 }
 
 function GridStatusName:PostInitialize()
-	self:RegisterStatus("leader", L["Group Leader"], nil, true)
-	self:RegisterStatus("assistant", L["Group Assistant"], nil, true)
-	self:RegisterStatus("master_looter", L["Master Looter"], nil, true)
+	self:RegisterStatus("leader", L["Group Leader"])
+	self:RegisterStatus("assistant", L["Group Assistant"])
+	self:RegisterStatus("master_looter", L["Master Looter"])
 end
 
 function GridStatusName:OnStatusEnable(status)

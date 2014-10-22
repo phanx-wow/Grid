@@ -844,8 +844,8 @@ function GridLayout:AddLayout(layoutName, layout)
 	self.LayoutList[layoutName] = layoutName -- for options
 end
 
-function GridLayout:ReloadLayout()
-	--self:Debug("ReloadLayout")
+function GridLayout:ReloadLayout(event)
+	self:Debug("ReloadLayout", event)
 	local party_type = GridRoster:GetPartyState()
 	-- Switch to 10 Player or 25 Player layout if World Raid support is not enabled
 	if party_type == "raid_40" and not self.db.profile.layouts.raid_outside and not IsInInstance() then

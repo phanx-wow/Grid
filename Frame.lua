@@ -153,7 +153,8 @@ end
 function GridFrame.prototype:OnEnter()
 	local unit = self.unit
 	local showTooltip = GridFrame.db.profile.showTooltip
-
+	GridFrame:Debug("OnEnter", self.unit)
+	GridFrame:SendMessage("Grid_UnitFrame_OnEnter", self.unit, self.unitGUID)
 	if unit and UnitExists(unit) and (showTooltip == "Always" or (showTooltip == "OOC" and (not InCombatLockdown() or UnitIsDeadOrGhost(unit)))) then
 		UnitFrame_OnEnter(self)
 	else
@@ -162,7 +163,9 @@ function GridFrame.prototype:OnEnter()
 end
 
 function GridFrame.prototype:OnLeave()
+	GridFrame:Debug("OnLeave", self.unit)
 	UnitFrame_OnLeave(self)
+	GridFrame:SendMessage("Grid_UnitFrame_OnLeave", self.unit, self.unitGUID)
 end
 
 function GridFrame.prototype:OnShow()
@@ -340,7 +343,12 @@ GridFrame.defaultDB = {
 
 ------------------------------------------------------------------------
 
+local reloadHandle
+
 function GridFrame:Grid_ReloadLayout()
+	if reloadHandle then
+		reloadHandle = self:CancelTimer(reloadHandle) -- returns nil
+	end
 	self:SendMessage("Grid_ReloadLayout")
 end
 
@@ -373,8 +381,7 @@ GridFrame.options = {
 					type = "range", min = 10, max = 100, step = 1,
 					set = function(info, v)
 						GridFrame.db.profile.frameWidth = v
-						--GridFrame:ResizeAllFrames()
-						GridFrame:ScheduleTimer("Grid_ReloadLayout", 0.5)
+						GridFrame:ResizeAllFrames()
 					end,
 				},
 				frameHeight = {
@@ -384,8 +391,7 @@ GridFrame.options = {
 					type = "range", min = 10, max = 100, step = 1,
 					set = function(info, v)
 						GridFrame.db.profile.frameHeight = v
-						--GridFrame:ResizeAllFrames()
-						GridFrame:ScheduleTimer("Grid_ReloadLayout", 0.5)
+						GridFrame:ResizeAllFrames()
 					end,
 				},
 				borderSize = {
@@ -687,7 +693,6 @@ function GridFrame:PostReset()
 
 	-- different fix for ticket #556, maybe fixes #603 too
 	self:ResizeAllFrames()
-	self:ScheduleTimer("Grid_ReloadLayout", 0.1)
 end
 
 ------------------------------------------------------------------------
@@ -718,6 +723,9 @@ function GridFrame:ResizeAllFrames()
 	self:WithAllFrames("SetWidth", self.db.profile.frameWidth)
 	self:WithAllFrames("SetHeight", self.db.profile.frameHeight)
 	self:ResetAllFrames()
+	if not reloadHandle then
+		GridFrame:ScheduleTimer("Grid_ReloadLayout", 0.1)
+	end
 end
 
 function GridFrame:UpdateAllFrames()
