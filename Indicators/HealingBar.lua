@@ -48,7 +48,7 @@ GridFrame:RegisterIndicator("healingBar", L["Healing Bar"],
 		if not value or not maxValue or value == 0 or maxValue == 0 then
 			return self:Hide()
 		end
-		print("SetStatus", self.__id, self.__owner.unit, value, maxValue, format("%0.2f%%", value / maxValue * 100))
+		--print("SetStatus", self.__id, self.__owner.unit, value, maxValue, format("%0.2f%%", value / maxValue * 100))
 
 		local profile = GridFrame.db.profile
 		local frame = self.__owner
