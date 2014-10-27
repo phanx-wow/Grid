@@ -153,7 +153,6 @@ end
 function GridFrame.prototype:OnEnter()
 	local unit = self.unit
 	local showTooltip = GridFrame.db.profile.showTooltip
-	GridFrame:Debug("OnEnter", self.unit)
 	GridFrame:SendMessage("Grid_UnitFrame_OnEnter", self.unit, self.unitGUID)
 	if unit and UnitExists(unit) and (showTooltip == "Always" or (showTooltip == "OOC" and (not InCombatLockdown() or UnitIsDeadOrGhost(unit)))) then
 		UnitFrame_OnEnter(self)
@@ -163,9 +162,8 @@ function GridFrame.prototype:OnEnter()
 end
 
 function GridFrame.prototype:OnLeave()
-	GridFrame:Debug("OnLeave", self.unit)
-	UnitFrame_OnLeave(self)
 	GridFrame:SendMessage("Grid_UnitFrame_OnLeave", self.unit, self.unitGUID)
+	UnitFrame_OnLeave(self)
 end
 
 function GridFrame.prototype:OnShow()
@@ -183,6 +181,7 @@ function GridFrame.prototype:OnAttributeChanged(name, value)
 			end
 		elseif name == "type2" then
 			local wantmenu = GridFrame.db.profile.rightClickMenu
+			--print(self.unit, "OnAttributeChanged", name, value, wantmenu)
 			if wantmenu and (not value or value == "") then
 				self:SetAttribute("type2", "togglemenu")
 			elseif value == "togglemenu" and not wantmenu then
