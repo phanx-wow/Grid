@@ -81,7 +81,7 @@ do
 		if value == nil then
 			module.debug = self.db.global.debug[moduleName]
 		else
-			self.db.global.debug[moduleName] = value
+			self.db.global.debug[moduleName] = value or nil
 			module.debug = value
 		end
 	end
@@ -408,6 +408,7 @@ function Grid:OnInitialize()
 		LDBIcon:Show(GRID)
 	end
 
+	self:SetDebuggingEnabled("Grid")
 	for name, module in self:IterateModules() do
 		self:RegisterModule(name, module)
 	end
