@@ -33,7 +33,7 @@ local function ClearBarColor(bar, invert)
 	local profile = GridFrame.db.profile
 	if not profile.healingBar_useStatusColor then
 		local healingBar = bar.__owner.indicators.healingBar
-		frame.indicators.healingBar:SetStatusBarColor(0, 1, 0, 0.5)
+		healingBar:SetStatusBarColor(0, 1, 0, 0.5)
 	end
 end
 
