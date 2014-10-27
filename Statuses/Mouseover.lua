@@ -51,14 +51,13 @@ function GridStatusMouseover:OnStatusDisable(status)
 end
 
 function GridStatusMouseover:UpdateAllUnits(event)
-	self:Debug("UpdateAllUnits", event)
 	local enabled = self.db.profile.mouseover.enable
 	for i = 1, #GridFrame.registeredFrames do
 		local frame = GridFrame.registeredFrames[i]
 		if enabled and frame:IsMouseOver() then
 			self:UnitFrame_OnEnter(frame.unit, frame.unitGUID)
 		else
-			self:UnitFrame_OnLeave(self.unit, self.unitGUID)
+			self:UnitFrame_OnLeave(frame.unit, frame.unitGUID)
 		end
 	end
 end
@@ -66,7 +65,7 @@ end
 function GridStatusMouseover:UnitFrame_OnEnter(event, unit, guid)
 	local profile = GridStatusMouseover.db.profile.mouseover
 	if guid and profile.enable then
-		GridStatusMouseover:SendStatusGained("mouseover", guid,
+		self.core:SendStatusGained(guid, "mouseover",
 			profile.priority,
 			nil,
 			profile.color,
@@ -77,6 +76,6 @@ end
 
 function GridStatusMouseover:UnitFrame_OnLeave(event, unit, guid)
 	if guid then
-		GridStatusMouseover:SendStatusLost("mouseover", guid)
+		self.core:SendStatusLost(guid, "mouseover")
 	end
 end
