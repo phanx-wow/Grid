@@ -353,6 +353,9 @@ GridStatusAuras.extraOptions = {}
 function GridStatusAuras:PostInitialize()
 	self:RegisterStatuses()
 
+	-- Wasn't supposed to be released yet, kill it with fire.
+	self.db.boss_aura = nil
+
 	-- Upgrade old localized default status keynames to new locale-independent ones:
 	for status, settings in pairs(GridStatusAuras.defaultDB) do
 		if spell_names[status] and (settings.buff or settings.debuff) then
