@@ -1,9 +1,27 @@
-### Version 6.0.2.
+### Version 6.0.2.1699
 
-* Fixed Healing Bar indicator
-* Fixed Master Looter, Mouseover, and Role statuses
+* **General:**
+* Fixed the options for changing the frame height/width
+* **Statuses:**
+* Fixed the Mouseover status ([ticket #748](http://www.wowace.com/addons/grid/tickets/748-mouseover-status-does-not-work/))
+* Fixed the icons for the Role and Master Looter statuses
+* Fixed the appearance of the Group Leader, Group Assistant, and Master Looter statuses when shown on icon-type indicators
+* **Indicators:**
+* Fixed the Healing Bar indicator
+* Fixed the Center Icon indicator showing stack counts of 0 or 1
+* Fixed an error that could sometimes occur when using the Health Bar Color indicator
 * Fixed count property not being passed to indicators ([ticket #741](http://www.wowace.com/addons/grid/tickets/741/))
 * [API] All default indicators are now reset before any third-party indicators
+
+#### Known Issues
+
+* WoW is currently reporting incoming heal and absorb amounts that are much too small, so Grid will also show incoming heal and absorb amounts that are much too small. There is nothing I can do about this other than wait for Blizzard to fix the problem on their end.
+* The layout options have not yet been updated for the new raid sizes in Warlords of Draenor.
+* Some users have reported that certain debuffs are not activating the Debuff Type statuses. See [ticket #760](http://www.wowace.com/addons/grid/tickets/760-debuffs-not-showing-up/).
+* Some users have reported that the right-click menu is not working correctly when Clique is enabled. See [ticket #747](http://www.wowace.com/addons/grid/tickets/747-right-click-issue/).
+* Some users have reported that the Resurrection status is not working. See [ticket #745](http://www.wowace.com/addons/grid/tickets/745-resurrection-does-not-show-up/).
+
+-------------------
 
 ### Version 6.0.2.1679-beta
 
