@@ -806,7 +806,7 @@ function GridFrame:UpdateIndicator(frame, indicator)
 			status.texture,
 			status.start,
 			status.duration,
-			status.stack,
+			status.count,
 			status.texCoords)
 	else
 		self:Debug("Clearing indicator", indicator, "for", (UnitName(frame.unit)))
@@ -872,7 +872,7 @@ end
 
 ------------------------------------------------------------------------
 
-function GridFrame:Grid_StatusGained(event, guid, status, priority, range, color, text, value, maxValue, texture, start, duration, stack)
+function GridFrame:Grid_StatusGained(event, guid, status, priority, range, color, text, value, maxValue, texture, start, duration, count)
 	for _, frame in pairs(self.registeredFrames) do
 		if frame.unitGUID == guid then
 			self:UpdateIndicatorsForStatus(frame, status)
