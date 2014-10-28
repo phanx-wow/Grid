@@ -487,6 +487,13 @@ function Grid:SetupOptions()
 	self:RegisterChatCommand("grid", function(input)
 		if not input or strtrim(input) == "" then
 			self:ToggleOptions()
+		elseif strmatch(strlower(strtrim(input)), "^vers?i?o?n?$") then
+			local version = GetAddOnMetadata(GRID, "Version")
+			if version == "@project-version@" then
+				self:Print("You are using a developer version.") -- no need to localize
+			else
+				self:Print(format(L["You are using version %s"], version))
+			end
 		else
 			Command.HandleCommand(Grid, "grid", GRID, input)
 		end
