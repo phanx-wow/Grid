@@ -282,7 +282,7 @@ do
 		if IsInRaid() then
 			if instanceType == "raid" then
 				local _, _, difficultyID, _, maxPlayers = GetInstanceInfo()
-				lastRaidType = (difficultyID == DIFFICULTY_PRIMARYRAID_NORMAL or difficultyID == DIFFICULTY_PRIMARYRAID_HEROIC) and "raid_flex" or maxPlayers == 10 and "raid_10" or maxPlayers == 25 and "raid_25" or "raid_40"
+				lastRaidType = (difficultyID == DIFFICULTY_PRIMARYRAID_LFR or difficultyID == DIFFICULTY_PRIMARYRAID_NORMAL or difficultyID == DIFFICULTY_PRIMARYRAID_HEROIC) and "raid_flex" or maxPlayers == 10 and "raid_10" or maxPlayers == 25 and "raid_25" or "raid_40"
 				return lastRaidType
 			else
 				return lastRaidType or "raid_40"
