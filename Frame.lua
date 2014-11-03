@@ -110,7 +110,10 @@ local initialConfigSnippet = [[
    self:SetHeight(%d)
    self:SetAttribute("initial-width", %d)
    self:SetAttribute("initial-height", %d)
-   self:SetAttribute("type2", %s)
+   local attr = self:GetAttribute("type2")
+   if attr == "togglemnu" or attr == nil then
+      self:SetAttribute("type2", %s)
+   end
 ]]
 
 function GridFrame:GetInitialConfigSnippet()
