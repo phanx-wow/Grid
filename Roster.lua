@@ -27,7 +27,7 @@ local UnitExists = UnitExists
 local UnitName = UnitName
 local UnitGUID = UnitGUID
 
-local my_realm = GetRealmName()
+local _, my_realm = UnitFullName("player")
 
 ------------------------------------------------------------------------
 
@@ -41,7 +41,6 @@ local roster = {
 
 -- for debugging
 GridRoster.roster = roster
-
 
 ------------------------------------------------------------------------
 
