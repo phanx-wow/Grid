@@ -1,3 +1,17 @@
+### Version 6.0.3.1714-beta
+
+**THIS IS A BETA VERSION!** Do not use this version if you are not comfortable running untested/unstable code that may **behave unexpectedly** or **not work at all**. Do not use this version if you are not willing or able to give useful descriptions of any problems you encounter.
+
+#### Changes in this version:
+
+Updated layout system for Warlords of Draenor:
+
+* There is now only one "Raid" layout selection, and the built-in layouts will automatically adjust their size to match your current instance.
+* There is now a "By Role" option that will group players by their assigned tank/healer/damager roles.
+* There are no longer separate "w/ Pets" layouts; use the "Show pets" option on the Layout tab to add pets to any of the built-in layouts.
+
+-------------------
+
 ### Version 6.0.3.1710
 
 * Temporary fix for raid difficulty detection: LFR, Normal, and Heroic will use your chosen "Flexible Raid" layout, and Mythic will use your "25 Player Raid" layout. In the near future, all built-in layouts will automatically adjust their size for your current raid, and there will only be one "Raid" layout setting.
@@ -6,7 +20,7 @@
 * Fixed another issue with status counts (eg. aura stacks) (ticket #768)
 * Fixed the Resurrection status (ticket #745)
 
-#### Known Issues
+#### Known issues in this version:
 
 * WoW is currently reporting incoming heal and absorb amounts that are much too small, so Grid will also show incoming heal and absorb amounts that are much too small. There is nothing I can do about this other than wait for Blizzard to fix the problem on their end.
 
