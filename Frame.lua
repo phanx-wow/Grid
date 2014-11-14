@@ -722,7 +722,7 @@ function GridFrame:ResizeAllFrames()
 	self:WithAllFrames("SetHeight", self.db.profile.frameHeight)
 	self:ResetAllFrames()
 	if not reloadHandle then
-		GridFrame:ScheduleTimer("Grid_ReloadLayout", 0.1)
+		reloadHandle = GridFrame:ScheduleTimer("Grid_ReloadLayout", 0.1)
 	end
 end
 
