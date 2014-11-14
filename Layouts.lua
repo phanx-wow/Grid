@@ -9,345 +9,166 @@
 	http://www.curse.com/addons/wow/grid
 ----------------------------------------------------------------------]]
 
-local GRID, Grid = ...
+local _, Grid = ...
 local L = Grid.L
+local Layout = Grid:GetModule("GridLayout")
 
-local GridLayout = Grid:GetModule("GridLayout")
+-- nameList = "",
+-- groupFilter = "",
+-- sortMethod = "INDEX", -- or "NAME"
+-- sortDir = "ASC", -- or "DESC"
+-- strictFiltering = false,
+-- unitsPerColumn = 5, -- treated specifically to do the right thing when available
+-- maxColumns = 5, -- mandatory if unitsPerColumn is set, or defaults to 1
+-- isPetGroup = true, -- special case, not part of the Header API
 
-GridLayout:AddLayout(L["None"], {})
-
-GridLayout:AddLayout(L["By Group 5"], {
-	defaults = {
-		-- nameList = "",
-		-- groupFilter = "",
-		-- sortMethod = "INDEX", -- or "NAME"
-		-- sortDir = "ASC", -- or "DESC"
-		-- strictFiltering = false,
-		-- unitsPerColumn = 5, -- treated specifically to do the right thing when available
-		-- maxColumns = 5, -- mandatory if unitsPerColumn is set, or defaults to 1
-		-- isPetGroup = true, -- special case, not part of the Header API
+local Layouts = {
+	None = {
+		name = L["None"],
 	},
-	[1] = {
-		showParty = true,
-		showRaid = false,
-		sortMethod = "INDEX",
+	ByGroup = {
+		name = L["By Group"],
+		defaults = {
+			sortMethod = "INDEX",
+			unitsPerColumn = 5,
+			maxColumns = 1,
+		},
+		[1] = {
+			groupFilter = "1",
+		},
 	},
-})
-
-GridLayout:AddLayout(L["By Group 5 w/Pets"], {
-	[1] = {
-		showParty = true,
-		showRaid = false,
-		sortMethod = "INDEX",
+	ByClass = {
+		name = L["By Class"],
+		defaults = {
+			groupBy = "CLASS",
+			groupingOrder = "WARRIOR,DEATHKNIGHT,ROGUE,MONK,PALADIN,DRUID,SHAMAN,PRIEST,MAGE,WARLOCK,HUNTER",
+			sortMethod = "NAME",
+			unitsPerColumn = 5,
+		},
+		[1] = {
+			groupFilter = "1",
+			maxColumns = 1,
+		},
 	},
-	[2] = {
-		showParty = true,
-		showRaid = false,
-		sortMethod = "INDEX",
-
-		isPetGroup = true,
-		unitsPerColumn = 5,
-		maxColumns = 5,
-	},
-})
-
-GridLayout:AddLayout(L["By Group 10"], {
-	[1] = {
-		groupFilter = "1",
-	},
-	[2] = {
-		groupFilter = "2",
-	},
-})
-
-GridLayout:AddLayout(L["By Group 10 w/Pets"], {
-	[1] = {
-		groupFilter = "1",
-	},
-	[2] = {
-		groupFilter = "2",
-	},
-	[3] = {
-		groupFilter = "1,2",
-		isPetGroup = true,
-		unitsPerColumn = 5,
-		maxColumns = 5,
-	},
-})
-
-GridLayout:AddLayout(L["By Group 15"], {
-	[1] = {
-		groupFilter = "1",
-	},
-	[2] = {
-		groupFilter = "2",
-	},
-	[3] = {
-		groupFilter = "3",
-	},
-})
-
-GridLayout:AddLayout(L["By Group 15 w/Pets"], {
-	[1] = {
-		groupFilter = "1",
-	},
-	[2] = {
-		groupFilter = "2",
-	},
-	[3] = {
-		groupFilter = "3",
-	},
-	[4] = {
-		groupFilter = "1,2,3",
-		isPetGroup = true,
-		unitsPerColumn = 5,
-		maxColumns = 5,
-	},
-})
-
-GridLayout:AddLayout(L["By Group 20"], {
-	[1] = {
-		groupFilter = "1",
-	},
-	[2] = {
-		groupFilter = "2",
-	},
-	[3] = {
-		groupFilter = "3",
-	},
-	[4] = {
-		groupFilter = "4",
-	},
-})
-
-GridLayout:AddLayout(L["By Group 20 w/Pets"], {
-	[1] = {
-		groupFilter = "1",
-	},
-	[2] = {
-		groupFilter = "2",
-	},
-	[3] = {
-		groupFilter = "3",
-	},
-	[4] = {
-		groupFilter = "4",
-	},
-	[5] = {
-		groupFilter = "1,2,3,4",
-		isPetGroup = true,
-		unitsPerColumn = 5,
-		maxColumns = 5,
-	},
-})
-
-GridLayout:AddLayout(L["By Group 25"], {
-	[1] = {
-		groupFilter = "1",
-	},
-	[2] = {
-		groupFilter = "2",
-	},
-	[3] = {
-		groupFilter = "3",
-	},
-	[4] = {
-		groupFilter = "4",
-	},
-	[5] = {
-		groupFilter = "5",
-	},
-})
-
-GridLayout:AddLayout(L["By Group 25 w/Pets"], {
-	[1] = {
-		groupFilter = "1",
-	},
-	[2] = {
-		groupFilter = "2",
-	},
-	[3] = {
-		groupFilter = "3",
-	},
-	[4] = {
-		groupFilter = "4",
-	},
-	[5] = {
-		groupFilter = "5",
-	},
-	[6] = {
-		groupFilter = "1,2,3,4,5",
-		isPetGroup = true,
-		unitsPerColumn = 5,
-		maxColumns = 5,
-	},
-})
-
-GridLayout:AddLayout(L["By Group 25 w/Tanks"], {
-	[1] = {
-		groupFilter = "MAINTANK,MAINASSIST",
-		groupingOrder = "MAINTANK,MAINASSIST",
-	},
-	-- spacer
-	[2] = {
-		groupFilter = "",
-	},
-	[3] = {
-		groupFilter = "1",
-	},
-	[4] = {
-		groupFilter = "2",
-	},
-	[5] = {
-		groupFilter = "3",
-	},
-	[6] = {
-		groupFilter = "4",
-	},
-	[7] = {
-		groupFilter = "5",
+	ByRole = {
+		name = L["By Role"],
+		defaults = {
+			sortMethod = "NAME",
+			unitsPerColumn = 5,
+			maxColumns = 5,
+			strictFiltering = true,
+		},
+		[1] = {
+			roleFilter = "TANK",
+		},
+		[2] = {
+			roleFilter = "HEALER",
+		},
+		[3] = {
+			roleFilter = "DAMAGER",
+		},
 	}
-})
+}
 
-GridLayout:AddLayout(L["By Group 40"], {
-	[1] = {
-		groupFilter = "1",
-	},
-	[2] = {
-		groupFilter = "2",
-	},
-	[3] = {
-		groupFilter = "3",
-	},
-	[4] = {
-		groupFilter = "4",
-	},
-	[5] = {
-		groupFilter = "5",
-	},
-	[6] = {
-		groupFilter = "6",
-	},
-	[7] = {
-		groupFilter = "7",
-	},
-	[8] = {
-		groupFilter = "8",
-	},
-})
+--------------------------------------------------------------------------------
 
-GridLayout:AddLayout(L["By Group 40 w/Pets"], {
-	[1] = {
-		groupFilter = "1",
-	},
-	[2] = {
-		groupFilter = "2",
-	},
-	[3] = {
-		groupFilter = "3",
-	},
-	[4] = {
-		groupFilter = "4",
-	},
-	[5] = {
-		groupFilter = "5",
-	},
-	[6] = {
-		groupFilter = "6",
-	},
-	[7] = {
-		groupFilter = "7",
-	},
-	[8] = {
-		groupFilter = "8",
-	},
-	[9] = {
-		groupFilter = "1,2,3,4,5,6,7,8",
-		isPetGroup = true,
-		unitsPerColumn = 5,
-		maxColumns = 8,
-	},
-})
+local Manager = Layout:NewModule("GridLayoutManager", "AceEvent-3.0")
+Manager.Debug = Grid.Debug
 
-GridLayout:AddLayout(L["By Class 10"], {
-	[1] = {
-		groupFilter = "1,2",
-		groupBy = "CLASS",
-		groupingOrder = "WARRIOR,DEATHKNIGHT,ROGUE,MONK,PALADIN,DRUID,SHAMAN,PRIEST,MAGE,WARLOCK,HUNTER",
-		unitsPerColumn = 5,
-		maxColumns = 2,
-	},
-})
+function Manager:OnInitialize()
+	self:Debug("OnInitialize")
 
-GridLayout:AddLayout(L["By Class 10 w/Pets"], {
-	[1] = {
-		groupFilter = "1,2",
-		groupBy = "CLASS",
-		groupingOrder = "WARRIOR,DEATHKNIGHT,ROGUE,MONK,PALADIN,DRUID,SHAMAN,PRIEST,MAGE,WARLOCK,HUNTER",
-		unitsPerColumn = 5,
-		maxColumns = 2,
-	},
-	[2] = {
-		isPetGroup = true,
-		groupFilter = "1,2",
-		groupBy = "CLASS",
-		groupingOrder = "HUNTER,WARLOCK,DEATHKNIGHT,PRIEST,MAGE,DRUID,SHAMAN,WARRIOR,ROGUE,PALADIN,MONK",
-		unitsPerColumn = 5,
-		maxColumns = 2,
-	},
-})
+	Grid:SetDebuggingEnabled(self.moduleName)
 
-GridLayout:AddLayout(L["By Class 25"], {
-	[1] = {
-		groupFilter = "1,2,3,4,5",
-		groupBy = "CLASS",
-		groupingOrder = "WARRIOR,DEATHKNIGHT,ROGUE,MONK,PALADIN,DRUID,SHAMAN,PRIEST,MAGE,WARLOCK,HUNTER",
-		unitsPerColumn = 5,
-		maxColumns = 5,
-	},
-})
+	for k, v in pairs(Layouts) do
+		Layout:AddLayout(k, v)
+	end
 
-GridLayout:AddLayout(L["By Class 25 w/Pets"], {
-	[1] = {
-		groupFilter = "1,2,3,4,5",
-		groupBy = "CLASS",
-		groupingOrder = "WARRIOR,DEATHKNIGHT,ROGUE,MONK,PALADIN,DRUID,SHAMAN,PRIEST,MAGE,WARLOCK,HUNTER",
-		unitsPerColumn = 5,
-		maxColumns = 5,
-	},
-	[2] = {
-		isPetGroup = true,
-		groupFilter = "1,2,3,4,5",
-		groupBy = "CLASS",
-		groupingOrder = "HUNTER,WARLOCK,DEATHKNIGHT,PRIEST,MAGE,DRUID,SHAMAN,WARRIOR,ROGUE,PALADIN,MONK",
-		unitsPerColumn = 5,
-		maxColumns = 5,
-	},
-})
+	self:RegisterEvent("GROUP_ROSTER_UPDATE",   "UpdateLayouts")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateLayouts")
+	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "UpdateLayouts")
+end
 
-GridLayout:AddLayout(L["By Class 40"], {
-	[1] = {
-		groupBy = "CLASS",
-		groupingOrder = "WARRIOR,DEATHKNIGHT,ROGUE,MONK,PALADIN,DRUID,SHAMAN,PRIEST,MAGE,WARLOCK,HUNTER",
-		unitsPerColumn = 5,
-		maxColumns = 5,
-	},
-})
+--------------------------------------------------------------------------------
 
-GridLayout:AddLayout(L["By Class 40 w/Pets"], {
-	[1] = {
-		groupFilter = "1,2,3,4,5,6,7,8",
-		groupBy = "CLASS",
-		groupingOrder = "WARRIOR,DEATHKNIGHT,ROGUE,MONK,PALADIN,DRUID,SHAMAN,PRIEST,MAGE,WARLOCK,HUNTER",
-		unitsPerColumn = 5,
-		maxColumns = 5,
-	},
-	[2] = {
-		groupFilter = "1,2,3,4,5,6,7,8",
-		isPetGroup = true,
-		groupBy = "CLASS",
-		groupingOrder = "HUNTER,WARLOCK,DEATHKNIGHT,PRIEST,MAGE,DRUID,SHAMAN,WARRIOR,ROGUE,PALADIN,MONK",
-		unitsPerColumn = 5,
-		maxColumns = 5,
-	},
-})
+local lastNumGroups, lastGroupFilter, lastShowPets
+
+local function AddPetGroup(t, numGroups, groupFilter)
+	t = t or {}
+
+	t.groupFilter = groupFilter
+	t.maxColumns = numGroups
+
+	t.isPetGroup = true
+	t.groupBy = "CLASS"
+	t.groupingOrder = "HUNTER,WARLOCK,MAGE,DEATHKNIGHT,DRUID,PRIEST,SHAMAN,MONK,PALADIN,ROGUE,WARRIOR"
+
+	return t
+end
+
+function Manager:UpdateLayouts(event)
+	self:Debug("UpdateLayouts", event)
+
+	local numGroups, groupFilter = 1, "1"
+	local showPets = Layout.db.profile.showPets
+
+	if IsInRaid() then
+		local _, instanceType, _, _, maxPlayers, _, _, _, instanceGroupSize = GetInstanceInfo()
+		self:Debug("instanceType", instanceType, "maxPlayers", maxPlayers, "instanceGroupSize", instanceGroupSize)
+		if instanceType == "none" then
+			numGroups = NUM_RAID_GROUPS
+		else
+			numGroups = ceil(min(instanceGroupSize, maxPlayers) / 5)
+		end
+	end
+
+	for i = 2, numGroups do
+		groupFilter = groupFilter .. "," .. i
+	end
+
+	self:Debug("numGroups", numGroups, "groupFilter", groupFilter, "showPets", showPets)
+
+	if lastNumGroups == numGroups and lastShowPets == showPets then
+		self:Debug("no changes necessary")
+		return
+	end
+
+	lastNumGroups = numGroups
+	lastShowPets = showPets
+
+	-- Update class layout
+	Layouts.ByClass[1].groupFilter = groupFilter
+	Layouts.ByClass[1].maxColumns = numGroups
+	if showPets then
+		Layouts.ByClass[2] = AddPetGroup(Layouts.ByClass[2], numGroups, groupFilter)
+	else
+		Layouts.ByClass[2] = nil
+	end
+
+	-- Update role layout
+	for i = 1, 3 do
+		Layouts.ByRole[i].groupFilter = groupFilter
+		Layouts.ByRole[i].maxColumns = numGroups
+	end
+	if showPets then
+		Layouts.ByRole[4] = AddPetGroup(Layouts.ByClass[2], numGroups, groupFilter)
+	else
+		Layouts.ByRole[4] = nil
+	end
+
+	-- Update group layout
+	for i = 1, numGroups do
+		Layouts.ByGroup[i] = Layouts.ByGroup[i] or {}
+		Layouts.ByGroup[i].groupFilter = tostring(i)
+	end
+	if showPets then
+		numGroups = numGroups + 1
+		Layouts.ByGroup[numGroups] = AddPetGroup(Layouts.ByGroup[numGroups], numGroups, groupFilter)
+	end
+	for i = numGroups + 1, #Layouts.ByGroup do
+		Layouts.ByGroup[i] = nil
+	end
+
+	-- Apply changes
+	Layout:ReloadLayout()
+end
