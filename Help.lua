@@ -13,6 +13,9 @@
 	Translators, scroll down for an example of how to localize this file!
 ----------------------------------------------------------------------]]
 
+local _, Grid = ...
+local L = Grid.L
+
 local helpText = {
 	{
 		order = 1,
@@ -35,8 +38,9 @@ local helpText = {
 		"Missing features?",
 		"Grid tries to avoid bundling every feature everyone might want. Instead, the core addon tries to include the basic features everyone needs, and offer a simple plugin system so developers can easily add more features. Here is a short list of some popular plugins and companion addons you can find on Curse.com and/or WoWInterface.com.",
 		"{Click casting} allows you to bind clicks to spells. For example, you could bind Shift-Click to cast Flash Heal. If you're interested in this functionality, we suggest {Clique} by Cladhaire as a great standalone addon that adds click-casting to all unit frames, including Grid.",
-		"{Spell IDs} for telling apart different buffs or debuffs with the same name are not currently supported by the Grid core. We do plan to add this functionality in the future, but in the meantime, we recommend using the {GridStatusAurasExt} plugin by Adirelle.",
+		"{Spell IDs} for telling apart different buffs or debuffs with the same name are not currently supported by the Grid core. We do plan to add this functionality in the future, but in the meantime, we recommend using the {GridStatusAurasExt} plugin by Julith.",
 		"{Mana bars} are not included in Grid, as the developers feel they are not really useful for anyone, and a simple {Low Mana Alert} status meets the needs of raid leaders and the few classes who actually care about other players' mana, but without all the clutter of 40 extra bars on your screen!",
+		"{More indicators} can be added by several plugins, including {GridIndicatorsDynamic} by Emyst.",
 		"For a (nearly) complete list of Grid plugins, see the link on the download page!",
 	},
 	{
@@ -91,8 +95,6 @@ if GetLocale() == "xxXX" then
 end
 
 ------------------------------------------------------------------------
-
-local L = Grid.L
 
 Grid.options.args.GridHelp = {
 	name = L["Help"],
