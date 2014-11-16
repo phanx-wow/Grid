@@ -257,15 +257,10 @@ do
 	GridRoster.party_states = {
 		"solo",
 		"party",
-		"raid_25",
-		"raid_10",
-		"raid_40",
-		"raid_flex",
+		"raid",
 		"arena",
 		"bg",
 	}
-
-	local lastRaidType
 
 	local function GetPartyState()
 		local _, instanceType = IsInInstance()
@@ -279,24 +274,7 @@ do
 		end
 
 		if IsInRaid() then
-			if instanceType == "raid" then
-				local _, _, difficultyID, _, maxPlayers = GetInstanceInfo()
-				if difficultyID == DIFFICULTY_PRIMARYRAID_LFR or difficultyID == DIFFICULTY_PRIMARYRAID_NORMAL or difficultyID == DIFFICULTY_PRIMARYRAID_HEROIC then
-					lastRaidType = "raid_flex"
-				elseif maxPlayers == 20 or maxPlayers == 25 then
-					-- TEMPORARY, use 25 player raid layout for mythic
-					lastRaidType = "raid_25"
-				elseif maxPlayers == 10 then
-					lastRaidType = "raid_10"
-				else
-					lastRaidType = "raid_40"
-				end
-				return lastRaidType
-			else
-				return lastRaidType or "raid_40"
-			end
-		else
-			lastRaidType = nil
+			return "raid"
 		end
 
 		if IsInGroup() then
