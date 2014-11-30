@@ -1079,7 +1079,7 @@ GridStatusAuras.durationTimer = {
 local GetTime = GetTime
 local now = GetTime()
 
-local texCoords = { left = 0.06, right = 0.94, top = 0.06, bottom = 0.94 }
+local ICON_TEX_COORDS = { left = 0.06, right = 0.94, top = 0.06, bottom = 0.94 }
 
 -- Simple resource pool implemented as a singly-linked list.
 local Pool = {
@@ -1277,7 +1277,7 @@ function GridStatusAuras:RefreshActiveDurations()
 					start,
 					duration,
 					count,
-					texCoords)
+					ICON_TEX_COORDS)
 			end
 	--	else
 	--		self.core:SendStatusLost(guid, status)  -- XXX "guid" is undefined=nil here; what is the purpose?!
@@ -1313,7 +1313,7 @@ function GridStatusAuras:UnitGainedBuff(guid, class, name, rank, icon, count, de
 			start,
 			duration,
 			count,
-			texCoords)
+			ICON_TEX_COORDS)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
@@ -1337,7 +1337,11 @@ function GridStatusAuras:UnitLostBuff(guid, class, name)
 			text,
 			nil,
 			nil,
-			settings.icon)
+			settings.icon,
+			nil,
+			nil,
+			nil,
+			ICON_TEX_COORDS)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
@@ -1371,7 +1375,7 @@ function GridStatusAuras:UnitGainedPlayerBuff(guid, class, name, rank, icon, cou
 			start,
 			duration,
 			count,
-			texCoords)
+			ICON_TEX_COORDS)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
@@ -1395,7 +1399,11 @@ function GridStatusAuras:UnitLostPlayerBuff(guid, class, name)
 			text,
 			nil,
 			nil,
-			settings.icon)
+			settings.icon,
+			nil,
+			nil,
+			nil,
+			ICON_TEX_COORDS)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
@@ -1427,7 +1435,7 @@ function GridStatusAuras:UnitGainedDebuff(guid, class, name, rank, icon, count, 
 			start,
 			duration,
 			count,
-			nil)
+			ICON_TEX_COORDS)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
@@ -1469,7 +1477,7 @@ function GridStatusAuras:UnitGainedDebuffType(guid, class, name, rank, icon, cou
 			start,
 			duration,
 			count,
-			nil)
+			ICON_TEX_COORDS)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
@@ -1508,7 +1516,7 @@ function GridStatusAuras:UnitGainedBossDebuff(guid, class, name, rank, icon, cou
 			start,
 			duration,
 			count,
-			nil)
+			ICON_TEX_COORDS)
 	else
 		self.core:SendStatusLost(guid, status)
 	end
