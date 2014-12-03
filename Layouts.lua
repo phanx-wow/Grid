@@ -12,6 +12,7 @@
 local _, Grid = ...
 local L = Grid.L
 local Layout = Grid:GetModule("GridLayout")
+local Roster = Grid:GetModule("GridRoster")
 
 -- nameList = "",
 -- groupFilter = "",
@@ -84,9 +85,7 @@ function Manager:OnInitialize()
 		Layout:AddLayout(k, v)
 	end
 
-	self:RegisterEvent("GROUP_ROSTER_UPDATE",   "UpdateLayouts")
-	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateLayouts")
-	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "UpdateLayouts")
+	self:RegisterMessage("Grid_RosterUpdated", "UpdateLayouts")
 end
 
 --------------------------------------------------------------------------------
@@ -109,21 +108,16 @@ end
 function Manager:UpdateLayouts(event)
 	self:Debug("UpdateLayouts", event)
 
-	local numGroups, groupFilter = 1, "1"
+	local groupType, maxPlayers, instanceGroupSize = Roster:GetPartyState()
 	local showPets = Layout.db.profile.showPets
+	local numGroups, groupFilter = 1, "1"
 
-	if IsInRaid() then
-		local _, instanceType, _, _, maxPlayers, _, _, _, instanceGroupSize = GetInstanceInfo()
-		self:Debug("instanceType", instanceType, "maxPlayers", maxPlayers, "instanceGroupSize", instanceGroupSize)
-		if instanceType == "none" then
-			numGroups = NUM_RAID_GROUPS
-		else
-			numGroups = ceil(min(instanceGroupSize, maxPlayers) / 5)
+	if groupType == "raid" then
+		self:Debug("maxPlayers", maxPlayers, "instanceGroupSize", instanceGroupSize)
+		numGroups = ceil(min(instanceGroupSize, maxPlayers) / 5)
+		for i = 2, numGroups do
+			groupFilter = groupFilter .. "," .. i
 		end
-	end
-
-	for i = 2, numGroups do
-		groupFilter = groupFilter .. "," .. i
 	end
 
 	self:Debug("numGroups", numGroups, "groupFilter", groupFilter, "showPets", showPets)

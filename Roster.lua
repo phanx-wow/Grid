@@ -263,7 +263,7 @@ do
 	}
 
 	local function GetPartyState()
-		local _, instanceType = IsInInstance()
+		local _, instanceType, _, _, maxPlayers, _, _, _, instanceGroupSize = IsInInstance()
 
 		if instanceType == "arena" then
 			return "arena"
@@ -274,26 +274,29 @@ do
 		end
 
 		if IsInRaid() then
-			return "raid"
+			return "raid", maxPlayers, instanceGroupSize
 		end
 
-		if IsInGroup() then
+		if IsInGroup() and maxPlayers > 1 then -- ignore solo scenarios
 			return "party"
 		end
 
 		return "solo"
 	end
 
+	local last_maxPlayers, last_instanceGroupSize
+
 	function GridRoster:PartyTransitionCheck()
-		local current_state = GetPartyState()
+		local current_state, maxPlayers, instanceGroupSize = GetPartyState()
 		local old_state = self.db.profile.party_state
-		if current_state ~= old_state then
+		if current_state ~= old_state or (current_state == "raid" and last_maxPlayers ~= maxPlayers) then
 			self.db.profile.party_state = current_state
+			last_maxPlayers, last_instanceGroupSize = maxPlayers, instanceGroupSize
 			self:SendMessage("Grid_PartyTransition", current_state, old_state)
 		end
 	end
 
 	function GridRoster:GetPartyState()
-		return self.db.profile.party_state
+		return self.db.profile.party_state, last_maxPlayers, last_instanceGroupSize
 	end
 end

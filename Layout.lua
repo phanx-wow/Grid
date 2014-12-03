@@ -654,9 +654,9 @@ function GridLayout:UpdateTabVisibility()
 
 	if not InCombatLockdown() then
 		if settings.lock and settings.clickThrough and not self.config_mode then
-			self.frame:EnableMouse(false)
+			self.frame.backdrop:EnableMouse(false)
 		else
-			self.frame:EnableMouse(true)
+			self.frame.backdrop:EnableMouse(true)
 		end
 	end
 
@@ -669,7 +669,7 @@ end
 
 local function GridLayout_OnMouseDown(frame, button)
 	if button == "LeftButton" then
-		if IsAltKeyDown() then
+		if IsAltKeyDown() and frame == GridLayoutFrame.tab then
 			GridLayout.db.profile.hideTab = true
 			GridLayout:UpdateTabVisibility()
 		else
@@ -705,29 +705,26 @@ function GridLayout:CreateFrames()
 	hider:SetAllPoints(true)
 	RegisterStateDriver(hider, "visibility", "[petbattle] hide; show")
 
+	-- create main frame to hold all our gui elements
+	local f = CreateFrame("Frame", "GridLayoutFrame", hider)
+	f:SetPoint("CENTER")
+	f:SetFrameLevel(2)
+	f:SetMovable(true)
+	f:SetClampedToScreen(true)
+
 	-- create backdrop
-	local bg = CreateFrame("Frame", nil, hider)
-	bg:SetBackdrop({
+	f.backdrop = CreateFrame("Frame", nil, f)
+	f.backdrop:SetPoint("BOTTOMLEFT", -4, -4)
+	f.backdrop:SetPoint("TOPRIGHT", 4, 4)
+	f.backdrop:SetFrameLevel(1)
+	f.backdrop:SetBackdrop({
 		bgFile = "Interface\\ChatFrame\\ChatFrameBackground", tile = false, tileSize = 16,
 		edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16,
 		insets = {left = 4, right = 4, top = 4, bottom = 4},
 	})
-	bg:SetFrameLevel(0)
-
-	-- create main frame to hold all our gui elements
-	local f = CreateFrame("Frame", "GridLayoutFrame", hider)
-	f:SetPoint("CENTER")
-	f:SetMovable(true)
-	f:SetClampedToScreen(true)
 	f:SetScript("OnMouseDown", GridLayout_OnMouseDown)
 	f:SetScript("OnMouseUp", GridLayout_OnMouseUp)
 	f:SetScript("OnHide", GridLayout_OnMouseUp)
-	f:SetFrameLevel(1)
-
-	-- attach backdrop to frame
-	bg:SetPoint("BOTTOMLEFT", f, -4, -4)
-	bg:SetPoint("TOPRIGHT", f, 4, 4)
-	f.backdrop = bg
 
 	-- create drag handle
 	f.tab = CreateFrame("Frame", "$parentTab", f)
@@ -879,13 +876,15 @@ function GridLayout:LoadLayout(layoutName)
 		return
 	end
 
-	local groupsNeeded, groupsAvailable, petGroupsNeeded, petGroupsAvailable = 0, #self.layoutGroups, 0, #self.layoutPetGroups
+	local showPets = self.db.profile.showPets
+	local groupsNeeded, petGroupsNeeded = 0, 0
+	local groupsAvailable, petGroupsAvailable = #self.layoutGroups, #self.layoutPetGroups
 
 	for i = 1, #layout do
-		if layout[i].isPetGroup then
-			petGroupsNeeded = petGroupsNeeded + 1
-		else
+		if not layout[i].isPetGroup then
 			groupsNeeded = groupsNeeded + 1
+		elseif showPets then
+			petGroupsNeeded = petGroupsNeeded + 1
 		end
 	end
 
@@ -908,7 +907,7 @@ function GridLayout:LoadLayout(layoutName)
 	end
 
 	-- quit if layout has no groups (eg. None)
-	if #layout == 0 then
+	if groupsNeeded == 0 then
 		self:Debug("No groups found in layout")
 		self:UpdateDisplay()
 		return
@@ -919,14 +918,18 @@ function GridLayout:LoadLayout(layoutName)
 	-- configure groups
 	for i = 1, #layout do
 		local l = layout[i]
+		if l.isPetGroup and not showPets then
+			-- #TODO: this assumes pet groups are always last
+			break
+		end
 
 		local layoutGroup
-		if l.isPetGroup then
-			layoutGroup = self.layoutPetGroups[iPetGroup]
-			iPetGroup = iPetGroup + 1
-		else
+		if not l.isPetGroup then
 			layoutGroup = self.layoutGroups[iGroup]
 			iGroup = iGroup + 1
+		else
+			layoutGroup = self.layoutPetGroups[iPetGroup]
+			iPetGroup = iPetGroup + 1
 		end
 
 		layoutGroup:Reset()
@@ -1047,15 +1050,13 @@ function GridLayout:UpdateSize()
 		y = maxHeight + layoutPadding
 	end
 
-	self.frame:SetWidth(x)
-	self.frame:SetHeight(y)
+	self.frame:SetSize(x, y)
 	self.frame:SetClampRectInsets(p.layoutPadding, -p.layoutPadding, -p.layoutPadding, p.layoutPadding)
 end
 
 function GridLayout:UpdateColor()
 	--self:Debug("UpdateColor")
 	local settings = self.db.profile
-
 
 	local backdrop = self.frame.backdrop:GetBackdrop()
 	backdrop.bgFile = Media:Fetch(Media.MediaType.BACKGROUND, settings.backgroundTexture)
