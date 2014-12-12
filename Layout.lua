@@ -62,6 +62,8 @@ function GridLayout.prototype:Reset()
 	self:SetAttributeByProxy("columnAnchorPoint", nil)
 	self:SetAttributeByProxy("point", nil)
 	self:SetAttributeByProxy("unitsPerColumn", nil)
+	
+	self:SetAttribute("gridGroupSpacing", nil) -- custom
 
 	self:SetAttribute("initialConfigFunction", GridLayout:GetInitialConfigSnippet())
 end
@@ -817,12 +819,15 @@ function GridLayout:PlaceGroup(layoutGroup, groupNumber)
 	if groupNumber == 1 then
 		layoutGroup:SetPoint(groupAnchor, self.frame, groupAnchor, spacing * xMult, spacing * yMult)
 	else
+		local xPlus, yPlus = 0, 0
 		if horizontal then
 			xMult = 0
+			xPlus = tonumber(layoutGroup:GetAttribute("gridGroupSpacing")) or 0
 		else
 			yMult = 0
+			yPlus = tonumber(layoutGroup:GetAttribute("gridGroupSpacing")) or 0
 		end
-		layoutGroup:SetPoint(groupAnchor, previousGroup, relPoint, padding * xMult, padding * yMult)
+		layoutGroup:SetPoint(groupAnchor, previousGroup, relPoint, (padding * xMult) + xPlus, (padding * yMult) + yPlus)
 	end
 
 	self:Debug("Placing group", groupNumber, layoutGroup:GetName(), groupNumber == 1 and self.frame:GetName() or groupAnchor, previousGroup and previousGroup:GetName(), relPoint)
@@ -914,6 +919,7 @@ function GridLayout:LoadLayout(layoutName)
 	end
 
 	local defaults = layout.defaults
+	local groupSpacing = tonumber(layout.groupSpacing)
 	local iGroup, iPetGroup = 1, 1
 	-- configure groups
 	for i = 1, #layout do
@@ -933,6 +939,10 @@ function GridLayout:LoadLayout(layoutName)
 		end
 
 		layoutGroup:Reset()
+		
+		if groupSpacing then
+			layoutGroup:SetAttribute("gridGroupSpacing", groupSpacing)
+		end
 
 		-- apply defaults
 		if defaults then
