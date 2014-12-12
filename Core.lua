@@ -297,7 +297,9 @@ function Grid.modulePrototype:ResetModules()
 	for name, module in self:IterateModules() do
 		self:Debug("Resetting " .. name)
 		module.db = self.core.db:GetNamespace(name)
-		module:Reset()
+		if type(module.Reset) == "function" then
+			module:Reset()
+		end
 	end
 end
 
@@ -629,7 +631,9 @@ function Grid:ResetModules()
 	for name, module in self:IterateModules() do
 		self:Debug("Resetting " .. name)
 		module.db = self.db:GetNamespace(name)
-		module:Reset()
+		if type(module.Reset) == "function" then
+			module:Reset()
+		end
 	end
 end
 
