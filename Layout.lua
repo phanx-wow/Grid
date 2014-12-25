@@ -206,8 +206,8 @@ end
 
 GridLayout.defaultDB = {
 	layouts = {
-		solo  = "ByGroup,
-		party = "ByGroup,
+		solo  = "ByGroup",
+		party = "ByGroup",
 		raid  = "ByRole",
 		arena = "ByGroup",
 		bg    = "ByGroup",
