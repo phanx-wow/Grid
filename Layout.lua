@@ -206,15 +206,11 @@ end
 
 GridLayout.defaultDB = {
 	layouts = {
-		solo = ByGroup,
-		party = ByGroup,
-		raid_10 = ByGroup,
-		raid_25 = ByGroup,
-		raid_flex = ByGroup,
-		raid_40 = ByGroup,
-		raid_outside = false,
-		arena = ByGroup,
-		bg = ByGroup,
+		solo  = "ByGroup,
+		party = "ByGroup,
+		raid  = "ByRole",
+		arena = "ByGroup",
+		bg    = "ByGroup",
 	},
 
 	lock = false,
@@ -492,7 +488,7 @@ GridLayout.options = {
 			end,
 		},
 		unitSpacing = {
-			name = L["Frame layoutPadding"],
+			name = L["Unit Spacing"],
 			desc = L["Adjust the spacing between the individual unit frames."],
 			order = 34,
 			width = "double",
@@ -503,7 +499,7 @@ GridLayout.options = {
 			end,
 		},
 		layoutPadding = {
-			name = L["Layout unitSpacing"],
+			name = L["Layout Padding"],
 			desc = L["Adjust the extra spacing inside the layout frame, around the unit frames."],
 			order = 36,
 			width = "double",
