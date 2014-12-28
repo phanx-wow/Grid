@@ -263,7 +263,7 @@ do
 	}
 
 	local function GetPartyState()
-		local _, instanceType, _, _, maxPlayers, _, _, _, instanceGroupSize = IsInInstance()
+		local _, instanceType, _, _, maxPlayers, _, _, _, instanceGroupSize = GetInstanceInfo()
 
 		if instanceType == "arena" then
 			return "arena"
