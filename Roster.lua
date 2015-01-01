@@ -289,7 +289,7 @@ do
 	function GridRoster:PartyTransitionCheck()
 		local current_state, maxPlayers, instanceGroupSize = GetPartyState()
 		local old_state = self.db.profile.party_state
-		if current_state ~= old_state or (current_state == "raid" and last_maxPlayers ~= maxPlayers) then
+		if current_state ~= old_state or (current_state == "raid" and (last_maxPlayers ~= maxPlayers or last_instanceGroupSize ~= instanceGroupSize)) then
 			self.db.profile.party_state = current_state
 			last_maxPlayers, last_instanceGroupSize = maxPlayers, instanceGroupSize
 			self:SendMessage("Grid_PartyTransition", current_state, old_state)

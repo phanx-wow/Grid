@@ -66,7 +66,9 @@ local Layouts = {
 			roleFilter = "HEALER",
 		},
 		[3] = {
-			roleFilter = "DAMAGER",
+			roleFilter = "DAMAGER,NONE",
+			groupBy = "ASSIGNEDROLE",
+			groupingOrder = "DAMAGER,NONE",
 		},
 	}
 }
@@ -74,7 +76,7 @@ local Layouts = {
 --------------------------------------------------------------------------------
 
 local Manager = Layout:NewModule("GridLayoutManager", "AceEvent-3.0")
-Manager.Debug = Grid.Debug
+Manager.Debug = Grid.Debug -- GridLayout doesn't have a module prototype
 
 function Manager:OnInitialize()
 	self:Debug("OnInitialize")
