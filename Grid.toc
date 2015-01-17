@@ -15,7 +15,7 @@
 
 ## Author: Phanx, Pastamancer, Maia
 ## X-Credits: Greltok, Jerry, jlam
-## X-Copyright: Copyright (c) 2006-2014 Pastamancer, Phanx. All rights reserved.
+## X-Copyright: Copyright (c) 2006-2015 Pastamancer, Phanx. All rights reserved.
 ## X-Website: http://www.wowace.com/addons/grid/
 
 ## OptionalDeps: Ace3, LibDBIcon-1.0, LibDualSpec-1.0, LibResInfo-1.0, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, UTF8, Clique
@@ -85,6 +85,7 @@ Statuses\Range.lua
 Statuses\ReadyCheck.lua
 Statuses\Resurrect.lua
 Statuses\Role.lua
+Statuses\Stagger.lua
 Statuses\Target.lua
 Statuses\Vehicle.lua
 Statuses\VoiceComm.lua
