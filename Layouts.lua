@@ -42,24 +42,24 @@ local Layouts = {
 	ByClass = {
 		name = L["By Class"],
 		defaults = {
+			groupBy = "CLASS",
+			groupingOrder = "WARRIOR,DEATHKNIGHT,ROGUE,MONK,PALADIN,DRUID,SHAMAN,PRIEST,MAGE,WARLOCK,HUNTER",
 			sortMethod = "NAME",
 			unitsPerColumn = 5,
 		},
 		[1] = {
-			groupBy = "CLASS",
-			groupingOrder = "WARRIOR,DEATHKNIGHT,ROGUE,MONK,PALADIN,DRUID,SHAMAN,PRIEST,MAGE,WARLOCK,HUNTER",
 			groupFilter = "1", -- updated dynamically
 		},
 	},
 	ByRole = {
 		name = L["By Role"],
 		defaults = {
+			groupBy = "ASSIGNEDROLE",
+			groupingOrder = "TANK,HEALER,DAMAGER,NONE",
 			sortMethod = "NAME",
 			unitsPerColumn = 5,
 		},
 		[1] = {
-			groupBy = "ASSIGNEDROLE",
-			groupingOrder = "TANK,HEALER,DAMAGER,NONE",
 			groupFilter = "1", -- updated dynamically
 		},
 	}
@@ -91,7 +91,6 @@ local lastNumGroups, lastGroupFilter, lastShowPets
 
 local function AddPetGroup(t, numGroups, groupFilter)
 	t = t or {}
-
 	t.groupFilter = groupFilter
 	t.maxColumns = numGroups
 
@@ -102,11 +101,45 @@ local function AddPetGroup(t, numGroups, groupFilter)
 	return t
 end
 
+local function UpdateSplitGroups(layout, numGroups, showPets)
+	for i = 1, numGroups do
+		layout[i] = layout[i] or {}
+		layout[i].groupFilter = tostring(i)
+		-- Reset attributes from merged layout
+		layout[i].maxColumns = 1
+		-- Remove attributes for pet group
+		layout[i].isPetGroup = nil
+		layout[i].groupBy = nil
+		layout[i].groupingOrder = nil
+	end
+	if showPets then
+		local i = numGroups + 1
+		layout[i] = AddPetGroup(layout[i], numGroups, groupFilter)
+	end
+	for i = numGroups + 1, #layout do
+		layout[i] = nil
+	end
+end
+
+local function UpdateMergedGroups(layout, numGroups, showPets)
+	layout[1].groupFilter = groupFilter
+	layout[1].maxColumns = numGroups
+	if showPets then
+		layout[2] = AddPetGroup(layout[2], numGroups, groupFilter)
+	else
+		layout[2] = nil
+	end
+	for 3, numGroups do
+		layout[i] = nil
+	end
+end
+
 function Manager:UpdateLayouts(event)
 	self:Debug("UpdateLayouts", event)
 
 	local groupType, maxPlayers, instanceGroupSize = Roster:GetPartyState()
 	local showPets = Layout.db.profile.showPets
+	local splitGroups = Layout.db.profile.splitGroups
 	local numGroups, groupFilter = 1, "1"
 
 	if groupType == "raid" then
@@ -127,36 +160,17 @@ function Manager:UpdateLayouts(event)
 	lastNumGroups = numGroups
 	lastShowPets = showPets
 
-	-- Update class layout
-	Layouts.ByClass[1].groupFilter = groupFilter
-	Layouts.ByClass[1].maxColumns = numGroups
-	if showPets then
-		Layouts.ByClass[2] = AddPetGroup(Layouts.ByClass[2], numGroups, groupFilter)
+	-- Update class and role layouts
+	if splitGroups then
+		UpdateSplitGroups(Layouts.ByClass)
+		UpdateSplitGroups(Layouts.ByRole)
 	else
-		Layouts.ByClass[2] = nil
-	end
-
-	-- Update role layout
-	Layouts.ByRole[1].groupFilter = groupFilter
-	Layouts.ByRole[1].maxColumns = numGroups
-	if showPets then
-		Layouts.ByRole[2] = AddPetGroup(Layouts.ByRole[2], numGroups, groupFilter)
-	else
-		Layouts.ByRole[2] = nil
+		UpdateMergedGroups(Layouts.ByClass)
+		UpdateMergedGroups(Layouts.ByRole)
 	end
 
 	-- Update group layout
-	for i = 1, numGroups do
-		Layouts.ByGroup[i] = Layouts.ByGroup[i] or {}
-		Layouts.ByGroup[i].groupFilter = tostring(i)
-	end
-	if showPets then
-		numGroups = numGroups + 1
-		Layouts.ByGroup[numGroups] = AddPetGroup(Layouts.ByGroup[numGroups], numGroups, groupFilter)
-	end
-	for i = numGroups + 1, #Layouts.ByGroup do
-		Layouts.ByGroup[i] = nil
-	end
+	UpdateSplitGroups(Layouts.ByGroup)
 
 	-- Apply changes
 	Layout:ReloadLayout()
