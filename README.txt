@@ -13,7 +13,7 @@
 
 The compact grid of units lets you select a group member quickly, while keeping a good overview of the whole group. It shows as much information as possible without overloading you. It allows you to customize what information you see, and how you see it. It works in both party and raid groups, and supports pets and vehicles.
 
-**Want more features?** The Grid core tries to include only features which are generally useful for all classes and roles, but makes it easy to add new features with a simple plugin API for developers. [Over 75 plugins] [4] are already available!
+**Want more features?** The Grid core tries to include only features which are generally useful for all classes and roles, but makes it easy to add new features with a simple plugin API for developers. [Many plugins] [4] are already available!
 
  [4]: http://www.wowace.com/addons/grid/pages/list-of-grid-plugins/
 
