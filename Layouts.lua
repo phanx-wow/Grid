@@ -37,18 +37,18 @@ local Layouts = {
 		[1] = {
 			groupFilter = "1",
 		},
+		-- additional groups added/removed dynamically
 	},
 	ByClass = {
 		name = L["By Class"],
 		defaults = {
-			groupBy = "CLASS",
-			groupingOrder = "WARRIOR,DEATHKNIGHT,ROGUE,MONK,PALADIN,DRUID,SHAMAN,PRIEST,MAGE,WARLOCK,HUNTER",
 			sortMethod = "NAME",
 			unitsPerColumn = 5,
 		},
 		[1] = {
-			groupFilter = "1",
-			maxColumns = 1,
+			groupBy = "CLASS",
+			groupingOrder = "WARRIOR,DEATHKNIGHT,ROGUE,MONK,PALADIN,DRUID,SHAMAN,PRIEST,MAGE,WARLOCK,HUNTER",
+			groupFilter = "1", -- updated dynamically
 		},
 	},
 	ByRole = {
@@ -56,22 +56,17 @@ local Layouts = {
 		defaults = {
 			sortMethod = "NAME",
 			unitsPerColumn = 5,
-			maxColumns = 5,
-			strictFiltering = true,
 		},
 		[1] = {
-			roleFilter = "TANK",
-		},
-		[2] = {
-			roleFilter = "HEALER",
-		},
-		[3] = {
-			roleFilter = "DAMAGER,NONE",
 			groupBy = "ASSIGNEDROLE",
-			groupingOrder = "DAMAGER,NONE",
+			groupingOrder = "TANK,HEALER,DAMAGER,NONE",
+			groupFilter = "1", -- updated dynamically
 		},
 	}
 }
+--@debug@
+GRIDLAYOUTS = Layouts
+--@end-debug@
 
 --------------------------------------------------------------------------------
 
@@ -142,14 +137,12 @@ function Manager:UpdateLayouts(event)
 	end
 
 	-- Update role layout
-	for i = 1, 3 do
-		Layouts.ByRole[i].groupFilter = groupFilter
-		Layouts.ByRole[i].maxColumns = numGroups
-	end
+	Layouts.ByRole[1].groupFilter = groupFilter
+	Layouts.ByRole[1].maxColumns = numGroups
 	if showPets then
-		Layouts.ByRole[4] = AddPetGroup(Layouts.ByClass[2], numGroups, groupFilter)
+		Layouts.ByRole[2] = AddPetGroup(Layouts.ByRole[2], numGroups, groupFilter)
 	else
-		Layouts.ByRole[4] = nil
+		Layouts.ByRole[2] = nil
 	end
 
 	-- Update group layout
