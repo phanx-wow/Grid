@@ -106,6 +106,9 @@ function GridStatusHeals:UpdateUnit(event, unit)
 
 	if UnitIsVisible(unit) and not UnitIsDeadOrGhost(unit) then
 		local incoming = UnitGetIncomingHeals(unit) or 0
+		if incoming > 0 then
+			self:Debug("UpdateUnit", unit, incoming, UnitGetIncomingHeals(unit, "player") or 0, format("%.2f%%", incoming / UnitHealthMax(unit) * 100))
+		end
 		if settings.ignore_self then
 			incoming = incoming - (UnitGetIncomingHeals(unit, "player") or 0)
 		end

@@ -94,6 +94,8 @@ end
 local UnitGUID, UnitIsDeadOrGhost, UnitIsVisible, UnitPower, UnitPowerMax, UnitPowerType
     = UnitGUID, UnitIsDeadOrGhost, UnitIsVisible, UnitPower, UnitPowerMax, UnitPowerType
 
+local cache = {}
+
 function GridStatusMana:UpdateUnit(event, unit, guid)
 	if not guid then guid = UnitGUID(unit) end
 	if not GridRoster:IsGUIDInRaid(guid) then return end
@@ -102,8 +104,12 @@ function GridStatusMana:UpdateUnit(event, unit, guid)
 		-- mana user and is alive
 		local cur = UnitPower(unit, 0)
 		local max = UnitPowerMax(unit, 0)
-		if max > 0 and self.db.profile.alert_lowMana.threshold > (cur / max * 100) then
-			local settings = self.db.profile.alert_lowMana
+		local settings = self.db.profile.alert_lowMana
+		if max > 0 and settings.threshold > (cur / max * 100) then
+			if not cache[guid] then
+				self:Debug("GAINED", UnitName(unit))
+				cache[guid] = true
+			end
 			return GridStatus:SendStatusGained(guid, "alert_lowMana",
 				settings.priority,
 				settings.range,
@@ -113,6 +119,10 @@ function GridStatusMana:UpdateUnit(event, unit, guid)
 				nil,
 				settings.icon)
 		end
+	end
+	if cache[guid] then
+		self:Debug("LOST", UnitName(unit))
+		cache[guid] = nil
 	end
 	GridStatus:SendStatusLost(guid, "alert_lowMana")
 end
