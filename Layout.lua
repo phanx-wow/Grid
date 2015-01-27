@@ -261,7 +261,7 @@ GridLayout.options = {
 		lock = {
 			name = L["Frame lock"],
 			desc = L["Locks/unlocks the grid for movement."],
-			order = 5,
+			order = 2,
 			width = "double",
 			type = "toggle",
 			set = function(info, v)
@@ -272,7 +272,7 @@ GridLayout.options = {
 		tab = {
 			name = L["Show tab"],
 			desc = L["Show a tab for dragging when Grid is unlocked."],
-			order = 15,
+			order = 4,
 			width = "double",
 			type = "toggle",
 			get = function()
@@ -286,7 +286,7 @@ GridLayout.options = {
 		clickThrough = {
 			name = L["Click through background"],
 			desc = L["Allow mouse clicks to pass through the background when Grid is unlocked."],
-			order = 15,
+			order = 6,
 			width = "double",
 			type = "toggle",
 			get = function()
@@ -300,7 +300,7 @@ GridLayout.options = {
 		horizontal = {
 			name = L["Horizontal groups"],
 			desc = L["Switch between horizontal/vertical groups."],
-			order = 10,
+			order = 8,
 			width = "double",
 			type = "toggle",
 			set = function(info, v)
@@ -308,9 +308,21 @@ GridLayout.options = {
 				GridLayout:ReloadLayout()
 			end,
 		},
-		showPets = {
-			name = L["Show pets"],
+		splitGroups = {
+			name = COMPACT_UNIT_FRAME_PROFILE_KEEPGROUPSTOGETHER, -- L["Keep Groups Together"]
+			desc = L["Note that layouts added by plugins might not respect this setting."], -- TODO
 			order = 10,
+			width = "double",
+			type = "toggle",
+			set = function(info, v)
+				GridLayout.db.profile.splitGroups = v
+				GridLayout:GetModule("GridLayoutManager"):UpdateLayouts()
+			end,
+		},
+		showPets = {
+			name = COMPACT_UNIT_FRAME_PROFILE_DISPLAYPETS, -- L["Show Pets"]
+			desc = L["Note that layouts added by plugins might not respect this setting."], -- TODO
+			order = 12,
 			width = "double",
 			type = "toggle",
 			set = function(info, v)

@@ -129,7 +129,7 @@ local function UpdateMergedGroups(layout, numGroups, showPets)
 	else
 		layout[2] = nil
 	end
-	for 3, numGroups do
+	for i = 3, numGroups do
 		layout[i] = nil
 	end
 end
@@ -138,8 +138,8 @@ function Manager:UpdateLayouts(event)
 	self:Debug("UpdateLayouts", event)
 
 	local groupType, maxPlayers, instanceGroupSize = Roster:GetPartyState()
-	local showPets = Layout.db.profile.showPets
-	local splitGroups = Layout.db.profile.splitGroups
+	local showPets = Layout.db.profile.showPets -- Show Pets
+	local splitGroups = Layout.db.profile.splitGroups -- Keep Groups Together
 	local numGroups, groupFilter = 1, "1"
 
 	if groupType == "raid" then
@@ -162,15 +162,15 @@ function Manager:UpdateLayouts(event)
 
 	-- Update class and role layouts
 	if splitGroups then
-		UpdateSplitGroups(Layouts.ByClass)
-		UpdateSplitGroups(Layouts.ByRole)
+		UpdateSplitGroups(Layouts.ByClass,  numGroups, showPets)
+		UpdateSplitGroups(Layouts.ByRole,   numGroups, showPets)
 	else
-		UpdateMergedGroups(Layouts.ByClass)
-		UpdateMergedGroups(Layouts.ByRole)
+		UpdateMergedGroups(Layouts.ByClass, numGroups, showPets)
+		UpdateMergedGroups(Layouts.ByRole,  numGroups, showPets)
 	end
 
 	-- Update group layout
-	UpdateSplitGroups(Layouts.ByGroup)
+	UpdateSplitGroups(Layouts.ByGroup,     numGroups, showPets)
 
 	-- Apply changes
 	Layout:ReloadLayout()
