@@ -264,21 +264,24 @@ do
 
 	local function GetPartyState()
 		local _, instanceType, _, _, maxPlayers, _, _, _, instanceGroupSize = GetInstanceInfo()
+		if instanceType == "none" then
+			maxPlayers, instanceGroupSize = nil, nil
+		end
 
 		if instanceType == "arena" then
-			return "arena"
+			return "arena", maxPlayers, instanceGroupSize
 		end
 
 		if instanceType == "pvp" or (instanceType == "none" and GetZonePVPInfo() == "combat") then
-			return "bg"
+			return "bg", maxPlayers or 40, instanceGroupSize or 40
 		end
 
 		if IsInRaid() then
-			return "raid", maxPlayers, instanceGroupSize
+			return "raid", maxPlayers or 40, instanceGroupSize or ceil(GetNumGroupMembers() / 5)
 		end
 
 		if IsInGroup() and maxPlayers > 1 then -- ignore solo scenarios
-			return "party"
+			return "party", maxPlayers or 5, instanceGroupSize or 5
 		end
 
 		return "solo"
