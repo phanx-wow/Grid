@@ -280,7 +280,7 @@ do
 			return "raid", maxPlayers or 40, instanceGroupSize or ceil(GetNumGroupMembers() / 5)
 		end
 
-		if IsInGroup() and maxPlayers > 1 then -- ignore solo scenarios
+		if IsInGroup() and maxPlayers ~= 1 then -- ignore solo scenarios
 			return "party", maxPlayers or 5, instanceGroupSize or 5
 		end
 
