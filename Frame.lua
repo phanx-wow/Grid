@@ -155,8 +155,6 @@ end
 -- shows the default unit tooltip
 function GridFrame.prototype:OnEnter()
 	local unit = self.unit
-	GridFrame:SendMessage("Grid_UnitFrame_OnEnter", unit, self.unitGUID)
-
 	local showTooltip = GridFrame.db.profile.showTooltip
 	if unit and UnitExists(unit) and (showTooltip == "Always" or (showTooltip == "OOC" and (not InCombatLockdown() or UnitIsDeadOrGhost(unit)))) then
 		UnitFrame_OnEnter(self)
@@ -164,7 +162,6 @@ function GridFrame.prototype:OnEnter()
 end
 
 function GridFrame.prototype:OnLeave()
-	GridFrame:SendMessage("Grid_UnitFrame_OnLeave", self.unit, self.unitGUID)
 	UnitFrame_OnLeave(self)
 end
 
