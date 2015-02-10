@@ -240,7 +240,6 @@ GridLayout.defaultDB = {
 
 GridLayout.options = {
 	name = L["Layout"],
-	desc = L["Options for GridLayout."],
 	disabled = InCombatLockdown,
 	order = 1,
 	type = "group",
@@ -285,7 +284,7 @@ GridLayout.options = {
 		},
 		clickThrough = {
 			name = L["Click through background"],
-			desc = L["Allow mouse clicks to pass through the background when Grid is unlocked."],
+			desc = L["Allow mouse clicks to pass through the background when Grid is locked."],
 			order = 6,
 			width = "double",
 			type = "toggle",
@@ -308,9 +307,10 @@ GridLayout.options = {
 				GridLayout:ReloadLayout()
 			end,
 		},
+--@debug@
 		splitGroups = {
 			name = COMPACT_UNIT_FRAME_PROFILE_KEEPGROUPSTOGETHER, -- L["Keep Groups Together"]
-			desc = L["Note that layouts added by plugins might not respect this setting."], -- TODO
+			desc = L["Layouts added by plugins might not support this option."], -- TODO
 			order = 10,
 			width = "double",
 			type = "toggle",
@@ -319,9 +319,10 @@ GridLayout.options = {
 				GridLayout:GetModule("GridLayoutManager"):UpdateLayouts()
 			end,
 		},
+--@end-debug@
 		showPets = {
 			name = COMPACT_UNIT_FRAME_PROFILE_DISPLAYPETS, -- L["Show Pets"]
-			desc = L["Note that layouts added by plugins might not respect this setting."], -- TODO
+			desc = L["Layouts added by plugins might not support this option."], -- TODO
 			order = 12,
 			width = "double",
 			type = "toggle",
@@ -345,7 +346,6 @@ GridLayout.options = {
 			args = {
 				solo = {
 					name = L["Solo Layout"],
-					desc = L["Select which layout to use when not in a party."],
 					order = 2,
 					width = "double",
 					type = "select",
@@ -353,7 +353,6 @@ GridLayout.options = {
 				},
 				party = {
 					name = L["Party Layout"],
-					desc = L["Select which layout to use when in a party."],
 					order = 4,
 					width = "double",
 					type = "select",
@@ -361,7 +360,6 @@ GridLayout.options = {
 				},
 				raid = {
 					name = L["Raid Layout"],
-					desc = L["Select which layout to use when in a raid."],
 					order = 6,
 					width = "double",
 					type = "select",
@@ -369,7 +367,6 @@ GridLayout.options = {
 				},
 				arena = {
 					name = L["Arena Layout"],
-					desc = L["Select which layout to use when in an arena."],
 					order = 10,
 					width = "double",
 					type = "select",
@@ -377,7 +374,6 @@ GridLayout.options = {
 				},
 				bg = {
 					name = L["Battleground Layout"],
-					desc = L["Select which layout to use when in a battleground."],
 					order = 12,
 					width = "double",
 					type = "select",
