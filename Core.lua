@@ -487,11 +487,14 @@ function Grid:SetupOptions()
 	child3.groups.treewidth = 300
 
 	self:RegisterChatCommand("grid", function(input)
-		if not input or strtrim(input) == "" then
+		if input then
+			input = strtrim(input)
+		end
+		if not input or input == "" then
 			self:ToggleOptions()
-		elseif strmatch(strlower(strtrim(input)), "^vers?i?o?n?$") then
+		elseif strmatch(strlower(input), "^ve?r?s?i?o?n?$") then
 			local version = GetAddOnMetadata(GRID, "Version")
-			if version == "@project-version@" then
+			if version == "@" .. "project-version" .. "@" then -- concatenation to trick the packager
 				self:Print("You are using a developer version.") -- no need to localize
 			else
 				self:Print(format(L["You are using version %s"], version))
