@@ -1,14 +1,24 @@
+**THIS IS A BETA VERSION!** Do not use this version if you are not comfortable running untested/unstable code that may **behave unexpectedly** or **not work at all**. Do not use this version if you are not willing or able to give useful descriptions of any problems you encounter. Be prepared to roll back to the previous release version if needed.
+
+### Version 6.0.3.1740-beta
+
+#### Changes in this version
+
+* Fixed a number of layout-related issues
+* Fixed an error when switching profiles (ticket #783)
+* Fixed an issue with the Center Icon size (ticket #785)
+* Fixed an issue with the Mouseover status sticking or activating randomly (ticket #791)
+* Added a status to display Stagger on monks (thanks Greltok!)
+
+#### Known issues in this version
+
+* The background frame does not always resize itself correctly when the group size changes in combat.
+
 ### Version 6.0.3.1714-beta
 
-**THIS IS A BETA VERSION!** Do not use this version if you are not comfortable running untested/unstable code that may **behave unexpectedly** or **not work at all**. Do not use this version if you are not willing or able to give useful descriptions of any problems you encounter.
-
-#### Changes in this version:
-
-Updated layout system for Warlords of Draenor:
-
-* There is now only one "Raid" layout selection, and the built-in layouts will automatically adjust their size to match your current instance.
-* There is now a "By Role" option that will group players by their assigned tank/healer/damager roles.
-* There are no longer separate "w/ Pets" layouts; use the "Show pets" option on the Layout tab to add pets to any of the built-in layouts.
+* There is now only one "Raid" layout selection, and the built-in layouts will automatically adjust to match your current instance type and group size.
+* There is now a "By Role" layout that will group players by their assigned tank/healer/damager roles.
+* There are no longer separate "w/ Pets" layouts; use the "Show Pets" option on the Layout tab to add pets to any of the built-in layouts.
 
 -------------------
 
