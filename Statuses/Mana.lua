@@ -81,13 +81,13 @@ end
 
 function GridStatusMana:Grid_UnitJoined(event, guid, unit)
 	if unit then
-		self:UpdateUnit(event, unit, guid)
+		self:UpdateUnit(event, unit)
 	end
 end
 
 function GridStatusMana:UpdateAllUnits()
 	for guid, unit in GridRoster:IterateRoster() do
-		self:UpdateUnit("UpdateAllUnits", unit, guid)
+		self:UpdateUnit("UpdateAllUnits", unit)
 	end
 end
 
@@ -96,8 +96,8 @@ local UnitGUID, UnitIsDeadOrGhost, UnitIsVisible, UnitPower, UnitPowerMax, UnitP
 
 local cache = {}
 
-function GridStatusMana:UpdateUnit(event, unit, guid)
-	if not guid then guid = UnitGUID(unit) end
+function GridStatusMana:UpdateUnit(event, unit)
+	local guid = UnitGUID(unit)
 	if not GridRoster:IsGUIDInRaid(guid) then return end
 
 	if UnitIsVisible(unit) and not UnitIsDeadOrGhost(unit) and UnitPowerType(unit) == 0 then
