@@ -386,7 +386,7 @@ function Grid:OnInitialize()
 					Grid:ToggleOptions()
 				elseif not InCombatLockdown() then
 					local GridLayout = Grid:GetModule("GridLayout")
-					GridLayout.db.profile.FrameLock = not GridLayout.db.profile.FrameLock
+					GridLayout.db.profile.lock = not GridLayout.db.profile.lock
 					LibStub("AceConfigRegistry-3.0"):NotifyChange(GRID)
 					GridLayout:UpdateTabVisibility()
 				end
