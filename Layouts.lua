@@ -139,7 +139,7 @@ end
 function Manager:UpdateLayouts(event)
 	self:Debug("UpdateLayouts", event)
 
-	local groupType, maxPlayers, instanceGroupSize = Roster:GetPartyState()
+	local groupType, maxPlayers = Roster:GetPartyState()
 	local showPets = Layout.db.profile.showPets -- Show Pets
 	local splitGroups = Layout.db.profile.splitGroups -- Keep Groups Together
 

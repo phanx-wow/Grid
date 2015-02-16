@@ -263,38 +263,28 @@ do
 	}
 
 	local function GetPartyState()
-		local _, instanceType, _, _, maxPlayers, _, _, _, instanceGroupSize = GetInstanceInfo()
-		if instanceType == "none" then
-			maxPlayers, instanceGroupSize = nil, nil
-		end
-
+		local _, instanceType, _, _, maxPlayers = GetInstanceInfo()
 		if instanceType == "arena" then
-			return "arena", maxPlayers, instanceGroupSize
+			return "arena", maxPlayers or 5
+		elseif instanceType == "pvp" or (instanceType == "none" and GetZonePVPInfo() == "combat") then
+			return "bg",    maxPlayers or 40
+		elseif maxPlayers == 1 or not IsInGroup() then -- treat solo scenarios as solo, not party or raid
+			return "solo",  1
+		elseif IsInRaid() then
+			return "raid",  maxPlayers or 40
+		else
+			return "party", maxPlayers or 5
 		end
-
-		if instanceType == "pvp" or (instanceType == "none" and GetZonePVPInfo() == "combat") then
-			return "bg", maxPlayers or 40, instanceGroupSize or 40
-		end
-
-		if IsInRaid() then
-			return "raid", maxPlayers or 40, instanceGroupSize or ceil(GetNumGroupMembers() / 5)
-		end
-
-		if IsInGroup() and maxPlayers ~= 1 then -- ignore solo scenarios
-			return "party", maxPlayers or 5, instanceGroupSize or 5
-		end
-
-		return "solo"
 	end
 
 	local last_maxPlayers, last_instanceGroupSize
 
 	function GridRoster:PartyTransitionCheck()
-		local current_state, maxPlayers, instanceGroupSize = GetPartyState()
+		local current_state, maxPlayers = GetPartyState()
 		local old_state = self.db.profile.party_state
-		if current_state ~= old_state or (current_state == "raid" and (last_maxPlayers ~= maxPlayers or last_instanceGroupSize ~= instanceGroupSize)) then
+		if current_state ~= old_state or last_maxPlayers ~= maxPlayers then
 			self.db.profile.party_state = current_state
-			last_maxPlayers, last_instanceGroupSize = maxPlayers, instanceGroupSize
+			last_maxPlayers, last_instanceGroupSize = maxPlayers
 			self:SendMessage("Grid_PartyTransition", current_state, old_state)
 		end
 	end
