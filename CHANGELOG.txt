@@ -1,18 +1,23 @@
-**THIS IS A BETA VERSION!** Do not use this version if you are not comfortable running untested/unstable code that may **behave unexpectedly** or **not work at all**. Do not use this version if you are not willing or able to give useful descriptions of any problems you encounter. Be prepared to roll back to the previous release version if needed.
+**THIS IS A BETA VERSION!** Do not use this version if you are not comfortable running untested/unstable code that may **not work well** or **not work at all**. Do not use this version if you are not willing or able to give useful reports about problems you encounter. Be prepared to roll back to the previous release version if needed.
+
+### Version 6.0.3.1746-beta
+
+* Layout size is now based on the maximum group size for the current instance, rather than the actual group size, to resolve several issues (ticket #795)
+* Fixed pets not being displayed when using the By Group layout (ticket #798)
+* Fixed the Low Mana Warning status not activating (ticket #780)
+
+#### Known issues in this version
+
+* The background frame does not always resize itself correctly when the group size changes in combat.
+* Some group members may still be hidden if your raid is full (20 players in a mythic raid, 30 players in other difficulties) but you have arranged your raid groups so that not all groups are full (eg. only 2 players in group 1). If you use this kind of group arrangement, please post a ticket or in the forum thread to let me know.
 
 ### Version 6.0.3.1740-beta
-
-#### Changes in this version
 
 * Fixed a number of layout-related issues
 * Fixed an error when switching profiles (ticket #783)
 * Fixed an issue with the Center Icon size (ticket #785)
 * Fixed an issue with the Mouseover status sticking or activating randomly (ticket #791)
 * Added a status to display Stagger on monks (thanks Greltok!)
-
-#### Known issues in this version
-
-* The background frame does not always resize itself correctly when the group size changes in combat.
 
 ### Version 6.0.3.1714-beta
 
