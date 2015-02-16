@@ -144,7 +144,7 @@ function Manager:UpdateLayouts(event)
 
 	if groupType == "raid" then
 		self:Debug("maxPlayers", maxPlayers, "instanceGroupSize", instanceGroupSize)
-		numGroups = ceil(min(instanceGroupSize, maxPlayers) / 5)
+		numGroups = ceil(maxPlayers / 5)
 		for i = 2, numGroups do
 			groupFilter = groupFilter .. "," .. i
 		end
