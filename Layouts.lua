@@ -103,18 +103,20 @@ end
 
 local function UpdateSplitGroups(layout, numGroups, showPets)
 	for i = 1, numGroups do
-		layout[i] = layout[i] or {}
-		layout[i].groupFilter = tostring(i)
+		local t = layout[i] or {}
+		t.groupFilter = tostring(i)
 		-- Reset attributes from merged layout
-		layout[i].maxColumns = 1
+		t.maxColumns = 1
 		-- Remove attributes for pet group
-		layout[i].isPetGroup = nil
-		layout[i].groupBy = nil
-		layout[i].groupingOrder = nil
+		t.isPetGroup = nil
+		t.groupBy = nil
+		t.groupingOrder = nil
+		layout[i] = t
 	end
 	if showPets then
 		local i = numGroups + 1
 		layout[i] = AddPetGroup(layout[i], numGroups, groupFilter)
+		numGroups = i
 	end
 	for i = numGroups + 1, #layout do
 		layout[i] = nil
@@ -140,17 +142,13 @@ function Manager:UpdateLayouts(event)
 	local groupType, maxPlayers, instanceGroupSize = Roster:GetPartyState()
 	local showPets = Layout.db.profile.showPets -- Show Pets
 	local splitGroups = Layout.db.profile.splitGroups -- Keep Groups Together
-	local numGroups, groupFilter = 1, "1"
 
-	if groupType == "raid" then
-		self:Debug("maxPlayers", maxPlayers, "instanceGroupSize", instanceGroupSize)
-		numGroups = ceil(maxPlayers / 5)
-		for i = 2, numGroups do
-			groupFilter = groupFilter .. "," .. i
-		end
+	local numGroups, groupFilter = ceil(maxPlayers / 5), "1"
+	for i = 2, numGroups do
+		groupFilter = groupFilter .. "," .. i
 	end
 
-	self:Debug("numGroups", numGroups, "groupFilter", groupFilter, "showPets", showPets)
+	self:Debug("maxPlayers", maxPlayers, "numGroups", numGroups, "groupFilter", groupFilter, "showPets", showPets, "splitGroups", splitGroups)
 
 	if lastNumGroups == numGroups and lastShowPets == showPets then
 		self:Debug("no changes necessary")
