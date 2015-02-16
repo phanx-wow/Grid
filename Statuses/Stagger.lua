@@ -22,16 +22,16 @@ local GridStatusStagger = Grid:NewStatusModule("GridStatusStagger")
 GridStatusStagger.menuName = L["Stagger"]
 GridStatusStagger.options = false
 GridStatusStagger.defaultDB = {
-    alert_stagger = {
-        enable = true,
-        colors = {
+	alert_stagger = {
+		enable = true,
+		colors = {
 			light = { r = 0, g = 1, b = 0, a = 1 },
 			moderate = { r = 1, g = 1, b = 0, a = 1 },
 			heavy = { r = 1, g = 0, b = 0, a = 1 },
 		},
-        priority = 95,
-        range = false,
-    },
+		priority = 95,
+		range = false,
+	},
 }
 
 local stagger_names = {
@@ -114,6 +114,7 @@ function GridStatusStagger:OnStatusEnable(status)
 		self:RegisterMessage("Grid_UnitJoined")
 		self:RegisterMessage("Grid_UnitLeft")
 		self:RegisterEvent("UNIT_AURA", "UpdateUnit")
+		self:RegisterEvent("UNIT_NAME_UPDATE", "UpdateName")
 		for guid, unitid in GridRoster:IterateRoster() do
 			local _, class = UnitClass(unitid)
 			if class == "MONK" then
@@ -129,6 +130,7 @@ function GridStatusStagger:OnStatusDisable(status)
 		self:UnregisterMessage("Grid_UnitJoined")
 		self:UnregisterMessage("Grid_UnitLeft")
 		self:UnregisterEvent("UNIT_AURA")
+		self:UnregisterEvent("UNIT_NAME_UPDATE")
 		wipe(monks)
 		self.core:SendStatusLostAllUnits("alert_stagger")
 	end
@@ -144,6 +146,17 @@ end
 
 function GridStatusStagger:Grid_UnitLeft(event, guid)
 	monks[guid] = nil
+end
+
+function GridStatusStagger:UpdateName(event, unitid)
+	local _, class = UnitClass(unitid)
+	if class == "MONK" then
+		local guid = UnitGUID(unitid)
+		if GridRoster:IsGUIDInGroup(guid) and not monks[guid] then
+			monks[guid] = true
+			self:UpdateUnit(event, unitid)
+		end
+	end
 end
 
 function GridStatusStagger:UpdateAllUnits()
