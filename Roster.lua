@@ -264,6 +264,9 @@ do
 
 	local function GetPartyState()
 		local _, instanceType, _, _, maxPlayers = GetInstanceInfo()
+		if maxPlayers == 0 then
+			maxPlayers = nil
+		end
 		if instanceType == "arena" then
 			return "arena", maxPlayers or 5
 		elseif instanceType == "pvp" or (instanceType == "none" and GetZonePVPInfo() == "combat") then
@@ -277,19 +280,19 @@ do
 		end
 	end
 
-	local last_maxPlayers, last_instanceGroupSize
+	local last_maxPlayers
 
 	function GridRoster:PartyTransitionCheck()
 		local current_state, maxPlayers = GetPartyState()
 		local old_state = self.db.profile.party_state
 		if current_state ~= old_state or last_maxPlayers ~= maxPlayers then
 			self.db.profile.party_state = current_state
-			last_maxPlayers, last_instanceGroupSize = maxPlayers
+			last_maxPlayers = maxPlayers
 			self:SendMessage("Grid_PartyTransition", current_state, old_state)
 		end
 	end
 
 	function GridRoster:GetPartyState()
-		return self.db.profile.party_state, last_maxPlayers, last_instanceGroupSize
+		return self.db.profile.party_state, last_maxPlayers
 	end
 end
