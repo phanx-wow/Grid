@@ -572,6 +572,8 @@ function GridLayout:PostEnable()
 
 	self:RegisterBucketMessage("Grid_UpdateLayoutSize", 0.2, "PartyMembersChanged")
 	self:RegisterMessage("Grid_RosterUpdated", "PartyMembersChanged")
+	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "PartyMembersChanged")
+	self:RegisterEvent("GROUP_ROSTER_UPDATE", "PartyMembersChanged")
 
 	self:RegisterMessage("Grid_EnteringCombat", "EnteringOrLeavingCombat")
 	self:RegisterMessage("Grid_LeavingCombat", "EnteringOrLeavingCombat")
@@ -1031,6 +1033,9 @@ function GridLayout:UpdateSize()
 	local groupCount, curWidth, curHeight, maxWidth, maxHeight = -1, 0, 0, 0, 0
 
 	local unitSpacing, layoutPadding = p.unitSpacing, p.layoutPadding * 2
+
+	-- Update layouts with new size
+	GridLayout:GetModule("GridLayoutManager"):UpdateLayouts()
 
 	for i = 1, #self.layoutGroups do
 		local layoutGroup = self.layoutGroups[i]

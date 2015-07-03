@@ -87,7 +87,7 @@ end
 
 --------------------------------------------------------------------------------
 
-local lastNumGroups, lastGroupFilter, lastShowPets
+local lastNumGroups, lastUsedGroups, lastShowPets
 
 local function AddPetGroup(t, numGroups, groupFilter)
 	t = t or {}
@@ -113,13 +113,13 @@ local function UpdateSplitGroups(layout, numGroups, showPets)
 		t.groupingOrder = nil
 		layout[i] = t
 	end
-	if showPets then
-		local i = numGroups + 1
-		layout[i] = AddPetGroup(layout[i], numGroups, groupFilter)
-		numGroups = i
-	end
 	for i = numGroups + 1, #layout do
 		layout[i] = nil
+	end
+	if showPets then
+		local i = numGroups + 1
+		layout[i] = AddPetGroup(layout[i], numGroups, tostring(i))
+		numGroups = i
 	end
 end
 
@@ -136,6 +136,43 @@ local function UpdateMergedGroups(layout, numGroups, showPets)
 	end
 end
 
+-- These are the number of groups actually used
+local function UpdateNumGroups()
+	local groupType, maxPlayers = Roster:GetPartyState()
+	local usedGroups = {}
+	local numGroups = 0
+	local realGroups = 1
+
+	if groupType == "raid" then
+		if maxPlayers then
+			numGroups = ceil(maxPlayers / 5)
+		else
+			numGroups = 1
+		end
+
+		for i = 1, 8 do
+			usedGroups[i] = false
+		end
+		for i = 1, GetNumGroupMembers(), 1 do
+			local name, _, subgroup, _, _, _, _, online = GetRaidRosterInfo(i);
+			-- If the highest group only has offline players it will not be shown
+			if name and online then
+				usedGroups[subgroup] = true
+			end
+		end
+		for i = 1, 8 do
+			if usedGroups[i] and i > realGroups then
+				-- realGroups = numGroups + 1
+				realGroups = i
+			end
+		end
+	else
+		numGroups = 1
+ 	end
+	return numGroups, realGroups
+end
+
+
 function Manager:UpdateLayouts(event)
 	self:Debug("UpdateLayouts", event)
 
@@ -143,19 +180,29 @@ function Manager:UpdateLayouts(event)
 	local showPets = Layout.db.profile.showPets -- Show Pets
 	local splitGroups = Layout.db.profile.splitGroups -- Keep Groups Together
 
-	local numGroups, groupFilter = ceil(maxPlayers / 5), "1"
-	for i = 2, numGroups do
-		groupFilter = groupFilter .. "," .. i
+	-- local numGroups, groupFilter = ceil(maxPlayers / 5), "1"
+	-- for i = 2, numGroups do
+	-- 	groupFilter = groupFilter .. "," .. i
+	-- end
+	local numGroups = 1
+	local usedGroups = 1
+
+	if groupType == "raid" then
+		numGroups, usedGroups = UpdateNumGroups()
+	elseif maxPlayers then
+		numGroups = ceil(maxPlayers / 5)
+		usedGroups = numGroups
 	end
 
-	self:Debug("maxPlayers", maxPlayers, "numGroups", numGroups, "groupFilter", groupFilter, "showPets", showPets, "splitGroups", splitGroups)
+	self:Debug("maxPlayers", maxPlayers, "numGroups", numGroups, "usedGroups", usedGroups, "showPets", showPets, "splitGroups", splitGroups)
 
-	if lastNumGroups == numGroups and lastShowPets == showPets then
+	if lastNumGroups == numGroups and lastUsedGroups == usedGroups and lastShowPets == showPets then
 		self:Debug("no changes necessary")
 		return
 	end
 
 	lastNumGroups = numGroups
+	lastUsedGroups = usedGroups
 	lastShowPets = showPets
 
 	-- Update class and role layouts
@@ -168,8 +215,9 @@ function Manager:UpdateLayouts(event)
 	end
 
 	-- Update group layout
-	UpdateSplitGroups(Layouts.ByGroup,     numGroups, showPets)
+	UpdateSplitGroups(Layouts.ByGroup,     usedGroups, showPets)
 
 	-- Apply changes
 	Layout:ReloadLayout()
 end
+
