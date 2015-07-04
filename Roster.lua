@@ -276,7 +276,10 @@ do
 		elseif IsInRaid() then
 			return "raid",  maxPlayers or 40
 		else
-			return "party", maxPlayers or 5
+			-- In the world, maxPlayers is 40 even when in just a party
+			-- when not in a raid, pvp, arena, or bg use 5
+			-- return "party", maxPlayers or 5
+			return "party", 5
 		end
 	end
 
