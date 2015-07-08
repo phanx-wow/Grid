@@ -111,7 +111,7 @@ local initialConfigSnippet = [[
    self:SetAttribute("initial-width", %d)
    self:SetAttribute("initial-height", %d)
    local attr = self:GetAttribute("type2")
-   if attr == "togglemnu" or attr == nil then
+   if attr == "togglemenu" or attr == nil then
       self:SetAttribute("type2", %s)
    end
 ]]
