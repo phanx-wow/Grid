@@ -562,7 +562,7 @@ function GridLayout:PostEnable()
 	self.forceRaid = true
 	self:ScheduleTimer(self.CombatFix, 1, self)
 
-	self:LoadLayout(self.db.profile.layout or self.db.profile.layouts["raid_25"])
+	self:LoadLayout(self.db.profile.layout or self.db.profile.layouts["raid"])
 	-- position and scale frame
 	self:RestorePosition()
 	self:Scale()
@@ -916,6 +916,8 @@ function GridLayout:LoadLayout(layoutName)
 	for i = petGroupsNeeded + 1, petGroupsAvailable, 1 do
 		self.layoutPetGroups[i]:Reset(true)
 	end
+
+	-- self:Debug("groupsNeeded ", groupsNeeded, "petGroupsNeeded ", petGroupsNeeded)
 
 	-- quit if layout has no groups (eg. None)
 	if groupsNeeded == 0 then

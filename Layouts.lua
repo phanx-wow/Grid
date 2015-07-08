@@ -97,6 +97,7 @@ local function AddPetGroup(t, numGroups, groupFilter)
 	t.isPetGroup = true
 	t.groupBy = "CLASS"
 	t.groupingOrder = "HUNTER,WARLOCK,MAGE,DEATHKNIGHT,DRUID,PRIEST,SHAMAN,MONK,PALADIN,ROGUE,WARRIOR"
+	-- t.sortMethod = "NAME"
 
 	return t
 end
@@ -113,13 +114,13 @@ local function UpdateSplitGroups(layout, numGroups, showPets)
 		t.groupingOrder = nil
 		layout[i] = t
 	end
-	for i = numGroups + 1, #layout do
-		layout[i] = nil
-	end
 	if showPets then
 		local i = numGroups + 1
-		layout[i] = AddPetGroup(layout[i], numGroups, tostring(i))
+		layout[i] = AddPetGroup(layout[i], numGroups, groupFilter)
 		numGroups = i
+	end
+	for i = numGroups + 1, #layout do
+		layout[i] = nil
 	end
 end
 
@@ -214,8 +215,8 @@ function Manager:UpdateLayouts(event)
 		UpdateMergedGroups(Layouts.ByRole,  numGroups, showPets)
 	end
 
-	-- Update group layout
-	UpdateSplitGroups(Layouts.ByGroup,     usedGroups, showPets)
+	-- By group should always be split group
+	UpdateSplitGroups(Layouts.ByGroup, usedGroups, showPets)
 
 	-- Apply changes
 	Layout:ReloadLayout()
