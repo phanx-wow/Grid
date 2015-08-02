@@ -143,8 +143,10 @@ local function UpdateNumGroups()
 	local usedGroups = {}
 	local numGroups = 0
 	local realGroups = 1
+	-- Debug
+	local offlineGroups = {}
 
-	if groupType == "raid" then
+	if groupType == "raid" or groupType == "bg" then
 		if maxPlayers then
 			numGroups = ceil(maxPlayers / 5)
 		else
@@ -154,17 +156,27 @@ local function UpdateNumGroups()
 		for i = 1, 8 do
 			usedGroups[i] = false
 		end
-		for i = 1, GetNumGroupMembers(), 1 do
+		for i = 1, GetNumGroupMembers() do
 			local name, _, subgroup, _, _, _, _, online = GetRaidRosterInfo(i);
 			-- If the highest group only has offline players it will not be shown
-			if name and online then
-				usedGroups[subgroup] = true
+			-- if name and online then
+			-- usedGroups[subgroup] = true
+			if name then
+				if online then
+					usedGroups[subgroup] = true
+				else
+					offlineGroups[subgroup] = true
+				end
 			end
 		end
 		for i = 1, 8 do
 			if usedGroups[i] and i > realGroups then
 				-- realGroups = numGroups + 1
 				realGroups = i
+			end
+			-- Debug
+			if not usedGroups[i] and offlineGroups[i] then
+				Manager:Debug("Group ", i, "is not used because players were offline.")
 			end
 		end
 	else
@@ -188,7 +200,7 @@ function Manager:UpdateLayouts(event)
 	local numGroups = 1
 	local usedGroups = 1
 
-	if groupType == "raid" then
+	if groupType == "raid" or groupType == "bg" then
 		numGroups, usedGroups = UpdateNumGroups()
 	elseif maxPlayers then
 		numGroups = ceil(maxPlayers / 5)
@@ -199,7 +211,7 @@ function Manager:UpdateLayouts(event)
 
 	if lastNumGroups == numGroups and lastUsedGroups == usedGroups and lastShowPets == showPets then
 		self:Debug("no changes necessary")
-		return
+		return false
 	end
 
 	lastNumGroups = numGroups
@@ -220,5 +232,7 @@ function Manager:UpdateLayouts(event)
 
 	-- Apply changes
 	Layout:ReloadLayout()
+
+	return true
 end
 

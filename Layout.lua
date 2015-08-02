@@ -21,6 +21,8 @@ GridLayout.LayoutList = {}
 
 local floor, next, pairs, select, tinsert, tonumber, tostring = floor, next, pairs, select, tinsert, tonumber, tostring
 
+local partyHandle
+
 ------------------------------------------------------------------------
 
 CONFIGMODE_CALLBACKS = CONFIGMODE_CALLBACKS or {}
@@ -575,8 +577,8 @@ function GridLayout:PostEnable()
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "PartyMembersChanged")
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", "PartyMembersChanged")
 
-	self:RegisterMessage("Grid_EnteringCombat", "EnteringOrLeavingCombat")
-	self:RegisterMessage("Grid_LeavingCombat", "EnteringOrLeavingCombat")
+	self:RegisterMessage("Grid_EnteringCombat", "EnteringCombat")
+	self:RegisterMessage("Grid_LeavingCombat", "LeavingCombat")
 end
 
 function GridLayout:PostDisable()
@@ -597,10 +599,34 @@ end
 
 local reloadLayoutQueued
 local updateSizeQueued
-function GridLayout:EnteringOrLeavingCombat()
+
+function GridLayout:EnteringCombat()
+	-- Do not perform layout update checks in combat
+	if partyHandle then
+		partyHandle = self:CancelTimer(partyHandle) -- returns nil
+	end
+
 	--self:Debug("EnteringOrLeavingCombat")
 	if reloadLayoutQueued then return self:PartyTypeChanged() end
 	if updateSizeQueued then return self:PartyMembersChanged() end
+end
+
+function GridLayout:LeavingCombat()
+	--self:Debug("EnteringOrLeavingCombat")
+	-- When out of combat, check if the number of groups changed every 10 seconds
+	-- Basing this off events is not working, as it seems to take a variable amount of time for the new player
+	-- to show online
+	if not partyHandle then
+		partyHandle = self:ScheduleRepeatingTimer("Grid_CheckPartyMembersUpdate", 10)
+	end
+
+	if reloadLayoutQueued then return self:PartyTypeChanged() end
+
+	-- If we know the party size changed, definitely do an update
+	if updateSizeQueued then return self:PartyMembersChanged() end
+
+	-- Otherwise, check to see if the layout needs updating
+	self:Grid_CheckPartyMembersUpdate()
 end
 
 function GridLayout:CombatFix()
@@ -608,6 +634,19 @@ function GridLayout:CombatFix()
 	self:Debug("CombatFix")
 	self.forceRaid = false
 	return self:ReloadLayout()
+end
+
+function GridLayout:Grid_CheckPartyMembersUpdate()
+        local update_size
+
+	if InCombatLockdown() then
+		return
+	end
+
+	update_size = GridLayout:GetModule("GridLayoutManager"):UpdateLayouts()
+	if update_size then
+		self:PartyMembersChanged()
+	end
 end
 
 function GridLayout:PartyMembersChanged()
