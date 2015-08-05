@@ -1,5 +1,13 @@
 **THIS IS A BETA VERSION!** Do not use this version if you are not comfortable running untested/unstable code that may **not work well** or **not work at all**. Do not use this version if you are not willing or able to give useful reports about problems you encounter. Be prepared to roll back to the previous release version if needed.
 
+### Version 6.2.0.1754-beta
+
+* Updated ToC for 6.2.
+* Fixed autolayout by group: it now shows as many groups as needed to show the highest group with an online player in it when in group mode. (ticket #795)
+* Another fix for pets not being displayed (ticket #798)
+* Fix for right-click menu enabled on startup despite setting (ticket #807)
+* Fix for layout when in a party (not raid) in the world.
+
 ### Version 6.0.3.1746-beta
 
 * Layout size is now based on the maximum group size for the current instance, rather than the actual group size, to resolve several issues (ticket #795)
