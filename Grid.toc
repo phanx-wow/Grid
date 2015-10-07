@@ -1,6 +1,5 @@
 ## Interface: 60200
 ## Version: @project-version@
-## X-ReleaseDate: "$Date$"
 
 ## Title: Grid
 ## Notes: A compact grid of party/raid unit frames.
