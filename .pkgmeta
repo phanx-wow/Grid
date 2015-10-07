@@ -1,11 +1,11 @@
 package-as: Grid
 
 manual-changelog:
-   filename: CHANGELOG.txt
+   filename: CHANGELOG.md
    markup-type: markdown
 
 ignore:
-   - CHANGELOG.txt
+   - CHANGELOG.md
    - TODO.txt
 
 externals:
