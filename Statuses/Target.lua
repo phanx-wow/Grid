@@ -1,7 +1,7 @@
 --[[--------------------------------------------------------------------
 	Grid
 	Compact party and raid unit frames.
-	Copyright (c) 2006-2014 Kyle Smith (Pastamancer), Phanx
+	Copyright (c) 2006-2015 Kyle Smith (Pastamancer), Phanx
 	All rights reserved.
 	See the accompanying README and LICENSE files for more information.
 	http://www.wowinterface.com/downloads/info5747-Grid.html
@@ -9,14 +9,14 @@
 	http://www.curse.com/addons/wow/grid
 ------------------------------------------------------------------------
 	Target.lua
-	Grid status module for tracking the player's target.
-	Created by noha, modified by Pastamancer.
+	Grid status module for tracking the player's target and focus target.
+	Created by noha, modified by Pastamancer and Phanx.
 ----------------------------------------------------------------------]]
 
 local _, Grid = ...
 local L = Grid.L
 
-local cur_target
+local currentTarget, currentFocus
 
 local GridStatusTarget = Grid:NewStatusModule("GridStatusTarget")
 GridStatusTarget.menuName = L["Target"]
@@ -27,20 +27,29 @@ GridStatusTarget.defaultDB = {
 		text = L["Target"],
 		enable = true,
 		color = { r = 0.8, g = 0.8, b = 0.8, a = 0.8 },
-		priority = 99,
-		range = false,
+		priority = 69,
+	},
+	player_focus = {
+		text = L["Focus"],
+		enable = true,
+		color = { r = 0.8, g = 0.8, b = 0.8, a = 0.8 },
+		priority = 49,
 	},
 }
 
 
 function GridStatusTarget:PostInitialize()
 	self:RegisterStatus("player_target", L["Your Target"], nil, true)
+	self:RegisterStatus("player_focus", L["Your Focus"], nil, true)
 end
 
 function GridStatusTarget:OnStatusEnable(status)
 	if status == "player_target" then
 		self:RegisterEvent("PLAYER_TARGET_CHANGED")
 		self:PLAYER_TARGET_CHANGED()
+	elseif status == "player_focus" then
+		self:RegisterEvent("PLAYER_FOCUS_CHANGED")
+		self:PLAYER_FOCUS_CHANGED()
 	end
 end
 
@@ -48,19 +57,42 @@ function GridStatusTarget:OnStatusDisable(status)
 	if status == "player_target" then
 		self:UnregisterEvent("PLAYER_TARGET_CHANGED")
 		self.core:SendStatusLostAllUnits("player_target")
+	elseif status == "player_focus" then
+		self:UnregisterEvent("PLAYER_FOCUS_CHANGED")
+		self.core:SendStatusLostAllUnits("player_focus")
 	end
 end
 
 function GridStatusTarget:PLAYER_TARGET_CHANGED()
 	local settings = self.db.profile.player_target
 
-	if cur_target then
-		self.core:SendStatusLost(cur_target, "player_target")
+	if currentTarget then
+		self.core:SendStatusLost(currentTarget, "player_target")
 	end
 
 	if UnitExists("target") and settings.enable then
-		cur_target = UnitGUID("target")
-		self.core:SendStatusGained(cur_target, "player_target",
+		currentTarget = UnitGUID("target")
+		self.core:SendStatusGained(currentTarget, "player_target",
+			settings.priority,
+			settings.range,
+			settings.color,
+			settings.text,
+			nil,
+			nil,
+			settings.icon)
+	end
+end
+
+function GridStatusTarget:PLAYER_FOCUS_CHANGED()
+	local settings = self.db.profile.player_focus
+
+	if currentFocus then
+		self.core:SendStatusLost(currentFocus, "player_focus")
+	end
+
+	if UnitExists("focus") and settings.enable then
+		currentFocus = UnitGUID("focus")
+		self.core:SendStatusGained(currentFocus, "player_focus",
 			settings.priority,
 			settings.range,
 			settings.color,
