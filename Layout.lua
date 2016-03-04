@@ -23,6 +23,12 @@ local floor, next, pairs, select, tinsert, tonumber, tostring = floor, next, pai
 
 local partyHandle
 
+-- Mythic Raid IDs
+-- http://wow.gamepedia.com/API_GetDifficultyInfo
+local mythicIDS = {
+	[16] = true, -- 20-player Mythic
+}
+
 ------------------------------------------------------------------------
 
 CONFIGMODE_CALLBACKS = CONFIGMODE_CALLBACKS or {}
@@ -218,6 +224,8 @@ GridLayout.defaultDB = {
 	lock = false,
 	horizontal = false,
 	showPets = false,
+	showOffline = false,
+	showWrongZone = "MYTHIC",
 
 	layoutPadding = 10,
 	unitSpacing = 1,
@@ -536,6 +544,42 @@ GridLayout.options = {
 			type = "execute",
 			func = function() GridLayout:ResetPosition() end,
 		},
+		groupOptions = {
+			name = L["ByGroup Layout Options"],
+			order = 20,
+			type = "group",
+			dialogInline = true,
+			args = {
+				showOffline = {
+					name = L["Show Offline"],
+					desc = L["Show groups with all players offline."],
+					order = 12,
+					width = "double",
+					type = "toggle",
+					set = function(info, v)
+						GridLayout.db.profile.showOffile = v
+						GridLayout:GetModule("GridLayoutManager"):UpdateLayouts()
+					end,
+				},
+				showWrongZone = {
+					name = L["Wrong Zone"],
+					desc = L["Show groups with all players in wrong zone."],
+					order = 12,
+					width = "double",
+					type = "select",
+					values = {
+						ALL      = L["Show all groups"],
+						HIDE     = L["Always hide wrong zone groups"],
+						RAIDINST = L["Hide when in raid instance"],
+						MYTHIC   = L["Hide when in mythic raid instance"],
+					},
+					set = function(info, v)
+						GridLayout.db.profile.showWrongZone = v
+						GridLayout:GetModule("GridLayoutManager"):UpdateLayouts()
+					end,
+				},
+			}
+		},
 	},
 }
 
@@ -576,6 +620,7 @@ function GridLayout:PostEnable()
 	self:RegisterMessage("Grid_RosterUpdated", "PartyMembersChanged")
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "PartyMembersChanged")
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", "PartyMembersChanged")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD", "ZoneCheck")
 
 	self:RegisterMessage("Grid_EnteringCombat", "EnteringCombat")
 	self:RegisterMessage("Grid_LeavingCombat", "LeavingCombat")
@@ -653,6 +698,39 @@ function GridLayout:PartyMembersChanged()
 	--self:Debug("PartyMembersChanged")
 	self:Debug("PartyMembersChanged")
 	if InCombatLockdown() then
+		updateSizeQueued = true
+	else
+		self:UpdateSize()
+		updateSizeQueued = false
+	end
+end
+
+function GridLayout:ShowWrongZone()
+	local showWrongZone = false
+	local name, instType, diffIndex = GetInstanceInfo()
+
+	-- Show groups in wrong zone
+	if self.db.profile.showWrongZone == "ALL" then
+		-- Always show groups in wrong zone
+		showWrongZone = true
+	elseif self.db.profile.showWrongZone == "MYTHIC" and not mythicIDS[diffIndex] then
+		-- Show groups in wrong zone when not in Mythic raid instance
+		showWrongZone = true
+	elseif self.db.profile.showWrongZone == "RAIDINST" and instType ~= "raid" then
+		-- Show groups in wrong zone when not in raid instance
+		showWrongZone = true
+	end
+
+	return showWrongZone
+end
+
+-- If we only show groups that are in the correct zone, then
+-- update which groups are shown when the player changes zones
+function GridLayout:ZoneCheck()
+	self:Debug("ZoneCheck")
+	if (self:ShowWrongZone()) then
+		return
+	elseif InCombatLockdown() then
 		updateSizeQueued = true
 	else
 		self:UpdateSize()

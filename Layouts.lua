@@ -143,8 +143,17 @@ local function UpdateNumGroups()
 	local usedGroups = {}
 	local numGroups = 0
 	local realGroups = 1
+	-- local curZone = GetRealZoneText()
+	-- GetCurrentMapAreaID does not match the mapID from UnitPosition
+	-- local curMapID = GetCurrentMapAreaID()
+	local _, _, _, curMapID = UnitPosition("player")
+	local showOffline = Layout.db.profile.showOffline -- Show Offline groups
 	-- Debug
 	local offlineGroups = {}
+	local zoneGroups = {}
+	local showWrongZone = Layout:ShowWrongZone()
+
+	-- Manager:Debug("Layout.db.profile.showWrongZone ", Layout.db.profile.showWrongZone, ", showWrongZone ", showWrongZone, ", groupType ", groupType) 
 
 	if groupType == "raid" or groupType == "bg" then
 		if maxPlayers then
@@ -157,15 +166,28 @@ local function UpdateNumGroups()
 			usedGroups[i] = false
 		end
 		for i = 1, GetNumGroupMembers() do
-			local name, _, subgroup, _, _, _, _, online = GetRaidRosterInfo(i);
+			local name, _, subgroup, _, _, _, zone, online = GetRaidRosterInfo(i);
+			local unitid = "raid" .. i
+			local _, _, _, mapID = UnitPosition(unitid)
 			-- If the highest group only has offline players it will not be shown
 			-- if name and online then
 			-- usedGroups[subgroup] = true
 			if name then
-				if online then
+				-- GetRaidRosterInfo zone comparison can show players in the same instance
+				-- when they are not.  For example, outside Hellfire Citadel still shows
+				-- "Hellfire Citadel" as the zone text.
+				-- if (showOffline or online) and (showWrongZone or curZone == zone) then
+				-- Manager:Debug("curMapID ", curMapID, " name ", name, " mapID ", mapID)
+				if (showOffline or online) and (showWrongZone or curMapID == mapID) then
 					usedGroups[subgroup] = true
 				else
-					offlineGroups[subgroup] = true
+					if (not online) then
+					   offlineGroups[subgroup] = true
+					end
+					-- if (curZone ~= zone) then
+					if (curMapID ~= mapID) then
+					   zoneGroups[subgroup] = true
+					end
 				end
 			end
 		end
@@ -177,6 +199,8 @@ local function UpdateNumGroups()
 			-- Debug
 			if not usedGroups[i] and offlineGroups[i] then
 				Manager:Debug("Group ", i, "is not used because players were offline.")
+			elseif not usedGroups[i] and zoneGroups[i] then
+				Manager:Debug("Group ", i, "is not used because players were in wrong zone.")
 			end
 		end
 	else
