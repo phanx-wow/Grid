@@ -1,4 +1,9 @@
 
+### Version 7.0.0.2
+* Curse only uploaded -nolib versions again.
+* Curse is also building all the old tags.
+* Trying pushing a specific tag.
+
 ### Version 7.0.0.1
 * Curse only uploaded -nolib version.  Trying another build.
 
