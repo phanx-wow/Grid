@@ -54,7 +54,7 @@ local spell_names = {
 	["Renew"] = GetSpellInfo(139),
 	["Weakened Soul"] = GetSpellInfo(6788),
 -- Shaman
-	["Earth Shield"] = GetSpellInfo(974),
+	["Earth Shield"] = GetSpellInfo(204288),
 	["Riptide"] = GetSpellInfo(61295),
 }
 

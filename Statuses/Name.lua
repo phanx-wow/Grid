@@ -47,7 +47,7 @@ local nameOptions = {
 }
 
 local classIconCoords = {}
-for class, t in pairs(CLASS_BUTTONS) do
+for class, t in pairs(CLASS_ICON_TCOORDS) do
 	local offset, left, right, bottom, top = 0.025, unpack(t)
 	classIconCoords[class] = {
 		left   = left   + offset,
