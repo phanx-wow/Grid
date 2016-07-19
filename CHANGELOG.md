@@ -1,4 +1,7 @@
-**THIS IS A BETA VERSION!** Do not use this version if you are not comfortable running untested/unstable code that may **not work well** or **not work at all**. Do not use this version if you are not willing or able to give useful reports about problems you encounter. Be prepared to roll back to the previous release version if needed.
+
+### Version 7.0.0.0
+* Fix LUA errors for Legion beta.
+* Added options for offline and wrong zone groups.
 
 ### Version 6.2.0.1754-beta
 
