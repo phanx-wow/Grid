@@ -1,4 +1,7 @@
 
+### Version 7.0.0.1
+* Curse only uploaded -nolib version.  Trying another build.
+
 ### Version 7.0.0.0
 * Fix LUA errors for Legion beta.
 * Added options for offline and wrong zone groups.
