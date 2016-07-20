@@ -1,9 +1,9 @@
 --[[--------------------------------------------------------------------
 	Grid
 	Compact party and raid unit frames.
-	Copyright (c) 2006-2014 Kyle Smith (Pastamancer), Phanx
-	All rights reserved.
-	See the accompanying README and LICENSE files for more information.
+	Copyright (c) 2006-2009 Kyle Smith (Pastamancer).
+	Copyright (c) 2009-2016 Phanx <addons@phanx.net>.
+	All rights reserved. See the accompanying LICENSE file for details.
 	http://www.wowinterface.com/downloads/info5747-Grid.html
 	http://www.wowace.com/addons/grid/
 	http://www.curse.com/addons/wow/grid
@@ -40,13 +40,13 @@ Grid.L = L
 
 --@localization(locale="esES", namespace="GridLDB", format="lua_additive_table")@
 ------------------------------------------------------------------------
---	GridRoster
-
---@localization(locale="esES", namespace="GridRoster", format="lua_additive_table")@
-------------------------------------------------------------------------
 --	GridStatus
 
 --@localization(locale="esES", namespace="GridStatus", format="lua_additive_table")@
+------------------------------------------------------------------------
+--	GridStatusAbsorbs
+
+--@localization(locale="esES", namespace="GridStatusAbsorbs", format="lua_additive_table")@
 ------------------------------------------------------------------------
 --	GridStatusAggro
 

@@ -1,3 +1,14 @@
+--[[--------------------------------------------------------------------
+	Grid
+	Compact party and raid unit frames.
+	Copyright (c) 2006-2009 Kyle Smith (Pastamancer).
+	Copyright (c) 2009-2016 Phanx <addons@phanx.net>.
+	All rights reserved. See the accompanying LICENSE file for details.
+	http://www.wowinterface.com/downloads/info5747-Grid.html
+	http://www.wowace.com/addons/grid/
+	http://www.curse.com/addons/wow/grid
+----------------------------------------------------------------------]]
+
 local _, Grid = ...
 local GridFrame = Grid:GetModule("GridFrame")
 local L = Grid.L
