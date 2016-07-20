@@ -1,23 +1,15 @@
+### Version 7.0.3.0-beta
 
-### Version 7.0.0.2
-* Curse only uploaded -nolib versions again.
-* Curse is also building all the old tags.
-* Trying pushing a specific tag.
-
-### Version 7.0.0.1
-* Curse only uploaded -nolib version.  Trying another build.
-
-### Version 7.0.0.0
-* Fix LUA errors for Legion beta.
-* Added options for offline and wrong zone groups.
+* Updated for WoW 7.0 (Legion)
+* Added options for offline and wrong zone groups
 
 ### Version 6.2.0.1754-beta
 
-* Updated ToC for 6.2.
+* Updated ToC for 6.2
 * Fixed autolayout by group: it now shows as many groups as needed to show the highest group with an online player in it when in group mode. (ticket #795)
 * Another fix for pets not being displayed (ticket #798)
 * Fix for right-click menu enabled on startup despite setting (ticket #807)
-* Fix for layout when in a party (not raid) in the world.
+* Fix for layout when in a party (not raid) in the world
 
 ### Version 6.0.3.1746-beta
 

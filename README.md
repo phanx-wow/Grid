@@ -53,6 +53,6 @@ Head over to our [WowAce forum thread] [3]. Comments on Curse are closed, to hel
 
 # Credits
 
-Grid was originally conceived and written by **Maia** and **Pastamancer** in late 2006. **Phanx** has been the primary developer since late 2009. **Jerry** wrote the original pet support code. **Mikk** designed the icon. **jlam** added some advanced options for auras. **Greltok** has helped a lot with bugfixing. Finally, **[lots of people] [8]** have contributed translations!
+Grid was originally conceived and written by **Maia** and **Pastamancer** in late 2006. **Phanx** has been the primary developer since late 2009. **Jerry** wrote the original pet support code. **Mikk** designed the icon. **jlam** added some advanced options for auras. **Greltok** and **Stassart** have helped a lot with bugfixing. Finally, **[lots of people] [8]** have contributed translations!
 
  [8]: http://www.wowace.com/addons/grid/localization/translators/
