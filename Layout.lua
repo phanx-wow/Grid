@@ -557,7 +557,7 @@ GridLayout.options = {
 					width = "double",
 					type = "toggle",
 					set = function(info, v)
-						GridLayout.db.profile.showOffile = v
+						GridLayout.db.profile.showOffline = v
 						GridLayout:GetModule("GridLayoutManager"):UpdateLayouts()
 					end,
 				},
@@ -1136,7 +1136,7 @@ end
 
 function GridLayout:UpdateVisibility()
 	--self:Debug("UpdateVisibility")
-	if self.db.profile.layouts[(GridRoster:GetPartyState())] == L["None"] then
+	if self.db.profile.layouts[(GridRoster:GetPartyState())] == "None" then
 		self.frame.backdrop:Hide()
 	else
 		self.frame.backdrop:Show()

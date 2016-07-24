@@ -243,13 +243,17 @@ function Manager:UpdateLayouts(event)
 	lastShowPets = showPets
 
 	-- Update class and role layouts
+--@debug@
 	if splitGroups then
 		UpdateSplitGroups(Layouts.ByClass,  numGroups, showPets)
 		UpdateSplitGroups(Layouts.ByRole,   numGroups, showPets)
 	else
+--@end-debug@
 		UpdateMergedGroups(Layouts.ByClass, numGroups, showPets)
 		UpdateMergedGroups(Layouts.ByRole,  numGroups, showPets)
+--@debug@
 	end
+--@end-debug@
 
 	-- By group should always be split group
 	UpdateSplitGroups(Layouts.ByGroup, usedGroups, showPets)
