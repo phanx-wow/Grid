@@ -448,7 +448,7 @@ end
 function GridStatusAuras:OnStatusEnable(status)
 	self:RegisterMessage("Grid_UnitJoined")
 	self:RegisterEvent("UNIT_AURA", "ScanUnitAuras")
-	self:RegisterEvent("PLAYER_TALENT_UPDATE", "UpdateDispellable")
+	self:RegisterEvent("SPELLS_CHANGED", "UpdateDispellable")
 
 	self:DeleteDurationStatus(status)
 	self:UpdateDispellable()
@@ -1000,44 +1000,43 @@ end
 
 function GridStatusAuras:UpdateDispellable()
 	if PLAYER_CLASS == "DRUID" then
-		PlayerCanDispel.Curse   = IsPlayerSpell(88423) or IsPlayerSpell(2782) -- Nature's Cure / Remove Corruption
+		--  88423   Nature's Cure       Restoration                Curse, Poison, Magic
+		--   2782   Remove Corruption   Balance, Feral, Guardian   Curse, Poison
+		PlayerCanDispel.Curse   = IsPlayerSpell(88423) or IsPlayerSpell(2782)
 		PlayerCanDispel.Magic   = IsPlayerSpell(88423)
-		PlayerCanDispel.Poison  = IsPlayerSpell(88423) or IsPlayerSpell(2782) -- RC is base, but doesn't return true for NC
-
-		if GetSpecialization() == 4 then -- Restoration
-			self:RegisterEvent("SPELLS_CHANGED", "UpdateDispellable")
-		else
-			self:UnregisterEvent("SPELLS_CHANGED")
-		end
-
-	elseif PLAYER_CLASS == "MAGE" then
-		PlayerCanDispel.Curse   = IsPlayerSpell(475)    -- Remove Curse
+		PlayerCanDispel.Poison  = IsPlayerSpell(88423) or IsPlayerSpell(2782)
 
 	elseif PLAYER_CLASS == "MONK" then
-		PlayerCanDispel.Disease = IsPlayerSpell(115450) -- Detox
-		PlayerCanDispel.Magic   = IsPlayerSpell(115451) -- Internal Medicine (Mistweaver spec passive)
-		PlayerCanDispel.Poison  = IsPlayerSpell(115450) -- Detox
+		 -- 115450   Detox             Mistweaver                  Disease, Poison, Magic
+		 -- 218164   Detox             Brewmaster, Windwalker      Disease, Poison
+		PlayerCanDispel.Disease = IsPlayerSpell(115450) or IsPlayerSpell(218164)
+		PlayerCanDispel.Magic   = IsPlayerSpell(115450)
+		PlayerCanDispel.Poison  = IsPlayerSpell(115450) or IsPlayerSpell(218164)
 
 	elseif PLAYER_CLASS == "PALADIN" then
-		PlayerCanDispel.Disease = IsPlayerSpell(4987)   -- Cleanse
-		PlayerCanDispel.Magic   = IsPlayerSpell(53551)  -- Sacred Cleansing (Holy spec passive)
-		PlayerCanDispel.Poison  = IsPlayerSpell(4987)
+		 --   4987   Cleanse           Holy                        Disease, Poison, Magic
+		 -- 213644   Cleanse Toxins    Protection, Retribution     Disease, Poison
+		PlayerCanDispel.Disease = IsPlayerSpell(4987) or IsPlayerSpell(213644)
+		PlayerCanDispel.Magic   = IsPlayerSpell(4987)
+		PlayerCanDispel.Poison  = IsPlayerSpell(4987) or IsPlayerSpell(213644)
 
 	elseif PLAYER_CLASS == "PRIEST" then
-		PlayerCanDispel.Disease = IsPlayerSpell(527) -- Purify
-		PlayerCanDispel.Magic   = IsPlayerSpell(527) or IsPlayerSpell(32375) -- Purify or Mass Dispel
+		 --    527   Purify            Discipline, Holy            Disease, Magic
+		 -- 213634   Purify Disease    Shadow                      Disease
+		PlayerCanDispel.Disease = IsPlayerSpell(527) or IsPlayerSpell(213634)
+		PlayerCanDispel.Magic   = IsPlayerSpell(527)
 
 	elseif PLAYER_CLASS == "SHAMAN" then
-		PlayerCanDispel.Curse   = IsPlayerSpell(51886) -- Cleanse Spirit (also returns true for Purify Spirit)
-		PlayerCanDispel.Magic   = IsPlayerSpell(77130) -- Purify Spirit
+		--  77130   Purify Spirit      Restoration                 Curse, Magic
+		--  51886   Cleanse Spirit     Elemental, Enhancement      Curse
+		PlayerCanDispel.Curse   = IsPlayerSpell(77130) or IsPlayerSpell(51886)
+		PlayerCanDispel.Magic   = IsPlayerSpell(77130)
 
 	elseif PLAYER_CLASS == "WARLOCK" then
-		PlayerCanDispel.Magic   = IsPlayerSpell(115276, true) or IsPlayerSpell(89808, true) or IsPlayerSpell(132411)
-		-- Sear Magic (Fel Imp) or Singe Magic (Imp) or Singe Magic (via Grimoire of Sacrifice) -- NEEDS CHECK
-
+		-- 115276   Sear Magic (Fel Imp)
+		--  89808   Singe Magic (Imp)
+		PlayerCanDispel.Magic   = IsPlayerSpell(115276, true) or IsPlayerSpell(89808, true)
 	end
-
-	-- Grid_PlayerCanDispel = PlayerCanDispel -- debugging
 end
 
 -- Unit Aura Driver
