@@ -43,18 +43,21 @@ local spell_names = {
 	["Life Cocoon"] = GetSpellInfo(116849),
 	["Renewing Mist"] = GetSpellInfo(115151),
 -- Paladin
+	["Beacon of Faith"] = GetSpellInfo(156910),
 	["Beacon of Light"] = GetSpellInfo(53563),
-	["Eternal Flame"] = GetSpellInfo(114163),
+	--["Eternal Flame"] = GetSpellInfo(114163), -- removed in 7.0
 	["Forbearance"] = GetSpellInfo(25771),
-	["Sacred Shield"] = GetSpellInfo(20925),
+	--["Sacred Shield"] = GetSpellInfo(20925), -- removed in 7.0
 -- Priest
-	["Grace"] = GetSpellInfo(77613),
+	["Atonement"] = GetSpellInfo(214206), -- new in 7.0, +healing mod, alternate spellid 214206
+	["Clarity of Will"] = GetSpellInfo(152118), -- new in 7.0, shield
+	--["Grace"] = GetSpellInfo(77613), -- removed in 7.0, replaced by Atonement
 	["Power Word: Shield"] = GetSpellInfo(17),
 	["Prayer of Mending"] = GetSpellInfo(33076),
 	["Renew"] = GetSpellInfo(139),
-	["Weakened Soul"] = GetSpellInfo(6788),
+	--["Weakened Soul"] = GetSpellInfo(6788), -- removed in 7.0 ?
 -- Shaman
-	["Earth Shield"] = GetSpellInfo(204288),
+	--["Earth Shield"] = GetSpellInfo(204288), -- pvp only in 7.0
 	["Riptide"] = GetSpellInfo(61295),
 }
 
@@ -199,6 +202,7 @@ GridStatusAuras.defaultDB = {
 		countColorHigh = { r = 0, g = 1, b = 0, a = 1 },
 		countLow = 1,
 		countHigh = 2,
+		mine = true,
 	},
 	[GridStatusAuras:StatusForSpell("Regrowth", true)] = {
 		desc = format(L["Buff: %s"], spell_names["Regrowth"]),
@@ -208,6 +212,7 @@ GridStatusAuras.defaultDB = {
 		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
 		durationColorMiddle = { r =  .7, g = .49, b = .07, a = 1 },
 		durationColorHigh = { r =  1, g = .7, b = .1, a = 1 },
+		mine = true,
 	},
 	[GridStatusAuras:StatusForSpell("Rejuvenation", true)] = {
 		desc = format(L["Buff: %s"], spell_names["Rejuvenation"]),
@@ -217,6 +222,7 @@ GridStatusAuras.defaultDB = {
 		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
 		durationColorMiddle = { r =  0, g = .21, b = .49, a = 1 },
 		durationColorHigh = { r =  0, g = .3, b = .7, a = 1 },
+		mine = true,
 	},
 
 	-- Monk
@@ -242,6 +248,18 @@ GridStatusAuras.defaultDB = {
 	},
 
 	-- Paladin
+	[GridStatusAuras:StatusForSpell("Beacon of Faith", true)] = { -- new in 7.0
+		desc = format(L["Buff: %s"], spell_names["Beacon of Faith"]),
+		buff = spell_names["Beacon of Faith"],
+		text = GridStatusAuras:TextForSpell(spell_names["Beacon of Faith"]),
+		color = { r = .5, g = 0.7, b = 0.3, a = 1 },
+		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
+		durationColorMiddle = { r = .49, g = .49, b = 0, a = 1 },
+		durationColorHigh = { r = .7, g = .7, b = 0, a = 1 },
+		durationLow = 5,
+		durationHigh = 10,
+		mine = true,
+	},
 	[GridStatusAuras:StatusForSpell("Beacon of Light", true)] = {
 		desc = format(L["Buff: %s"], spell_names["Beacon of Light"]),
 		buff = spell_names["Beacon of Light"],
@@ -252,6 +270,7 @@ GridStatusAuras.defaultDB = {
 		durationColorHigh = { r = .7, g = .7, b = 0, a = 1 },
 		durationLow = 5,
 		durationHigh = 10,
+		mine = true,
 	},
 	[GridStatusAuras:StatusForSpell("Forbearance")] = {
 		desc = format(L["Debuff: %s"], spell_names["Forbearance"]),
@@ -264,6 +283,22 @@ GridStatusAuras.defaultDB = {
 	},
 
 	-- Priest
+	[GridStatusAuras:StatusForSpell("Atonement", true)] = {
+		buff = spell_names["Atonement"],
+		desc = format(L["Buff: %s"], spell_names["Atonement"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Atonement"]),
+		color = { r = 0.2, g = 0.8, b = 1, a = 1 },
+		mine = true,
+	},
+	[GridStatusAuras:StatusForSpell("Clarity of Will", true)] = {
+		desc = format(L["Buff: %s"], spell_names["Clarity of Will"]),
+		buff = spell_names["Clarity of Will"],
+		text = GridStatusAuras:TextForSpell(spell_names["Clarity of Will"]),
+		color = { r = .8, g = .8, b =  0, a = 1 },
+		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
+		durationColorMiddle = { r = .56, g = .56, b =  0, a = 1 },
+		durationColorHigh = { r = .8, g = .8, b =  0, a = 1 },
+	},
 	[GridStatusAuras:StatusForSpell("Power Word: Shield", true)] = {
 		desc = format(L["Buff: %s"], spell_names["Power Word: Shield"]),
 		buff = spell_names["Power Word: Shield"],
@@ -288,32 +323,10 @@ GridStatusAuras.defaultDB = {
 		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
 		durationColorMiddle = { r =  0, g = .49, b = .21, a = 1 },
 		durationColorHigh = { r =  0, g = .7, b = .3, a = 1 },
-	},
-	[GridStatusAuras:StatusForSpell("Weakened Soul")] = {
-		desc = format(L["Debuff: %s"], spell_names["Weakened Soul"]),
-		debuff = spell_names["Weakened Soul"],
-		text = GridStatusAuras:TextForSpell(spell_names["Weakened Soul"]),
-		color = { r = .5, g = .5, b = .5, a = 1 },
-		durationColorLow = { r = .15, g = .15, b = .15, a = 1 },
-		durationColorMiddle = { r = .35, g = .35, b = .35, a = 1 },
-		durationColorHigh = { r = .5, g = .5, b = .5, a = 1 },
+		mine = true,
 	},
 
 	-- Shaman
-	[GridStatusAuras:StatusForSpell("Earth Shield", true)] = {
-		desc = format(L["Buff: %s"], spell_names["Earth Shield"]),
-		buff = spell_names["Earth Shield"],
-		text = GridStatusAuras:TextForSpell(spell_names["Earth Shield"]),
-		color = { r = .5, g = 0.7, b = 0.3, a = 1 },
-		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r = .35, g = .49, b = .21, a = 1 },
-		durationColorHigh = { r = .5, g = 0.7, b = 0.3, a = 1 },
-		countColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		countColorMiddle = { r = .35, g = .49, b = .21, a = 1 },
-		countColorHigh = { r = .5, g = .7, b = .3, a = 1 },
-		countLow = 1,
-		countHigh = 4,
-	},
 	[GridStatusAuras:StatusForSpell("Riptide", true)] = {
 		desc = format(L["Buff: %s"], spell_names["Riptide"]),
 		buff = spell_names["Riptide"],
@@ -325,18 +338,6 @@ GridStatusAuras.defaultDB = {
 		mine = true,
 	},
 }
-
-if spell_names["Grace"] then -- removed in WOD
-	GridStatusAuras.defaultDB[ GridStatusAuras:StatusForSpell("Grace", true) ] = {
-		buff = spell_names["Grace"],
-		desc = format(L["Buff: %s"], spell_names["Grace"]),
-		text = GridStatusAuras:TextForSpell(spell_names["Grace"]),
-		color = { r = 0.2, g = 0.8, b = 1, a = 1 },
-		countLow = 1,
-		countHigh = 3,
-		mine = true,
-	}
-end
 
 local default_auras = {}
 do
@@ -356,7 +357,24 @@ function GridStatusAuras:PostInitialize()
 	-- Wasn't supposed to be released yet, kill it with fire.
 	self.db.boss_aura = nil
 
+	-- Remove statuses for spells that were removed from the game:
+	-- TODO: test and verify before fully enabling
+	for spell, isBuff in pairs({
+		["Grace"] = true,
+		["Earth Shield"] = true,
+		["Eternal Flame"] = true,
+		["Sacred Shield"] = true,
+		["Weakened Soul"] = true,
+	}) do
+		local status = self:GetStatusForSpell(spell, isBuff)
+		if self.db[status] then
+			self:Debug("Removed deprecated status:", spell)
+			-- self.db[status] = nil
+		end
+	end
+
 	-- Upgrade old localized default status keynames to new locale-independent ones:
+	-- TODO: delete this
 	for status, settings in pairs(GridStatusAuras.defaultDB) do
 		if spell_names[status] and (settings.buff or settings.debuff) then
 			local oldstatus = self:StatusForSpell(spell_names[status], settings.buff)
@@ -467,6 +485,7 @@ function GridStatusAuras:OnStatusDisable(status)
 	end
 end
 
+-- TODO: remove this old upgrade code
 local upgrade121025 = {
 	debuff_curse   = "dispel_curse",
 	debuff_disease = "dispel_disease",
@@ -476,6 +495,8 @@ local upgrade121025 = {
 
 function GridStatusAuras:RegisterStatuses()
 	local profile = self.db.profile
+	
+	-- TODO: remove this old upgrade code
 	for old, new in pairs(upgrade121025) do
 		--self:Debug("Looking for old dispel:", old, profile[old] ~= nil)
 		if profile[old] then
@@ -496,6 +517,7 @@ function GridStatusAuras:RegisterStatuses()
 			end
 		end
 	end
+
 	for status, settings in pairs(profile) do
 		if type(settings) == "table" then
 			if settings.desc then
