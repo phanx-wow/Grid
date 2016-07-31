@@ -372,24 +372,6 @@ function GridStatusAuras:PostInitialize()
 		end
 	end
 
-	-- Upgrade old localized default status keynames to new locale-independent ones:
-	-- TODO: delete this
-	for status, settings in pairs(GridStatusAuras.defaultDB) do
-		if spell_names[status] and (settings.buff or settings.debuff) then
-			local oldstatus = self:StatusForSpell(spell_names[status], settings.buff)
-			if self.db[oldstatus] then
-				self.db[status] = self.db[oldstatus]
-				self.db[oldstatus] = nil
-			end
-			for indicator, statuses in pairs(Grid:GetModule("GridFrame").db.profile.statusmap) do
-				if assigned[oldstatus] then
-					assigned[status] = true
-					assigned[oldstatus] = nil
-				end
-			end
-		end
-	end
-
 	self.options.args["add_buff"] = {
 		name = L["Add Buff"],
 		desc = L["Create a new buff status."],
@@ -484,38 +466,8 @@ function GridStatusAuras:OnStatusDisable(status)
 	end
 end
 
--- TODO: remove this old upgrade code
-local upgrade121025 = {
-	debuff_curse   = "dispel_curse",
-	debuff_disease = "dispel_disease",
-	debuff_magic   = "dispel_magic",
-	debuff_poison  = "dispel_poison",
-}
-
 function GridStatusAuras:RegisterStatuses()
 	local profile = self.db.profile
-	
-	-- TODO: remove this old upgrade code
-	for old, new in pairs(upgrade121025) do
-		--self:Debug("Looking for old dispel:", old, profile[old] ~= nil)
-		if profile[old] then
-			profile[new] = profile[old]
-			profile[old] = nil
-			self:Debug("Copied to new dispel:", new)
-			for indicator, statuses in pairs(Grid:GetModule("GridFrame").db.profile.statusmap) do
-				if type(statuses) == "table" then
-					if statuses[old] ~= nil then
-						statuses[new] = statuses[old]
-						statuses[old] = nil
-						self:Debug("Updated status name for indicator:", indicator)
-					elseif statuses[new] then
-						statuses[new] = nil
-						self:Debug("Removed status on default indicator:", indicator)
-					end
-				end
-			end
-		end
-	end
 
 	for status, settings in pairs(profile) do
 		if type(settings) == "table" then
