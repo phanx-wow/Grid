@@ -999,9 +999,12 @@ function GridLayout:LoadLayout(layoutName)
 
 	-- layout not ready yet
 	if type(layout) ~= "table" then
-		self:Debug("Layout not found")
-		self:UpdateDisplay()
-		return
+		-- Silently fall back to the default layout
+		-- https://wow.curseforge.com/addons/grid/tickets/835
+		layoutName = self.defaultDB.layouts[GridRoster:GetPartyState()]
+		layout = self.layoutSettings[layoutName]
+		self.db.profile.layout = layoutName
+		self:Debug("Layout not found, using default instead:", layoutName)
 	end
 
 	local showPets = self.db.profile.showPets
