@@ -1,58 +1,24 @@
+**Grid is the original compact unit frame addon.**
 
-## [Bug Reports] [1] &bull; [Suggestions] [2] &bull; [Comments] [3]
+The compact grid of units lets you select a group member quickly, while keeping a good overview of the whole group. Grid is designed to show you only what you need to know, and not overload you with irrelevant information. It is highly configurable, letting you choose exactly what is shown, and how it's shown. There are also many [plugins](https://wow.curseforge.com/addons/grid/pages/list-of-grid-plugins/) that add even more features!
 
- [1]: http://www.wowace.com/addons/grid/pages/how-to-report-a-bug-in-grid/
- [2]: http://www.wowace.com/addons/grid/tickets/?status=+&type=e
- [3]: http://forums.wowace.com/showthread.php?t=18716
-
-------------------------------------------------------------------------
-
-# What is Grid?
-
-**Grid is a compact and highly configurable party/raid unit frame addon.**
-
-The compact grid of units lets you select a group member quickly, while keeping a good overview of the whole group. It shows as much information as possible without overloading you. It allows you to customize what information you see, and how you see it. It works in both party and raid groups, and supports pets and vehicles.
-
-**Want more features?** The Grid core tries to include only features which are generally useful for all classes and roles, but makes it easy to add new features with a simple plugin API for developers. [Many plugins] [4] are already available!
-
- [4]: http://www.wowace.com/addons/grid/pages/list-of-grid-plugins/
+For options, type `/grid`, right-click the tab on the Grid layout frame, or right-click the Grid icon on your minimap or DataBroker display.
 
 
-# How to use Grid
+### Need Help?
 
-To open the options window, type ``/grid``, right-click the tab on the Grid layout frame, or right-click the Grid icon on your minimap or DataBroker display.
-
-Because Grid is so configurable, its options can be confusing at first. We recommend taking a few minutes to look through all of the options before asking for help. There is a small in-game Help section in the options panel, and also a small [User's Guide] [5] that may be helpful in explaining some of the terms used in Grid, like *status*, *indicator*, and *priority*.
-
- [5]: http://www.wowace.com/projects/grid/pages/users-guide/
-
-
-# Need help?
-
-**Found a bug?**  
-Please [check the FAQ and list of known issues] [6] first, and then [let us know about the bug] [1] so we can fix it!
-
-**Problem with a plugin?**  
-Contact the plugin's author for help. The Grid team cannot provide support for third-party plugins.
-
-**Have a suggestion?**  
-Feel free to [tell us about your idea] [2], but please make sure there isn't [already a plugin] [4] that adds the feature you're looking for first!
-
-**Questions? Comments?**  
-Head over to our [WowAce forum thread] [3]. Comments on Curse are closed, to help keep discussion all in one place.
-
- [6]: http://www.wowace.com/addons/grid/pages/faq-and-known-issues/
+- **[Report a bug](https://wow.curseforge.com/addons/grid/pages/how-to-report-a-bug-in-grid/)**
+- [Suggest a feature](https://wow.curseforge.com/addons/grid/tickets/?status=+&type=e)
+- [WowAce forum thread](http://forums.wowace.com/showthread.php?t=18716)
+- [Frequently asked questions](https://github.com/Phanx/Grid/wiki/FAQ)
+- [API documentation for plugin authors](https://github.com/Phanx/Grid/wiki)
 
 
-# Localization
+### Localization
 
-**Works in all languages.** Translated into English, Deutsch, Español, Français, Italiano, Português, Русский, 한국어, 简体中文, and 繁體中文. To add or update translations for any language, please enter them in the [Grid localization system] [7] on WowAce. New and updated translations will be automatically included in the next version of Grid!
-
- [7]: http://www.wowace.com/addons/grid/localization/
+**Grid works in all languages.** It is translated into English, Deutsch, Español, Français, Italiano, Português, Русский, 한국어, 简体中文, and 繁體中文. To add or update translations for any language, please enter them in the [CurseForge localization system](https://wow.curseforge.com/addons/grid/localization/). New and updated translations will be automatically included in the next version of Grid!
 
 
-# Credits
+### Credits
 
-Grid was originally conceived and written by **Maia** and **Pastamancer** in late 2006. **Phanx** has been the primary developer since late 2009. **Jerry** wrote the original pet support code. **Mikk** designed the icon. **jlam** added some advanced options for auras. **Greltok** and **Stassart** have helped a lot with bugfixing. Finally, **[lots of people] [8]** have contributed translations!
-
- [8]: http://www.wowace.com/addons/grid/localization/translators/
+Grid was originally conceived and written by **Maia** and **Pastamancer** in late 2006. **Phanx** has been the primary developer since late 2009. **Jerry** wrote the original pet support code. **Mikk** designed the icon. **jlam** added some advanced options for auras. **Greltok** and **Stassart** have helped a lot with bugfixing. Finally, **[lots of people](https://wow.curseforge.com/addons/grid/localization/translators/)** have contributed translations!
