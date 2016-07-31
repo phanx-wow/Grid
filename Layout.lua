@@ -836,20 +836,20 @@ function GridLayout:CreateFrames()
 	f:SetFrameLevel(2)
 	f:SetMovable(true)
 	f:SetClampedToScreen(true)
+	f:SetScript("OnMouseDown", GridLayout_OnMouseDown)
+	f:SetScript("OnMouseUp", GridLayout_OnMouseUp)
+	f:SetScript("OnHide", GridLayout_OnMouseUp)
 
 	-- create backdrop
 	f.backdrop = CreateFrame("Frame", nil, f)
 	f.backdrop:SetPoint("BOTTOMLEFT", -4, -4)
 	f.backdrop:SetPoint("TOPRIGHT", 4, 4)
-	f.backdrop:SetFrameLevel(1)
+	f.backdrop:SetFrameLevel(f:GetFrameLevel() - 1)
 	f.backdrop:SetBackdrop({
 		bgFile = "Interface\\ChatFrame\\ChatFrameBackground", tile = false, tileSize = 16,
 		edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16,
 		insets = {left = 4, right = 4, top = 4, bottom = 4},
 	})
-	f:SetScript("OnMouseDown", GridLayout_OnMouseDown)
-	f:SetScript("OnMouseUp", GridLayout_OnMouseUp)
-	f:SetScript("OnHide", GridLayout_OnMouseUp)
 
 	-- create drag handle
 	f.tab = CreateFrame("Frame", "$parentTab", f)
