@@ -355,21 +355,20 @@ function GridStatusAuras:PostInitialize()
 	self:RegisterStatuses()
 
 	-- Wasn't supposed to be released yet, kill it with fire.
-	self.db.boss_aura = nil
+	self.db.profile.boss_aura = nil
 
-	-- Remove statuses for spells that were removed from the game:
-	-- TODO: test and verify before fully enabling
-	for spell, isBuff in pairs({
+	-- Remove statuses for spells that were removed from the game in 7.0:
+	for name, isBuff in pairs({
 		["Grace"] = true,
 		["Earth Shield"] = true,
 		["Eternal Flame"] = true,
 		["Sacred Shield"] = true,
 		["Weakened Soul"] = true,
 	}) do
-		local status = self:GetStatusForSpell(spell, isBuff)
-		if self.db[status] then
-			self:Debug("Removed deprecated status:", spell)
-			-- self.db[status] = nil
+		local status = self:StatusForSpell(name, isBuff)
+		if self.db.profile[status] then
+			self:Debug("Removed deprecated status:", name)
+			self.db.profile[status] = nil
 		end
 	end
 
