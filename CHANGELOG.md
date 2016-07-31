@@ -1,3 +1,7 @@
+### Version 7.0.3.2
+
+- Fixed the frames disappearing if an invalid layout was selected ([ticket #835](https://wow.curseforge.com/addons/grid/tickets/835))
+
 ### Version 7.0.3.1
 
 * Fixed ticket 834 Show offline option broken. Thanks Samuelreus.
