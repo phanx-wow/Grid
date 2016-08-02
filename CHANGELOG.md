@@ -1,6 +1,11 @@
 ### Version 7.0.3.2
 
+- Updated detection for dispellable debuffs ([ticket #841](https://wow.curseforge.com/addons/grid/tickets/841))
+- Fixed the frames sometimes appearing behind the backdrop ([ticket #840](https://wow.curseforge.com/addons/grid/tickets/840))
 - Fixed the frames disappearing if an invalid layout was selected ([ticket #835](https://wow.curseforge.com/addons/grid/tickets/835))
+- Auras:
+   - The default statuses for Grace, Earth Shield, Eternal Flame, Sacred Shield, and Weakened Soul have been removed, since these buffs (and debuff) were removed from the game.
+   - New statuses have been added for Atonement, Beacon of Faith, and Clarity of Will.
 
 ### Version 7.0.3.1
 
