@@ -15,7 +15,7 @@
 ## Author: Phanx, Pastamancer, Maia
 ## X-Credits: Greltok, Jerry, jlam
 ## X-Copyright: Copyright (c) 2006-2016 Pastamancer, Phanx. All rights reserved.
-## X-Website: http://www.wowace.com/addons/grid/
+## X-Website: https://www.wowace.com/addons/grid/
 ## X-Curse-Project-ID: grid
 ## X-WoWI-ID: 5747
 
