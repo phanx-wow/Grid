@@ -1,12 +1,12 @@
 --[[--------------------------------------------------------------------
 	Grid
 	Compact party and raid unit frames.
-	Copyright (c) 2006-2009 Kyle Smith (Pastamancer).
-	Copyright (c) 2009-2016 Phanx <addons@phanx.net>.
+	Copyright (c) 2006-2009 Kyle Smith (Pastamancer)
+	Copyright (c) 2009-2016 Phanx <addons@phanx.net>
 	All rights reserved. See the accompanying LICENSE file for details.
+	https://github.com/Phanx/Grid
+	https://mods.curse.com/addons/wow/grid
 	http://www.wowinterface.com/downloads/info5747-Grid.html
-	http://www.wowace.com/addons/grid/
-	http://www.curse.com/addons/wow/grid
 ----------------------------------------------------------------------]]
 
 local GRID, Grid = ...
@@ -779,9 +779,9 @@ function GridLayout:UpdateTabVisibility()
 
 	if not InCombatLockdown() then
 		if settings.lock and settings.clickThrough and not self.config_mode then
-			self.frame.backdrop:EnableMouse(false)
+			self.frame:EnableMouse(false)
 		else
-			self.frame.backdrop:EnableMouse(true)
+			self.frame:EnableMouse(true)
 		end
 	end
 
@@ -833,7 +833,6 @@ function GridLayout:CreateFrames()
 	-- create main frame to hold all our gui elements
 	local f = CreateFrame("Frame", "GridLayoutFrame", hider)
 	f:SetPoint("CENTER")
-	f:SetFrameLevel(2)
 	f:SetMovable(true)
 	f:SetClampedToScreen(true)
 	f:SetScript("OnMouseDown", GridLayout_OnMouseDown)
@@ -841,23 +840,24 @@ function GridLayout:CreateFrames()
 	f:SetScript("OnHide", GridLayout_OnMouseUp)
 
 	-- create backdrop
-	f.backdrop = CreateFrame("Frame", nil, f)
+	f.backdrop = CreateFrame("Frame", "$parentBackdrop", f)
 	f.backdrop:SetPoint("BOTTOMLEFT", -4, -4)
 	f.backdrop:SetPoint("TOPRIGHT", 4, 4)
-	f.backdrop:SetFrameLevel(f:GetFrameLevel() - 1)
 	f.backdrop:SetBackdrop({
 		bgFile = "Interface\\ChatFrame\\ChatFrameBackground", tile = false, tileSize = 16,
 		edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16,
 		insets = {left = 4, right = 4, top = 4, bottom = 4},
 	})
 
+	f:SetFrameLevel(f.backdrop:GetFrameLevel() + 2)
+
 	-- create drag handle
 	f.tab = CreateFrame("Frame", "$parentTab", f)
 	f.tab:SetWidth(48)
-	f.tab:SetHeight(24)
+	f.tab:SetHeight(28)
 	f.tab:EnableMouse(true)
 	f.tab:RegisterForDrag("LeftButton")
-	f.tab:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 1, 0)
+	f.tab:SetPoint("BOTTOMLEFT", f.backdrop, "TOPLEFT", 2, -3)
 	f.tab:SetScript("OnMouseDown", GridLayout_OnMouseDown)
 	f.tab:SetScript("OnMouseUp", GridLayout_OnMouseUp)
 	f.tab:SetScript("OnEnter", GridLayout_OnEnter)
@@ -867,16 +867,16 @@ function GridLayout:CreateFrames()
 	f.tabBgLeft = f.tab:CreateTexture(nil, "BACKGROUND")
 	f.tabBgLeft:SetTexture("Interface\\ChatFrame\\ChatFrameTab")
 	f.tabBgLeft:SetTexCoord(0, 0.25, 0, 1)
-	f.tabBgLeft:SetPoint("TOPLEFT", f.tab, "TOPLEFT", 0, 5)
-	f.tabBgLeft:SetPoint("BOTTOMLEFT", f.tab, "BOTTOMLEFT", 0, 0)
+	f.tabBgLeft:SetPoint("TOPLEFT", 0, 5)
+	f.tabBgLeft:SetPoint("BOTTOMLEFT", 0, 0)
 	f.tabBgLeft:SetWidth(16)
 	f.tabBgLeft:SetAlpha(0.9)
 
 	f.tabBgRight = f.tab:CreateTexture(nil, "BACKGROUND")
 	f.tabBgRight:SetTexture("Interface\\ChatFrame\\ChatFrameTab")
 	f.tabBgRight:SetTexCoord(0.75, 1, 0, 1)
-	f.tabBgRight:SetPoint("TOPRIGHT", f.tab, "TOPRIGHT", 0, 5)
-	f.tabBgRight:SetPoint("BOTTOMRIGHT", f.tab, "BOTTOMRIGHT", 0, 0)
+	f.tabBgRight:SetPoint("TOPRIGHT", 0, 5)
+	f.tabBgRight:SetPoint("BOTTOMRIGHT", 0, 0)
 	f.tabBgRight:SetWidth(16)
 	f.tabBgRight:SetAlpha(0.9)
 
@@ -890,8 +890,8 @@ function GridLayout:CreateFrames()
 	-- Tab Label
 	f.tabText = f.tab:CreateFontString(nil, "BACKGROUND", "GameFontNormalSmall")
 	f.tabText:SetText("Grid")
-	f.tabText:SetPoint("LEFT", f.tab, "LEFT", 0, -5)
-	f.tabText:SetPoint("RIGHT", f.tab, "RIGHT", 0, -5)
+	f.tabText:SetPoint("LEFT", 0, -3)
+	f.tabText:SetPoint("RIGHT", 0, -3)
 
 	self.frame = f
 end
@@ -1147,7 +1147,7 @@ function GridLayout:UpdateVisibility()
 end
 
 function GridLayout:UpdateSize()
-	--self:Debug("UpdateSize")
+	self:Debug("UpdateSize")
 	local p = self.db.profile
 	local layoutGroup
 	local x, y
