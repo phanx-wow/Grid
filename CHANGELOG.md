@@ -1,3 +1,7 @@
+### Version 7.0.3.3
+
+- Really fixed the frames sometimes appearing behind the backdrop ([ticket #840](https://wow.curseforge.com/addons/grid/tickets/840))
+
 ### Version 7.0.3.2
 
 - Updated detection for dispellable debuffs ([ticket #841](https://wow.curseforge.com/addons/grid/tickets/841))
