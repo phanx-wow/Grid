@@ -77,51 +77,88 @@ function GridStatusRange:OnStatusDisable(status)
 	self.core:SendStatusLostAllUnits("alert_range")
 end
 
-local resSpell
+local deadSpell, liveSpell
 do
 	local _, class = UnitClass("player")
 	if class == "DEATHKNIGHT" then
-		resSpell = GetSpellInfo(61999)  -- Raise Ally
+		deadSpell = 61999  -- Raise Ally
 	elseif class == "DRUID" then
-		resSpell = GetSpellInfo(50769)  -- Revive
+		deadSpell = 50769  -- Revive
+		liveSpell = 5185   -- Healing Touch
 	elseif class == "MONK" then
-		resSpell = GetSpellInfo(115178) -- Resuscitate
+		deadSpell = 115178 -- Resuscitate
+		liveSpell = 116694 -- Effuse
 	elseif class == "PALADIN" then
-		resSpell = GetSpellInfo(7328)   -- Redemption
+		deadSpell = 7328   -- Redemption
+		liveSpell = 19750  -- Flash of Light
 	elseif class == "PRIEST" then
-		resSpell = GetSpellInfo(2006)   -- Resurrection
+		deadSpell = 2006   -- Resurrection
+
+		function GridStatusRange:SPELLS_CHANGED()
+			liveSpell = IsPlayerSpell(2061) and 2061 -- Flash Heal (Holy)
+				     or IsPlayerSpell(17) and 17 -- Power Word: Shield (Discipline, Shadow)
+		end
+
+		GridStatusRange:RegisterEvent("SPELLS_CHANGED")
+
 	elseif class == "SHAMAN" then
-		resSpell = GetSpellInfo(2008)   -- Ancestral Spirit
+		deadSpell = 2008   -- Ancestral Spirit
+
+		function GridStatusRange:SPELLS_CHANGED()
+			liveSpell = IsPlayerSpell(8004) and 8004 -- Healing Surge (Elemental, Restoration)
+				     or IsPlayerSpell(188070) and 188070 -- Healing Surge (Enhancement)
+		end
+
+		GridStatusRange:RegisterEvent("SPELLS_CHANGED")
+
 	elseif class == "WARLOCK" then
-		resSpell = GetSpellInfo(20707)  -- Soulstone
+		deadSpell = 20707  -- Soulstone
+		liveSpell = deadSpell
 	end
 end
 
-local IsSpellInRange, UnitInRange, UnitIsDead, UnitIsVisible, UnitIsUnit
-    = IsSpellInRange, UnitInRange, UnitIsDead, UnitIsVisible, UnitIsUnit
+local FindSpellBookSlotBySpellID, IsSpellInRange, UnitInRange, UnitIsDeadOrGhost, UnitIsUnit
+    = FindSpellBookSlotBySpellID, IsSpellInRange, UnitInRange, UnitIsDeadOrGhost, UnitIsUnit
 
-local function GroupRangeCheck(self, unit)
+function GridStatusRange:GroupRangeCheck(self, unit)
 	if UnitIsUnit(unit, "player") then
 		return true
-	elseif resSpell and UnitIsDead(unit) and not UnitIsDead("player") then
-		return IsSpellInRange(resSpell, unit) == 1
+	end
+
+	local isDead, inRange, checkedRange = UnitIsDeadOrGhost(unit)
+	if isDead and deadSpell then
+		inRange = IsSpellInRange(FindSpellBookSlotBySpellID(deadSpell), "spell", unit)
+		checkedRange = inRange ~= nil
+		inRange = inRange == 1
+	elseif not isDead and liveSpell then
+		-- Horrible hacks to work around Blizzard changing UnitInRange
+		-- to use a ridiculous and useless range on some classes in 7.0
+		-- eg. holy paladins get a 100 yard range check, apparently
+		-- because that's how far Beacon of Light can transfer healing,
+		-- even though that has nothing to do with actually casting spells.
+		inRange = IsSpellInRange(FindSpellBookSlotBySpellID(liveSpell), "spell", unit)
+		checkedRange = inRange ~= nil
+		inRange = inRange == 1
+	end
+
+	if not checkedRange then
+		inRange, checkedRange = UnitInRange(unit)
+	end
+
+	if checkedRange then
+		return inRange
 	else
-		local inRange, checkedRange = UnitInRange(unit)
-		if checkedRange then
-			return inRange
-		else
-			return true
-		end
+		return true
 	end
 end
 
-local function SoloRangeCheck(self, unit)
-	-- This is a workaround for the bug in WoW 5.0.4 in which UnitInRange
+function GridStatusRange:SoloRangeCheck(unit)
+	-- This is a workaround for the bug since WoW 5.0.4 in which UnitInRange
 	-- returns *false* for player/pet while solo.
 	return true
 end
 
-GridStatusRange.UnitInRange = GroupRangeCheck
+GridStatusRange.UnitInRange = GridStatusRange.GroupRangeCheck
 
 function GridStatusRange:CheckRange()
 	local settings = self.db.profile.alert_range
@@ -142,10 +179,10 @@ function GridStatusRange:PartyTransition(message, state, oldstate)
 	self:Debug("PartyTransition", message, state, oldstate)
 	if state == "solo" then
 		self:StopTimer("CheckRange")
-		self.UnitInRange = SoloRangeCheck
+		self.UnitInRange = self.SoloRangeCheck
 		self.core:SendStatusLostAllUnits("alert_range")
 	else
 		self:StartTimer("CheckRange", self.db.profile.alert_range.frequency, true)
-		self.UnitInRange = GroupRangeCheck
+		self.UnitInRange = self.GroupRangeCheck
 	end
 end

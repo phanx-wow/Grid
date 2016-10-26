@@ -1,3 +1,7 @@
+### Version
+
+- Fixed range checking for certain classes (now using spell range checking for these classes since UnitInRange is effectively broken)
+
 ### Version 7.1.0.0
 
 - Added a workaround for a Blizzard bug causing errors in the Health status module ([ticket #859](https://wow.curseforge.com/addons/grid/tickets/859))
