@@ -193,6 +193,12 @@ end
 local UnitGUID, UnitHealth, UnitHealthMax, UnitIsConnected, UnitIsDeadOrGhost, UnitIsFeignDeath = UnitGUID, UnitHealth, UnitHealthMax, UnitIsConnected, UnitIsDeadOrGhost, UnitIsFeignDeath
 
 function GridStatusHealth:UpdateUnit(event, unitid, ignoreRange)
+	if not unitid then
+		-- 7.1: UNIT_HEALTH and UNIT_MAXHEALTH sometimes fire with no unit token
+		-- https://wow.curseforge.com/addons/grid/tickets/859
+		return
+	end
+
 	local guid = UnitGUID(unitid)
 
 	if not GridRoster:IsGUIDInRaid(guid) then

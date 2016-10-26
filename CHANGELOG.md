@@ -1,3 +1,7 @@
+### Version 7.1.0.0
+
+- Added a workaround for a Blizzard bug causing errors in the Health status module ([ticket #859](https://wow.curseforge.com/addons/grid/tickets/859))
+
 ### Version 7.0.3.3
 
 - Really fixed the frames sometimes appearing behind the backdrop ([ticket #840](https://wow.curseforge.com/addons/grid/tickets/840))
