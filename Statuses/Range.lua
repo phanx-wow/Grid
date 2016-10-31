@@ -77,48 +77,53 @@ function GridStatusRange:OnStatusDisable(status)
 	self.core:SendStatusLostAllUnits("alert_range")
 end
 
-local deadSpell, liveSpell
+--------------------------------------------------------------------------------
+
+local deadSpellBookSlot, liveSpellBookSlot
 do
-	local _, class = UnitClass("player")
-	if class == "DEATHKNIGHT" then
-		deadSpell = 61999  -- Raise Ally
-	elseif class == "DRUID" then
-		deadSpell = 50769  -- Revive
-		liveSpell = 5185   -- Healing Touch
-	elseif class == "MONK" then
-		deadSpell = 115178 -- Resuscitate
-		liveSpell = 116694 -- Effuse
-	elseif class == "PALADIN" then
-		deadSpell = 7328   -- Redemption
-		liveSpell = 19750  -- Flash of Light
-	elseif class == "PRIEST" then
-		deadSpell = 2006   -- Resurrection
+	local deadSpells = {
+		  2008, -- Ancestral Spirit (Shaman)
+		 61999, -- Raise Ally (Death Knight)
+		  7328, -- Redemption (Paladin)
+		  2006, -- Resurrection (Priest)
+		115178, -- Resuscitate (Monk)
+		 50769, -- Revive (Druid)
+		 20707, -- Soulstone (Warlock)
+	}
 
-		function GridStatusRange:SPELLS_CHANGED()
-			liveSpell = IsPlayerSpell(2061) and 2061 -- Flash Heal (Holy)
-				     or IsPlayerSpell(17) and 17 -- Power Word: Shield (Discipline, Shadow)
+	local liveSpells = {
+		116694, -- Effuse (Monk)
+		  2061, -- Flash Heal (Priest) (Holy)
+		 19750, -- Flash of Light (Paladin)
+		  8004, -- Healing Surge (Shaman) (Elemental, Restoration)
+		188070, -- Healing Surge (Shaman) (Enhancement)
+		  5185, -- Healing Touch (Druid)
+		    17, -- Power Word: Shield (Priest) (Discipline, Shadow)
+		 20707, -- Soulstone (Warlock)
+	}
+
+	local function FindPlayerSpell(spells)
+		for i = 1, #spells do
+			local slot = FindSpellBookSlotBySpellID(spells[i])
+			if slot then
+				return slot
+			end
 		end
-
-		GridStatusRange:RegisterEvent("SPELLS_CHANGED")
-
-	elseif class == "SHAMAN" then
-		deadSpell = 2008   -- Ancestral Spirit
-
-		function GridStatusRange:SPELLS_CHANGED()
-			liveSpell = IsPlayerSpell(8004) and 8004 -- Healing Surge (Elemental, Restoration)
-				     or IsPlayerSpell(188070) and 188070 -- Healing Surge (Enhancement)
-		end
-
-		GridStatusRange:RegisterEvent("SPELLS_CHANGED")
-
-	elseif class == "WARLOCK" then
-		deadSpell = 20707  -- Soulstone
-		liveSpell = deadSpell
 	end
+
+	function GridStatusRange:UpdateRangeCheckSpells()
+		deadSpellBookSlot = FindPlayerSpell(deadSpells)
+		liveSpellBookSlot = FindPlayerSpell(liveSpells)
+	end
+
+	GridStatusRange:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateRangeCheckSpells")
+	GridStatusRange:RegisterEvent("SPELLS_CHANGED", "UpdateRangeCheckSpells")
 end
 
-local FindSpellBookSlotBySpellID, IsSpellInRange, UnitInRange, UnitIsDeadOrGhost, UnitIsUnit
-    = FindSpellBookSlotBySpellID, IsSpellInRange, UnitInRange, UnitIsDeadOrGhost, UnitIsUnit
+--------------------------------------------------------------------------------
+
+local IsSpellInRange, UnitInRange, UnitIsDeadOrGhost, UnitIsUnit
+    = IsSpellInRange, UnitInRange, UnitIsDeadOrGhost, UnitIsUnit
 
 function GridStatusRange:GroupRangeCheck(self, unit)
 	if UnitIsUnit(unit, "player") then
@@ -126,17 +131,17 @@ function GridStatusRange:GroupRangeCheck(self, unit)
 	end
 
 	local isDead, inRange, checkedRange = UnitIsDeadOrGhost(unit)
-	if isDead and deadSpell then
-		inRange = IsSpellInRange(FindSpellBookSlotBySpellID(deadSpell), "spell", unit)
+	if isDead and deadSpellBookSlot then
+		inRange = IsSpellInRange(deadSpellBookSlot, "spell", unit)
 		checkedRange = inRange ~= nil
 		inRange = inRange == 1
-	elseif not isDead and liveSpell then
+	elseif not isDead and liveSpellBookSlot then
 		-- Horrible hacks to work around Blizzard changing UnitInRange
 		-- to use a ridiculous and useless range on some classes in 7.0
 		-- eg. holy paladins get a 100 yard range check, apparently
 		-- because that's how far Beacon of Light can transfer healing,
 		-- even though that has nothing to do with actually casting spells.
-		inRange = IsSpellInRange(FindSpellBookSlotBySpellID(liveSpell), "spell", unit)
+		inRange = IsSpellInRange(liveSpellBookSlot, "spell", unit)
 		checkedRange = inRange ~= nil
 		inRange = inRange == 1
 	end
@@ -152,11 +157,15 @@ function GridStatusRange:GroupRangeCheck(self, unit)
 	end
 end
 
+--------------------------------------------------------------------------------
+
 function GridStatusRange:SoloRangeCheck(unit)
 	-- This is a workaround for the bug since WoW 5.0.4 in which UnitInRange
 	-- returns *false* for player/pet while solo.
 	return true
 end
+
+--------------------------------------------------------------------------------
 
 GridStatusRange.UnitInRange = GridStatusRange.GroupRangeCheck
 
