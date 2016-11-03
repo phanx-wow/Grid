@@ -1,3 +1,7 @@
+### Version
+
+- Fixed the class and role layouts not always showing all players ([ticket #855](https://wow.curseforge.com/addons/grid/tickets/855))
+
 ### Version 7.3.5.0
 
 - Fixed the option to disable the right-click menu

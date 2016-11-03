@@ -297,6 +297,10 @@ do
 	end
 
 	function GridRoster:GetPartyState()
-		return self.db.profile.party_state, last_maxPlayers
+		if last_maxPlayers then
+			return self.db.profile.party_state, last_maxPlayers
+		else
+			return GetPartyState()
+		end
 	end
 end
