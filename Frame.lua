@@ -110,9 +110,9 @@ local initialConfigSnippet = [[
    self:SetHeight(%d)
    self:SetAttribute("initial-width", %d)
    self:SetAttribute("initial-height", %d)
-   local attr = self:GetAttribute("type2")
+   local attr = self:GetAttribute("*type2")
    if attr == "togglemenu" or attr == nil then
-      self:SetAttribute("type2", %s)
+      self:SetAttribute("*type2", %s)
    end
 ]]
 
@@ -178,13 +178,13 @@ function GridFrame.prototype:OnAttributeChanged(name, value)
 			if not value or value == "" then
 				self:SetAttribute("type1", "target")
 			end
-		elseif name == "type2" then
+		elseif name == "*type2" then
 			local wantmenu = GridFrame.db.profile.rightClickMenu
 			--print(self.unit, "OnAttributeChanged", name, value, wantmenu)
 			if wantmenu and (not value or value == "") then
-				self:SetAttribute("type2", "togglemenu")
+				self:SetAttribute("*type2", "togglemenu")
 			elseif value == "togglemenu" and not wantmenu then
-				self:SetAttribute("type2", nil)
+				self:SetAttribute("*type2", nil)
 			end
 		end
 	end
@@ -422,11 +422,11 @@ GridFrame.options = {
 					set = function(info, v)
 						GridFrame.db.profile.rightClickMenu = v
 						for _, frame in pairs(GridFrame.registeredFrames) do
-							local attrib = frame:GetAttribute("type2") or ""
+							local attrib = frame:GetAttribute("*type2") or ""
 							if attrib == "togglemenu" and not v then
-								frame:SetAttribute("type2", nil)
+								frame:SetAttribute("*type2", nil)
 							elseif v and attrib == "" then
-								frame:SetAttribute("type2", "togglemenu")
+								frame:SetAttribute("*type2", "togglemenu")
 							end
 						end
 					end,
