@@ -106,6 +106,7 @@ do
 		for i = 1, #spells do
 			local slot = FindSpellBookSlotBySpellID(spells[i])
 			if slot then
+				GridStatusRange:Debug("Using spell", spells[i], (GetSpellInfo(spells[i])))
 				return slot
 			end
 		end
@@ -113,7 +114,9 @@ do
 
 	function GridStatusRange:UpdateRangeCheckSpells()
 		deadSpellBookSlot = FindPlayerSpell(deadSpells)
+		if not deadSpellBookSlot then self:Debug("No spell for dead targets") end
 		liveSpellBookSlot = FindPlayerSpell(liveSpells)
+		if not liveSpellBookSlot then self:Debug("No spell for live targets") end
 	end
 
 	GridStatusRange:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateRangeCheckSpells")
@@ -125,7 +128,7 @@ end
 local IsSpellInRange, UnitInRange, UnitIsDeadOrGhost, UnitIsUnit
     = IsSpellInRange, UnitInRange, UnitIsDeadOrGhost, UnitIsUnit
 
-function GridStatusRange:GroupRangeCheck(self, unit)
+function GridStatusRange:GroupRangeCheck(unit)
 	if UnitIsUnit(unit, "player") then
 		return true
 	end
