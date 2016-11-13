@@ -1,10 +1,14 @@
+### Version 7.1.0.1
+
+- Fixed an error with combat resurrections ([ticket #860](https://wow.curseforge.com/addons/grid/tickets/860))
+
 ### Version 7.1.0.0
 
 - Added a workaround for a Blizzard bug causing errors in the Health status module ([ticket #859](https://wow.curseforge.com/addons/grid/tickets/859))
 
 ### Version 7.0.3.3
 
-- Really fixed the frames sometimes appearing behind the backdrop ([ticket #840](https://wow.curseforge.com/addons/grid/tickets/840))
+- Fixed the frames sometimes appearing behind the backdrop ([ticket #840](https://wow.curseforge.com/addons/grid/tickets/840))
 
 ### Version 7.0.3.2
 
@@ -29,3 +33,6 @@
 * Updated for WoW 7.0 (Legion)
 * Added options for offline and wrong zone groups
 
+### Older Versions
+
+For change notes from older versions, see the [Version History](https://github.com/phanx-wow/Grid/wiki/Version-History) page on GitHub.
