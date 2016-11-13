@@ -9,7 +9,6 @@ For options, type `/grid`, right-click the tab on the Grid layout frame, or righ
 
 - **[Report a bug](https://wow.curseforge.com/addons/grid/pages/how-to-report-a-bug-in-grid/)**
 - [Suggest a feature](https://wow.curseforge.com/addons/grid/tickets/?status=+&type=e)
-- [WowAce forum thread](http://forums.wowace.com/showthread.php?t=18716)
 - [Frequently asked questions](https://github.com/Phanx/Grid/wiki/FAQ)
 - [API documentation for plugin authors](https://github.com/Phanx/Grid/wiki)
 
