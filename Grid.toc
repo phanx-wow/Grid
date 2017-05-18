@@ -89,7 +89,6 @@ Statuses\Role.lua
 Statuses\Stagger.lua
 Statuses\Target.lua
 Statuses\Vehicle.lua
-Statuses\VoiceComm.lua
 
 #@debug@
 Statuses\new\GridAura.lua
