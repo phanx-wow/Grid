@@ -12,6 +12,8 @@
 	Grid status module for tracking buffs/debuffs.
 ----------------------------------------------------------------------]]
 
+local IS_WOW_8 = GetBuildInfo():match("^8")
+
 local _, Grid = ...
 local L = Grid.L
 
@@ -1125,6 +1127,11 @@ end
 --   keep track of each debuff type seen and information about the last debuff
 --   of that type seen.
 
+-- Note:
+-- * As of WoW 8.0, UnitAura no longer accepts a name, only an index, so we
+--   now necessarily iterate over all buffs on the unit. The above information
+--   is preserved for historical interest.
+
 -- durationAuras[status][guid] = { <aura properties> }
 GridStatusAuras.durationAuras = {}
 GridStatusAuras.durationTimer = {
@@ -1657,19 +1664,26 @@ function GridStatusAuras:ScanUnitAuras(event, unit, guid)
 	end
 
 	if UnitIsVisible(unit) then
-		-- scan for buffs
-		for buff_name in pairs(buff_names) do
-			local name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL")
-			if name then
+		for i = 1, 40 do
+			local name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable
+			if IS_WOW_8 then
+				name, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, i, "HELPFUL")
+			else
+				name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, i, "HELPFUL")
+			end
+
+			if not name then
+				break
+			end
+
+			-- scan for buffs
+			if buff_names[name] then
 				buff_names_seen[name] = true
 				self:UnitGainedBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 			end
-		end
 
-		-- scan for buffs cast by the player
-		for buff_name in pairs(player_buff_names) do
-			local name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL|PLAYER")
-			if name then
+			-- scan for buffs cast by the player
+			if player_buff_names[name] then
 				player_buff_names_seen[name] = true
 				self:UnitGainedPlayerBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 			end
@@ -1677,10 +1691,17 @@ function GridStatusAuras:ScanUnitAuras(event, unit, guid)
 
 		-- scan for debuffs
 		for index = 1, 40 do
-			local name, rank, icon, count, debuffType, duration, expirationTime, casterUnit, canStealOrPurge, shouldConsolidate, spellID, canApply, isBossAura, isCastByPlayer = UnitAura(unit, index, "HARMFUL")
+			local name, rank, icon, count, debuffType, duration, expirationTime, casterUnit, canStealOrPurge, shouldConsolidate, spellID, canApply, isBossAura, isCastByPlayer
+			if IS_WOW_8 then
+				name, icon, count, debuffType, duration, expirationTime, casterUnit, canStealOrPurge, shouldConsolidate, spellID, canApply, isBossAura, isCastByPlayer = UnitAura(unit, index, "HARMFUL")
+			else
+				name, rank, icon, count, debuffType, duration, expirationTime, casterUnit, canStealOrPurge, shouldConsolidate, spellID, canApply, isBossAura, isCastByPlayer = UnitAura(unit, index, "HARMFUL")
+			end
+
 			if not name then
 				break
 			end
+
 			if debuff_names[name] then
 				debuff_names_seen[name] = true
 				self:UnitGainedDebuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, casterUnit, canStealOrPurge, shouldConsolidate, spellID, canApply, isBossAura, isCastByPlayer)
