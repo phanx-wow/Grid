@@ -2,11 +2,11 @@
 	Grid
 	Compact party and raid unit frames.
 	Copyright (c) 2006-2009 Kyle Smith (Pastamancer)
-	Copyright (c) 2009-2016 Phanx <addons@phanx.net>
+	Copyright (c) 2009-2018 Phanx <addons@phanx.net>
 	All rights reserved. See the accompanying LICENSE file for details.
 	https://github.com/Phanx/Grid
-	https://mods.curse.com/addons/wow/grid
-	http://www.wowinterface.com/downloads/info5747-Grid.html
+	https://www.curseforge.com/wow/addons/grid
+	https://www.wowinterface.com/downloads/info5747-Grid.html
 ------------------------------------------------------------------------
 	GridHelp.lua
 	Provides a basic in-game introduction and FAQ.
@@ -51,7 +51,7 @@ local helpText = {
 		"Please use the links at the top of Grid's download page to report bugs and request features in the ticket tracker. This keeps all reports and requests in one place, so the developers can easily keep track of what needs to be done.",
 		"{Questions & Comments}",
 		"We have a forum thread on WowAce for questions and comments:\n|cff00d1ff http://forums.wowace.com/showthread.php?t=18716 |r",
-		"You can also post a comment on WoWInterface:\n|cff00d1ff http://www.wowinterface.com/downloads/info5747 |r",
+		"You can also post a comment on WoWInterface:\n|cff00d1ff https://www.wowinterface.com/downloads/info5747 |r",
 	},
 	{
 		"Adding new buffs & debuffs",
