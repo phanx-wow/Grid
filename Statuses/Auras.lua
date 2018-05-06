@@ -45,19 +45,14 @@ local spell_names = {
 -- Paladin
 	["Beacon of Faith"] = GetSpellInfo(156910),
 	["Beacon of Light"] = GetSpellInfo(53563),
-	--["Eternal Flame"] = GetSpellInfo(114163), -- removed in 7.0
 	["Forbearance"] = GetSpellInfo(25771),
-	--["Sacred Shield"] = GetSpellInfo(20925), -- removed in 7.0
 -- Priest
-	["Atonement"] = GetSpellInfo(214206), -- new in 7.0, +healing mod, alternate spellid 214206
-	["Clarity of Will"] = GetSpellInfo(152118), -- new in 7.0, shield
-	--["Grace"] = GetSpellInfo(77613), -- removed in 7.0, replaced by Atonement
+	["Atonement"] = GetSpellInfo(214206),
+	["Clarity of Will"] = GetSpellInfo(152118),
 	["Power Word: Shield"] = GetSpellInfo(17),
 	["Prayer of Mending"] = GetSpellInfo(33076),
 	["Renew"] = GetSpellInfo(139),
-	--["Weakened Soul"] = GetSpellInfo(6788), -- removed in 7.0 ?
 -- Shaman
-	--["Earth Shield"] = GetSpellInfo(204288), -- pvp only in 7.0
 	["Riptide"] = GetSpellInfo(61295),
 }
 
@@ -353,24 +348,6 @@ GridStatusAuras.extraOptions = {}
 
 function GridStatusAuras:PostInitialize()
 	self:RegisterStatuses()
-
-	-- Wasn't supposed to be released yet, kill it with fire.
-	self.db.profile.boss_aura = nil
-
-	-- Remove statuses for spells that were removed from the game in 7.0:
-	for name, isBuff in pairs({
-		["Grace"] = true,
-		["Earth Shield"] = true,
-		["Eternal Flame"] = true,
-		["Sacred Shield"] = true,
-		["Weakened Soul"] = true,
-	}) do
-		local status = self:StatusForSpell(name, isBuff)
-		if self.db.profile[status] then
-			self:Debug("Removed deprecated status:", name)
-			self.db.profile[status] = nil
-		end
-	end
 
 	self.options.args["add_buff"] = {
 		name = L["Add Buff"],
