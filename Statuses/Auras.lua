@@ -94,14 +94,14 @@ local statusDefaultDB = {
 	enable = true,
 	priority = 90,
 	duration = false,
-	color = { r = .5, g = .5, b = .5, a = 1 },
+	color = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
 	statusText = "name",
 	statusColor = "present",
 	refresh = 0.3,
 	durationTenths = false,
-	durationColorLow = { r = .15, g = .15, b = .15, a = 1 },
-	durationColorMiddle = { r = .35, g = .35, b = .35, a = 1 },
-	durationColorHigh = { r = .5, g = .5, b = .5, a = 1 },
+	durationColorLow = { r = 0.15, g = 0.15, b = 0.15, a = 1 },
+	durationColorMiddle = { r = 0.35, g = 0.35, b = 0.35, a = 1 },
+	durationColorHigh = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
 	durationLow = 2,
 	durationHigh = 4,
 	countColorLow = { r = 1, g = 0, b = 0, a = 1 },
@@ -136,70 +136,73 @@ GridStatusAuras.defaultDB = {
 		order = 20,
 	},
 ]]
+	---------------------
 	-- Debuff Types
+	---------------------
 	["dispel_curse"] = {
 		desc = format(L["Debuff type: %s"], L["Curse"]),
 		text = DEBUFF_SYMBOL_CURSE,
-		color = { r = .6, g =  0, b =  1, a = 1 },
-		durationColorLow = { r = .18, g =  0, b =  .3, a = 1 },
-		durationColorMiddle = { r = .42, g =  0, b =  .7, a = 1 },
-		durationColorHigh = { r = .6, g =  0, b =  1, a = 1 },
+		color = { r = 0.6, g = 0, b =  1, a = 1 },
+		durationColorLow = { r = 0.18, g = 0, b = 0.3, a = 1 },
+		durationColorMiddle = { r = 0.42, g = 0, b = 0.7, a = 1 },
+		durationColorHigh = { r = 0.6, g = 0, b =  1, a = 1 },
 		dispellable = true,
 		order = 25,
 	},
 	["dispel_disease"] = {
 		desc = format(L["Debuff type: %s"], L["Disease"]),
 		text = DEBUFF_SYMBOL_DISEASE,
-		color = { r = .6, g = .4, b =  0, a = 1 },
-		durationColorLow = { r = .18, g = .12, b =  0, a = 1 },
-		durationColorMiddle = { r = .42, g = .28, b =  0, a = 1 },
-		durationColorHigh = { r = .6, g = .4, b =  0, a = 1 },
+		color = { r = 0.6, g = 0.4, b = 0, a = 1 },
+		durationColorLow = { r = 0.18, g = 0.12, b = 0, a = 1 },
+		durationColorMiddle = { r = 0.42, g = 0.28, b = 0, a = 1 },
+		durationColorHigh = { r = 0.6, g = 0.4, b = 0, a = 1 },
 		dispellable = true,
 		order = 25,
 	},
 	["dispel_magic"] = {
 		desc = format(L["Debuff type: %s"], L["Magic"]),
 		text = DEBUFF_SYMBOL_MAGIC,
-		color = { r = .2, g = .6, b =  1, a = 1 },
-		durationColorLow = { r = .06, g = .18, b =  .3, a = 1 },
-		durationColorMiddle = { r = .14, g = .42, b =  .7, a = 1 },
-		durationColorHigh = { r = .2, g = .6, b =  1, a = 1 },
+		color = { r = 0.2, g = 0.6, b =  1, a = 1 },
+		durationColorLow = { r = 0.06, g = 0.18, b = 0.3, a = 1 },
+		durationColorMiddle = { r = 0.14, g = 0.42, b = 0.7, a = 1 },
+		durationColorHigh = { r = 0.2, g = 0.6, b =  1, a = 1 },
 		dispellable = true,
 		order = 25,
 	},
 	["dispel_poison"] = {
 		desc = format(L["Debuff type: %s"], L["Poison"]),
 		text = DEBUFF_SYMBOL_POISON,
-		color = { r =  0, g = .6, b =  0, a = 1 },
-		durationColorLow = { r = 0, g = .18, b = 0, a = 1 },
-		durationColorMiddle = { r = 0, g = .42, b = 0, a = 1 },
-		durationColorHigh = { r = 0, g = .6, b = 0, a = 1 },
+		color = { r = 0, g = 0.6, b = 0, a = 1 },
+		durationColorLow = { r = 0, g = 0.18, b = 0, a = 1 },
+		durationColorMiddle = { r = 0, g = 0.42, b = 0, a = 1 },
+		durationColorHigh = { r = 0, g = 0.6, b = 0, a = 1 },
 		dispellable = true,
 		order = 25,
 	},
 
+	---------------------
 	-- General Debuffs
+	---------------------
 	[GridStatusAuras:StatusForSpell("Ghost")] = {
 		-- 8326
 		desc = format(L["Debuff: %s"], spell_names["Ghost"]),
 		debuff = spell_names["Ghost"],
 		text = GridStatusAuras:TextForSpell(spell_names["Ghost"]),
-		color = { r = .5, g = .5, b = .5, a = 1 },
-		durationColorLow = { r = .15, g = .15, b = .15, a = 1 },
-		durationColorMiddle = { r = .35, g = .35, b = .35, a = 1 },
-		durationColorHigh = { r = .5, g = .5, b = .5, a = 1 },
+		color = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
 	},
 
+	---------------------
 	-- Druid
+	---------------------
 	[GridStatusAuras:StatusForSpell("Lifebloom", true)] = {
 		-- 33763
 		desc = format(L["Buff: %s"], spell_names["Lifebloom"]),
 		buff = spell_names["Lifebloom"],
 		text = GridStatusAuras:TextForSpell(spell_names["Lifebloom"]),
-		color = { r =  .3, g = .7, b = 0, a = 1 },
+		color = { r = 0.3, g = 0.7, b = 0, a = 1 },
 		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r =  .21, g = .49, b = 0, a = 1 },
-		durationColorHigh = { r =  .3, g = .7, b = 0, a = 1 },
+		durationColorMiddle = { r = 0.21, g = 0.49, b = 0, a = 1 },
+		durationColorHigh = { r = 0.3, g = 0.7, b = 0, a = 1 },
 		countColorLow = { r = 1, g = 0, b = 0, a = 1 },
 		countColorMiddle = { r = 1, g = 1, b = 0, a = 1 },
 		countColorHigh = { r = 0, g = 1, b = 0, a = 1 },
@@ -212,10 +215,10 @@ GridStatusAuras.defaultDB = {
 		desc = format(L["Buff: %s"], spell_names["Regrowth"]),
 		buff = spell_names["Regrowth"],
 		text = GridStatusAuras:TextForSpell(spell_names["Regrowth"]),
-		color = { r =  1, g = .7, b = .1, a = 1 },
+		color = { r =  1, g = 0.7, b = 0.1, a = 1 },
 		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r =  .7, g = .49, b = .07, a = 1 },
-		durationColorHigh = { r =  1, g = .7, b = .1, a = 1 },
+		durationColorMiddle = { r = 0.7, g = 0.49, b = 0.07, a = 1 },
+		durationColorHigh = { r =  1, g = 0.7, b = 0.1, a = 1 },
 		mine = true,
 	},
 	[GridStatusAuras:StatusForSpell("Rejuvenation", true)] = {
@@ -223,10 +226,10 @@ GridStatusAuras.defaultDB = {
 		desc = format(L["Buff: %s"], spell_names["Rejuvenation"]),
 		buff = spell_names["Rejuvenation"],
 		text = GridStatusAuras:TextForSpell(spell_names["Rejuvenation"]),
-		color = { r =  0, g = .3, b = .7, a = 1 },
+		color = { r = 0, g = 0.3, b = 0.7, a = 1 },
 		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r =  0, g = .21, b = .49, a = 1 },
-		durationColorHigh = { r =  0, g = .3, b = .7, a = 1 },
+		durationColorMiddle = { r = 0, g = 0.21, b = 0.49, a = 1 },
+		durationColorHigh = { r = 0, g = 0.3, b = 0.7, a = 1 },
 		mine = true,
 	},
 	[GridStatusAuras:StatusForSpell("Rejuvenation (Germination)", true)] = {
@@ -252,7 +255,9 @@ GridStatusAuras.defaultDB = {
 		mine = true,
 	},
 
+	---------------------
 	-- Monk
+	---------------------
 	[GridStatusAuras:StatusForSpell("Enveloping Mist", true)] = {
 		-- 124682
 		buff = spell_names["Enveloping Mist"],
@@ -277,16 +282,18 @@ GridStatusAuras.defaultDB = {
 		mine = true,
 	},
 
+	---------------------
 	-- Paladin
-	[GridStatusAuras:StatusForSpell("Beacon of Faith", true)] = { -- new in 7.0
+	---------------------
+	[GridStatusAuras:StatusForSpell("Beacon of Faith", true)] = {
 		-- 156910
 		desc = format(L["Buff: %s"], spell_names["Beacon of Faith"]),
 		buff = spell_names["Beacon of Faith"],
 		text = GridStatusAuras:TextForSpell(spell_names["Beacon of Faith"]),
-		color = { r = .5, g = 0.7, b = 0.3, a = 1 },
+		color = { r = 0.5, g = 0.7, b = 0.3, a = 1 },
 		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r = .49, g = .49, b = 0, a = 1 },
-		durationColorHigh = { r = .7, g = .7, b = 0, a = 1 },
+		durationColorMiddle = { r = 0.49, g = 0.49, b = 0, a = 1 },
+		durationColorHigh = { r = 0.7, g = 0.7, b = 0, a = 1 },
 		durationLow = 5,
 		durationHigh = 10,
 		mine = true,
@@ -296,10 +303,10 @@ GridStatusAuras.defaultDB = {
 		desc = format(L["Buff: %s"], spell_names["Beacon of Light"]),
 		buff = spell_names["Beacon of Light"],
 		text = GridStatusAuras:TextForSpell(spell_names["Beacon of Light"]),
-		color = { r = .5, g = 0.7, b = 0.3, a = 1 },
+		color = { r = 0.5, g = 0.7, b = 0.3, a = 1 },
 		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r = .49, g = .49, b = 0, a = 1 },
-		durationColorHigh = { r = .7, g = .7, b = 0, a = 1 },
+		durationColorMiddle = { r = 0.49, g = 0.49, b = 0, a = 1 },
+		durationColorHigh = { r = 0.7, g = 0.7, b = 0, a = 1 },
 		durationLow = 5,
 		durationHigh = 10,
 		mine = true,
@@ -340,13 +347,15 @@ GridStatusAuras.defaultDB = {
 		desc = format(L["Debuff: %s"], spell_names["Forbearance"]),
 		debuff = spell_names["Forbearance"],
 		text = GridStatusAuras:TextForSpell(spell_names["Forbearance"]),
-		color = { r = .5, g = .5, b = .5, a = 1 },
-		durationColorLow = { r = .15, g = .15, b = .15, a = 1 },
-		durationColorMiddle = { r = .35, g = .35, b = .35, a = 1 },
-		durationColorHigh = { r = .5, g = .5, b = .5, a = 1 },
+		color = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
+		durationColorLow = { r = 0.15, g = 0.15, b = 0.15, a = 1 },
+		durationColorMiddle = { r = 0.35, g = 0.35, b = 0.35, a = 1 },
+		durationColorHigh = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
 	},
 
+	---------------------
 	-- Priest
+	---------------------
 	[GridStatusAuras:StatusForSpell("Atonement", true)] = {
 		-- 214206
 		buff = spell_names["Atonement"],
@@ -360,10 +369,10 @@ GridStatusAuras.defaultDB = {
 		desc = format(L["Buff: %s"], spell_names["Clarity of Will"]),
 		buff = spell_names["Clarity of Will"],
 		text = GridStatusAuras:TextForSpell(spell_names["Clarity of Will"]),
-		color = { r = .8, g = .8, b =  0, a = 1 },
+		color = { r = 0.8, g = 0.8, b = 0, a = 1 },
 		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r = .56, g = .56, b =  0, a = 1 },
-		durationColorHigh = { r = .8, g = .8, b =  0, a = 1 },
+		durationColorMiddle = { r = 0.56, g = 0.56, b = 0, a = 1 },
+		durationColorHigh = { r = 0.8, g = 0.8, b = 0, a = 1 },
 	},
 	[GridStatusAuras:StatusForSpell("Guardian Spirit", true)] = {
 		-- 47788
@@ -392,10 +401,10 @@ GridStatusAuras.defaultDB = {
 		desc = format(L["Buff: %s"], spell_names["Power Word: Shield"]),
 		buff = spell_names["Power Word: Shield"],
 		text = GridStatusAuras:TextForSpell(spell_names["Power Word: Shield"]),
-		color = { r = .8, g = .8, b =  0, a = 1 },
+		color = { r = 0.8, g = 0.8, b = 0, a = 1 },
 		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r = .56, g = .56, b =  0, a = 1 },
-		durationColorHigh = { r = .8, g = .8, b =  0, a = 1 },
+		durationColorMiddle = { r = 0.56, g = 0.56, b = 0, a = 1 },
+		durationColorHigh = { r = 0.8, g = 0.8, b = 0, a = 1 },
 	},
 	[GridStatusAuras:StatusForSpell("Prayer of Mending", true)] = {
 		-- 33076, 41635
@@ -410,23 +419,25 @@ GridStatusAuras.defaultDB = {
 		desc = format(L["Buff: %s"], spell_names["Renew"]),
 		buff = spell_names["Renew"],
 		text = GridStatusAuras:TextForSpell(spell_names["Renew"]),
-		color = { r =  0, g = .7, b = .3, a = 1 },
+		color = { r = 0, g = 0.7, b = 0.3, a = 1 },
 		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r =  0, g = .49, b = .21, a = 1 },
-		durationColorHigh = { r =  0, g = .7, b = .3, a = 1 },
+		durationColorMiddle = { r = 0, g = 0.49, b = 0.21, a = 1 },
+		durationColorHigh = { r = 0, g = 0.7, b = 0.3, a = 1 },
 		mine = true,
 	},
 
+	---------------------
 	-- Shaman
+	---------------------
 	[GridStatusAuras:StatusForSpell("Riptide", true)] = {
 		-- 61295
 		desc = format(L["Buff: %s"], spell_names["Riptide"]),
 		buff = spell_names["Riptide"],
 		text = GridStatusAuras:TextForSpell(spell_names["Riptide"]),
-		color = { r = .4, g = 0, b = .8, a = 1 },
+		color = { r = 0.4, g = 0, b = 0.8, a = 1 },
 		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
-		durationColorMiddle = { r = .28, g = 0, b = .56, a = 1 },
-		durationColorHigh = { r = .4, g = 0, b = .8, a = 1 },
+		durationColorMiddle = { r = 0.28, g = 0, b = 0.56, a = 1 },
+		durationColorHigh = { r = 0.4, g = 0, b = 0.8, a = 1 },
 		mine = true,
 	},
 }
