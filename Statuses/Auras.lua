@@ -37,6 +37,7 @@ local spell_names = {
 	["Lifebloom"] = GetSpellInfo(33763),
 	["Regrowth"] = GetSpellInfo(8936),
 	["Rejuvenation"] = GetSpellInfo(774),
+	["Rejuvenation (Germination)"] = GetSpellInfo(155777),
 	["Wild Growth"] = GetSpellInfo(48438),
 -- Monk
 	["Enveloping Mist"] = GetSpellInfo(124682),
@@ -45,10 +46,15 @@ local spell_names = {
 -- Paladin
 	["Beacon of Faith"] = GetSpellInfo(156910),
 	["Beacon of Light"] = GetSpellInfo(53563),
+	["Beacon of Virtue"] = GetSpellInfo(200025),
 	["Forbearance"] = GetSpellInfo(25771),
+	["Sacred Dawn"] = GetSpellInfo(243174),
+	["Tyr's Deliverance"] = GetSpellInfo(200654),
 -- Priest
 	["Atonement"] = GetSpellInfo(214206),
 	["Clarity of Will"] = GetSpellInfo(152118),
+	["Guardian Spirit"] = GetSpellInfo(47788),
+	["Light of T'uure"] = GetSpellInfo(208065),
 	["Power Word: Shield"] = GetSpellInfo(17),
 	["Prayer of Mending"] = GetSpellInfo(33076),
 	["Renew"] = GetSpellInfo(139),
@@ -174,6 +180,7 @@ GridStatusAuras.defaultDB = {
 
 	-- General Debuffs
 	[GridStatusAuras:StatusForSpell("Ghost")] = {
+		-- 8326
 		desc = format(L["Debuff: %s"], spell_names["Ghost"]),
 		debuff = spell_names["Ghost"],
 		text = GridStatusAuras:TextForSpell(spell_names["Ghost"]),
@@ -185,6 +192,7 @@ GridStatusAuras.defaultDB = {
 
 	-- Druid
 	[GridStatusAuras:StatusForSpell("Lifebloom", true)] = {
+		-- 33763
 		desc = format(L["Buff: %s"], spell_names["Lifebloom"]),
 		buff = spell_names["Lifebloom"],
 		text = GridStatusAuras:TextForSpell(spell_names["Lifebloom"]),
@@ -200,6 +208,7 @@ GridStatusAuras.defaultDB = {
 		mine = true,
 	},
 	[GridStatusAuras:StatusForSpell("Regrowth", true)] = {
+		-- 8936
 		desc = format(L["Buff: %s"], spell_names["Regrowth"]),
 		buff = spell_names["Regrowth"],
 		text = GridStatusAuras:TextForSpell(spell_names["Regrowth"]),
@@ -210,6 +219,7 @@ GridStatusAuras.defaultDB = {
 		mine = true,
 	},
 	[GridStatusAuras:StatusForSpell("Rejuvenation", true)] = {
+		-- 774
 		desc = format(L["Buff: %s"], spell_names["Rejuvenation"]),
 		buff = spell_names["Rejuvenation"],
 		text = GridStatusAuras:TextForSpell(spell_names["Rejuvenation"]),
@@ -219,9 +229,32 @@ GridStatusAuras.defaultDB = {
 		durationColorHigh = { r =  0, g = .3, b = .7, a = 1 },
 		mine = true,
 	},
+	[GridStatusAuras:StatusForSpell("Rejuvenation (Germination)", true)] = {
+		-- 155777
+		desc = format(L["Buff: %s"], spell_names["Rejuvenation (Germination)"]),
+		buff = spell_names["Rejuvenation (Germination)"],
+		text = GridStatusAuras:TextForSpell(spell_names["Rejuvenation (Germination)"]),
+		color = { r = 0.66, g = 0.55, b = 1, a = 1 },
+		durationColorLow = { r = 0.66, g = 0.55, b = 1, a = 1 },
+		durationColorMiddle = { r = 0.46, g = 0.38, b = 0.7, a = 1 },
+		durationColorHigh = { r = 0.33, g = 0.27, b = 0.5, a = 1 },
+		mine = true,
+	},
+	[GridStatusAuras:StatusForSpell("Wild Growth", true)] = {
+		-- 48438
+		desc = format(L["Buff: %s"], spell_names["Wild Growth"]),
+		buff = spell_names["Wild Growth"],
+		text = GridStatusAuras:TextForSpell(spell_names["Wild Growth"]),
+		color = { r = 0.56, g = 0.85, b = 0.62, a = 1 },
+		durationColorLow = { r = 0.56, g = 0.85, b = 0.62, a = 1 },
+		durationColorMiddle = { r = 0.39, g = 0.55, b = 0.42, a = 1 },
+		durationColorHigh = { r = 0.27, g = 0.37, b = 0.29, a = 1 },
+		mine = true,
+	},
 
 	-- Monk
 	[GridStatusAuras:StatusForSpell("Enveloping Mist", true)] = {
+		-- 124682
 		buff = spell_names["Enveloping Mist"],
 		desc = format(L["Buff: %s"], spell_names["Enveloping Mist"]),
 		text = GridStatusAuras:TextForSpell(spell_names["Enveloping Mist"]),
@@ -229,12 +262,14 @@ GridStatusAuras.defaultDB = {
 		mine = true,
 	},
 	[GridStatusAuras:StatusForSpell("Life Cocoon", true)] = {
+		-- 116849
 		buff = spell_names["Life Cocoon"],
 		desc = format(L["Buff: %s"], spell_names["Life Cocoon"]),
 		text = GridStatusAuras:TextForSpell(spell_names["Life Cocoon"]),
 		color = { r = 0.8, g = 0.8, b = 0.4, a = 1 },
 	},
 	[GridStatusAuras:StatusForSpell("Renewing Mist", true)] = {
+		-- 115151
 		buff = spell_names["Renewing Mist"],
 		desc = format(L["Buff: %s"], spell_names["Renewing Mist"]),
 		text = GridStatusAuras:TextForSpell(spell_names["Renewing Mist"]),
@@ -244,6 +279,7 @@ GridStatusAuras.defaultDB = {
 
 	-- Paladin
 	[GridStatusAuras:StatusForSpell("Beacon of Faith", true)] = { -- new in 7.0
+		-- 156910
 		desc = format(L["Buff: %s"], spell_names["Beacon of Faith"]),
 		buff = spell_names["Beacon of Faith"],
 		text = GridStatusAuras:TextForSpell(spell_names["Beacon of Faith"]),
@@ -256,6 +292,7 @@ GridStatusAuras.defaultDB = {
 		mine = true,
 	},
 	[GridStatusAuras:StatusForSpell("Beacon of Light", true)] = {
+		-- 53563
 		desc = format(L["Buff: %s"], spell_names["Beacon of Light"]),
 		buff = spell_names["Beacon of Light"],
 		text = GridStatusAuras:TextForSpell(spell_names["Beacon of Light"]),
@@ -267,7 +304,39 @@ GridStatusAuras.defaultDB = {
 		durationHigh = 10,
 		mine = true,
 	},
+	[GridStatusAuras:StatusForSpell("Beacon of Virtue", true)] = {
+		-- 200025
+		desc = format(L["Buff: %s"], spell_names["Beacon of Virtue"]),
+		buff = spell_names["Beacon of Virtue"],
+		text = GridStatusAuras:TextForSpell(spell_names["Beacon of Virtue"]),
+		color = { r = 0.95, g = 0.47, b = 0.66, a = 1 },
+		durationColorLow = { r = 0.95, g = 0.47, b = 0.66, a = 1 },
+		durationColorMiddle = { r = 0.7, g = 0.35, b = 0.49, a = 1 },
+		durationColorHigh = { r = 0.5, g = 0.25, b = 0.35, a = 1 },
+		mine = true,
+	},
+	[GridStatusAuras:StatusForSpell("Sacred Dawn")] = {
+		-- 243174
+		desc = format(L["Debuff: %s"], spell_names["Sacred Dawn"]),
+		debuff = spell_names["Sacred Dawn"],
+		text = GridStatusAuras:TextForSpell(spell_names["Sacred Dawn"]),
+		color = { r = 0.95, g = 1, b = 0.7, a = 1 },
+		durationColorLow = { r = 0.95, g = 1, b = 0.7, a = 1 },
+		durationColorMiddle = { r = 0.66, g = 0.7, b = 0.49, a = 1 },
+		durationColorHigh = { r = 0.43, g = 0.45, b = 0.32, a = 1 },
+	},
+	[GridStatusAuras:StatusForSpell("Tyr's Deliverance")] = {
+		-- 200654
+		desc = format(L["Debuff: %s"], spell_names["Tyr's Deliverance"]),
+		debuff = spell_names["Tyr's Deliverance"],
+		text = GridStatusAuras:TextForSpell(spell_names["Tyr's Deliverance"]),
+		color = { r = 0.95, g = 0.82, b = 0.33, a = 1 },
+		durationColorLow = { r = 0.95, g = 0.82, b = 0.33, a = 1 },
+		durationColorMiddle = { r = 0.65, g = 0.56, b = 0.23, a = 1 },
+		durationColorHigh = { r = 0.45, g = 0.38, b = 0.16, a = 1 },
+	},
 	[GridStatusAuras:StatusForSpell("Forbearance")] = {
+		-- 25771
 		desc = format(L["Debuff: %s"], spell_names["Forbearance"]),
 		debuff = spell_names["Forbearance"],
 		text = GridStatusAuras:TextForSpell(spell_names["Forbearance"]),
@@ -279,6 +348,7 @@ GridStatusAuras.defaultDB = {
 
 	-- Priest
 	[GridStatusAuras:StatusForSpell("Atonement", true)] = {
+		-- 214206
 		buff = spell_names["Atonement"],
 		desc = format(L["Buff: %s"], spell_names["Atonement"]),
 		text = GridStatusAuras:TextForSpell(spell_names["Atonement"]),
@@ -286,6 +356,7 @@ GridStatusAuras.defaultDB = {
 		mine = true,
 	},
 	[GridStatusAuras:StatusForSpell("Clarity of Will", true)] = {
+		-- 152118
 		desc = format(L["Buff: %s"], spell_names["Clarity of Will"]),
 		buff = spell_names["Clarity of Will"],
 		text = GridStatusAuras:TextForSpell(spell_names["Clarity of Will"]),
@@ -294,7 +365,30 @@ GridStatusAuras.defaultDB = {
 		durationColorMiddle = { r = .56, g = .56, b =  0, a = 1 },
 		durationColorHigh = { r = .8, g = .8, b =  0, a = 1 },
 	},
+	[GridStatusAuras:StatusForSpell("Guardian Spirit", true)] = {
+		-- 47788
+		desc = format(L["Buff: %s"], spell_names["Guardian Spirit"]),
+		buff = spell_names["Guardian Spirit"],
+		text = GridStatusAuras:TextForSpell(spell_names["Guardian Spirit"]),
+		color = { r = 0.4, g = 0.73, b = 1, a = 1 },
+		durationColorLow = { r = 0.4, g = 0.73, b = 1, a = 1 },
+		durationColorMiddle = { r = 0.24, g = 0.54, b = 0.8, a = 1 },
+		durationColorHigh = { r = 0.13, g = 0.41, b = 0.65, a = 1 },
+		mine = true,
+	},
+	[GridStatusAuras:StatusForSpell("Light of T'uure", true)] = {
+		-- 208065
+		desc = format(L["Buff: %s"], spell_names["Light of T'uure"]),
+		buff = spell_names["Light of T'uure"],
+		text = GridStatusAuras:TextForSpell(spell_names["Light of T'uure"]),
+		color = { r = 0.33, g = 0.46, b = 1, a = 1 },
+		durationColorLow = { r = 0.33, g = 0.46, b = 1, a = 1 },
+		durationColorMiddle = { r = 0.24, g = 0.33, b = 0.7, a = 1 },
+		durationColorHigh = { r = 0.17, g = 0.23, b = 0.5, a = 1 },
+		mine = true,
+	},
 	[GridStatusAuras:StatusForSpell("Power Word: Shield", true)] = {
+		-- 17
 		desc = format(L["Buff: %s"], spell_names["Power Word: Shield"]),
 		buff = spell_names["Power Word: Shield"],
 		text = GridStatusAuras:TextForSpell(spell_names["Power Word: Shield"]),
@@ -304,6 +398,7 @@ GridStatusAuras.defaultDB = {
 		durationColorHigh = { r = .8, g = .8, b =  0, a = 1 },
 	},
 	[GridStatusAuras:StatusForSpell("Prayer of Mending", true)] = {
+		-- 33076, 41635
 		buff = spell_names["Prayer of Mending"],
 		desc = format(L["Buff: %s"], spell_names["Prayer of Mending"]),
 		text = GridStatusAuras:TextForSpell(spell_names["Prayer of Mending"]),
@@ -311,6 +406,7 @@ GridStatusAuras.defaultDB = {
 		mine = true,
 	},
 	[GridStatusAuras:StatusForSpell("Renew", true)] = {
+		-- 139
 		desc = format(L["Buff: %s"], spell_names["Renew"]),
 		buff = spell_names["Renew"],
 		text = GridStatusAuras:TextForSpell(spell_names["Renew"]),
@@ -323,6 +419,7 @@ GridStatusAuras.defaultDB = {
 
 	-- Shaman
 	[GridStatusAuras:StatusForSpell("Riptide", true)] = {
+		-- 61295
 		desc = format(L["Buff: %s"], spell_names["Riptide"]),
 		buff = spell_names["Riptide"],
 		text = GridStatusAuras:TextForSpell(spell_names["Riptide"]),
