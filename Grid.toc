@@ -1,4 +1,4 @@
-## Interface: 70100
+## Interface: 70300
 ## Version: @project-version@
 
 ## Title: Grid
@@ -14,9 +14,9 @@
 
 ## Author: Phanx, Pastamancer, Maia
 ## X-Credits: Greltok, Jerry, jlam
-## X-Copyright: Copyright (c) 2006-2016 Pastamancer, Phanx. All rights reserved.
-## X-Website: https://www.wowace.com/addons/grid/
-## X-Curse-Project-ID: grid
+## X-License: All Rights Reserved
+## X-Website: https://wow.curseforge.com/projects/grid/
+## X-Curse-Project-ID: 7000
 ## X-WoWI-ID: 5747
 
 ## OptionalDeps: Ace3, LibDBIcon-1.0, LibDualSpec-1.0, LibResInfo-1.0, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, UTF8, Clique
@@ -89,7 +89,3 @@ Statuses\Role.lua
 Statuses\Stagger.lua
 Statuses\Target.lua
 Statuses\Vehicle.lua
-
-#@debug@
-Statuses\new\GridAura.lua
-#@end-debug@
