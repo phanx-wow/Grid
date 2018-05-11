@@ -1,3 +1,16 @@
+### Version 7.3.5.0
+
+- Fixed the option to disable the right-click menu
+- Fixed an issue causing Earth Shield to be removed as an aura status on login ([ticket #885](https://wow.curseforge.com/addons/grid/tickets/885))
+- Updated embedded LibResInfo and Ace3 libraries, resolving several issues related to resurrections and the options panel
+- Added default aura statuses:
+   - Beacon of Virtue
+   - Guardian Spirit
+   - Light of T'uure
+   - Rejuvenation (Germination)
+   - Sacred Dawn
+   - Tyr's Deliverance
+
 ### Version 7.1.0.1
 
 - Fixed an error with combat resurrections ([ticket #860](https://wow.curseforge.com/addons/grid/tickets/860))
@@ -21,12 +34,10 @@
 
 ### Version 7.0.3.1
 
-* Fixed ticket 834 Show offline option broken. Thanks Samuelreus.
-* Fixed ticket 833 Layout none in non-English locale.  Thanks Elnarfim.
-* Package with libraries should include new LibResInfo for ticket 828.
-* Mark code for splitGroups as debug in Layouts because the option is marked
-  as debug. Should fix odd behavior for people who had option enabled before
-  the option was disabled.
+* Fixed the "Show offline" option, with thanks to Samuelreus ((ticket #834)[https://wow.curseforge.com/projects/grid/issues/834])
+* Fixed "None" layout in non-English locales, with thanks to Elnarfim ((ticket #833)[https://wow.curseforge.com/projects/grid/issues/833])
+* Updated embedded LibResInfo ((ticket #828)[https://wow.curseforge.com/projects/grid/issues/828])
+* Marked code for splitGroups as debug in Layouts because the option is marked as debug. Should fix odd behavior for people who had option enabled before the option was disabled.
 
 ### Version 7.0.3.0-beta
 
