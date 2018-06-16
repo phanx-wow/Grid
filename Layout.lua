@@ -618,7 +618,6 @@ function GridLayout:PostEnable()
 
 	self:RegisterBucketMessage("Grid_UpdateLayoutSize", 0.2, "PartyMembersChanged")
 	self:RegisterMessage("Grid_RosterUpdated", "PartyMembersChanged")
-	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "PartyMembersChanged")
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", "PartyMembersChanged")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "ZoneCheck")
 
