@@ -144,10 +144,10 @@ GridStatusAuras.defaultDB = {
 	["dispel_curse"] = {
 		desc = format(L["Debuff type: %s"], L["Curse"]),
 		text = DEBUFF_SYMBOL_CURSE,
-		color = { r = 0.6, g = 0, b =  1, a = 1 },
+		color = { r = 0.6, g = 0, b = 1, a = 1 },
 		durationColorLow = { r = 0.18, g = 0, b = 0.3, a = 1 },
 		durationColorMiddle = { r = 0.42, g = 0, b = 0.7, a = 1 },
-		durationColorHigh = { r = 0.6, g = 0, b =  1, a = 1 },
+		durationColorHigh = { r = 0.6, g = 0, b = 1, a = 1 },
 		dispellable = true,
 		order = 25,
 	},
@@ -164,10 +164,10 @@ GridStatusAuras.defaultDB = {
 	["dispel_magic"] = {
 		desc = format(L["Debuff type: %s"], L["Magic"]),
 		text = DEBUFF_SYMBOL_MAGIC,
-		color = { r = 0.2, g = 0.6, b =  1, a = 1 },
+		color = { r = 0.2, g = 0.6, b = 1, a = 1 },
 		durationColorLow = { r = 0.06, g = 0.18, b = 0.3, a = 1 },
 		durationColorMiddle = { r = 0.14, g = 0.42, b = 0.7, a = 1 },
-		durationColorHigh = { r = 0.2, g = 0.6, b =  1, a = 1 },
+		durationColorHigh = { r = 0.2, g = 0.6, b = 1, a = 1 },
 		dispellable = true,
 		order = 25,
 	},
@@ -217,10 +217,10 @@ GridStatusAuras.defaultDB = {
 		desc = format(L["Buff: %s"], spell_names["Regrowth"]),
 		buff = spell_names["Regrowth"],
 		text = GridStatusAuras:TextForSpell(spell_names["Regrowth"]),
-		color = { r =  1, g = 0.7, b = 0.1, a = 1 },
+		color = { r = 1, g = 0.7, b = 0.1, a = 1 },
 		durationColorLow = { r = 1, g = 0, b = 0, a = 1 },
 		durationColorMiddle = { r = 0.7, g = 0.49, b = 0.07, a = 1 },
-		durationColorHigh = { r =  1, g = 0.7, b = 0.1, a = 1 },
+		durationColorHigh = { r = 1, g = 0.7, b = 0.1, a = 1 },
 		mine = true,
 	},
 	[GridStatusAuras:StatusForSpell("Rejuvenation", true)] = {
@@ -1074,15 +1074,15 @@ function GridStatusAuras:UpdateDispellable()
 		PlayerCanDispel.Poison  = IsPlayerSpell(115450) or IsPlayerSpell(218164)
 
 	elseif PLAYER_CLASS == "PALADIN" then
-		 --   4987   Cleanse           Holy                        Disease, Poison, Magic
-		 -- 213644   Cleanse Toxins    Protection, Retribution     Disease, Poison
+		--   4987   Cleanse           Holy                        Disease, Poison, Magic
+		-- 213644   Cleanse Toxins    Protection, Retribution     Disease, Poison
 		PlayerCanDispel.Disease = IsPlayerSpell(4987) or IsPlayerSpell(213644)
 		PlayerCanDispel.Magic   = IsPlayerSpell(4987)
 		PlayerCanDispel.Poison  = IsPlayerSpell(4987) or IsPlayerSpell(213644)
 
 	elseif PLAYER_CLASS == "PRIEST" then
-		 --    527   Purify            Discipline, Holy            Disease, Magic
-		 -- 213634   Purify Disease    Shadow                      Disease
+		--    527   Purify            Discipline, Holy            Disease, Magic
+		-- 213634   Purify Disease    Shadow                      Disease
 		PlayerCanDispel.Disease = IsPlayerSpell(527) or IsPlayerSpell(213634)
 		PlayerCanDispel.Magic   = IsPlayerSpell(527)
 
@@ -1344,7 +1344,7 @@ function GridStatusAuras:RefreshActiveDurations()
 					ICON_TEX_COORDS)
 			end
 	--	else
-	--		self.core:SendStatusLost(guid, status)  -- XXX "guid" is undefined=nil here; what is the purpose?!
+	--		self.core:SendStatusLost(guid, status) -- XXX "guid" is undefined=nil here; what is the purpose?!
 		end
 	end
 end
