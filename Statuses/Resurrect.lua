@@ -12,6 +12,8 @@
 	Grid status module for resurrections.
 ----------------------------------------------------------------------]]
 
+local IS_WOW_8 = GetBuildInfo():match("^8")
+
 local _, Grid = ...
 local L = Grid.L
 
@@ -158,37 +160,41 @@ function GridStatusResurrect:UpdateUnit(unit, guid)
 	local db = self.db.profile.alert_resurrect
 	local hasRes, endTime, casterUnit, casterGUID = LibResInfo:UnitHasIncomingRes(guid)
 
-	if hasRes and ((hasRes == "CASTING" or hasRes == "MASSRES") or db.showUntilUsed) then
-		local icon, startTime, duration, _
-		if hasRes == "CASTING" or hasRes == "MASSRES" then
-			_, _, _, icon, startTime = UnitCastingInfo(casterUnit)
-			if not startTime then
-				-- ignore instant casts
-				return
-			end
-			startTime = startTime / 1000
-			duration = endTime - startTime
-		elseif hasRes == "SELFRES" then
-			icon = "Interface\\ICONS\\Spell_Shadow_Soulgem"
-			startTime = endTime - 360
-			duration = 360
-		else
-			icon = "Interface\\Icons\\Spell_Nature_Reincarnation"
-			startTime = endTime - 60
-			duration = 60
-		end
-
-		self.core:SendStatusGained(guid, "alert_resurrect",
-			db.priority,
-			nil,
-			hasRes == "SELFRES" and db.color3 or hasRes == "PENDING" and db.color2 or db.color,
-			db.text,
-			nil,
-			nil,
-			icon,
-			startTime,
-			duration)
-	else
-		self.core:SendStatusLost(guid, "alert_resurrect")
+	if not hasRes or (hasRes == "PENDING" and not db.showUntilUsed) then
+		return self.core:SendStatusLost(guid, "alert_resurrect")
 	end
+
+	local icon, startTime, duration, _
+	if hasRes == "PENDING" then
+		icon = "Interface\\Icons\\Spell_Nature_Reincarnation"
+		startTime = endTime - 60
+		duration = 60
+	elseif hasRes == "SELFRES" then
+		icon = "Interface\\ICONS\\Spell_Shadow_Soulgem"
+		startTime = endTime - 360
+		duration = 360
+	else -- CASTING or PENDING
+		if IS_WOW_8 then
+			_, _, icon, startTime = UnitCastingInfo(casterUnit)
+		else
+			_, _, _, icon, startTime = UnitCastingInfo(casterUnit)
+		end
+		if not startTime then
+			-- ignore instant casts
+			return
+		end
+		startTime = startTime / 1000
+		duration = endTime - startTime
+	end
+
+	self.core:SendStatusGained(guid, "alert_resurrect",
+		db.priority,
+		nil,
+		hasRes == "SELFRES" and db.color3 or hasRes == "PENDING" and db.color2 or db.color,
+		db.text,
+		nil,
+		nil,
+		icon,
+		startTime,
+		duration)
 end
