@@ -1683,7 +1683,7 @@ function GridStatusAuras:ScanUnitAuras(event, unit, guid)
 			end
 
 			-- scan for buffs cast by the player
-			if player_buff_names[name] then
+			if player_buff_names[name] and caster == "player" then
 				player_buff_names_seen[name] = true
 				self:UnitGainedPlayerBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 			end
