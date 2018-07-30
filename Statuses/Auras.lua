@@ -57,10 +57,12 @@ local spell_names = {
 	["Clarity of Will"] = GetSpellInfo(152118),
 	["Guardian Spirit"] = GetSpellInfo(47788),
 	["Light of T'uure"] = GetSpellInfo(208065),
+	["Power Word: Fortitude"] = GetSpellInfo(21562),
 	["Power Word: Shield"] = GetSpellInfo(17),
 	["Prayer of Mending"] = GetSpellInfo(33076),
 	["Renew"] = GetSpellInfo(139),
 -- Shaman
+	["Earth Shield"] = GetSpellInfo(204288),
 	["Riptide"] = GetSpellInfo(61295),
 }
 
@@ -398,6 +400,14 @@ GridStatusAuras.defaultDB = {
 		durationColorHigh = { r = 0.17, g = 0.23, b = 0.5, a = 1 },
 		mine = true,
 	},
+	[GridStatusAuras:StatusForSpell("Power Word: Fortitude", true)] = {
+		-- 21562
+		desc = format(L["Buff: %s"], spell_names["Power Word: Fortitude"]),
+		buff = spell_names["Power Word: Fortitude"],
+		text = GridStatusAuras:TextForSpell(spell_names["Power Word: Fortitude"]),
+		color = { r = 0, g = 0.7, b = 0.3, a = 1 },
+		missing = true,
+	},
 	[GridStatusAuras:StatusForSpell("Power Word: Shield", true)] = {
 		-- 17
 		desc = format(L["Buff: %s"], spell_names["Power Word: Shield"]),
@@ -431,6 +441,13 @@ GridStatusAuras.defaultDB = {
 	---------------------
 	-- Shaman
 	---------------------
+	[GridStatusAuras:StatusForSpell("Earth Shield", true)] = {
+		-- 204288
+		desc = format(L["Buff: %s"], spell_names["Earth Shield"]),
+		buff = spell_names["Earth Shield"],
+		text = GridStatusAuras:TextForSpell(spell_names["Earth Shield"]),
+		color = { r = 0.2, g = 1, b = 0.2, a = 1 },
+	},
 	[GridStatusAuras:StatusForSpell("Riptide", true)] = {
 		-- 61295
 		desc = format(L["Buff: %s"], spell_names["Riptide"]),
