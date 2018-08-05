@@ -43,8 +43,10 @@ local spell_names = {
 	["Wild Growth"] = GetSpellInfo(48438),
 -- Monk
 	["Enveloping Mist"] = GetSpellInfo(124682),
+	["Essence Font"] = GetSpellInfo(191837),
 	["Life Cocoon"] = GetSpellInfo(116849),
 	["Renewing Mist"] = GetSpellInfo(115151),
+	["Soothing Mist"] = GetSpellInfo(115175),
 -- Paladin
 	["Beacon of Faith"] = GetSpellInfo(156910),
 	["Beacon of Light"] = GetSpellInfo(53563),
@@ -270,6 +272,14 @@ GridStatusAuras.defaultDB = {
 		color = { r = 0.2, g = 1, b = 0.2, a = 1 },
 		mine = true,
 	},
+	[GridStatusAuras:StatusForSpell("Essence Font", true)] = {
+		-- 191837
+		buff = spell_names["Essence Font"],
+		desc = format(L["Buff: %s"], spell_names["Essence Font"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Essence Font"]),
+		color = { r = 0, g = 0.7, b = 0.7, a = 1 },
+		mine = true,
+	},
 	[GridStatusAuras:StatusForSpell("Life Cocoon", true)] = {
 		-- 116849
 		buff = spell_names["Life Cocoon"],
@@ -283,6 +293,14 @@ GridStatusAuras.defaultDB = {
 		desc = format(L["Buff: %s"], spell_names["Renewing Mist"]),
 		text = GridStatusAuras:TextForSpell(spell_names["Renewing Mist"]),
 		color = { r = 0.4, g = 0, b = 0.8, a = 1 },
+		mine = true,
+	},
+	[GridStatusAuras:StatusForSpell("Soothing Mist", true)] = {
+		-- 115175
+		buff = spell_names["Soothing Mist"],
+		desc = format(L["Buff: %s"], spell_names["Soothing Mist"]),
+		text = GridStatusAuras:TextForSpell(spell_names["Soothing Mist"]),
+		color = { r = 0.8, g = 1, b = 0.3, a = 1 },
 		mine = true,
 	},
 
