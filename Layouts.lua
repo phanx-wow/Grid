@@ -176,7 +176,7 @@ function Manager:GetGroupFilter()
 
 	local showOffline = Layout.db.profile.showOffline
 	local showWrongZone = Layout:ShowWrongZone()
-	local _, _, _, curMapID = UnitPosition("player")
+	local curMapID = C_Map.GetBestMapForPlayer("player")
 
 	for i = 1, MAX_RAID_GROUPS do
 		hideGroup[i] = ""
@@ -184,8 +184,7 @@ function Manager:GetGroupFilter()
 
 	for i = 1, GetNumGroupMembers() do
 		local name, _, subgroup, _, _, _, _, online = GetRaidRosterInfo(i)
-		assert(name) -- shouldn't be possible to be nil while i is in range?
-		local _, _, _, mapID = UnitPosition("raid" .. i)
+		local mapID = C_Map.GetBestMapForPlayer("raid" .. i)
 		if (showOffline or online) and (showWrongZone or curMapID == mapID) then
 			hideGroup[subgroup] = nil
 --@debug@
