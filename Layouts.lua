@@ -189,9 +189,9 @@ function Manager:GetGroupFilter()
 			hideGroup[subgroup] = nil
 --@debug@
 		elseif curMapID ~= mapID and not showWrongZone then
-			hideGroup = hideGroup .. ",ZONE"
+			hideGroup[subgroup] = (hideGroup[subgroup] or "") .. " ZONE"
 		elseif not online and not showOffline then
-			hideGroup = hideGroup .. ",OFFLINE"
+			hideGroup[subgroup] = (hideGroup[subgroup] or "") .. " OFFLINE"
 --@end-debug@
 		end
 	end
