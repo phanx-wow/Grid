@@ -134,7 +134,7 @@ local function UpdateSplitGroups(layout, groupFilter, numGroups, showPets)
 
 	if showPets then
 		local i = numGroups + 1
-		layout[i] = AddPetGroup(layout[i], numGroups, groupFilter)
+		layout[i] = AddPetGroup(layout[i], groupFilter, numGroups)
 		numGroups = i
 	end
 
@@ -156,7 +156,7 @@ local function UpdateMergedGroups(layout, groupFilter, numGroups, showPets)
 	layout[1].groupFilter = groupFilter
 	layout[1].maxColumns = numGroups
 
-	layout[2] = showPets and AddPetGroup(layout[2], numGroups, groupFilter) or nil
+	layout[2] = showPets and AddPetGroup(layout[2], groupFilter, numGroups) or nil
 
 	for i = 3, numGroups do
 		layout[i] = nil
