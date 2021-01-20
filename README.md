@@ -1,3 +1,5 @@
+> **IMPORTANT:** Grid has been continued as Plexus by Doadin. This repository is now archived. Users should switch to Plexus, and issues that are still relevant should be opened on the Plexus repository: <https://github.com/doadin/Plexus>
+
 **Grid is the original compact unit frame addon.**
 
 The compact grid of units lets you select a group member quickly, while keeping a good overview of the whole group. Grid is designed to show you only what you need to know, and not overload you with irrelevant information. It is highly configurable, letting you choose exactly what is shown, and how it's shown. There are also many [plugins](https://wow.curseforge.com/addons/grid/pages/list-of-grid-plugins/) that add even more features!
